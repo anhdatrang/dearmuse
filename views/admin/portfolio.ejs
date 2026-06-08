@@ -1,0 +1,96 @@
+<div class="admin-header">
+  <h1>Portfolio</h1>
+</div>
+
+<% if (success && success.length > 0) { %>
+  <div class="flash-success admin-card" style="background: #dcfce7; border: none; border-left: 2px solid #16a34a; color: #166534; margin-bottom: 16px;"><%= success[0] %></div>
+<% } %>
+<% if (error && error.length > 0) { %>
+  <div class="flash-error admin-card" style="background: #fee2e2; border: none; border-left: 2px solid #dc2626; color: #991b1b; margin-bottom: 16px;"><%= error[0] %></div>
+<% } %>
+
+<div style="display: grid; grid-template-columns: 1fr 360px; gap: 24px; align-items: start;">
+
+  <!-- Album list -->
+  <div class="admin-card" style="padding: 0;">
+    <% if (albums.length > 0) { %>
+      <table>
+        <thead>
+          <tr>
+            <th>Ảnh bìa</th>
+            <th>Tiêu đề</th>
+            <th>Danh mục</th>
+            <th>Nổi bật</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% albums.forEach(a => { %>
+            <tr>
+              <td>
+                <img src="<%= a.cover_image %>" alt="<%= a.title %>"
+                     style="width: 56px; height: 56px; object-fit: cover; border-radius: 2px;">
+              </td>
+              <td>
+                <div style="font-weight: 400;"><%= a.title %></div>
+                <div style="font-size: 12px; color: var(--smoke);"><%= a.slug %></div>
+              </td>
+              <td><span class="badge badge-confirmed"><%= a.category %></span></td>
+              <td><%= a.is_featured ? '✓' : '—' %></td>
+              <td>
+                <form method="POST" action="/admin/portfolio/<%= a.id %>/delete"
+                      onsubmit="return confirm('Xoá album này?')">
+                  <button type="submit" class="btn-sm" style="color: #b91c1c;">Xoá</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <div class="empty-state">Chưa có album nào. Thêm album mới bên phải.</div>
+    <% } %>
+  </div>
+
+  <!-- Upload form -->
+  <div class="admin-card">
+    <h2>Thêm album mới</h2>
+    <form method="POST" action="/admin/portfolio/create" enctype="multipart/form-data">
+      <div class="form-group-admin">
+        <label class="form-label">Tiêu đề *</label>
+        <input type="text" name="title" class="form-control" required placeholder="Tên album...">
+      </div>
+      <div class="form-group-admin">
+        <label class="form-label">Danh mục</label>
+        <select name="category" class="form-control">
+          <option value="portrait">Portrait</option>
+          <option value="event">Event</option>
+          <option value="studio">Studio</option>
+          <option value="commercial">Commercial</option>
+          <option value="outdoor">Outdoor</option>
+        </select>
+      </div>
+      <div class="form-group-admin">
+        <label class="form-label">Mô tả</label>
+        <textarea name="description" class="form-control" rows="3" style="resize: vertical; border: 1px solid var(--bone); padding: 10px; width: 100%;"></textarea>
+      </div>
+      <div class="form-group-admin">
+        <label class="form-label">Ảnh bìa *</label>
+        <input type="file" name="cover_image" class="form-control" accept="image/*" required style="border: none; padding: 0;">
+      </div>
+      <div class="form-group-admin">
+        <label class="form-label">Ảnh phụ (nhiều file)</label>
+        <input type="file" name="images" class="form-control" accept="image/*" multiple style="border: none; padding: 0;">
+      </div>
+      <div class="form-group-admin">
+        <label class="form-label" style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+          <input type="checkbox" name="is_featured" value="1"> Đánh dấu nổi bật
+        </label>
+      </div>
+      <button type="submit" class="btn-sm btn-sm-dark" style="width: 100%; padding: 12px; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; border: none;">
+        Tạo album
+      </button>
+    </form>
+  </div>
+
+</div>

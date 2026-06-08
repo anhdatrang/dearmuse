@@ -1,0 +1,32 @@
+<%
+  pageCss = 'booking.css';
+%>
+
+<div class="booking-confirm">
+  <div class="confirm-card">
+    <div class="confirm-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1A1916" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+
+    <span class="section-label" style="display: block; text-align: center; margin-bottom: 8px;">Đặt lịch thành công</span>
+    <h1 style="font-family: var(--font-display); font-size: 32px; font-style: italic; color: var(--ink); font-weight: 400; margin-bottom: 12px;">
+      Cảm ơn, <%= booking.customer_name.split(' ').pop() %>!
+    </h1>
+    <p class="body-text" style="max-width: 380px; margin: 0 auto 8px;">
+      Chúng tôi đã nhận được yêu cầu của bạn và sẽ liên hệ xác nhận trong vòng 24 giờ.
+    </p>
+
+    <div class="confirm-code">
+      Mã đặt lịch: <%= booking.booking_code %>
+    </div>
+
+    <p class="body-text" style="font-size: 13px; color: var(--smoke); margin-bottom: 32px;">
+      Lưu mã này lại để tiện theo dõi.
+    </p>
+
+    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+      <a href="/" class="btn btn-outline-dark">Về trang chủ</a>
+      <a href="/portfolio" class="btn btn-dark">Xem Portfolio</a>
+    </div>
+  </div>
+</div>

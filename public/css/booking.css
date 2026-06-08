@@ -1,0 +1,219 @@
+/* ═══════════════════════════════
+   BOOKING CSS
+═══════════════════════════════ */
+
+.booking-page {
+  padding-top: 100px;
+  padding-bottom: var(--section-gap);
+  background: var(--vanilla-cream);
+}
+
+.booking-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 80px;
+  align-items: start;
+}
+
+.booking-form-section, .contact-form-section {
+  background: var(--vanilla-cream);
+  padding: 48px;
+  border-radius: 8px;
+  box-shadow: 0 12px 48px rgba(26, 25, 22, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: linear-gradient(135deg, #FFF 0%, var(--vanilla-cream) 100%);
+}
+
+.booking-form-section h1, .contact-form-section h1 {
+  font-size: clamp(28px, 4vw, 42px);
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.booking-form-section .sub, .contact-form-section .sub {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--smoke);
+  margin-bottom: 48px;
+  line-height: 1.7;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.booking-sidebar {
+  position: sticky;
+  top: 100px;
+}
+
+.sidebar-img {
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+
+.sidebar-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s var(--ease-silk);
+}
+
+.sidebar-img:hover img { transform: scale(1.03); }
+
+.sidebar-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sidebar-info-item {
+  display: flex;
+  gap: 14px;
+}
+
+.sidebar-info-item svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--logo-taupe);
+}
+
+.sidebar-info-item div strong {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--logo-taupe);
+  margin-bottom: 2px;
+}
+
+.sidebar-info-item div span {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--smoke);
+}
+
+.radio-group {
+  display: flex;
+  gap: 24px;
+  padding: 12px 0;
+  flex-wrap: wrap;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.radio-option span {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--smoke);
+}
+
+.radio-option input[type="radio"] {
+  width: 16px; height: 16px;
+  border: 1px solid var(--bone);
+  background: transparent;
+  -webkit-appearance: radio;
+  appearance: radio;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.location-note-wrap {
+  display: none;
+}
+
+.location-note-wrap.show {
+  display: block;
+  animation: fadeSlideIn 0.3s var(--ease-silk);
+}
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.error-list {
+  background: #fef2f2;
+  border-left: 2px solid #ef4444;
+  padding: 16px 20px;
+  border-radius: 2px;
+  margin-bottom: 32px;
+}
+
+.error-list li {
+  font-size: 13px;
+  color: #b91c1c;
+  line-height: 1.6;
+  list-style: disc;
+  margin-left: 16px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 18px;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+/* Confirm page */
+.booking-confirm {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 2rem;
+}
+
+.confirm-card {
+  background: var(--vanilla-cream);
+  border: 0.5px solid var(--bone);
+  padding: 64px;
+  max-width: 560px;
+  text-align: center;
+}
+
+.confirm-icon {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--avocado-cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+}
+
+.confirm-code {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--logo-taupe);
+  background: var(--parchment);
+  padding: 10px 24px;
+  border-radius: 2px;
+  display: inline-block;
+  margin: 20px 0;
+}
+
+@media (max-width: 1024px) {
+  .booking-layout {
+    grid-template-columns: 1fr;
+  }
+  .booking-sidebar { position: static; }
+  .sidebar-img { aspect-ratio: 16/7; }
+}
+
+@media (max-width: 767px) {
+  .form-row { grid-template-columns: 1fr; }
+  .confirm-card { padding: 36px 24px; }
+}

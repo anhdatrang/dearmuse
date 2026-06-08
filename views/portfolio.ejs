@@ -1,0 +1,55 @@
+<% pageCss = 'portfolio.css'; %>
+
+<!-- Editorial Hero -->
+<section class="portfolio-hero">
+  <div class="portfolio-hero-bg">
+    <img src="/source/D%E1%BA%A1%20H%E1%BB%99i/IMG_2326.JPG" alt="Portfolio Background">
+  </div>
+  <div class="portfolio-hero-content reveal">
+    <h1>Portfolio</h1>
+    <p>Khám phá các tác phẩm</p>
+  </div>
+</section>
+
+<!-- Portfolio Content -->
+<section style="padding: 80px 0 var(--section-gap);">
+  <div class="container">
+
+    <!-- Luxury Filters -->
+    <div class="portfolio-filters reveal" data-delay="1">
+      <a href="/portfolio" class="filter-btn <%= activeCategory === 'all' ? 'active' : '' %>">Tất cả</a>
+      <a href="/portfolio?category=portrait" class="filter-btn <%= activeCategory === 'portrait' ? 'active' : '' %>">Chân dung</a>
+      <a href="/portfolio?category=studio" class="filter-btn <%= activeCategory === 'studio' ? 'active' : '' %>">Studio</a>
+      <a href="/portfolio?category=event" class="filter-btn <%= activeCategory === 'event' ? 'active' : '' %>">Sự kiện</a>
+    </div>
+
+    <!-- Editorial Masonry Grid -->
+    <div class="portfolio-grid">
+      <% images.forEach((img, i) => { %>
+        <div class="portfolio-item reveal" data-delay="<%= (i % 3) + 1 %>">
+          <img src="<%= img.src %>" alt="<%= img.alt %>" loading="<%= i < 6 ? 'eager' : 'lazy' %>">
+          <div class="portfolio-item-overlay">
+            <span class="p-cat"><%= img.category %></span>
+            <span class="p-album"><%= img.album || 'Tuyển tập' %></span>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+
+    <% if (images.length === 0) { %>
+      <div class="text-center" style="padding: 120px 0;">
+        <p class="body-text" style="font-style: italic;">Chưa có tác phẩm trong danh mục này.</p>
+      </div>
+    <% } %>
+
+  </div>
+</section>
+
+<!-- Booking CTA -->
+<section style="background: var(--ink); color: var(--vanilla-cream); padding: 120px 0; text-align: center;">
+  <div class="container">
+    <h2 class="section-heading reveal" style="color: var(--vanilla-cream); margin-bottom: 24px; font-size: clamp(36px, 5vw, 56px);">Thích những gì bạn thấy?</h2>
+    <p class="body-text reveal" style="color: rgba(255,247,230,0.6); margin-bottom: 48px; font-size: 16px;">Hãy để chúng tôi tạo nên bộ ảnh tiếp theo dành riêng cho bạn.</p>
+    <a href="/booking" class="btn btn-outline reveal">Bắt đầu câu chuyện của bạn</a>
+  </div>
+</section>

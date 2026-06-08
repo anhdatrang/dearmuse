@@ -1,0 +1,30 @@
+<header class="site-header" id="site-header">
+  <nav class="nav-inner">
+    <!-- Nhóm trái -->
+    <ul class="nav-left">
+      <li><a href="/" class="<%= currentPath === '/' ? 'active' : '' %>">Trang chủ</a></li>
+      <li><a href="/services" class="<%= currentPath === '/services' ? 'active' : '' %>">Dịch vụ</a></li>
+      <li><a href="/portfolio" class="<%= currentPath.startsWith('/portfolio') ? 'active' : '' %>">Portfolio</a></li>
+    </ul>
+
+    <!-- Logo trung tâm -->
+    <a href="/" class="nav-logo">
+      <img src="/logo/logo.jpg" alt="Dear Musé Photo Studio" height="64">
+    </a>
+
+    <!-- Nhóm phải -->
+    <ul class="nav-right">
+      <li><a href="/pricing" class="<%= currentPath === '/pricing' ? 'active' : '' %>">Bảng giá</a></li>
+      <li><a href="/about" class="<%= currentPath === '/about' ? 'active' : '' %>">Về chúng tôi</a></li>
+      <li><a href="/contact" class="<%= currentPath === '/contact' ? 'active' : '' %>">Liên hệ</a></li>
+      <li><a href="/booking" class="nav-cta"><span>Đặt lịch</span></a></li>
+    </ul>
+
+    <!-- Hamburger (mobile) -->
+    <button class="nav-hamburger" id="hamburger" aria-label="Mở menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+</header>

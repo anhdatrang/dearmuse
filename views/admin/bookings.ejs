@@ -1,0 +1,52 @@
+<div class="admin-header">
+  <h1>Đặt lịch</h1>
+</div>
+
+<!-- Filter -->
+<div class="filter-bar">
+  <a href="/admin/bookings" class="<%= !activeStatus ? 'active' : '' %>">Tất cả</a>
+  <a href="/admin/bookings?status=pending" class="<%= activeStatus === 'pending' ? 'active' : '' %>">Chờ xác nhận</a>
+  <a href="/admin/bookings?status=confirmed" class="<%= activeStatus === 'confirmed' ? 'active' : '' %>">Đã xác nhận</a>
+  <a href="/admin/bookings?status=completed" class="<%= activeStatus === 'completed' ? 'active' : '' %>">Hoàn thành</a>
+  <a href="/admin/bookings?status=cancelled" class="<%= activeStatus === 'cancelled' ? 'active' : '' %>">Đã huỷ</a>
+</div>
+
+<div class="admin-card" style="padding: 0;">
+  <% if (bookings.length > 0) { %>
+    <table>
+      <thead>
+        <tr>
+          <th>Mã đặt lịch</th>
+          <th>Khách hàng</th>
+          <th>Dịch vụ</th>
+          <th>Ngày chụp</th>
+          <th>Hình thức</th>
+          <th>Trạng thái</th>
+          <th>Ngày đặt</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% bookings.forEach(b => { %>
+          <tr>
+            <td style="font-weight: 500; font-size: 12px; letter-spacing: 0.05em;"><%= b.booking_code %></td>
+            <td>
+              <div style="font-weight: 400;"><%= b.customer_name %></div>
+              <div style="font-size: 12px; color: var(--smoke);"><%= b.customer_phone %></div>
+            </td>
+            <td style="color: var(--smoke); font-size: 13px;"><%= b.service_name || '—' %></td>
+            <td><%= new Date(b.preferred_date).toLocaleDateString('vi-VN') %></td>
+            <td style="font-size: 12px; color: var(--smoke);">
+              <%= b.location_type === 'studio' ? 'Studio' : b.location_type === 'outdoor' ? 'Ngoại cảnh' : 'Cả hai' %>
+            </td>
+            <td><span class="badge badge-<%= b.status %>"><%= b.status %></span></td>
+            <td style="font-size: 12px; color: var(--smoke);"><%= new Date(b.created_at).toLocaleDateString('vi-VN') %></td>
+            <td><a href="/admin/bookings/<%= b.id %>" class="btn-sm">Chi tiết</a></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <div class="empty-state">Không có đặt lịch nào.</div>
+  <% } %>
+</div>

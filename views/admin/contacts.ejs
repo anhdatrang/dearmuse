@@ -1,0 +1,51 @@
+<div class="admin-header">
+  <h1>Tin nhắn</h1>
+</div>
+
+<div class="admin-card" style="padding: 0;">
+  <% if (contacts.length > 0) { %>
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Người gửi</th>
+          <th>Tiêu đề</th>
+          <th>Nội dung</th>
+          <th>Ngày gửi</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% contacts.forEach(c => { %>
+          <tr style="<%= !c.is_read ? 'background: rgba(212, 219, 116, 0.08);' : '' %>">
+            <td>
+              <% if (!c.is_read) { %>
+                <span class="badge badge-unread" style="font-size: 9px; padding: 2px 6px;">Mới</span>
+              <% } %>
+            </td>
+            <td>
+              <div style="font-weight: <%= !c.is_read ? '400' : '300' %>"><%= c.name %></div>
+              <div style="font-size: 12px; color: var(--smoke);"><%= c.phone || c.email || '' %></div>
+            </td>
+            <td style="font-size: 13px; max-width: 200px;"><%= c.subject || '—' %></td>
+            <td style="font-size: 13px; color: var(--smoke); max-width: 280px;">
+              <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 280px;">
+                <%= c.message.substring(0, 80) %><%= c.message.length > 80 ? '...' : '' %>
+              </div>
+            </td>
+            <td style="font-size: 12px; color: var(--smoke); white-space: nowrap;"><%= new Date(c.created_at).toLocaleString('vi-VN') %></td>
+            <td>
+              <% if (!c.is_read) { %>
+                <form method="POST" action="/admin/contacts/<%= c.id %>/read" style="display: inline;">
+                  <button type="submit" class="btn-sm">Đánh dấu đã đọc</button>
+                </form>
+              <% } %>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <div class="empty-state">Chưa có tin nhắn nào.</div>
+  <% } %>
+</div>

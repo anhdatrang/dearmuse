@@ -1,0 +1,176 @@
+<%
+  pageCss = 'booking.css';
+  pageJs = 'booking.js';
+%>
+
+<div class="booking-page">
+  <div class="container">
+    <div class="booking-layout">
+
+      <!-- Form -->
+      <div class="booking-form-section">
+        <span class="section-label">Đặt lịch</span>
+        <h1>Tạo nên khoảnh khắc</h1>
+        <p class="sub">
+          Điền thông tin bên dưới — chúng tôi sẽ liên hệ xác nhận trong vòng 24h.
+        </p>
+
+        <% if (errors.length > 0) { %>
+          <ul class="error-list">
+            <% errors.forEach(e => { %><li><%= e.msg %></li><% }) %>
+          </ul>
+        <% } %>
+
+        <form method="POST" action="/booking" novalidate>
+          <!-- Row 1: Name + Phone -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="customer_name">Họ tên <span class="form-required">*</span></label>
+              <input type="text" id="customer_name" name="customer_name"
+                     value="<%= oldInput.customer_name || '' %>"
+                     placeholder="Nguyễn Văn A" required autocomplete="name">
+            </div>
+            <div class="form-group">
+              <label for="customer_phone">Số điện thoại <span class="form-required">*</span></label>
+              <input type="tel" id="customer_phone" name="customer_phone"
+                     value="<%= oldInput.customer_phone || '' %>"
+                     placeholder="0912 345 678" required autocomplete="tel">
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="form-group">
+            <label for="customer_email">Email <span style="color: var(--smoke); font-weight: 300;">(để nhận xác nhận)</span></label>
+            <input type="email" id="customer_email" name="customer_email"
+                   value="<%= oldInput.customer_email || '' %>"
+                   placeholder="email@example.com" autocomplete="email">
+          </div>
+
+          <!-- Service -->
+          <div class="form-group">
+            <label for="service_id">Dịch vụ</label>
+            <select id="service_id" name="service_id">
+              <option value="">— Chọn dịch vụ —</option>
+              <% services.forEach(s => { %>
+                <option value="<%= s.id %>"
+                  <%= (oldInput.service_id == s.id || preselectedService === s.slug) ? 'selected' : '' %>>
+                  <%= s.name %> — Từ <%= s.price_from.toLocaleString('vi-VN') %>đ
+                </option>
+              <% }) %>
+            </select>
+          </div>
+
+          <!-- Dates -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="preferred_date">Ngày mong muốn <span class="form-required">*</span></label>
+              <input type="date" id="preferred_date" name="preferred_date"
+                     value="<%= oldInput.preferred_date || '' %>"
+                     min="<%= new Date(Date.now() + 86400000).toISOString().split('T')[0] %>" required>
+            </div>
+            <div class="form-group">
+              <label for="backup_date">Ngày dự phòng</label>
+              <input type="date" id="backup_date" name="backup_date"
+                     value="<%= oldInput.backup_date || '' %>"
+                     min="<%= new Date(Date.now() + 86400000).toISOString().split('T')[0] %>">
+            </div>
+          </div>
+
+          <!-- Time -->
+          <div class="form-group">
+            <label for="preferred_time">Khung giờ</label>
+            <select id="preferred_time" name="preferred_time">
+              <option value="">— Chọn khung giờ —</option>
+              <option value="07:00" <%= oldInput.preferred_time === '07:00' ? 'selected' : '' %>>7:00 – 9:00 sáng</option>
+              <option value="09:00" <%= oldInput.preferred_time === '09:00' ? 'selected' : '' %>>9:00 – 11:00 sáng</option>
+              <option value="14:00" <%= oldInput.preferred_time === '14:00' ? 'selected' : '' %>>14:00 – 16:00</option>
+              <option value="16:00" <%= oldInput.preferred_time === '16:00' ? 'selected' : '' %>>16:00 – 18:00</option>
+              <option value="18:00" <%= oldInput.preferred_time === '18:00' ? 'selected' : '' %>>18:00 – 20:00</option>
+            </select>
+          </div>
+
+          <!-- Location type -->
+          <div class="form-group">
+            <label>Hình thức chụp</label>
+            <div class="radio-group">
+              <label class="radio-option">
+                <input type="radio" name="location_type" value="studio"
+                  <%= (!oldInput.location_type || oldInput.location_type === 'studio') ? 'checked' : '' %>>
+                <span>Studio</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="location_type" value="outdoor"
+                  <%= oldInput.location_type === 'outdoor' ? 'checked' : '' %>>
+                <span>Ngoại cảnh</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="location_type" value="both"
+                  <%= oldInput.location_type === 'both' ? 'checked' : '' %>>
+                <span>Cả hai</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Location note (show if outdoor/both) -->
+          <div class="form-group location-note-wrap" id="locationNoteWrap">
+            <label for="location_note">Địa điểm / ý tưởng ngoại cảnh</label>
+            <input type="text" id="location_note" name="location_note"
+                   value="<%= oldInput.location_note || '' %>"
+                   placeholder="VD: Hồ Hoàn Kiếm, vườn hoa...">
+          </div>
+
+          <!-- Message -->
+          <div class="form-group">
+            <label for="message">Lời nhắn</label>
+            <textarea id="message" name="message" rows="4"
+                      placeholder="Chia sẻ thêm về concept, ý tưởng, hoặc bất cứ điều gì bạn muốn chúng tôi biết..."><%= oldInput.message || '' %></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-dark submit-btn">
+            Gửi đặt lịch →
+          </button>
+        </form>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="booking-sidebar">
+        <div class="sidebar-img">
+          <img src="/source/N%C3%A0ng%20Th%C6%A1/H%C6%B0%E1%BB%9Bng%20d%C6%B0%C6%A1ng%20001_.jpeg"
+               alt="Dear Musé Studio" loading="lazy">
+        </div>
+
+        <div class="sidebar-info">
+          <div class="sidebar-info-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <div>
+              <strong>Phản hồi trong</strong>
+              <span>24 giờ làm việc</span>
+            </div>
+          </div>
+          <div class="sidebar-info-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <div>
+              <strong>Hình thức</strong>
+              <span>Studio & Ngoại cảnh</span>
+            </div>
+          </div>
+          <div class="sidebar-info-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <div>
+              <strong>Nhận ảnh</strong>
+              <span>5–7 ngày làm việc</span>
+            </div>
+          </div>
+          <div class="sidebar-info-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12.7 19.79 19.79 0 0 1 1.61 4.12 2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.27-.73a2 2 0 0 1 2.11.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <div>
+              <strong>Liên hệ</strong>
+              <span>Qua form hoặc Facebook / Instagram</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</div>

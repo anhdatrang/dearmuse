@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title || 'Admin — Dear Musé' %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --avocado: #D4DB74;
+      --vanilla: #FFF7E6;
+      --ink: #1A1916;
+      --smoke: #6B6860;
+      --parchment: #F2EDE4;
+      --bone: #EDE8DF;
+      --taupe: #9C8474;
+      --mocha: #7A5C4A;
+      --font-display: 'Playfair Display', serif;
+      --font-body: 'DM Sans', sans-serif;
+      --sidebar-w: 240px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-body); background: var(--parchment); color: var(--ink); display: flex; min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+    button { font-family: var(--font-body); cursor: pointer; }
+
+    /* Sidebar */
+    .admin-sidebar {
+      width: var(--sidebar-w);
+      background: var(--ink);
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 32px 0;
+      z-index: 10;
+    }
+    .admin-brand {
+      padding: 0 24px 32px;
+      border-bottom: 0.5px solid rgba(255,247,230,0.1);
+    }
+    .admin-brand img {
+      height: 40px;
+      filter: brightness(0) invert(1);
+      opacity: 0.8;
+      margin-bottom: 8px;
+    }
+    .admin-brand p {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,247,230,0.4);
+    }
+    .admin-nav {
+      flex: 1;
+      padding: 24px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .admin-nav a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 24px;
+      font-size: 13px;
+      font-weight: 400;
+      color: rgba(255,247,230,0.5);
+      transition: all 0.2s;
+    }
+    .admin-nav a:hover, .admin-nav a.active {
+      background: rgba(255,247,230,0.06);
+      color: var(--vanilla);
+    }
+    .admin-nav a svg { flex-shrink: 0; width: 16px; height: 16px; }
+    .admin-footer {
+      padding: 24px;
+      border-top: 0.5px solid rgba(255,247,230,0.1);
+    }
+    .admin-footer .user {
+      font-size: 12px;
+      color: rgba(255,247,230,0.4);
+      margin-bottom: 12px;
+    }
+    .logout-btn {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,247,230,0.4);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .logout-btn:hover { color: var(--vanilla); }
+
+    /* Main */
+    .admin-main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      padding: 40px;
+      min-height: 100vh;
+    }
+    .admin-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+    .admin-header h1 {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--ink);
+    }
+
+    /* Stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .stat-card {
+      background: var(--vanilla);
+      border: 0.5px solid var(--bone);
+      padding: 28px;
+    }
+    .stat-card .stat-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--smoke);
+      margin-bottom: 8px;
+    }
+    .stat-card .stat-value {
+      font-family: var(--font-display);
+      font-size: 40px;
+      font-weight: 400;
+      color: var(--ink);
+    }
+    .stat-card .stat-value.pending { color: #c0852a; }
+    .stat-card .stat-value.confirmed { color: #2a7a5c; }
+
+    /* Table */
+    .admin-card {
+      background: var(--vanilla);
+      border: 0.5px solid var(--bone);
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+    .admin-card h2 {
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--smoke);
+      margin-bottom: 24px;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--smoke);
+      text-align: left;
+      padding: 10px 16px;
+      border-bottom: 0.5px solid var(--bone);
+    }
+    td {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--ink);
+      padding: 14px 16px;
+      border-bottom: 0.5px solid var(--bone);
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--parchment); }
+
+    /* Status badges */
+    .badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 2px;
+    }
+    .badge-pending { background: #fef9c3; color: #92400e; }
+    .badge-confirmed { background: #dcfce7; color: #166534; }
+    .badge-completed { background: #e0e7ff; color: #3730a3; }
+    .badge-cancelled { background: #fee2e2; color: #991b1b; }
+    .badge-unread { background: var(--avocado); color: var(--ink); }
+
+    /* Buttons */
+    .btn-sm {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 2px;
+      border: 0.5px solid var(--bone);
+      background: transparent;
+      color: var(--smoke);
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.15s;
+    }
+    .btn-sm:hover { background: var(--ink); color: var(--vanilla); border-color: var(--ink); }
+    .btn-sm-dark { background: var(--ink); color: var(--vanilla); border-color: var(--ink); }
+    .btn-sm-dark:hover { background: var(--mocha); }
+
+    /* Form controls */
+    .form-control {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--bone);
+      padding: 10px 0;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+      margin-bottom: 16px;
+    }
+    .form-control:focus { border-color: var(--mocha); }
+    .form-label {
+      display: block;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--smoke);
+      margin-bottom: 6px;
+    }
+    .form-group-admin { margin-bottom: 20px; }
+    select.form-control { -webkit-appearance: none; appearance: none; cursor: pointer; }
+
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .filter-bar a {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 2px;
+      border: 0.5px solid var(--bone);
+      color: var(--smoke);
+      transition: all 0.2s;
+    }
+    .filter-bar a.active, .filter-bar a:hover {
+      background: var(--ink);
+      color: var(--vanilla);
+      border-color: var(--ink);
+    }
+
+    .page-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .empty-state {
+      padding: 48px;
+      text-align: center;
+      color: var(--smoke);
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="admin-sidebar">
+  <div class="admin-brand">
+    <img src="/logo/logo.jpg" alt="Dear Musé">
+    <p>Admin Panel</p>
+  </div>
+  <nav class="admin-nav">
+    <a href="/admin/dashboard" class="<%= currentPath === '/admin/dashboard' ? 'active' : '' %>">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </a>
+    <a href="/admin/bookings" class="<%= currentPath.startsWith('/admin/bookings') ? 'active' : '' %>">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Đặt lịch
+    </a>
+    <a href="/admin/portfolio" class="<%= currentPath.startsWith('/admin/portfolio') ? 'active' : '' %>">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      Portfolio
+    </a>
+    <a href="/admin/contacts" class="<%= currentPath.startsWith('/admin/contacts') ? 'active' : '' %>">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Tin nhắn
+      <% if (typeof unreadContacts !== 'undefined' && unreadContacts > 0) { %>
+        <span class="badge badge-unread" style="margin-left: auto; font-size: 9px;"><%= unreadContacts %></span>
+      <% } %>
+    </a>
+  </nav>
+  <div class="admin-footer">
+    <p class="user">@<%= typeof adminUsername !== 'undefined' ? adminUsername : 'admin' %></p>
+    <a href="/admin/logout" class="logout-btn">Đăng xuất</a>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main class="admin-main">
+  <%- body %>
+</main>
+
+</body>
+</html>

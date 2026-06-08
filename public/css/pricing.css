@@ -1,0 +1,105 @@
+/* pricing.css */
+/* Luxury Menu Style */
+.pricing-menu {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.pricing-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  padding: 64px 0;
+  border-bottom: 1px solid var(--bone);
+  align-items: start;
+}
+
+.pricing-item:first-child {
+  border-top: 1px solid var(--bone);
+}
+
+.pricing-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.pricing-name {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 16px;
+  line-height: 1.1;
+}
+
+.pricing-desc {
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--smoke);
+  line-height: 1.8;
+  max-width: 400px;
+}
+
+.pricing-details {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.pricing-cost {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.pricing-cost strong {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 6vw, 72px);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--logo-mocha);
+  line-height: 1;
+}
+
+.pricing-cost span {
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--smoke);
+}
+
+.pricing-features {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pricing-feature {
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pricing-feature::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--logo-taupe);
+  opacity: 0.5;
+}
+
+.pricing-actions {
+  margin-top: 16px;
+}
+
+@media (max-width: 768px) {
+  .pricing-item {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 48px 0;
+  }
+}

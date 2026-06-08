@@ -1,0 +1,65 @@
+<div class="admin-header">
+  <h1>Dashboard</h1>
+  <a href="/booking" target="_blank" class="btn-sm">Xem trang booking</a>
+</div>
+
+<!-- Stats -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <p class="stat-label">Chờ xác nhận</p>
+    <p class="stat-value pending"><%= counts.pending || 0 %></p>
+  </div>
+  <div class="stat-card">
+    <p class="stat-label">Đã xác nhận</p>
+    <p class="stat-value confirmed"><%= counts.confirmed || 0 %></p>
+  </div>
+  <div class="stat-card">
+    <p class="stat-label">Hoàn thành</p>
+    <p class="stat-value"><%= counts.completed || 0 %></p>
+  </div>
+  <div class="stat-card">
+    <p class="stat-label">Tin nhắn chưa đọc</p>
+    <p class="stat-value" style="color: var(--taupe);"><%= unreadContacts %></p>
+  </div>
+</div>
+
+<!-- Recent Bookings -->
+<div class="admin-card">
+  <h2>Đặt lịch gần đây (7 ngày)</h2>
+  <% if (recentBookings.length > 0) { %>
+    <table>
+      <thead>
+        <tr>
+          <th>Mã</th>
+          <th>Khách hàng</th>
+          <th>Dịch vụ</th>
+          <th>Ngày</th>
+          <th>Trạng thái</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% recentBookings.forEach(b => { %>
+          <tr>
+            <td style="font-weight: 500; letter-spacing: 0.05em;"><%= b.booking_code %></td>
+            <td>
+              <div><%= b.customer_name %></div>
+              <div style="font-size: 12px; color: var(--smoke)"><%= b.customer_phone %></div>
+            </td>
+            <td><%= b.service_name || '—' %></td>
+            <td><%= new Date(b.preferred_date).toLocaleDateString('vi-VN') %></td>
+            <td><span class="badge badge-<%= b.status %>"><%= b.status %></span></td>
+            <td><a href="/admin/bookings/<%= b.id %>" class="btn-sm">Chi tiết</a></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <div class="empty-state">Chưa có đặt lịch nào trong 7 ngày qua.</div>
+  <% } %>
+</div>
+
+<div style="display: flex; gap: 12px; margin-top: 8px;">
+  <a href="/admin/bookings" class="btn-sm btn-sm-dark">Xem tất cả đặt lịch</a>
+  <a href="/admin/contacts" class="btn-sm">Xem tin nhắn</a>
+</div>

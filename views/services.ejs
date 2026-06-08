@@ -1,0 +1,114 @@
+<% pageCss = 'services.css'; %>
+
+<!-- Services Page -->
+<%
+  const svcImages = [
+    '/source/N%C3%A0ng%20Th%C6%A1/H%C6%B0%E1%BB%9Bng%20d%C6%B0%C6%A1ng%20001_.jpeg',
+    '/source/%C3%81O%20D%C3%80I/IMG_6382.JPG',
+    '/source/N%C3%A0ng%20Th%C6%A1/N%C3%A0ng%20th%C6%A1%20002.JPG',
+    '/source/N%C3%A0ng%20Th%C6%A1/Xanh%20Xanh%20002.JPG',
+    '/source/N%C3%A0ng%20Th%C6%A1/Qu%E1%BA%A3%20chanh%20001.JPG',
+    '/source/D%E1%BA%A1%20H%E1%BB%99i/IMG_2332.JPG'
+  ];
+  
+  const displayServices = (services && services.length > 0) ? services : [
+    { name: 'Concept Sáng Tạo', short_desc: 'Thiết kế concept riêng biệt, phá cách.', price_from: 2500000, slug: 'concept-sang-tao' },
+    { name: 'Áo Dài', short_desc: 'Lưu giữ nét đẹp truyền thống của phụ nữ Việt.', price_from: 1800000, slug: 'ao-dai' },
+    { name: 'Chân Dung Cá Nhân', short_desc: 'Bắt trọn vẻ đẹp nguyên bản và cảm xúc.', price_from: 1500000, slug: 'chan-dung' },
+    { name: 'Kỷ Yếu Cá Nhân', short_desc: 'Ghi lại cột mốc thanh xuân rực rỡ.', price_from: 1800000, slug: 'ky-yeu' },
+  ];
+%>
+
+<div class="svc-split-section">
+  <div class="text-center" style="margin-bottom: 80px;">
+    <span class="section-label reveal" style="justify-content: center;">Dịch vụ</span>
+    <h1 class="section-heading reveal" style="font-size: clamp(40px, 6vw, 64px);">Những gì chúng tôi làm</h1>
+  </div>
+
+  <% displayServices.forEach((s, i) => { %>
+    <div class="svc-split-row <%= i % 2 !== 0 ? 'reversed' : '' %>">
+      <div class="svc-split-img reveal-<%= i % 2 !== 0 ? 'right' : 'left' %>">
+        <img src="<%= svcImages[i % svcImages.length] %>" alt="<%= s.name %>" loading="<%= i < 2 ? 'eager' : 'lazy' %>">
+      </div>
+      
+      <div class="svc-split-text reveal-<%= i % 2 !== 0 ? 'left' : 'right' %>">
+        <span class="svc-split-num">0<%= i + 1 %></span>
+        <h2 class="svc-split-title"><%= s.name %></h2>
+        <p class="svc-split-desc"><%= s.description || s.short_desc || 'Mỗi dịch vụ là một hành trình nghệ thuật riêng biệt, nơi chúng tôi khắc họa lại vẻ đẹp và cảm xúc của bạn qua lăng kính điện ảnh.' %></p>
+        
+        <div class="svc-split-price">Từ <%= (s.price_from / 1000000).toFixed(1) %>tr</div>
+        <a href="/booking?service=<%= s.slug %>" class="btn btn-outline-dark">Đặt lịch chụp</a>
+      </div>
+    </div>
+  <% }) %>
+</div>
+
+<!-- FAQ Section -->
+<section class="faq-section">
+  <div class="container">
+    <div style="max-width: 800px; margin: 0 auto;">
+      <div class="text-center" style="margin-bottom: 64px;">
+        <span class="section-label reveal" style="justify-content: center; color: var(--avocado-cream);">FAQ</span>
+        <h2 class="section-heading reveal" style="color: var(--vanilla-cream);">Câu hỏi thường gặp</h2>
+      </div>
+
+      <div class="faq-list">
+        <% const faqs = [
+          { q: 'Buổi chụp diễn ra như thế nào?', a: 'Trước buổi chụp, chúng tôi sẽ trao đổi sâu về concept, trang phục và địa điểm để đảm bảo đúng tinh thần bạn mong muốn. Trong khi chụp, ekip sẽ hướng dẫn pose dáng và tạo không khí thoải mái nhất để bạn là chính mình trước ống kính.' },
+          { q: 'Sau bao lâu tôi nhận được hình ảnh?', a: 'Ảnh gốc sẽ được gửi ngay sau buổi chụp để bạn chọn lựa. Ảnh đã chỉnh sửa kỹ lưỡng (retouch) sẽ được gửi lại trong vòng 5–7 ngày làm việc. Đối với các dự án lớn, thời gian có thể kéo dài 10–14 ngày.' },
+          { q: 'Studio có hỗ trợ trang điểm và trang phục không?', a: 'Tùy vào gói dịch vụ, chúng tôi có các chuyên gia trang điểm đối tác và kho trang phục cao cấp có sẵn. Bạn có thể chọn gói bao gồm toàn bộ (All-in) để chúng tôi lo từ A đến Z.' },
+          { q: 'Chính sách hủy hoặc dời lịch chụp?', a: 'Bạn vui lòng thông báo dời/hủy lịch ít nhất 48 giờ trước ngày chụp. Cọc sẽ được bảo lưu trong vòng 3 tháng để bạn sắp xếp lại thời gian phù hợp.' },
+        ]; %>
+
+        <% faqs.forEach((faq, i) => { %>
+          <div class="faq-item reveal" data-delay="<%= i + 1 %>">
+            <button class="faq-q" aria-expanded="false">
+              <%= faq.q %>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" class="faq-icon">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+            <div class="faq-a">
+              <p><%= faq.a %></p>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Parallax for service backgrounds
+  if (window.matchMedia('(hover: hover)').matches) {
+    const bgs = document.querySelectorAll('.svc-block-bg');
+    window.addEventListener('scroll', () => {
+      requestAnimationFrame(() => {
+        bgs.forEach(bg => {
+          const rect = bg.parentElement.getBoundingClientRect();
+          if (rect.top < window.innerHeight && rect.bottom > 0) {
+            // Scroll relative parallax
+            const yPos = (rect.top / window.innerHeight) * 20;
+            bg.style.transform = `translateY(${yPos}%)`;
+          }
+        });
+      });
+    }, { passive: true });
+  }
+
+  // FAQ Accordion
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      
+      document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('open'));
+      
+      if (!isOpen) item.classList.add('open');
+      btn.setAttribute('aria-expanded', !isOpen);
+    });
+  });
+});
+</script>
