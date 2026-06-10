@@ -1,495 +1,504 @@
-<%
-  pageCss = 'home.css';
-  pageJs = 'home.js';
-%>
+<% pageCss='home.css' ; pageJs='home.js' ; %>
 
-<!-- ═══════════════════════════════════════════
+  <!-- ═══════════════════════════════════════════
      HERO — Fullscreen Cinematic Slideshow
 ═══════════════════════════════════════════ -->
-<section class="hero" id="hero" aria-label="Hero">
-  <!-- Film-grain texture -->
-  <div class="hero-noise"></div>
-  
-  <!-- Animated Gallery Background -->
-  <div class="hero-gallery-bg">
-    <% 
-       // Split 24 heroImages into 5 columns
-       const colCount = 5;
-       const columns = Array.from({length: colCount}, () => []);
-       heroImages.forEach((img, index) => {
-         columns[index % colCount].push(img);
-       });
-    %>
-    <% columns.forEach((col, cIdx) => { %>
-      <div class="hero-col hero-col-<%= cIdx + 1 %>">
-        <div class="hero-col-track">
-          <% [...col, ...col].forEach(img => { %>
-            <div class="hero-img-wrap">
-              <img src="<%= img %>" alt="Dear Musé" loading="lazy">
+  <section class="hero" id="hero" aria-label="Hero">
+    <!-- Film-grain texture -->
+    <div class="hero-noise"></div>
+
+    <!-- Animated Gallery Background -->
+    <div class="hero-gallery-bg">
+      <%
+        // Split heroImages into 5 columns
+        const colCount=5;
+        const columns=Array.from({length: colCount}, ()=> []);
+        heroImages.forEach((img, index) => {
+          columns[index % colCount].push(img);
+        });
+      %>
+        <% columns.forEach((col, cIdx)=> { %>
+          <div class="hero-col hero-col-<%= cIdx + 1 %>">
+            <div class="hero-col-track">
+              <% [...col, ...col].forEach(img=> { %>
+                <div class="hero-img-wrap">
+                  <img src="<%= img %>" alt="Dear Musé" loading="lazy">
+                </div>
+                <% }) %>
             </div>
+          </div>
           <% }) %>
-        </div>
-      </div>
-    <% }) %>
-  </div>
-
-  <div class="hero-frame-overlay"></div>
-
-  <!-- Centered Text Content -->
-  <div class="hero-content-center">
-    <p class="hero-eyebrow">Est. 2023 &nbsp;·&nbsp; Dear Musé</p>
-    <h1 class="hero-title">
-      <span class="hero-title-line">Lưu giữ</span>
-      <span class="hero-title-line italic">khoảnh khắc</span>
-      <span class="hero-title-line">của bạn.</span>
-    </h1>
-    <div class="hero-actions">
-      <a href="/booking" class="btn-hero-primary">
-        <span>Đặt lịch chụp</span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
-      <a href="/portfolio" class="btn-hero-ghost">Xem portfolio</a>
     </div>
-  </div>
 
-  <!-- Badge -->
-  <div class="hero-badge">
-    <span class="hero-badge-dot"></span>
-    Studio nhiếp ảnh nghệ thuật — Hà Nội
-  </div>
-</section>
+    <div class="hero-frame-overlay"></div>
 
-<!-- ═══════════════════════════════════════════
+    <!-- Centered Text Content -->
+    <div class="hero-content-center">
+      <p class="hero-eyebrow" style="color: #D4DB74;">Est. 2026 &nbsp;·&nbsp; Dear Musé</p>
+      <h1 class="hero-title">
+        <span class="hero-title-line">Lưu giữ</span>
+        <span class="hero-title-line italic" style="color: #D4DB74;">khoảnh khắc</span>
+        <span class="hero-title-line">của bạn.</span>
+      </h1>
+      <div class="hero-actions">
+        <a href="/booking" class="btn-hero-primary">
+          <span>Đặt lịch chụp</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </a>
+        <a href="/portfolio" class="btn-hero-ghost">Xem portfolio</a>
+      </div>
+    </div>
+
+    <!-- Badge -->
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Studio nhiếp ảnh nghệ thuật — Hà Nội
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
      TICKER MARQUEE
 ═══════════════════════════════════════════ -->
-<div class="ticker" aria-hidden="true">
-  <div class="ticker-track">
-    <% for(let i = 0; i < 3; i++) { %>
-      <span class="ticker-item">Dear Musé</span>
-      <span class="ticker-sep">◆</span>
-      <span class="ticker-item">Nhiếp ảnh nghệ thuật</span>
-      <span class="ticker-sep">◆</span>
-      <span class="ticker-item">Gửi cho nàng phiên bản rực rỡ nhất của chính mình.</span>
-      <span class="ticker-sep">◆</span>
-      <span class="ticker-item">Portrait · Sự kiện · Thương hiệu</span>
-      <span class="ticker-sep">◆</span>
-      <span class="ticker-item">Hà Nội — 2026</span>
-      <span class="ticker-sep">◆</span>
-    <% } %>
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <% for(let i=0; i < 3; i++) { %>
+        <span class="ticker-item">Dear Musé</span>
+        <span class="ticker-sep">◆</span>
+        <span class="ticker-item">Nhiếp ảnh nghệ thuật</span>
+        <span class="ticker-sep">◆</span>
+        <span class="ticker-item">Gửi cho nàng phiên bản rực rỡ nhất của chính mình.</span>
+        <span class="ticker-sep">◆</span>
+        <span class="ticker-item">Portrait · Sự kiện · Thương hiệu</span>
+        <span class="ticker-sep">◆</span>
+        <span class="ticker-item">Hà Nội — 2026</span>
+        <span class="ticker-sep">◆</span>
+        <% } %>
+    </div>
   </div>
-</div>
 
-<!-- ═══════════════════════════════════════════
+  <!-- ═══════════════════════════════════════════
      INTRO — Collage Editorial
 ═══════════════════════════════════════════ -->
-<section class="intro-section" aria-label="Giới thiệu">
-  <div class="intro-grid">
-    <!-- Left: Collage visual -->
-    <div class="intro-visual collage-visual reveal-left">
-      <div class="collage-layer collage-bg">
-        <img src="/source/%C3%81O%20D%C3%80I/IMG_6382.JPG" alt="Dear Musé - Áo dài" loading="lazy">
-      </div>
-      <div class="collage-layer collage-fg">
-        <img src="/source/N%C3%A0ng%20Th%C6%A1/N%C3%A0ng%20th%C6%A1%20001.JPG" alt="Dear Musé — Portrait nghệ thuật" loading="lazy">
-        <div class="intro-img-label">
-          <span>Nàng Thơ & Áo Dài</span>
-          <span class="intro-img-num">Bộ sưu tập kép</span>
+  <section class="intro-section" aria-label="Giới thiệu">
+    <div class="intro-grid">
+      <!-- Left: Collage visual -->
+      <div class="intro-visual collage-visual reveal-left">
+        <div class="collage-layer collage-bg">
+          <img src="/source/%C3%81O%20D%C3%80I/IMG_6382.JPG" alt="Dear Musé - Áo dài" loading="lazy">
+        </div>
+        <div class="collage-layer collage-fg">
+          <img src="/source/N%C3%A0ng%20Th%C6%A1/N%C3%A0ng%20th%C6%A1%20001.JPG" alt="Dear Musé — Portrait nghệ thuật"
+            loading="lazy">
+          <div class="intro-img-label">
+            <span>Nàng Thơ & Áo Dài</span>
+            <span class="intro-img-num">Bộ sưu tập kép</span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Right: quote + meta -->
-    <div class="intro-text reveal-right">
-      <span class="section-tag">Triết lý · Philosophy</span>
-      <blockquote class="intro-quote">
-        "Ảnh đẹp nhất<br>không phải ảnh hoàn hảo —<br>
-        mà là ảnh <em>thật nhất</em>."
-      </blockquote>
-      <div class="intro-rule"></div>
-      <p class="intro-body">
-        Tại Dear Musé, mỗi buổi chụp là một cuộc đối thoại nhẹ nhàng. Chúng tôi tạo ra không gian để cảm xúc thật của bạn tự xuất hiện — rồi ghi lại khoảnh khắc đó bằng ánh sáng tự nhiên và góc nhìn nghệ thuật.
-      </p>
-      <a href="/about" class="link-arrow">
-        Câu chuyện của chúng tôi
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
+      <!-- Right: quote + meta -->
+      <div class="intro-text reveal-right">
+        <span class="section-tag">Triết lý · Philosophy</span>
+        <blockquote class="intro-quote">
+          "Ảnh đẹp nhất<br>không phải ảnh hoàn hảo —<br>
+          mà là ảnh <em>thật nhất</em>."
+        </blockquote>
+        <div class="intro-rule"></div>
+        <p class="intro-body">
+          Tại Dear Musé, mỗi buổi chụp là một cuộc đối thoại nhẹ nhàng. Chúng tôi tạo ra không gian để cảm xúc thật của
+          bạn tự xuất hiện — rồi ghi lại khoảnh khắc đó bằng ánh sáng tự nhiên và góc nhìn nghệ thuật.
+        </p>
+        <a href="/about" class="link-arrow">
+          Câu chuyện của chúng tôi
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ═══════════════════════════════════════════
+  <!-- ═══════════════════════════════════════════
      FEATURED GALLERY — Dark Cinema
 ═══════════════════════════════════════════ -->
-<section class="gallery-section" aria-label="Tác phẩm nổi bật">
-  <div class="gallery-header container">
-    <div>
-      <span class="section-tag light">Tác phẩm chọn lọc</span>
-      <h2 class="gallery-heading">Những<br><em>khoảnh khắc</em></h2>
+  <section class="gallery-section" aria-label="Tác phẩm nổi bật">
+    <div class="gallery-header container">
+      <div>
+        <span class="section-tag light">Tác phẩm chọn lọc</span>
+        <h2 class="gallery-heading">Những<br><em>khoảnh khắc</em></h2>
+      </div>
+      <a href="/portfolio" class="link-arrow light">
+        Xem toàn bộ portfolio
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </a>
     </div>
-    <a href="/portfolio" class="link-arrow light">
-      Xem toàn bộ portfolio
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </a>
-  </div>
 
-  <div class="gallery-mosaic container">
-    <% featuredImages.forEach((img, i) => { %>
-      <div class="gallery-item gallery-item--<%= (i % 5 === 0) ? 'tall' : (i % 5 === 2) ? 'wide' : 'normal' %> reveal"
-           data-delay="<%= (i % 3) + 1 %>">
-        <img src="<%= img.src %>" alt="<%= img.alt %>" loading="lazy">
-        <div class="gallery-item-overlay">
-          <div class="gallery-item-meta">
-            <span class="gallery-cat"><%= img.category %></span>
-            <span class="gallery-num"><%= String(i+1).padStart(2,'0') %></span>
+    <div class="gallery-mosaic container">
+      <% featuredImages.forEach((img, i)=> { %>
+        <div class="gallery-item gallery-item--<%= (i % 5 === 0) ? 'tall' : (i % 5 === 2) ? 'wide' : 'normal' %> reveal"
+          data-delay="<%= (i % 3) + 1 %>">
+          <img src="<%= img.src %>" alt="<%= img.alt %>" loading="lazy">
+          <div class="gallery-item-overlay">
+            <div class="gallery-item-meta">
+              <span class="gallery-cat">
+                <%= img.category %>
+              </span>
+              <span class="gallery-num">
+                <%= String(i+1).padStart(2,'0') %>
+              </span>
+            </div>
           </div>
         </div>
-      </div>
-    <% }) %>
-  </div>
-</section>
+        <% }) %>
+    </div>
+  </section>
 
-<!-- ═══════════════════════════════════════════
+  <!-- ═══════════════════════════════════════════
      NUMBERS — Credibility Stats
 ═══════════════════════════════════════════ -->
-<section class="numbers-section" aria-label="Thành tích">
-  <div class="container">
-    <div class="numbers-top">
-      <span class="section-tag">Hành trình · Numbers</span>
-      <h2 class="numbers-heading">Nghệ thuật được kiểm chứng</h2>
+  <section class="numbers-section" aria-label="Thành tích">
+    <div class="container">
+      <div class="numbers-top">
+        <span class="section-tag">Hành trình · Numbers</span>
+        <h2 class="numbers-heading">Nghệ thuật được kiểm chứng</h2>
+      </div>
+      <div class="numbers-grid">
+        <div class="number-item reveal" data-delay="1">
+          <span class="number-big">500<sup>+</sup></span>
+          <div class="number-body">
+            <strong>Khách hàng hài lòng</strong>
+            <p>Chân dung, sự kiện và doanh nghiệp trên khắp Hà Nội</p>
+          </div>
+        </div>
+        <div class="number-item reveal" data-delay="2">
+          <span class="number-big">1.2k<sup>+</sup></span>
+          <div class="number-body">
+            <strong>Bộ ảnh hoàn thành</strong>
+            <p>Được xử lý màu sắc và hậu kỳ tỉ mỉ từng khung hình</p>
+          </div>
+        </div>
+        <div class="number-item reveal" data-delay="3">
+          <span class="number-big">5<sup>+</sup></span>
+          <div class="number-body">
+            <strong>Năm kinh nghiệm</strong>
+            <p>Ánh sáng tự nhiên, bố cục kể chuyện và cảm xúc chân thật</p>
+          </div>
+        </div>
+        <div class="number-item reveal" data-delay="4">
+          <span class="number-big">98<sup>%</sup></span>
+          <div class="number-body">
+            <strong>Khách hàng giới thiệu lại</strong>
+            <p>Niềm tin từ khách hàng là tài sản quý giá nhất của chúng tôi</p>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="numbers-grid">
-      <div class="number-item reveal" data-delay="1">
-        <span class="number-big">500<sup>+</sup></span>
-        <div class="number-body">
-          <strong>Khách hàng hài lòng</strong>
-          <p>Chân dung, sự kiện và doanh nghiệp trên khắp Hà Nội</p>
-        </div>
-      </div>
-      <div class="number-item reveal" data-delay="2">
-        <span class="number-big">1.2k<sup>+</sup></span>
-        <div class="number-body">
-          <strong>Bộ ảnh hoàn thành</strong>
-          <p>Được xử lý màu sắc và hậu kỳ tỉ mỉ từng khung hình</p>
-        </div>
-      </div>
-      <div class="number-item reveal" data-delay="3">
-        <span class="number-big">5<sup>+</sup></span>
-        <div class="number-body">
-          <strong>Năm kinh nghiệm</strong>
-          <p>Ánh sáng tự nhiên, bố cục kể chuyện và cảm xúc chân thật</p>
-        </div>
-      </div>
-      <div class="number-item reveal" data-delay="4">
-        <span class="number-big">98<sup>%</sup></span>
-        <div class="number-body">
-          <strong>Khách hàng giới thiệu lại</strong>
-          <p>Niềm tin từ khách hàng là tài sản quý giá nhất của chúng tôi</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- ═══════════════════════════════════════════
+  <!-- ═══════════════════════════════════════════
      SERVICES — Hover Film
 ═══════════════════════════════════════════ -->
-<section class="services-section" aria-label="Dịch vụ">
-  <div class="container">
-    <div class="services-intro">
-      <div>
-        <span class="section-tag">Dịch vụ · Services</span>
-        <h2 class="services-heading">Chúng tôi<br><em>làm được gì?</em></h2>
+  <section class="services-section" aria-label="Dịch vụ">
+    <div class="container">
+      <div class="services-intro">
+        <div>
+          <span class="section-tag">Dịch vụ · Services</span>
+          <h2 class="services-heading">Chúng tôi<br><em>làm được gì?</em></h2>
+        </div>
+        <div class="services-intro-text">
+          <p>Từ buổi chụp chân dung cá nhân đến sự kiện lớn — mỗi dịch vụ mang một cách tiếp cận riêng, một cảm xúc
+            riêng.</p>
+          <a href="/services" class="link-arrow">Xem tất cả gói chụp <svg width="14" height="14" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg></a>
+        </div>
       </div>
-      <div class="services-intro-text">
-        <p>Từ buổi chụp chân dung cá nhân đến sự kiện lớn — mỗi dịch vụ mang một cách tiếp cận riêng, một cảm xúc riêng.</p>
-        <a href="/services" class="link-arrow">Xem tất cả gói chụp <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-      </div>
-    </div>
 
-    <div class="services-list">
-      <%
-        const customServices = [
-          {
-            num: '01',
-            name: 'Concept Sáng Tạo',
-            desc: 'Thiết kế concept riêng biệt, phá cách và mang đậm dấu ấn cá nhân.',
-            price: '2.500.000',
-            slug: 'concept-sang-tao',
-            img: '/source/N%C3%A0ng%20Th%C6%A1/H%C6%B0%E1%BB%9Bng%20d%C6%B0%C6%A1ng%20001_.jpeg'
-          },
-          {
-            num: '02',
-            name: 'Áo Dài',
-            desc: 'Lưu giữ nét đẹp truyền thống, thanh lịch và đằm thắm của người phụ nữ Việt.',
-            price: '1.800.000',
-            slug: 'ao-dai',
-            img: '/source/%C3%81O%20D%C3%80I/IMG_6382.JPG'
-          },
-          {
-            num: '03',
-            name: 'Chân Dung Cá Nhân',
-            desc: 'Bắt trọn vẻ đẹp nguyên bản và cảm xúc tự nhiên nhất của chính bạn.',
-            price: '1.500.000',
-            slug: 'chan-dung-ca-nhan',
-            img: '/source/N%C3%A0ng%20Th%C6%A1/N%C3%A0ng%20th%C6%A1%20002.JPG'
-          },
-          {
-            num: '04',
-            name: 'Kỷ Yếu Cá Nhân',
-            desc: 'Ghi lại cột mốc thanh xuân rực rỡ và những kỷ niệm đáng nhớ.',
-            price: '1.800.000',
-            slug: 'ky-yeu-ca-nhan',
-            img: '/source/N%C3%A0ng%20Th%C6%A1/Xanh%20Xanh%20002.JPG'
-          },
-          {
-            num: '05',
-            name: 'Beauty Portrait',
-            desc: 'Tôn vinh đường nét khuôn mặt với ánh sáng setup chuẩn studio.',
-            price: '2.000.000',
-            slug: 'beauty-portrait',
-            img: '/source/N%C3%A0ng%20Th%C6%A1/Qu%E1%BA%A3%20chanh%20001.JPG'
-          },
-          {
-            num: '06',
-            name: 'Dạ Hội & Nàng Thơ',
-            desc: 'Hóa thân lộng lẫy và kiêu sa trong những bộ váy dạ hội tuyệt đẹp.',
-            price: '3.000.000',
-            slug: 'da-hoi',
-            img: '/source/D%E1%BA%A1%20H%E1%BB%99i/IMG_2332.JPG'
-          }
-        ];
-      %>
-      <% customServices.forEach((s, i) => { %>
-        <a href="/booking?service=<%= s.slug %>" class="svc-card reveal" data-delay="<%= i+1 %>">
-          <div class="svc-card-bg">
-            <img src="<%= s.img %>" alt="<%= s.name %>" loading="lazy">
-          </div>
-          <div class="svc-card-overlay">
-            <span class="svc-num"><%= s.num %></span>
-            <div class="svc-info">
-              <h3><%= s.name %></h3>
-              <p><%= s.desc %></p>
-            </div>
-            <div class="svc-footer">
-              <div class="svc-price">Từ <strong><%= s.price %>đ</strong></div>
-              <div class="svc-arrow">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      <div class="services-list">
+        <% const customServices=[ { num: '01' , name: 'Concept Sáng Tạo' ,
+          desc: 'Thiết kế concept riêng biệt, phá cách và mang đậm dấu ấn cá nhân.' , price: '2.500.000' ,
+          slug: 'concept-sang-tao' ,
+          img: '/source/N%C3%A0ng%20Th%C6%A1/H%C6%B0%E1%BB%9Bng%20d%C6%B0%C6%A1ng%20001_.jpeg' }, { num: '02' ,
+          name: 'Áo Dài' , desc: 'Lưu giữ nét đẹp truyền thống, thanh lịch và đằm thắm của người phụ nữ Việt.' ,
+          price: '1.800.000' , slug: 'ao-dai' , img: '/source/%C3%81O%20D%C3%80I/IMG_6382.JPG' }, { num: '03' ,
+          name: 'Chân Dung Cá Nhân' , desc: 'Bắt trọn vẻ đẹp nguyên bản và cảm xúc tự nhiên nhất của chính bạn.' ,
+          price: '1.500.000' , slug: 'chan-dung-ca-nhan' ,
+          img: '/source/N%C3%A0ng%20Th%C6%A1/N%C3%A0ng%20th%C6%A1%20002.JPG' }, { num: '04' , name: 'Kỷ Yếu Cá Nhân' ,
+          desc: 'Ghi lại cột mốc thanh xuân rực rỡ và những kỷ niệm đáng nhớ.' , price: '1.800.000' ,
+          slug: 'ky-yeu-ca-nhan' , img: '/source/N%C3%A0ng%20Th%C6%A1/Xanh%20Xanh%20002.JPG' }, { num: '05' ,
+          name: 'Beauty Portrait' , desc: 'Tôn vinh đường nét khuôn mặt với ánh sáng setup chuẩn studio.' ,
+          price: '2.000.000' , slug: 'beauty-portrait' ,
+          img: '/source/N%C3%A0ng%20Th%C6%A1/Qu%E1%BA%A3%20chanh%20001.JPG' }, { num: '06' , name: 'Dạ Hội & Nàng Thơ' ,
+          desc: 'Hóa thân lộng lẫy và kiêu sa trong những bộ váy dạ hội tuyệt đẹp.' , price: '3.000.000' ,
+          slug: 'da-hoi' , img: '/source/D%E1%BA%A1%20H%E1%BB%99i/IMG_2332.JPG' } ]; %>
+          <% customServices.forEach((s, i)=> { %>
+            <a href="/booking?service=<%= s.slug %>" class="svc-card reveal" data-delay="<%= i+1 %>">
+              <div class="svc-card-bg">
+                <img src="<%= s.img %>" alt="<%= s.name %>" loading="lazy">
               </div>
-            </div>
-          </div>
-        </a>
-      <% }) %>
+              <div class="svc-card-overlay">
+                <span class="svc-num">
+                  <%= s.num %>
+                </span>
+                <div class="svc-info">
+                  <h3>
+                    <%= s.name %>
+                  </h3>
+                  <p>
+                    <%= s.desc %>
+                  </p>
+                </div>
+                <div class="svc-footer">
+                  <div class="svc-price">Từ <strong>
+                      <%= s.price %>đ
+                    </strong></div>
+                  <div class="svc-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.5">
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </a>
+            <% }) %>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ═══════════════════════════════════════════
+  <!-- ═══════════════════════════════════════════
      TESTIMONIALS — Premium Cards
 ═══════════════════════════════════════════ -->
-<section class="reviews-section" aria-label="Đánh giá khách hàng">
-  <div class="container">
-    <div class="reviews-header">
-      <span class="section-tag">Đánh giá · Reviews</span>
-      <h2 class="reviews-heading">Khách hàng nói<br>về <em>Dear Musé</em></h2>
-      <p class="reviews-sub">Mỗi lần bấm máy là một câu chuyện — đây là những gì khách hàng chia sẻ sau mỗi buổi chụp.</p>
+  <section class="reviews-section" aria-label="Đánh giá khách hàng">
+    <div class="container">
+      <div class="reviews-header">
+        <span class="section-tag">Đánh giá · Reviews</span>
+        <h2 class="reviews-heading">Khách hàng nói<br>về <em>Dear Musé</em></h2>
+        <p class="reviews-sub">Mỗi lần bấm máy là một câu chuyện — đây là những gì khách hàng chia sẻ sau mỗi buổi chụp.
+        </p>
+      </div>
+
+      <div class="reviews-grid">
+        <!-- Review 1 -->
+        <div class="review-card review-card--featured reveal" data-delay="1">
+          <div class="review-top">
+            <div class="review-avatar">
+              <img src="/source/N%C3%A0ng%20Th%C6%A1/Qu%E1%BA%A3%20chanh%20001.JPG" alt="Khánh Linh">
+            </div>
+            <div class="review-stars">★★★★★</div>
+          </div>
+          <blockquote class="review-text">
+            "Mình chưa bao giờ nghĩ mình sẽ tự tin trước ống kính đến vậy. Nhiếp ảnh gia cực kỳ kiên nhẫn, vui tính và
+            biết cách tạo sự thoải mái ngay từ những phút đầu. Ảnh nhận về đẹp đến nỗi mình không tin đó là mình!"
+          </blockquote>
+          <div class="review-footer">
+            <div class="review-meta">
+              <strong class="review-name">Khánh Linh</strong>
+              <span class="review-package">Portrait Nàng Thơ · Tháng 3/2026</span>
+            </div>
+            <div class="review-badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Đã xác minh
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 2 -->
+        <div class="review-card reveal" data-delay="2">
+          <div class="review-top">
+            <div class="review-avatar">
+              <img src="/source/D%E1%BA%A1%20H%E1%BB%99i/IMG_2334.JPG" alt="Minh Tuấn & Thu Hà">
+            </div>
+            <div class="review-stars">★★★★★</div>
+          </div>
+          <blockquote class="review-text">
+            "Bộ ảnh Dạ Hội của chúng tôi đẹp xuất sắc — không có một cái nào tạo dáng gượng, chỉ toàn những khoảnh khắc
+            hạnh phúc thật sự. Ê-kíp chuyên nghiệp, nhiệt tình và rất biết cách hướng dẫn."
+          </blockquote>
+          <div class="review-footer">
+            <div class="review-meta">
+              <strong class="review-name">Minh Tuấn &amp; Thu Hà</strong>
+              <span class="review-package">Gói Dạ Hội · Tháng 4/2026</span>
+            </div>
+            <div class="review-badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Đã xác minh
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 3 -->
+        <div class="review-card reveal" data-delay="3">
+          <div class="review-top">
+            <div class="review-avatar">
+              <img src="/source/N%C3%A0ng%20Th%C6%A1/Xanh%20Xanh%20002.JPG" alt="Hà Vy">
+            </div>
+            <div class="review-stars">★★★★★</div>
+          </div>
+          <blockquote class="review-text">
+            "Ảnh thương hiệu của shop mình sau khi chụp tại Dear Musé đẹp hơn hẳn, doanh số tăng rõ rệt luôn! Họ hiểu
+            sản phẩm, biết cách đặt ánh sáng và màu sắc cực kỳ có gu."
+          </blockquote>
+          <div class="review-footer">
+            <div class="review-meta">
+              <strong class="review-name">Hà Vy</strong>
+              <span class="review-package">Chụp Thương Hiệu · Tháng 5/2026</span>
+            </div>
+            <div class="review-badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Đã xác minh
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 4 -->
+        <div class="review-card reveal" data-delay="4">
+          <div class="review-top">
+            <div class="review-avatar">
+              <img src="/source/N%C3%A0ng%20Th%C6%A1/H%C6%B0%E1%BB%9Bng%20d%C6%B0%C6%A1ng%20004.JPG" alt="Bảo Ngọc">
+            </div>
+            <div class="review-stars">★★★★★</div>
+          </div>
+          <blockquote class="review-text">
+            "Ảnh sinh nhật 25 tuổi của mình được chụp ở đây và mình không thể hạnh phúc hơn với kết quả. Concept Hướng
+            Dương rất độc đáo, màu sắc đẹp mê hồn. Chắc chắn sẽ quay lại!"
+          </blockquote>
+          <div class="review-footer">
+            <div class="review-meta">
+              <strong class="review-name">Bảo Ngọc</strong>
+              <span class="review-package">Portrait Sinh Nhật · Tháng 5/2026</span>
+            </div>
+            <div class="review-badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Đã xác minh
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 5 -->
+        <div class="review-card reveal" data-delay="5">
+          <div class="review-top">
+            <div class="review-avatar">
+              <img src="/source/%C3%81O%20D%C3%80I/IMG_6415.JPG" alt="Thu Phương">
+            </div>
+            <div class="review-stars">★★★★★</div>
+          </div>
+          <blockquote class="review-text">
+            "Chụp ảnh áo dài tại Dear Musé thực sự là một trải nghiệm tuyệt vời. Từng góc máy đều tôn lên nét dịu dàng,
+            truyền thống nhưng vẫn rất hiện đại. Đội ngũ nhiệt tình và chụp cực kỳ có tâm!"
+          </blockquote>
+          <div class="review-footer">
+            <div class="review-meta">
+              <strong class="review-name">Thu Phương</strong>
+              <span class="review-package">Portrait Áo Dài · Tháng 6/2026</span>
+            </div>
+            <div class="review-badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Đã xác minh
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Overall rating bar -->
+      <div class="reviews-summary reveal">
+        <div class="reviews-rating">
+          <span class="reviews-score">5.0</span>
+          <div>
+            <div class="reviews-stars-big">★★★★★</div>
+            <p>Dựa trên 127 đánh giá thực tế</p>
+          </div>
+        </div>
+        <div class="reviews-platforms">
+          <span>Được đánh giá 5⭐ trên</span>
+          <span class="platform-tag">Google Reviews</span>
+          <span class="platform-tag">Facebook</span>
+          <span class="platform-tag">Instagram</span>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <div class="reviews-grid">
-      <!-- Review 1 -->
-      <div class="review-card review-card--featured reveal" data-delay="1">
-        <div class="review-top">
-          <div class="review-avatar">
-            <img src="/source/N%C3%A0ng%20Th%C6%A1/Qu%E1%BA%A3%20chanh%20001.JPG" alt="Khánh Linh">
-          </div>
-          <div class="review-stars">★★★★★</div>
-        </div>
-        <blockquote class="review-text">
-          "Mình chưa bao giờ nghĩ mình sẽ tự tin trước ống kính đến vậy. Nhiếp ảnh gia cực kỳ kiên nhẫn, vui tính và biết cách tạo sự thoải mái ngay từ những phút đầu. Ảnh nhận về đẹp đến nỗi mình không tin đó là mình!"
-        </blockquote>
-        <div class="review-footer">
-          <div class="review-meta">
-            <strong class="review-name">Khánh Linh</strong>
-            <span class="review-package">Portrait Nàng Thơ · Tháng 3/2026</span>
-          </div>
-          <div class="review-badge">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            Đã xác minh
-          </div>
-        </div>
-      </div>
-
-      <!-- Review 2 -->
-      <div class="review-card reveal" data-delay="2">
-        <div class="review-top">
-          <div class="review-avatar">
-            <img src="/source/D%E1%BA%A1%20H%E1%BB%99i/IMG_2334.JPG" alt="Minh Tuấn & Thu Hà">
-          </div>
-          <div class="review-stars">★★★★★</div>
-        </div>
-        <blockquote class="review-text">
-          "Bộ ảnh Dạ Hội của chúng tôi đẹp xuất sắc — không có một cái nào tạo dáng gượng, chỉ toàn những khoảnh khắc hạnh phúc thật sự. Ê-kíp chuyên nghiệp, nhiệt tình và rất biết cách hướng dẫn."
-        </blockquote>
-        <div class="review-footer">
-          <div class="review-meta">
-            <strong class="review-name">Minh Tuấn &amp; Thu Hà</strong>
-            <span class="review-package">Gói Dạ Hội · Tháng 4/2026</span>
-          </div>
-          <div class="review-badge">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            Đã xác minh
-          </div>
-        </div>
-      </div>
-
-      <!-- Review 3 -->
-      <div class="review-card reveal" data-delay="3">
-        <div class="review-top">
-          <div class="review-avatar">
-            <img src="/source/N%C3%A0ng%20Th%C6%A1/Xanh%20Xanh%20002.JPG" alt="Hà Vy">
-          </div>
-          <div class="review-stars">★★★★★</div>
-        </div>
-        <blockquote class="review-text">
-          "Ảnh thương hiệu của shop mình sau khi chụp tại Dear Musé đẹp hơn hẳn, doanh số tăng rõ rệt luôn! Họ hiểu sản phẩm, biết cách đặt ánh sáng và màu sắc cực kỳ có gu."
-        </blockquote>
-        <div class="review-footer">
-          <div class="review-meta">
-            <strong class="review-name">Hà Vy</strong>
-            <span class="review-package">Chụp Thương Hiệu · Tháng 5/2026</span>
-          </div>
-          <div class="review-badge">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            Đã xác minh
-          </div>
-        </div>
-      </div>
-
-      <!-- Review 4 -->
-      <div class="review-card reveal" data-delay="4">
-        <div class="review-top">
-          <div class="review-avatar">
-            <img src="/source/N%C3%A0ng%20Th%C6%A1/H%C6%B0%E1%BB%9Bng%20d%C6%B0%C6%A1ng%20004.JPG" alt="Bảo Ngọc">
-          </div>
-          <div class="review-stars">★★★★★</div>
-        </div>
-        <blockquote class="review-text">
-          "Ảnh sinh nhật 25 tuổi của mình được chụp ở đây và mình không thể hạnh phúc hơn với kết quả. Concept Hướng Dương rất độc đáo, màu sắc đẹp mê hồn. Chắc chắn sẽ quay lại!"
-        </blockquote>
-        <div class="review-footer">
-          <div class="review-meta">
-            <strong class="review-name">Bảo Ngọc</strong>
-            <span class="review-package">Portrait Sinh Nhật · Tháng 5/2026</span>
-          </div>
-          <div class="review-badge">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            Đã xác minh
-          </div>
-        </div>
-      </div>
-
-      <!-- Review 5 -->
-      <div class="review-card reveal" data-delay="5">
-        <div class="review-top">
-          <div class="review-avatar">
-            <img src="/source/%C3%81O%20D%C3%80I/IMG_6415.JPG" alt="Thu Phương">
-          </div>
-          <div class="review-stars">★★★★★</div>
-        </div>
-        <blockquote class="review-text">
-          "Chụp ảnh áo dài tại Dear Musé thực sự là một trải nghiệm tuyệt vời. Từng góc máy đều tôn lên nét dịu dàng, truyền thống nhưng vẫn rất hiện đại. Đội ngũ nhiệt tình và chụp cực kỳ có tâm!"
-        </blockquote>
-        <div class="review-footer">
-          <div class="review-meta">
-            <strong class="review-name">Thu Phương</strong>
-            <span class="review-package">Portrait Áo Dài · Tháng 6/2026</span>
-          </div>
-          <div class="review-badge">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            Đã xác minh
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Overall rating bar -->
-    <div class="reviews-summary reveal">
-      <div class="reviews-rating">
-        <span class="reviews-score">5.0</span>
-        <div>
-          <div class="reviews-stars-big">★★★★★</div>
-          <p>Dựa trên 127 đánh giá thực tế</p>
-        </div>
-      </div>
-      <div class="reviews-platforms">
-        <span>Được đánh giá 5⭐ trên</span>
-        <span class="platform-tag">Google Reviews</span>
-        <span class="platform-tag">Facebook</span>
-        <span class="platform-tag">Instagram</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════
+  <!-- ═══════════════════════════════════════════
      ABOUT SNIPPET
 ═══════════════════════════════════════════ -->
-<section class="about-snap" aria-label="Về chúng tôi">
-  <div class="container">
-    <div class="about-snap-grid">
-      <div class="about-snap-img reveal-left">
-        <div class="about-snap-frame">
-          <img src="<%= aboutImage %>" alt="Dear Musé Studio" loading="lazy">
-          <div class="about-snap-tag">
-            <span>Dear Musé</span>
-            <span>Est. 2023</span>
+  <section class="about-snap" aria-label="Về chúng tôi">
+    <div class="container">
+      <div class="about-snap-grid">
+        <div class="about-snap-img reveal-left">
+          <div class="about-snap-frame">
+            <img src="<%= aboutImage %>" alt="Dear Musé Studio" loading="lazy">
+            <div class="about-snap-tag">
+              <span>Dear Musé</span>
+              <span>Est. 2023</span>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="about-snap-text reveal-right">
-        <span class="section-tag">Về chúng tôi</span>
-        <h2 class="about-snap-heading">Người đứng sau<br><em>ống kính</em></h2>
-        <p>Dear Musé không chỉ là một studio — đây là nơi những khoảnh khắc được chọn lọc, được tạo hình bằng ánh sáng tự nhiên và cảm xúc chân thật.</p>
-        <p>Chúng tôi tin rằng ảnh đẹp nhất không phải là ảnh kỹ thuật hoàn hảo — mà là ảnh ghi lại được cảm xúc thật, khoảnh khắc bạn cười tự nhiên khi chẳng biết mình đang được chụp.</p>
-        <div class="about-snap-stats">
-          <div class="snap-stat">
-            <span>500+</span>
-            <label>Khách hàng</label>
+        <div class="about-snap-text reveal-right">
+          <span class="section-tag">Về chúng tôi</span>
+          <h2 class="about-snap-heading">Người đứng sau<br><em>ống kính</em></h2>
+          <p>Dear Musé không chỉ là một studio — đây là nơi những khoảnh khắc được chọn lọc, được tạo hình bằng ánh sáng
+            tự nhiên và cảm xúc chân thật.</p>
+          <p>Chúng tôi tin rằng ảnh đẹp nhất không phải là ảnh kỹ thuật hoàn hảo — mà là ảnh ghi lại được cảm xúc thật,
+            khoảnh khắc bạn cười tự nhiên khi chẳng biết mình đang được chụp.</p>
+          <div class="about-snap-stats">
+            <div class="snap-stat">
+              <span>500+</span>
+              <label>Khách hàng</label>
+            </div>
+            <div class="snap-stat">
+              <span>1,200+</span>
+              <label>Bộ ảnh</label>
+            </div>
+            <div class="snap-stat">
+              <span>5+</span>
+              <label>Năm kinh nghiệm</label>
+            </div>
           </div>
-          <div class="snap-stat">
-            <span>1,200+</span>
-            <label>Bộ ảnh</label>
-          </div>
-          <div class="snap-stat">
-            <span>5+</span>
-            <label>Năm kinh nghiệm</label>
-          </div>
+          <a href="/about" class="link-arrow">Đọc câu chuyện của chúng tôi <svg width="14" height="14"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg></a>
         </div>
-        <a href="/about" class="link-arrow">Đọc câu chuyện của chúng tôi <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ═══════════════════════════════════════════
+  <!-- ═══════════════════════════════════════════
      BOOKING CTA — Avocado Brand Block
 ═══════════════════════════════════════════ -->
-<section class="cta-section" aria-label="Đặt lịch">
-  <div class="cta-bg"></div>
-  <div class="container cta-inner">
-    <div class="cta-text reveal">
-      <span class="section-tag">Bắt đầu nào</span>
-      <h2 class="cta-heading">"Sẵn sàng tạo nên<br>khoảnh khắc<br><em>của riêng bạn?"</em></h2>
-      <p>Phản hồi trong vòng 24h · Tư vấn concept miễn phí</p>
-      <div class="cta-actions">
-        <a href="/booking" class="btn-cta-primary"><span>Đặt lịch ngay</span></a>
-        <a href="/contact" class="btn-cta-ghost">Liên hệ tư vấn</a>
+  <section class="cta-section" aria-label="Đặt lịch">
+    <div class="cta-bg"></div>
+    <div class="container cta-inner">
+      <div class="cta-text reveal">
+        <span class="section-tag">Bắt đầu nào</span>
+        <h2 class="cta-heading">"Sẵn sàng tạo nên<br>khoảnh khắc<br><em>của riêng bạn?"</em></h2>
+        <p>Phản hồi trong vòng 24h · Tư vấn concept miễn phí</p>
+        <div class="cta-actions">
+          <a href="/booking" class="btn-cta-primary"><span>Đặt lịch ngay</span></a>
+          <a href="/contact" class="btn-cta-ghost">Liên hệ tư vấn</a>
+        </div>
+      </div>
+      <div class="cta-visual reveal-right">
+        <div class="cta-img-frame">
+          <img src="/source/N%C3%A0ng%20Th%C6%A1/Xanh%20xanh%20005.JPG" alt="Đặt lịch Dear Musé" loading="lazy">
+        </div>
+        <div class="cta-img-accent"></div>
       </div>
     </div>
-    <div class="cta-visual reveal-right">
-      <div class="cta-img-frame">
-        <img src="/source/N%C3%A0ng%20Th%C6%A1/Xanh%20xanh%20005.JPG" alt="Đặt lịch Dear Musé" loading="lazy">
-      </div>
-      <div class="cta-img-accent"></div>
-    </div>
-  </div>
-</section>
+  </section>

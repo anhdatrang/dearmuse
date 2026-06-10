@@ -144,8 +144,45 @@ document.addEventListener('DOMContentLoaded', () => {
   mobileClose?.addEventListener('click', closeMobileMenu);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobileMenu(); });
 
-  // ─── Page Transitions ─────────────────────
-  document.querySelectorAll('a[href]').forEach(link => {
+  // ─── Page Transitions (Overlay Curtain) ──────────────
+  const pto = document.getElementById('page-transition-overlay');
+  const ptoText = pto ? pto.querySelector('.pto-text') : null;
+
+  // When page loads: if we arrived via the overlay, play the "leave" (pull up) animation
+  if (pto && sessionStorage.getItem('pto_active') === '1') {
+    sessionStorage.removeItem('pto_active');
+    // Overlay is currently covering the screen (translateY 0%), now pull it up
+    pto.style.transform = 'translateY(0%)';
+    pto.style.transition = 'none';
+    if (ptoText) {
+      ptoText.style.opacity = '1';
+      ptoText.style.transform = 'translateY(0)';
+    }
+    // Brief pause so user sees the text, then slide up
+    setTimeout(() => {
+      pto.style.transition = 'transform 0.8s cubic-bezier(0.76, 0, 0.24, 1)';
+      pto.style.transform = 'translateY(-110%)';
+      if (ptoText) {
+        ptoText.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+        ptoText.style.opacity = '0';
+        ptoText.style.transform = 'translateY(-20px)';
+      }
+    }, 100);
+  }
+
+  // Intercept all internal nav links in the header
+  const headerEl = document.getElementById('site-header');
+  const mobileMenuEl = document.getElementById('mobile-menu');
+  const navLinks = [];
+
+  if (headerEl) {
+    headerEl.querySelectorAll('a[href]').forEach(l => navLinks.push(l));
+  }
+  if (mobileMenuEl) {
+    mobileMenuEl.querySelectorAll('a[href]').forEach(l => navLinks.push(l));
+  }
+
+  navLinks.forEach(link => {
     const href = link.getAttribute('href');
     if (!href || href.startsWith('#') || href.startsWith('http') ||
         href.startsWith('mailto') || href.startsWith('tel') ||
@@ -154,12 +191,83 @@ document.addEventListener('DOMContentLoaded', () => {
 
     link.addEventListener('click', e => {
       const target = link.getAttribute('href');
-      if (!target) return;
+      if (!target || !pto) return;
       e.preventDefault();
-      document.body.style.opacity = '0';
-      document.body.style.transform = 'translateY(6px)';
-      document.body.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
-      setTimeout(() => { window.location.href = target; }, 230);
+      e.stopPropagation();
+
+      // Reset overlay to above viewport, then animate down smoothly
+      pto.style.transition = 'none';
+      pto.style.transform = 'translateY(-110%)';
+      if (ptoText) {
+        ptoText.style.transition = 'none';
+        ptoText.style.opacity = '0';
+        ptoText.style.transform = 'translateY(28px)';
+      }
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          // Smooth, silky slide down to cover screen
+          pto.style.transition = 'transform 0.75s cubic-bezier(0.76, 0, 0.24, 1)';
+          pto.style.transform = 'translateY(0%)';
+
+          // Text fades in gently after overlay is ~halfway down
+          setTimeout(() => {
+            if (ptoText) {
+              ptoText.style.transition = 'opacity 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+              ptoText.style.opacity = '1';
+              ptoText.style.transform = 'translateY(0)';
+            }
+          }, 250);
+
+          // Navigate once overlay has fully covered the screen
+          setTimeout(() => {
+            sessionStorage.setItem('pto_active', '1');
+            window.location.href = target;
+          }, 800);
+        });
+      });
+    });
+  });
+
+  // Also handle all other internal links (non-header) with simple approach
+  document.querySelectorAll('a[href]').forEach(link => {
+    if (navLinks.includes(link)) return; // already handled above
+    const href = link.getAttribute('href');
+    if (!href || href.startsWith('#') || href.startsWith('http') ||
+        href.startsWith('mailto') || href.startsWith('tel') ||
+        link.hasAttribute('download') || link.target === '_blank' ||
+        link.classList.contains('glightbox') || link.classList.contains('no-transition')) return;
+
+    link.addEventListener('click', e => {
+      const target = link.getAttribute('href');
+      if (!target || !pto) return;
+      e.preventDefault();
+
+      pto.style.transition = 'none';
+      pto.style.transform = 'translateY(-110%)';
+      if (ptoText) {
+        ptoText.style.transition = 'none';
+        ptoText.style.opacity = '0';
+        ptoText.style.transform = 'translateY(28px)';
+      }
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          pto.style.transition = 'transform 0.75s cubic-bezier(0.76, 0, 0.24, 1)';
+          pto.style.transform = 'translateY(0%)';
+          setTimeout(() => {
+            if (ptoText) {
+              ptoText.style.transition = 'opacity 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+              ptoText.style.opacity = '1';
+              ptoText.style.transform = 'translateY(0)';
+            }
+          }, 250);
+          setTimeout(() => {
+            sessionStorage.setItem('pto_active', '1');
+            window.location.href = target;
+          }, 800);
+        });
+      });
     });
   });
 
@@ -266,5 +374,47 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.setItem('music-time', bgAudio.currentTime);
     });
   }
+
+  // ─── Language Switcher (Google Translate Wrapper) ───
+  const langBtns = document.querySelectorAll('.lang-btn');
+  
+  function triggerGoogleTranslate(langCode) {
+    const selectField = document.querySelector('.goog-te-combo');
+    if (selectField) {
+      selectField.value = langCode;
+      selectField.dispatchEvent(new Event('change'));
+    }
+  }
+
+  function initLanguageState() {
+    const match = document.cookie.match(/(^|;) ?googtrans=([^;]*)(;|$)/);
+    let currentLang = 'vi'; // default
+    if (match && match[2]) {
+      const parts = decodeURIComponent(match[2]).split('/');
+      if (parts.length > 2) currentLang = parts[2];
+    }
+    
+    langBtns.forEach(btn => {
+      if (btn.dataset.lang === currentLang) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+  }
+
+  setTimeout(initLanguageState, 1000);
+
+  langBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetLang = btn.dataset.lang;
+      
+      langBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      triggerGoogleTranslate(targetLang);
+    });
+  });
 
 });

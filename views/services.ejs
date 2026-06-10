@@ -79,6 +79,27 @@
   </div>
 </section>
 
+<!-- Thank You Section -->
+<section class="svc-thankyou" id="svc-thankyou">
+  <div class="svc-thankyou-inner">
+
+    <!-- Quote with line-reveal animation -->
+    <div class="svc-quote-wrap" id="svc-quote-wrap">
+      <span class="svc-quote-line" id="svc-quote-line"></span>
+      <blockquote class="svc-quote-text" id="svc-quote-text">
+        "Each frame tells your own story."
+      </blockquote>
+    </div>
+
+    <!-- Thank you message -->
+    <div class="svc-thankyou-msg reveal">
+      <p>Cảm ơn bạn đã dành thời gian</p>
+      <p>tìm hiểu về <em>Dear Musé</em></p>
+    </div>
+
+  </div>
+</section>
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   // Parallax for service backgrounds
@@ -110,5 +131,48 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.setAttribute('aria-expanded', !isOpen);
     });
   });
+
+  // ─── Quote Reveal Animation ───────────────────────────
+  const quoteWrap = document.getElementById('svc-quote-wrap');
+  const quoteLine = document.getElementById('svc-quote-line');
+  const quoteText = document.getElementById('svc-quote-text');
+
+  if (quoteWrap && quoteLine && quoteText) {
+    let animated = false;
+
+    const runQuoteAnimation = () => {
+      if (animated) return;
+      animated = true;
+
+      // Phase 1: Gold line sweeps from left across the full width (0.7s)
+      const fullWidth = quoteWrap.offsetWidth;
+      quoteLine.style.transition = 'width 0.7s cubic-bezier(0.76, 0, 0.24, 1)';
+      quoteLine.style.width = fullWidth + 'px';
+
+      // Phase 2: At ~60% of line animation, start revealing the text
+      setTimeout(() => {
+        quoteWrap.classList.add('revealed');
+      }, 420);
+
+      // Phase 3: After text is fully revealed, fade out the line
+      setTimeout(() => {
+        quoteLine.style.transition = 'opacity 0.5s ease';
+        quoteLine.style.opacity = '0';
+      }, 1400);
+    };
+
+    // Use IntersectionObserver to trigger when section enters viewport
+    const quoteObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Small delay so it feels intentional
+          setTimeout(runQuoteAnimation, 200);
+          quoteObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+
+    quoteObserver.observe(quoteWrap);
+  }
 });
 </script>
