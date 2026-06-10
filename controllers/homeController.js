@@ -46,7 +46,7 @@ const allSourceImages = {
 const heroImages = [
   // Áo Dài
   '/source/%C3%81O%20D%C3%80I/IMG_6366.JPG',
-  '/source/%C3%81O%20D%C3%80I/IMG_6367.JPG',
+  '/source/%C3%81O%20D%C3%80I/IMG_6368.JPG',
   '/source/%C3%81O%20D%C3%80I/IMG_6371.JPG',
   '/source/%C3%81O%20D%C3%80I/IMG_6382.JPG',
   '/source/%C3%81O%20D%C3%80I/IMG_6383.JPG',

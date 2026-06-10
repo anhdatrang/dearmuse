@@ -7,6 +7,7 @@ const Service = require('../models/Service');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const sharp = require('sharp');
 
 // Multer setup
 const storage = multer.diskStorage({
@@ -145,8 +146,29 @@ exports.createAlbum = async (req, res) => {
   try {
     const coverFile = req.files['cover_image']?.[0];
     const extraFiles = req.files['images'] || [];
-    const coverImage = coverFile ? `/uploads/${coverFile.filename}` : '';
-    const images = extraFiles.map(f => `/uploads/${f.filename}`);
+    
+    let coverImage = '';
+    if (coverFile) {
+      const coverFilename = coverFile.filename.split('.')[0] + '.webp';
+      await sharp(coverFile.path)
+        .resize({ width: 1920, withoutEnlargement: true })
+        .webp({ quality: 80 })
+        .toFile(path.join(coverFile.destination, coverFilename));
+      coverImage = `/uploads/${coverFilename}`;
+      fs.unlinkSync(coverFile.path); // Delete original
+    }
+
+    const images = [];
+    for (let f of extraFiles) {
+      const fFilename = f.filename.split('.')[0] + '.webp';
+      await sharp(f.path)
+        .resize({ width: 1920, withoutEnlargement: true })
+        .webp({ quality: 80 })
+        .toFile(path.join(f.destination, fFilename));
+      images.push(`/uploads/${fFilename}`);
+      fs.unlinkSync(f.path); // Delete original
+    }
+
     const slug = req.body.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') + '-' + Date.now();
     
     await Portfolio.create({ ...req.body, slug, cover_image: coverImage, images });

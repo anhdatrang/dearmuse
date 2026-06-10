@@ -13,8 +13,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(ejsLayouts);
 app.set('layout', 'layouts/main');
 
-// Static files
-app.use(express.static(path.join(__dirname, 'public')));
+// Static files (có cache 30 ngày để giảm lag)
+app.use(express.static(path.join(__dirname, 'public'), {
+  maxAge: '30d'
+}));
 
 // Body parsers
 app.use(express.urlencoded({ extended: true }));

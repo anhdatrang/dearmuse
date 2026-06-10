@@ -219,54 +219,56 @@
         </div>
       </div>
 
-      <div class="services-list">
-        <% const customServices=[ { num: '01' , name: 'Concept Sáng Tạo' ,
-          desc: 'Thiết kế concept riêng biệt, phá cách và mang đậm dấu ấn cá nhân.' , price: '2.500.000' ,
-          slug: 'concept-sang-tao' ,
-          img: '/source/N%C3%A0ng%20Th%C6%A1/H%C6%B0%E1%BB%9Bng%20d%C6%B0%C6%A1ng%20001_.jpeg' }, { num: '02' ,
-          name: 'Áo Dài' , desc: 'Lưu giữ nét đẹp truyền thống, thanh lịch và đằm thắm của người phụ nữ Việt.' ,
-          price: '1.800.000' , slug: 'ao-dai' , img: '/source/%C3%81O%20D%C3%80I/IMG_6382.JPG' }, { num: '03' ,
-          name: 'Chân Dung Cá Nhân' , desc: 'Bắt trọn vẻ đẹp nguyên bản và cảm xúc tự nhiên nhất của chính bạn.' ,
-          price: '1.500.000' , slug: 'chan-dung-ca-nhan' ,
-          img: '/source/N%C3%A0ng%20Th%C6%A1/N%C3%A0ng%20th%C6%A1%20002.JPG' }, { num: '04' , name: 'Kỷ Yếu Cá Nhân' ,
-          desc: 'Ghi lại cột mốc thanh xuân rực rỡ và những kỷ niệm đáng nhớ.' , price: '1.800.000' ,
-          slug: 'ky-yeu-ca-nhan' , img: '/source/N%C3%A0ng%20Th%C6%A1/Xanh%20Xanh%20002.JPG' }, { num: '05' ,
-          name: 'Beauty Portrait' , desc: 'Tôn vinh đường nét khuôn mặt với ánh sáng setup chuẩn studio.' ,
-          price: '2.000.000' , slug: 'beauty-portrait' ,
-          img: '/source/N%C3%A0ng%20Th%C6%A1/Qu%E1%BA%A3%20chanh%20001.JPG' }, { num: '06' , name: 'Dạ Hội & Nàng Thơ' ,
-          desc: 'Hóa thân lộng lẫy và kiêu sa trong những bộ váy dạ hội tuyệt đẹp.' , price: '3.000.000' ,
-          slug: 'da-hoi' , img: '/source/D%E1%BA%A1%20H%E1%BB%99i/IMG_2332.JPG' } ]; %>
-          <% customServices.forEach((s, i)=> { %>
-            <a href="/booking?service=<%= s.slug %>" class="svc-card reveal" data-delay="<%= i+1 %>">
-              <div class="svc-card-bg">
-                <img src="<%= s.img %>" alt="<%= s.name %>" loading="lazy">
-              </div>
-              <div class="svc-card-overlay">
-                <span class="svc-num">
-                  <%= s.num %>
-                </span>
-                <div class="svc-info">
-                  <h3>
-                    <%= s.name %>
-                  </h3>
-                  <p>
-                    <%= s.desc %>
-                  </p>
+      <div class="services-marquee-wrapper">
+        <div class="services-marquee-track">
+          <% const customServices=[ { num: '01' , name: 'Concept Sáng Tạo' ,
+            desc: 'Thiết kế concept riêng biệt, phá cách và mang đậm dấu ấn cá nhân.' , price: '2.500.000' ,
+            slug: 'concept-sang-tao' ,
+            img: '/source/N%C3%A0ng%20Th%C6%A1/H%C6%B0%E1%BB%9Bng%20d%C6%B0%C6%A1ng%20001_.jpeg' }, { num: '02' ,
+            name: 'Áo Dài' , desc: 'Lưu giữ nét đẹp truyền thống, thanh lịch và đằm thắm của người phụ nữ Việt.' ,
+            price: '1.800.000' , slug: 'ao-dai' , img: '/source/%C3%81O%20D%C3%80I/IMG_6382.JPG' }, { num: '03' ,
+            name: 'Chân Dung Cá Nhân' , desc: 'Bắt trọn vẻ đẹp nguyên bản và cảm xúc tự nhiên nhất của chính bạn.' ,
+            price: '1.500.000' , slug: 'chan-dung-ca-nhan' ,
+            img: '/source/N%C3%A0ng%20Th%C6%A1/N%C3%A0ng%20th%C6%A1%20002.JPG' }, { num: '04' , name: 'Kỷ Yếu Cá Nhân' ,
+            desc: 'Ghi lại cột mốc thanh xuân rực rỡ và những kỷ niệm đáng nhớ.' , price: '1.800.000' ,
+            slug: 'ky-yeu-ca-nhan' , img: '/source/N%C3%A0ng%20Th%C6%A1/Xanh%20Xanh%20002.JPG' }, { num: '05' ,
+            name: 'Beauty Portrait' , desc: 'Tôn vinh đường nét khuôn mặt với ánh sáng setup chuẩn studio.' ,
+            price: '2.000.000' , slug: 'beauty-portrait' ,
+            img: '/source/N%C3%A0ng%20Th%C6%A1/Qu%E1%BA%A3%20chanh%20001.JPG' }, { num: '06' , name: 'Dạ Hội & Nàng Thơ' ,
+            desc: 'Hóa thân lộng lẫy và kiêu sa trong những bộ váy dạ hội tuyệt đẹp.' , price: '3.000.000' ,
+            slug: 'da-hoi' , img: '/source/D%E1%BA%A1%20H%E1%BB%99i/IMG_2332.JPG' } ]; %>
+            <% [...customServices, ...customServices].forEach((s, i)=> { %>
+              <a href="/booking?service=<%= s.slug %>" class="svc-card">
+                <div class="svc-card-bg">
+                  <img src="<%= s.img %>" alt="<%= s.name %>" loading="lazy">
                 </div>
-                <div class="svc-footer">
-                  <div class="svc-price">Từ <strong>
-                      <%= s.price %>đ
-                    </strong></div>
-                  <div class="svc-arrow">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                      stroke-width="1.5">
-                      <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
+                <div class="svc-card-overlay">
+                  <span class="svc-num">
+                    <%= s.num %>
+                  </span>
+                  <div class="svc-info">
+                    <h3>
+                      <%= s.name %>
+                    </h3>
+                    <p>
+                      <%= s.desc %>
+                    </p>
+                  </div>
+                  <div class="svc-footer">
+                    <div class="svc-price">Từ <strong>
+                        <%= s.price %>đ
+                      </strong></div>
+                    <div class="svc-arrow">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.5">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </a>
-            <% }) %>
+              </a>
+              <% }) %>
+        </div>
       </div>
     </div>
   </section>
@@ -288,7 +290,7 @@
         <div class="review-card review-card--featured reveal" data-delay="1">
           <div class="review-top">
             <div class="review-avatar">
-              <img src="/source/N%C3%A0ng%20Th%C6%A1/Qu%E1%BA%A3%20chanh%20001.JPG" alt="Khánh Linh">
+              <img src="/source/N%C3%A0ng%20Th%C6%A1/Qu%E1%BA%A3%20chanh%20001.JPG" alt="Khánh Linh" loading="lazy">
             </div>
             <div class="review-stars">★★★★★</div>
           </div>
@@ -314,7 +316,7 @@
         <div class="review-card reveal" data-delay="2">
           <div class="review-top">
             <div class="review-avatar">
-              <img src="/source/D%E1%BA%A1%20H%E1%BB%99i/IMG_2334.JPG" alt="Minh Tuấn & Thu Hà">
+              <img src="/source/D%E1%BA%A1%20H%E1%BB%99i/IMG_2334.JPG" alt="Minh Tuấn & Thu Hà" loading="lazy">
             </div>
             <div class="review-stars">★★★★★</div>
           </div>
@@ -340,7 +342,7 @@
         <div class="review-card reveal" data-delay="3">
           <div class="review-top">
             <div class="review-avatar">
-              <img src="/source/N%C3%A0ng%20Th%C6%A1/Xanh%20Xanh%20002.JPG" alt="Hà Vy">
+              <img src="/source/N%C3%A0ng%20Th%C6%A1/Xanh%20Xanh%20002.JPG" alt="Hà Vy" loading="lazy">
             </div>
             <div class="review-stars">★★★★★</div>
           </div>
@@ -366,7 +368,7 @@
         <div class="review-card reveal" data-delay="4">
           <div class="review-top">
             <div class="review-avatar">
-              <img src="/source/N%C3%A0ng%20Th%C6%A1/H%C6%B0%E1%BB%9Bng%20d%C6%B0%C6%A1ng%20004.JPG" alt="Bảo Ngọc">
+              <img src="/source/N%C3%A0ng%20Th%C6%A1/H%C6%B0%E1%BB%9Bng%20d%C6%B0%C6%A1ng%20004.JPG" alt="Bảo Ngọc" loading="lazy">
             </div>
             <div class="review-stars">★★★★★</div>
           </div>
@@ -392,7 +394,7 @@
         <div class="review-card reveal" data-delay="5">
           <div class="review-top">
             <div class="review-avatar">
-              <img src="/source/%C3%81O%20D%C3%80I/IMG_6415.JPG" alt="Thu Phương">
+              <img src="/source/%C3%81O%20D%C3%80I/IMG_6415.JPG" alt="Thu Phương" loading="lazy">
             </div>
             <div class="review-stars">★★★★★</div>
           </div>

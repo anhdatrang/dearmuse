@@ -418,9 +418,7 @@ section { padding: var(--section-gap) 0; }
 }
 
 .site-header.scrolled {
-  background: rgba(255, 247, 230, 0.96);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 247, 230, 0.98);
   border-bottom: 0.5px solid var(--bone);
   box-shadow: 0 2px 40px rgba(26, 25, 22, 0.06);
 }
@@ -502,7 +500,6 @@ section { padding: var(--section-gap) 0; }
   background: rgba(255,247,230,0.15) !important;
   border: 1px solid rgba(255,247,230,0.4) !important;
   color: var(--vanilla-cream) !important;
-  backdrop-filter: blur(8px);
   border-radius: 50px !important;
 }
 

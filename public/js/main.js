@@ -273,7 +273,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ─── GLightbox ────────────────────────────
   if (typeof GLightbox !== 'undefined') {
-    GLightbox({ touchNavigation: true, loop: true, autoplayVideos: false });
+    // Tự động biến tất cả ảnh thành dạng click để phóng to (Lightbox)
+    document.querySelectorAll('img').forEach(img => {
+      // Bỏ qua logo, icon, ảnh nền hero động, và ảnh trong card dịch vụ (vì card dịch vụ là link)
+      if(img.closest('header') || img.closest('footer') || img.closest('.svc-card') || img.closest('.hero-img-wrap')) return;
+      // Bỏ qua ảnh đã nằm trong thẻ <a> để tránh lỗi chuyển trang
+      if(img.parentElement && img.parentElement.tagName.toLowerCase() === 'a') return;
+      
+      img.classList.add('glightbox');
+      img.setAttribute('data-href', img.src || img.currentSrc);
+      img.setAttribute('data-type', 'image');
+      
+      // Tạo group gallery dựa trên class của thẻ cha để có thể vuốt/chuyển ảnh
+      let groupName = 'gallery';
+      if (img.closest('.gallery-mosaic')) groupName = 'home-gallery';
+      else if (img.closest('.portfolio-grid')) groupName = 'portfolio-gallery';
+      else if (img.closest('.intro-visual')) groupName = 'intro-gallery';
+      
+      img.setAttribute('data-gallery', groupName);
+      
+      // Thêm CSS để báo hiệu cho người dùng biết ảnh có thể click
+      img.style.cursor = 'zoom-in';
+      img.style.pointerEvents = 'auto'; // Đảm bảo không bị CSS nào chặn click
+    });
+
+    GLightbox({ 
+      selector: '.glightbox',
+      touchNavigation: true, 
+      loop: true, 
+      autoplayVideos: false,
+      zoomable: true,
+      descPosition: 'bottom'
+    });
   }
 
   // ─── Floating Action Button (FAB) ───────────
