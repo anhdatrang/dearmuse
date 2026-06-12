@@ -1,0 +1,135 @@
+<div class="admin-header">
+  <div>
+    <h1>Phân tích hành vi người dùng</h1>
+    <p style="color: var(--smoke); font-size: 13px; margin-top: 4px;">Số liệu thống kê chi tiết về tương tác và nguồn truy cập thực tế của khách hàng</p>
+  </div>
+</div>
+
+<!-- Stats Cards -->
+<div class="stats-grid" style="grid-template-columns: repeat(5, 1fr); margin-bottom: 32px;">
+  <div class="stat-card">
+    <div class="stat-label">Lượt xem trang</div>
+    <div class="stat-value"><%= summary.page_view || 0 %></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Click Đặt lịch</div>
+    <div class="stat-value" style="color: var(--mocha);"><%= summary.click_booking || 0 %></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Click Concept</div>
+    <div class="stat-value"><%= summary.click_concept || 0 %></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Lượt liên hệ</div>
+    <div class="stat-value"><%= summary.submit_contact || 0 %></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Tỷ lệ chuyển đổi</div>
+    <% 
+      const conversionRate = summary.click_booking > 0 
+        ? ((totalBookings / summary.click_booking) * 100).toFixed(1) 
+        : '0.0';
+    %>
+    <div class="stat-value confirmed"><%= conversionRate %>%</div>
+    <p style="font-size: 10px; color: var(--smoke); margin-top: 4px;">Đơn thành công / Click</p>
+  </div>
+</div>
+
+<!-- Detailed Analytics Grid -->
+<div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; margin-bottom: 40px;">
+  
+  <!-- Left Side: Concepts & Timeline -->
+  <div>
+    <!-- Concept clicks -->
+    <div class="admin-card" style="margin-bottom: 24px;">
+      <h2>Concept được quan tâm nhất</h2>
+      <% if (topConcepts && topConcepts.length > 0) { %>
+        <% 
+          const maxConceptCount = topConcepts[0].count || 1; 
+        %>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <% topConcepts.forEach(item => { %>
+            <% const percent = ((item.count / maxConceptCount) * 100).toFixed(0); %>
+            <div>
+              <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;">
+                <strong><%= item.concept %></strong>
+                <span style="color: var(--smoke);"><%= item.count %> lượt click</span>
+              </div>
+              <div style="height: 8px; background: var(--bone); border-radius: 4px; overflow: hidden;">
+                <div style="height: 100%; width: <%= percent %>%; background: var(--mocha); border-radius: 4px; transition: width 0.5s ease-in-out;"></div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <div class="empty-state">Chưa có dữ liệu tracking concept.</div>
+      <% } %>
+    </div>
+
+    <!-- Timeline Activity -->
+    <div class="admin-card">
+      <h2>Hoạt động truy cập (14 ngày gần nhất)</h2>
+      <% if (timeline && timeline.length > 0) { %>
+        <table style="margin-top: 12px;">
+          <thead>
+            <tr>
+              <th>Ngày</th>
+              <th>Số lượt tương tác / click</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% timeline.forEach(row => { %>
+              <tr>
+                <td><%= row.date %></td>
+                <td><strong><%= row.count %></strong></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } else { %>
+        <div class="empty-state">Chưa có dữ liệu hoạt động theo ngày.</div>
+      <% } %>
+    </div>
+  </div>
+
+  <!-- Right Side: Top Provinces & Geolocation details -->
+  <div>
+    <!-- Top Provinces -->
+    <div class="admin-card" style="margin-bottom: 24px;">
+      <h2>Vị trí tỉnh/thành truy cập nhiều nhất</h2>
+      <% if (topLocations && topLocations.length > 0) { %>
+        <% 
+          const maxLocationCount = topLocations[0].count || 1; 
+        %>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <% topLocations.forEach(item => { %>
+            <% const percent = ((item.count / maxLocationCount) * 100).toFixed(0); %>
+            <div>
+              <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;">
+                <strong><%= item.location %></strong>
+                <span style="color: var(--smoke);"><%= item.count %> lượt</span>
+              </div>
+              <div style="height: 8px; background: var(--bone); border-radius: 4px; overflow: hidden;">
+                <div style="height: 100%; width: <%= percent %>%; background: var(--avocado); border-radius: 4px; transition: width 0.5s ease-in-out;"></div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <div class="empty-state">Chưa có dữ liệu địa điểm truy cập.</div>
+      <% } %>
+    </div>
+
+    <!-- Notes & Guidelines -->
+    <div class="admin-card">
+      <h2>Lưu ý về dữ liệu</h2>
+      <div style="font-size: 13px; font-weight: 300; color: var(--smoke); line-height: 1.7;">
+        <p style="margin-bottom: 12px;">✦ Hệ thống tracking ghi nhận tự động lượt xem trang khi người dùng truy cập bất kỳ trang con nào trên website.</p>
+        <p style="margin-bottom: 12px;">✦ Lượt click <strong>Đặt lịch</strong> bao gồm toàn bộ thao tác bấm vào nút Đặt lịch trên thanh điều hướng, trang chủ, các trang dịch vụ hoặc nút tư vấn nhanh.</p>
+        <p style="margin-bottom: 12px;">✦ Địa điểm người dùng truy cập được xác định tự động qua địa chỉ IP. Các truy cập từ môi trường thử nghiệm (Localhost) được hệ thống giả lập phân bố ngẫu nhiên để phục vụ công tác kiểm thử trực quan.</p>
+        <p>✦ Tỷ lệ chuyển đổi giúp admin đánh giá chất lượng trải nghiệm của website và độ hấp dẫn của nội dung dịch vụ.</p>
+      </div>
+    </div>
+  </div>
+
+</div>

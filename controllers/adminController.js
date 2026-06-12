@@ -4,6 +4,7 @@ const Booking = require('../models/Booking');
 const Portfolio = require('../models/Portfolio');
 const Contact = require('../models/Contact');
 const Service = require('../models/Service');
+const Analytics = require('../models/Analytics');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
@@ -72,6 +73,35 @@ exports.dashboard = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.render('admin/dashboard', { title: 'Dashboard', counts: {}, recentBookings: [], unreadContacts: 0, adminUsername: req.session.adminUsername });
+  }
+};
+
+exports.analytics = async (req, res) => {
+  try {
+    const summary = await Analytics.getSummary();
+    const topConcepts = await Analytics.getTopConcepts();
+    const topLocations = await Analytics.getTopLocations();
+    const timeline = await Analytics.getTimeline();
+    const unreadContacts = await Contact.countUnread();
+
+    // Query conversion rate: actual bookings vs booking clicks
+    const [bookingCountRow] = await db.execute(`SELECT COUNT(*) as count FROM bookings`);
+    const totalBookings = bookingCountRow[0].count;
+
+    res.render('admin/analytics', {
+      title: 'Phân tích hành vi — Dear Musé Admin',
+      layout: 'layouts/admin',
+      summary,
+      topConcepts,
+      topLocations,
+      timeline,
+      totalBookings,
+      unreadContacts,
+      adminUsername: req.session.adminUsername,
+    });
+  } catch (err) {
+    console.error('Error in admin analytics:', err);
+    res.redirect('/admin/dashboard');
   }
 };
 

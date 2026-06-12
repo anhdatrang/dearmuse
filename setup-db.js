@@ -12,7 +12,7 @@ async function setup() {
     host: process.env.DB_HOST || 'localhost',
     port: process.env.DB_PORT || 3306,
     user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || 'admin',
+    password: process.env.DB_PASSWORD || '123456',
     charset: 'utf8mb4',
   });
 
@@ -97,6 +97,17 @@ async function setup() {
       id INT AUTO_INCREMENT PRIMARY KEY,
       username VARCHAR(100) UNIQUE NOT NULL,
       password_hash VARCHAR(255) NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  await conn.query(`
+    CREATE TABLE IF NOT EXISTS analytics_events (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      event_type VARCHAR(50) NOT NULL,
+      event_value VARCHAR(255),
+      ip_address VARCHAR(45),
+      location VARCHAR(100),
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
   `);

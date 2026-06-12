@@ -168,3 +168,13 @@
     column-count: 1;
   }
 }
+
+/* Custom hover color for the Booking CTA button */
+.portfolio-cta-btn::before {
+  background: var(--avocado-cream);
+}
+
+.portfolio-cta-btn:hover {
+  color: var(--ink) !important;
+  border-color: var(--avocado-cream) !important;
+}

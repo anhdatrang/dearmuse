@@ -16,6 +16,7 @@ router.get('/logout', requireAdmin, adminController.logout);
 // Dashboard
 router.get('/', requireAdmin, (req, res) => res.redirect('/admin/dashboard'));
 router.get('/dashboard', requireAdmin, adminController.dashboard);
+router.get('/analytics', requireAdmin, adminController.analytics);
 
 // Bookings
 router.get('/bookings', requireAdmin, adminController.bookings);

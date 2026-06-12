@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
+const Analytics = require('../models/Analytics');
 const homeController = require('../controllers/homeController');
 const portfolioController = require('../controllers/portfolioController');
 const bookingController = require('../controllers/bookingController');
@@ -55,5 +56,53 @@ router.post('/booking', [
     .isAfter(new Date().toISOString().split('T')[0]).withMessage('Ngày phải từ ngày mai trở đi.'),
   body('customer_email').optional({ checkFalsy: true }).isEmail().withMessage('Email không hợp lệ.'),
 ], bookingController.submit);
+
+// Analytics tracking API
+router.post('/api/track', async (req, res) => {
+  res.sendStatus(204); // Respond immediately to client
+
+  const { event_type, event_value } = req.body;
+  if (!event_type) return;
+
+  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '';
+  const http = require('http');
+
+  let cleanIp = ip.split(',')[0].trim();
+  if (cleanIp.startsWith('::ffff:')) {
+    cleanIp = cleanIp.substring(7);
+  }
+
+  // Helper to resolve location
+  const resolveLocation = () => {
+    return new Promise((resolve) => {
+      if (cleanIp === '127.0.0.1' || cleanIp === '::1' || cleanIp === 'localhost' || !cleanIp) {
+        const provinces = ['Hà Nội', 'TP. Hồ Chí Minh', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ', 'Bình Dương', 'Đồng Nai'];
+        return resolve(provinces[Math.floor(Math.random() * provinces.length)]);
+      }
+
+      http.get(`http://ip-api.com/json/${cleanIp}?fields=status,regionName`, (apiRes) => {
+        let data = '';
+        apiRes.on('data', chunk => data += chunk);
+        apiRes.on('end', () => {
+          try {
+            const parsed = JSON.parse(data);
+            resolve((parsed.status === 'success' && parsed.regionName) ? parsed.regionName : 'Hà Nội');
+          } catch (e) {
+            resolve('Hà Nội');
+          }
+        });
+      }).on('error', () => {
+        resolve('Hà Nội');
+      });
+    });
+  };
+
+  try {
+    const location = await resolveLocation();
+    await Analytics.logEvent(event_type, event_value, cleanIp, location);
+  } catch (err) {
+    console.error('Analytics tracking error:', err);
+  }
+});
 
 module.exports = router;

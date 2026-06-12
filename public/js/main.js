@@ -6,6 +6,9 @@
 
 // ─── Loading Screen ──────────────────────────
 (function() {
+  if (!sessionStorage.getItem('dm_loaded')) {
+    localStorage.setItem('music-muted', 'false');
+  }
   const screen = document.getElementById('loading-screen');
   if (!screen) return;
 
@@ -350,19 +353,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Try playing the music
+    let audioPlayed = false;
+    let isPlaying = false;
+    let canPlayNow = false;
+
+    // Bắt đầu tự động phát nhạc sau đúng 3 giây truy cập trang web (đã xác thực)
+    setTimeout(() => {
+      canPlayNow = true;
+      tryPlay();
+    }, 3000);
+
     const tryPlay = () => {
+      if (!canPlayNow || audioPlayed || isPlaying) return;
       if (localStorage.getItem('music-muted') !== 'true') {
-        bgAudio.play().then(() => {
-          musicWidget.classList.remove('paused');
-          musicWidget.classList.add('playing');
-          removeInteractionListeners();
-        }).catch(err => {
-          // Autoplay blocked by browser policy, waiting for interaction
-        });
+        isPlaying = true;
+        const playPromise = bgAudio.play();
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            musicWidget.classList.remove('paused');
+            musicWidget.classList.add('playing');
+            audioPlayed = true;
+            isPlaying = false;
+            removeInteractionListeners();
+          }).catch(err => {
+            isPlaying = false;
+            // Autoplay blocked by browser policy, waiting for interaction
+          });
+        }
       }
     };
 
-    const interactionEvents = ['click', 'touchstart', 'scroll'];
+    const interactionEvents = ['click', 'touchstart', 'scroll', 'mousemove', 'keydown'];
     const handleInteraction = () => {
       tryPlay();
     };
@@ -377,8 +398,6 @@ document.addEventListener('DOMContentLoaded', () => {
       interactionEvents.forEach(evt => {
         document.addEventListener(evt, handleInteraction, { passive: true });
       });
-      // Also try immediately
-      tryPlay();
     }
 
     // Toggle Button Click Handler
@@ -448,4 +467,44 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // ─── Behavioral Tracking Telemetry ───────────
+  function trackEvent(eventType, eventValue = '') {
+    fetch('/api/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ event_type: eventType, event_value: eventValue })
+    }).catch(err => console.error('Tracking failed:', err));
+  }
+
+  // 1. Page view tracking
+  trackEvent('page_view', window.location.pathname);
+
+  // 2. Booking button clicks
+  document.querySelectorAll('a[href="/booking"], .nav-cta, .btn-hero-primary, .btn-cta-primary, .fab-item[href="/booking"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      trackEvent('click_booking', window.location.pathname);
+    });
+  });
+
+  // 3. Contact form submissions
+  const contactForm = document.querySelector('form[action="/contact"]');
+  if (contactForm) {
+    contactForm.addEventListener('submit', () => {
+      trackEvent('submit_contact', 'Form Submitted');
+    });
+  }
+
+  // 4. Concept card clicks
+  document.querySelectorAll('a[href*="booking?service="], .svc-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const href = card.getAttribute('href') || '';
+      const match = href.match(/service=([^&]+)/);
+      const slug = match ? match[1] : '';
+      const h3 = card.querySelector('h3');
+      const name = h3 ? h3.textContent.trim() : slug;
+      trackEvent('click_concept', name || 'Concept');
+    });
+  });
+
 });
+

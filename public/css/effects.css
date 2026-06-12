@@ -1,178 +1,40 @@
 /* ══════════════════════════════════════════════════════
    DEAR MUSÉ — ARTISTIC EFFECTS CSS
-   Bubbles and Blooming Branch Animations
+   Falling Tuyet Mai (White Flowers) Animation
 ══════════════════════════════════════════════════════ */
 
-/* --- Global Effects Container --- */
 #artistic-effects-container {
   position: fixed;
   inset: 0;
-  pointer-events: none; /* Let clicks pass through */
-  z-index: 10; /* Bring it above the background */
+  pointer-events: none;
+  z-index: 10;
   overflow: hidden;
 }
 
-/* --- Bubbles Effect --- */
-.dm-bubble {
+.dm-tuyet-mai {
   position: absolute;
-  bottom: -50px;
-  border-radius: 50%;
-  /* Stronger gradient for clear visibility */
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(247, 200, 211, 0.4) 60%, rgba(255, 255, 255, 0) 100%);
-  box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.6),
-              0 4px 20px rgba(212, 219, 116, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  top: -50px;
+  fill: #ffffff;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.6));
   opacity: 0;
-  animation: floatUp var(--duration, 15s) ease-in-out infinite;
+  animation: fallDown var(--duration, 15s) linear infinite;
   animation-delay: var(--delay, 0s);
-  transform: translateX(0);
+  transform-origin: center;
 }
 
-@keyframes floatUp {
+@keyframes fallDown {
   0% {
     opacity: 0;
-    transform: translateY(0) translateX(0) scale(0.8);
-  }
-  15% {
-    opacity: var(--max-opacity, 0.7);
-  }
-  50% {
-    transform: translateY(-50vh) translateX(var(--drift, 30px)) scale(1.1);
-  }
-  85% {
-    opacity: var(--max-opacity, 0.7);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-110vh) translateX(calc(var(--drift, 30px) * -1)) scale(1);
-  }
-}
-
-/* --- Blooming Branch Effect --- */
-.dm-branch-container {
-  position: absolute;
-  bottom: 0;
-  /* Restrict width heavily so it stays explicitly on the sides */
-  width: 25vw; 
-  max-width: 400px;
-  min-width: 200px;
-  height: 70vh;
-  min-height: 500px;
-  opacity: 1; /* Fully visible */
-  pointer-events: none;
-}
-
-.dm-branch-left {
-  left: 0;
-  transform-origin: bottom left;
-  animation: branchSwayLeft 10s ease-in-out infinite alternate;
-}
-
-.dm-branch-right {
-  right: 0;
-  left: auto;
-  transform-origin: bottom right;
-  animation: branchSwayRight 12s ease-in-out infinite alternate;
-}
-
-@keyframes branchSwayLeft {
-  0% { transform: rotate(-2deg); }
-  100% { transform: rotate(2deg); }
-}
-
-@keyframes branchSwayRight {
-  0% { transform: rotate(2deg); }
-  100% { transform: rotate(-2deg); }
-}
-
-.dm-branch-path {
-  fill: none;
-  stroke: var(--logo-mocha, #7A5C4A);
-  stroke-width: 2.5; /* Thicker for visibility */
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  opacity: 0.9; /* Clearer stroke */
-  stroke-dasharray: 2000;
-  stroke-dashoffset: 2000;
-  animation: drawBranch 4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-  animation-delay: 0.5s;
-}
-
-/* Sub-branches delay */
-.dm-branch-path.sub-1 { animation-delay: 1.5s; stroke-width: 2; }
-.dm-branch-path.sub-2 { animation-delay: 2.5s; stroke-width: 1.5; }
-
-.dm-flower {
-  fill: var(--blush-petal, #F7C8D3);
-  opacity: 0;
-  transform-origin: center;
-  transform-box: fill-box;
-  animation: bloomAndFall var(--cycle-dur, 12s) ease-in-out infinite;
-  animation-delay: var(--cycle-delay, 2s);
-}
-
-/* Dynamic delays and colors for flowers (colors only, delay is handled inline now) */
-.dm-flower:nth-child(3n) { fill: #ffffff; }
-.dm-flower:nth-child(3n+1) { fill: var(--blush-petal); }
-.dm-flower:nth-child(3n+2) { fill: #FDECD0; }
-
-.dm-leaf {
-  fill: var(--avocado-cream, #D4DB74);
-  opacity: 0;
-  transform-origin: center;
-  transform-box: fill-box;
-  animation: bloomFlower 2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-
-/* Swaying Animation for Flowers and Leaves */
-.dm-sway {
-  transform-origin: center;
-  transform-box: fill-box;
-  animation: sway var(--sway-dur, 4s) ease-in-out infinite alternate;
-  animation-delay: var(--sway-delay, 0s);
-}
-
-@keyframes sway {
-  0% { transform: rotate(calc(-1 * var(--sway-deg, 5deg))); }
-  100% { transform: rotate(var(--sway-deg, 5deg)); }
-}
-
-@keyframes drawBranch {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes bloomFlower {
-  0% {
-    opacity: 0;
-    transform: scale(0) rotate(-45deg);
-  }
-  100% {
-    opacity: 1; /* Bright and visible */
-    transform: scale(var(--base-scale, 1)) rotate(0deg);
-  }
-}
-
-@keyframes bloomAndFall {
-  0% {
-    opacity: 0;
-    transform: translate(0, 0) scale(0) rotate(-45deg);
+    transform: translateY(-50px) translateX(0) scale(var(--scale, 1)) rotate(0deg);
   }
   10% {
-    opacity: 1;
-    transform: translate(0, 0) scale(var(--base-scale, 1)) rotate(0deg);
+    opacity: var(--max-opacity, 0.9);
   }
-  50% {
-    opacity: 1;
-    transform: translate(0, 0) scale(var(--base-scale, 1)) rotate(0deg);
-  }
-  85% {
-    opacity: 0;
-    transform: translate(var(--fall-drift, 50px), var(--fall-dist, 300px)) scale(var(--base-scale, 1)) rotate(180deg);
+  90% {
+    opacity: var(--max-opacity, 0.9);
   }
   100% {
     opacity: 0;
-    transform: translate(0, 0) scale(0) rotate(-45deg);
+    transform: translateY(110vh) translateX(var(--drift, 50px)) scale(var(--scale, 1)) rotate(var(--rot, 360deg));
   }
 }

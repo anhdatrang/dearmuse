@@ -266,21 +266,25 @@
 
 /* Ghost CTA */
 .btn-hero-ghost {
+  display: inline-flex;
+  align-items: center;
   font-family: var(--font-body);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--logo-mocha);
+  color: var(--vanilla-cream);
   text-decoration: none;
-  padding-bottom: 3px;
-  border-bottom: 0.5px solid rgba(122, 92, 74, 0.4);
-  transition: color 0.25s, border-color 0.25s;
+  padding: 16px 32px;
+  border: 1px solid rgba(255, 247, 230, 0.4);
+  transition: all 0.3s var(--ease-silk);
 }
 
 .btn-hero-ghost:hover {
   color: var(--ink);
-  border-color: var(--ink);
+  background: var(--vanilla-cream);
+  border-color: var(--vanilla-cream);
+  transform: translateY(-2px);
 }
 
 

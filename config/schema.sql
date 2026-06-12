@@ -84,3 +84,14 @@ INSERT IGNORE INTO portfolio (title, slug, category, description, cover_image, i
 -- Seed default admin (password: dearmuse2025)
 INSERT IGNORE INTO admins (username, password_hash) VALUES
 ('admin', '$2a$10$rQnE7v6ZmYz8K2bL9xP1sOhW3dF4mN6jK8tG5cX7wV2yB1uR9pI0e');
+
+-- Create Analytics table
+CREATE TABLE IF NOT EXISTS analytics_events (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  event_type VARCHAR(50) NOT NULL,
+  event_value VARCHAR(255),
+  ip_address VARCHAR(45),
+  location VARCHAR(100),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+

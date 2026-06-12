@@ -3,8 +3,8 @@
 ══════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
 
-  const slides    = document.querySelectorAll('.hero-slide');
-  const dots      = document.querySelectorAll('.hero-dot');
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots = document.querySelectorAll('.hero-dot');
   const counterEl = document.getElementById('heroCurrentNum');
   let current = 0;
   let timer;
@@ -39,13 +39,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.addEventListener('keydown', e => {
     if (e.key === 'ArrowRight') { goTo(current + 1); startAuto(); }
-    if (e.key === 'ArrowLeft')  { goTo(current - 1); startAuto(); }
+    if (e.key === 'ArrowLeft') { goTo(current - 1); startAuto(); }
   });
 
   let touchStartX = 0;
   const heroEl = document.getElementById('hero');
   heroEl?.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
-  heroEl?.addEventListener('touchend',   e => {
+  heroEl?.addEventListener('touchend', e => {
     const diff = touchStartX - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 50) { goTo(diff > 0 ? current + 1 : current - 1); startAuto(); }
   }, { passive: true });
