@@ -310,22 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ─── Floating Action Button (FAB) ───────────
-  const fabToggle = document.getElementById('fab-toggle');
-  const fabWrapper = document.getElementById('fab-wrapper');
-  
-  if (fabToggle && fabWrapper) {
-    fabToggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      fabWrapper.classList.toggle('open');
-    });
-    
-    document.addEventListener('click', (e) => {
-      if (!fabWrapper.contains(e.target)) {
-        fabWrapper.classList.remove('open');
-      }
-    });
-  }
+
   // ─── Ambient Music Player ───────────────────
   const musicWidget = document.getElementById('music-player-widget');
   const musicToggle = document.getElementById('music-toggle');

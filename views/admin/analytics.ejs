@@ -30,7 +30,7 @@
         ? ((totalBookings / summary.click_booking) * 100).toFixed(1) 
         : '0.0';
     %>
-    <div class="stat-value confirmed"><%= conversionRate %>%</div>
+    <div class="stat-value confirmed"><%= conversionRate + '%' %></div>
     <p style="font-size: 10px; color: var(--smoke); margin-top: 4px;">Đơn thành công / Click</p>
   </div>
 </div>
@@ -56,7 +56,7 @@
                 <span style="color: var(--smoke);"><%= item.count %> lượt click</span>
               </div>
               <div style="height: 8px; background: var(--bone); border-radius: 4px; overflow: hidden;">
-                <div style="height: 100%; width: <%= percent %>%; background: var(--mocha); border-radius: 4px; transition: width 0.5s ease-in-out;"></div>
+                <div style="height: 100%; width: <%= percent + '%' %>; background: var(--mocha); border-radius: 4px; transition: width 0.5s ease-in-out;"></div>
               </div>
             </div>
           <% }) %>
@@ -110,7 +110,7 @@
                 <span style="color: var(--smoke);"><%= item.count %> lượt</span>
               </div>
               <div style="height: 8px; background: var(--bone); border-radius: 4px; overflow: hidden;">
-                <div style="height: 100%; width: <%= percent %>%; background: var(--avocado); border-radius: 4px; transition: width 0.5s ease-in-out;"></div>
+                <div style="height: 100%; width: <%= percent + '%' %>; background: var(--avocado); border-radius: 4px; transition: width 0.5s ease-in-out;"></div>
               </div>
             </div>
           <% }) %>

@@ -53,4 +53,334 @@ document.addEventListener('DOMContentLoaded', () => {
 
     container.appendChild(flower);
   }
+
+  // ─── Mascot Widget Interactivity & Chroma Keying ───
+  const mascotWidget = document.getElementById('mascot-widget');
+  const mascotBubble = document.getElementById('mascot-bubble');
+  const mascotCanvas = document.getElementById('mascot-canvas');
+  const mascotVideo = document.getElementById('mascot-video');
+  
+  if (mascotWidget && mascotBubble && mascotCanvas && mascotVideo) {
+    const ctx = mascotCanvas.getContext('2d', { willReadFrequently: true });
+    
+    // Set internal resolution of the canvas (small for super low CPU usage)
+    mascotCanvas.width = 256;
+    mascotCanvas.height = 144; // 16:9 aspect ratio
+    
+    // Chroma key parameters (calibrated to the green screen: R=12, G=160, B=35)
+    const targetR = 12;
+    const targetG = 160;
+    const targetB = 35;
+    const threshold = 90;
+    const smoothness = 35;
+    
+    let isVideoPlaying = false;
+    
+    function processChromaKey() {
+      if (mascotVideo.paused || mascotVideo.ended) {
+        requestAnimationFrame(processChromaKey);
+        return;
+      }
+      
+      // Draw frame and scale it down to canvas size
+      ctx.drawImage(mascotVideo, 0, 0, mascotCanvas.width, mascotCanvas.height);
+      
+      const frame = ctx.getImageData(0, 0, mascotCanvas.width, mascotCanvas.height);
+      const data = frame.data;
+      
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i+1];
+        const b = data[i+2];
+        
+        // Euclidean distance in RGB color space
+        const dist = Math.sqrt(
+          (r - targetR) ** 2 +
+          (g - targetG) ** 2 +
+          (b - targetB) ** 2
+        );
+        
+        if (dist < threshold) {
+          data[i+3] = 0; // Transparent
+        } else if (dist < threshold + smoothness) {
+          const factor = (dist - threshold) / smoothness;
+          data[i+3] = Math.round(factor * 255); // Soft feathered edge
+        }
+      }
+      
+      ctx.putImageData(frame, 0, 0);
+      
+      // If we successfully drew a keyed frame, make sure canvas is visible
+      if (!isVideoPlaying) {
+        isVideoPlaying = true;
+        mascotCanvas.style.opacity = '1';
+      }
+      
+      requestAnimationFrame(processChromaKey);
+    }
+    
+    // Start keying when video plays
+    mascotVideo.addEventListener('playing', () => {
+      requestAnimationFrame(processChromaKey);
+    });
+    
+    // Autoplay fallback
+    if (mascotVideo.readyState >= 2) {
+      mascotVideo.play().catch(() => {});
+    }
+    
+    // If already playing or starts playing immediately
+    if (!mascotVideo.paused) {
+      requestAnimationFrame(processChromaKey);
+    }
+    
+    // Bubble messages cycle
+    const bubbleText = mascotBubble.querySelector('span');
+    const bubbleMessages = [
+      "Xin chào! 👋",
+      "Cười lên cái nào! 😊",
+      "Bạn cần tư vấn gì không? ✨",
+      "Đặt lịch ngay để có ảnh xinh nhé! 📸",
+      "Chúc bạn một ngày tốt lành! 🌸",
+      "Dear Musé rất vui được đón tiếp! 💕"
+    ];
+    let msgIdx = 0;
+    
+    // Periodically cycle messages every 15 seconds
+    setInterval(() => {
+      if (mascotWidget.classList.contains('active-bubble') || document.activeElement === mascotWidget) return;
+      
+      msgIdx = (msgIdx + 1) % bubbleMessages.length;
+      if (bubbleText) bubbleText.innerHTML = bubbleMessages[msgIdx];
+      
+      // Auto show bubble for 5 seconds
+      mascotWidget.classList.add('active-bubble');
+      setTimeout(() => {
+        if (!mascotWidget.matches(':hover')) {
+          mascotWidget.classList.remove('active-bubble');
+        }
+      }, 5000);
+    }, 15000);
+    
+    // Sparkle particles list
+    const sparklesList = ['✨', '✨', '💖', '⭐', '🌸', '🎵', '💫', '🎈'];
+    
+    const createSparkles = (count) => {
+      for (let i = 0; i < count; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'mascot-sparkle';
+        sparkle.innerText = sparklesList[Math.floor(Math.random() * sparklesList.length)];
+        
+        // Radial spread calculations
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 100 + Math.random() * 140;
+        const tx = Math.cos(angle) * distance;
+        const ty = Math.sin(angle) * distance;
+        const tr = (Math.random() - 0.5) * 180;
+        const dur = 1.0 + Math.random() * 1.2;
+        
+        sparkle.style.setProperty('--tx', `${tx}px`);
+        sparkle.style.setProperty('--ty', `${ty}px`);
+        sparkle.style.setProperty('--tr', `${tr}deg`);
+        sparkle.style.setProperty('--duration', `${dur}s`);
+        
+        // Emitting from the center of the mascot
+        sparkle.style.left = `50%`;
+        sparkle.style.top = `60%`;
+        
+        mascotWidget.appendChild(sparkle);
+        
+        // Cleanup after animation finishes
+        setTimeout(() => {
+          sparkle.remove();
+        }, dur * 1000);
+      }
+    };
+    
+    // Continuous ambient particles (spawns 1 particle every 4 seconds)
+    setInterval(() => {
+      if (document.hidden) return;
+      if (!mascotWidget.matches(':hover')) {
+        createSparkles(1);
+      }
+    }, 4000);
+    
+    // Initial hello after load
+    setTimeout(() => {
+      mascotWidget.classList.add('active-bubble');
+      createSparkles(4);
+      setTimeout(() => {
+        if (!mascotWidget.matches(':hover')) {
+          mascotWidget.classList.remove('active-bubble');
+        }
+      }, 5000);
+    }, 2500);
+ 
+    // Hover events
+    mascotWidget.addEventListener('mouseenter', () => {
+      mascotWidget.classList.add('active-bubble');
+      createSparkles(6);
+    });
+ 
+    mascotWidget.addEventListener('mouseleave', () => {
+      mascotWidget.classList.remove('active-bubble');
+    });
+ 
+    // Click events: make mascot bounce and burst out sparkles
+    mascotWidget.addEventListener('click', () => {
+      createSparkles(10);
+      
+      // Cute bounce animation on the canvas element
+      mascotCanvas.style.transform = 'scale(1.18) translateY(-12px) rotate(5deg)';
+      setTimeout(() => {
+        mascotCanvas.style.transform = '';
+      }, 300);
+      
+      // Attempt to play the video if user interaction enables audio context/playback
+      if (mascotVideo.paused) {
+        mascotVideo.play().catch(() => {});
+      }
+      
+      // Select a random message instantly
+      const randomMsg = bubbleMessages[Math.floor(Math.random() * bubbleMessages.length)];
+      if (bubbleText) bubbleText.innerHTML = randomMsg;
+      mascotWidget.classList.add('active-bubble');
+    });
+
+    // --- Chatbot Logic ---
+    const chatbotWindow = document.getElementById('chatbot-window');
+    const chatbotCloseBtn = document.getElementById('chatbot-close-btn');
+    const chatbotBtn = document.getElementById('mascot-btn-chatbot');
+    const chatbotMessages = document.getElementById('chatbot-messages');
+    const chatbotForm = document.getElementById('chatbot-form');
+    const chatbotInput = document.getElementById('chatbot-input');
+    const chatbotSuggestions = document.getElementById('chatbot-suggestions');
+
+    if (chatbotWindow && chatbotCloseBtn && chatbotBtn && chatbotMessages && chatbotForm && chatbotInput && chatbotSuggestions) {
+      
+      const toggleChatbot = () => {
+        chatbotWindow.classList.toggle('open');
+        // Auto scroll to bottom when opening
+        if (chatbotWindow.classList.contains('open')) {
+          setTimeout(() => {
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+          }, 100);
+        }
+      };
+
+      chatbotBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleChatbot();
+      });
+
+      chatbotCloseBtn.addEventListener('click', () => {
+        chatbotWindow.classList.remove('open');
+      });
+
+      // Close when clicking outside chatbot window (except mascot-widget)
+      document.addEventListener('click', (e) => {
+        if (!chatbotWindow.contains(e.target) && !mascotWidget.contains(e.target)) {
+          chatbotWindow.classList.remove('open');
+        }
+      });
+
+      const appendMessage = (text, sender) => {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `chatbot-msg ${sender}`;
+        
+        const textDiv = document.createElement('div');
+        textDiv.className = 'chatbot-bubble-text';
+        textDiv.innerHTML = text;
+        
+        msgDiv.appendChild(textDiv);
+        chatbotMessages.appendChild(msgDiv);
+        
+        // Scroll to bottom
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+      };
+
+      const showTypingIndicator = () => {
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'chatbot-msg bot temp-typing';
+        
+        const bubble = document.createElement('div');
+        bubble.className = 'chatbot-bubble-text';
+        bubble.style.display = 'flex';
+        bubble.style.gap = '4px';
+        bubble.style.alignItems = 'center';
+        bubble.innerHTML = `
+          <span style="width:6px;height:6px;background:#9C8474;border-radius:50%;animation:typingBounce 1s infinite alternate"></span>
+          <span style="width:6px;height:6px;background:#9C8474;border-radius:50%;animation:typingBounce 1s infinite alternate;animation-delay:0.2s"></span>
+          <span style="width:6px;height:6px;background:#9C8474;border-radius:50%;animation:typingBounce 1s infinite alternate;animation-delay:0.4s"></span>
+        `;
+        
+        typingDiv.appendChild(bubble);
+        chatbotMessages.appendChild(typingDiv);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        return typingDiv;
+      };
+
+      // Inline typing bounce keyframes
+      if (!document.getElementById('chatbot-typing-keyframes')) {
+        const style = document.createElement('style');
+        style.id = 'chatbot-typing-keyframes';
+        style.innerHTML = `
+          @keyframes typingBounce {
+            0% { transform: translateY(0); opacity: 0.3; }
+            100% { transform: translateY(-4px); opacity: 1; }
+          }
+        `;
+        document.head.appendChild(style);
+      }
+
+      const getBotResponse = (query) => {
+        const q = query.toLowerCase().trim();
+        
+        if (q.includes('giá') || q.includes('gia') || q.includes('bao nhiêu') || q.includes('bao nhieu') || q.includes('gói') || q.includes('goi') || q.includes('pricing') || q.includes('tiền') || q.includes('tien')) {
+          return "Dear Musé cung cấp các gói chụp nghệ thuật cao cấp:<br>✦ Gói Concept Sáng Tạo: từ 2.500.000đ<br>✦ Gói Áo Dài: từ 1.800.000đ<br>✦ Gói Chân Dung Cá Nhân: từ 1.500.000đ<br>Chi tiết xem tại trang <a href='/pricing'>Bảng Giá</a> nhé! ✨";
+        }
+        if (q.includes('concept') || q.includes('ý tưởng') || q.includes('y tuong') || q.includes('phong cách') || q.includes('phong cach') || q.includes('mẫu') || q.includes('mau')) {
+          return "Chúng mình có rất nhiều concept độc đáo:<br>✦ Concept nghệ thuật Nàng Thơ<br>✦ Chân Dung Studio hiện đại<br>✦ Áo Dài truyền thống<br>Chúng mình cũng thiết kế concept riêng theo mong muốn của bạn. Xem thêm tại trang <a href='/services'>Dịch Vụ</a> nha! 🌸";
+        }
+        if (q.includes('đặt') || q.includes('dat') || q.includes('lịch') || q.includes('lich') || q.includes('chụp') || q.includes('chup') || q.includes('book')) {
+          return "Để đặt lịch chụp, bạn có thể điền thông tin nhanh tại trang <a href='/booking'>Đặt Lịch Chụp</a>. Ekip Dear Musé sẽ liên hệ lại với bạn trong vòng 24h để xác nhận lịch! 📸";
+        }
+        if (q.includes('liên hệ') || q.includes('lien he') || q.includes('sđt') || q.includes('sdt') || q.includes('hotline') || q.includes('địa chỉ') || q.includes('dia chi') || q.includes('fb') || q.includes('facebook') || q.includes('insta')) {
+          return "Bạn có thể liên hệ trực tiếp với chúng mình qua:<br>✦ Hotline: 0912 345 678<br>✦ Facebook: <a href='https://facebook.com' target='_blank'>Dear Musé Facebook</a><br>✦ Instagram: <a href='https://instagram.com' target='_blank'>Dear Musé Instagram</a><br>Hoặc gửi thông tin tại trang <a href='/contact'>Liên Hệ</a> nhé! 💕";
+        }
+        return "Cảm ơn tin nhắn của bạn! Trợ lý ảo đã ghi nhận thông tin. Để được hỗ trợ nhanh nhất, bạn có thể liên hệ hotline 0912 345 678 hoặc gửi tin nhắn tại trang <a href='/contact'>Liên Hệ</a> nhé! 🥰";
+      };
+
+      const handleUserMessage = (text) => {
+        appendMessage(text, 'user');
+        
+        const typingIndicator = showTypingIndicator();
+        
+        setTimeout(() => {
+          typingIndicator.remove();
+          const response = getBotResponse(text);
+          appendMessage(response, 'bot');
+        }, 800 + Math.random() * 600);
+      };
+
+      // Form submit
+      chatbotForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const text = chatbotInput.value.trim();
+        if (!text) return;
+        chatbotInput.value = '';
+        handleUserMessage(text);
+      });
+
+      // Suggestion buttons
+      chatbotSuggestions.addEventListener('click', (e) => {
+        const btn = e.target.closest('.chatbot-suggest-btn');
+        if (!btn) return;
+        const text = btn.textContent;
+        
+        handleUserMessage(text);
+      });
+    }
+  }
 });

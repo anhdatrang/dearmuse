@@ -24,8 +24,8 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="/css/main.css?v=13">
-  <link rel="stylesheet" href="/css/effects.css?v=1">
+  <link rel="stylesheet" href="/css/main.css?v=20">
+  <link rel="stylesheet" href="/css/effects.css?v=25">
   <% if (typeof pageCss !=='undefined' ) { %>
     <link rel="stylesheet" href="/css/<%= pageCss %>?v=3">
     <% } %>
@@ -77,58 +77,66 @@
               <!-- Footer -->
               <%- include('../partials/footer') %>
 
-                <!-- Floating Action Button (FAB) -->
-                <div class="fab-wrapper" id="fab-wrapper">
-                  <div class="fab-menu">
-                    <a href="/booking" class="fab-item" style="--i: 4" aria-label="Đặt lịch">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                        <line x1="3" y1="10" x2="21" y2="10"></line>
-                      </svg>
-                      <span class="fab-tooltip">Đặt lịch chụp</span>
-                    </a>
-                    <a href="/contact" class="fab-item" style="--i: 3" aria-label="Liên hệ">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                        <polyline points="22,6 12,13 2,6"></polyline>
-                      </svg>
-                      <span class="fab-tooltip">Liên hệ</span>
-                    </a>
-                    <a href="https://instagram.com" target="_blank" class="fab-item" style="--i: 2"
-                      aria-label="Instagram">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                      </svg>
-                      <span class="fab-tooltip">Instagram</span>
-                    </a>
-                    <a href="https://facebook.com" target="_blank" class="fab-item" style="--i: 1"
-                      aria-label="Facebook">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-                      </svg>
-                      <span class="fab-tooltip">Facebook</span>
-                    </a>
+                <!-- Chatbot Window -->
+                <div class="chatbot-window" id="chatbot-window">
+                  <div class="chatbot-header">
+                    <div class="chatbot-header-info">
+                      <div class="chatbot-avatar-status"></div>
+                      <div>
+                        <h4>Musé Assistant</h4>
+                        <span>Đang hoạt động</span>
+                      </div>
+                    </div>
+                    <button class="chatbot-close-btn" id="chatbot-close-btn" aria-label="Đóng Chatbot">✕</button>
                   </div>
-                  <button class="fab-toggle" id="fab-toggle" aria-label="Quick Menu">
-                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-                      stroke-linecap="round" stroke-linejoin="round" class="fab-icon-camera">
-                      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z">
-                      </path>
-                      <circle cx="12" cy="13" r="4"></circle>
-                    </svg>
-                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-                      stroke-linecap="round" stroke-linejoin="round" class="fab-icon-close">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  </button>
+                  <div class="chatbot-messages" id="chatbot-messages">
+                    <div class="chatbot-msg bot">
+                      <div class="chatbot-bubble-text">Chào bạn! Mình là trợ lý ảo của Dear Musé. Mình có thể giúp gì cho bạn hôm nay? ✨</div>
+                    </div>
+                  </div>
+                  <div class="chatbot-suggestions" id="chatbot-suggestions">
+                    <button class="chatbot-suggest-btn" data-action="pricing">Bảng giá chụp</button>
+                    <button class="chatbot-suggest-btn" data-action="concept">Tư vấn Concept</button>
+                    <button class="chatbot-suggest-btn" data-action="booking">Đặt lịch chụp</button>
+                    <button class="chatbot-suggest-btn" data-action="contact">Liên hệ trực tiếp</button>
+                  </div>
+                  <form class="chatbot-input-area" id="chatbot-form">
+                    <input type="text" id="chatbot-input" placeholder="Nhập tin nhắn..." autocomplete="off">
+                    <button type="submit" class="chatbot-send-btn" aria-label="Gửi">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                      </svg>
+                    </button>
+                  </form>
+                </div>
+
+                <!-- Mascot Widget -->
+                <div class="mascot-widget" id="mascot-widget">
+                  <!-- Mascot Menu (appears on hover) -->
+                  <div class="mascot-menu" id="mascot-menu">
+                    <!-- Decorative stickers -->
+                    <span class="menu-sticker sticker-tl">✨</span>
+                    <span class="menu-sticker sticker-tr">🌸</span>
+                    <a href="/pricing" class="mascot-menu-item">✦ Bảng giá</a>
+                    <button type="button" id="mascot-btn-chatbot" class="mascot-menu-item">🤖 Chat bot</button>
+                    <a href="/services" class="mascot-menu-item">✧ Concept</a>
+                    <a href="/about" class="mascot-menu-item">📜 Câu chuyện</a>
+                    <a href="/contact" class="mascot-menu-item">✉️ Liên hệ</a>
+                  </div>
+
+                  <div class="mascot-bubble" id="mascot-bubble">
+                    <span>Xin chào! 👋</span>
+                  </div>
+                  <div class="mascot-clouds-container">
+                    <!-- Mascot Video (Hidden) -->
+                    <video id="mascot-video" src="/audio/Mascot_sits_on_cloud_waves_202606161657.mp4" muted autoplay loop playsinline crossorigin="anonymous" style="display: none;"></video>
+                    
+                    <!-- Mascot Canvas (Chroma keyed output) -->
+                    <div class="mascot-image-wrap">
+                      <canvas class="mascot-img" id="mascot-canvas"></canvas>
+                    </div>
+                  </div>
                 </div>
 
                 <!-- Ambient Music Player -->
@@ -172,8 +180,8 @@
                 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/bundled/lenis.min.js" defer></script>
 
                 <!-- Main JS -->
-                <script src="/js/main.js?v=12" defer></script>
-                <script src="/js/effects.js?v=1" defer></script>
+                <script src="/js/main.js?v=20" defer></script>
+                <script src="/js/effects.js?v=25" defer></script>
                 <% if (typeof pageJs !=='undefined' ) { %>
                   <script src="/js/<%= pageJs %>" defer></script>
                   <% } %>
