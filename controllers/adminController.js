@@ -5,6 +5,7 @@ const Portfolio = require('../models/Portfolio');
 const Contact = require('../models/Contact');
 const Service = require('../models/Service');
 const Analytics = require('../models/Analytics');
+const BlogPost = require('../models/BlogPost');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
@@ -23,6 +24,7 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage, limits: { fileSize: 10 * 1024 * 1024 } });
+exports.uploadAny = upload.any();
 
 // ─── Auth ─────────────────────────────────────────────
 exports.loginPage = (req, res) => {
@@ -82,6 +84,8 @@ exports.analytics = async (req, res) => {
     const topConcepts = await Analytics.getTopConcepts();
     const topLocations = await Analytics.getTopLocations();
     const timeline = await Analytics.getTimeline();
+    const avgTimeOnPage = await Analytics.getAverageTimeOnPage();
+    const detailedClicks = await Analytics.getDetailedClicks();
     const unreadContacts = await Contact.countUnread();
 
     // Query conversion rate: actual bookings vs booking clicks
@@ -97,6 +101,8 @@ exports.analytics = async (req, res) => {
       timeline,
       totalBookings,
       unreadContacts,
+      avgTimeOnPage,
+      detailedClicks,
       adminUsername: req.session.adminUsername,
     });
   } catch (err) {
@@ -240,4 +246,262 @@ exports.contacts = async (req, res) => {
 exports.markContactRead = async (req, res) => {
   await Contact.markRead(req.params.id);
   res.redirect('/admin/contacts');
+};
+
+// ─── Blog Management ────────────────────────────────────
+exports.blogAdmin = async (req, res) => {
+  try {
+    const posts = await BlogPost.findAllAdmin();
+    res.render('admin/blog', {
+      title: 'Quản lý Blog — Dear Musé Admin',
+      layout: 'layouts/admin',
+      posts,
+      adminUsername: req.session.adminUsername,
+      success: req.flash('success'),
+      error: req.flash('error'),
+    });
+  } catch (err) {
+    console.error(err);
+    res.render('admin/blog', {
+      title: 'Quản lý Blog',
+      layout: 'layouts/admin',
+      posts: [],
+      adminUsername: req.session.adminUsername,
+      success: [],
+      error: [],
+    });
+  }
+};
+
+const processImageFile = async (file) => {
+  if (!file) return '';
+  const webpFilename = file.filename.split('.')[0] + '.webp';
+  await sharp(file.path)
+    .resize({ width: 1920, withoutEnlargement: true })
+    .webp({ quality: 80 })
+    .toFile(path.join(file.destination, webpFilename));
+  fs.unlinkSync(file.path); // Delete original
+  return `/uploads/${webpFilename}`;
+};
+
+exports.createPost = async (req, res) => {
+  try {
+    const files = req.files || [];
+    
+    // Find cover image file
+    const coverFile = files.find(f => f.fieldname === 'cover_image');
+    const coverImage = coverFile ? await processImageFile(coverFile) : '';
+
+    // Process blocks JSON
+    let blocks = [];
+    try {
+      if (req.body.content_blocks) {
+        blocks = JSON.parse(req.body.content_blocks);
+      }
+    } catch (e) {
+      console.error('Error parsing content_blocks JSON:', e);
+    }
+
+    // Process dynamic image slots for each grid
+    for (let grid of blocks) {
+      const numImages = parseInt(grid.layout || '1');
+      if (!Array.isArray(grid.images)) {
+        grid.images = [];
+      }
+      for (let i = 0; i < numImages; i++) {
+        const fileKey = `block_image_${grid.blockId}_${i}`;
+        const blockFile = files.find(f => f.fieldname === fileKey);
+        
+        // Ensure every item of grid.images is converted from string to object { url, title, subtitle }
+        if (!grid.images[i]) {
+          grid.images[i] = { url: '', title: '', subtitle: '' };
+        } else if (typeof grid.images[i] === 'string') {
+          grid.images[i] = { url: grid.images[i], title: '', subtitle: '' };
+        } else {
+          grid.images[i].url = grid.images[i].url || '';
+          grid.images[i].title = grid.images[i].title || '';
+          grid.images[i].subtitle = grid.images[i].subtitle || '';
+        }
+
+        if (blockFile) {
+          grid.images[i].url = await processImageFile(blockFile);
+        }
+      }
+      grid.images = grid.images.slice(0, numImages);
+    }
+
+    // Legacy fallback fields for backwards compatibility
+    const legacyImages = [];
+    for (let grid of blocks) {
+      if (Array.isArray(grid.images)) {
+        for (let img of grid.images) {
+          const imgUrl = typeof img === 'object' ? img.url : img;
+          if (imgUrl) legacyImages.push(imgUrl);
+        }
+      }
+    }
+
+    // Normalized slug generator for beautiful Vietnamese URLs
+    const cleanTitle = req.body.title
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/đ/g, 'd')
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, '');
+    const slug = (cleanTitle || 'post') + '-' + Date.now();
+    
+    await BlogPost.create({
+      title: req.body.title,
+      slug,
+      category: req.body.category,
+      subtitle: req.body.subtitle,
+      client_name: req.body.client_name,
+      location: req.body.location,
+      photographer: req.body.photographer,
+      concept: req.body.concept,
+      quote: req.body.quote || null,
+      summary: req.body.summary,
+      content: req.body.content,
+      content_outro: req.body.content_outro || null,
+      content_blocks: blocks,
+      cover_image: coverImage,
+      images: legacyImages,
+      is_featured: req.body.is_featured === '1' ? 1 : 0,
+      status: req.body.status || 'published'
+    });
+    
+    req.flash('success', 'Tạo bài viết thành công!');
+    res.redirect('/admin/blog');
+  } catch (err) {
+    console.error(err);
+    req.flash('error', 'Lỗi tạo bài viết.');
+    res.redirect('/admin/blog');
+  }
+};
+
+exports.editPost = async (req, res) => {
+  try {
+    const post = await BlogPost.findById(req.params.id);
+    if (!post) {
+      req.flash('error', 'Không tìm thấy bài viết.');
+      return res.redirect('/admin/blog');
+    }
+
+    res.render('admin/blog_edit', {
+      title: 'Chỉnh sửa bài viết — Dear Musé Admin',
+      layout: 'layouts/admin',
+      post,
+      adminUsername: req.session.adminUsername,
+      success: req.flash('success'),
+      error: req.flash('error'),
+    });
+  } catch (err) {
+    console.error(err);
+    req.flash('error', 'Lỗi tải trang chỉnh sửa.');
+    res.redirect('/admin/blog');
+  }
+};
+
+exports.updatePost = async (req, res) => {
+  try {
+    const post = await BlogPost.findById(req.params.id);
+    if (!post) {
+      req.flash('error', 'Không tìm thấy bài viết.');
+      return res.redirect('/admin/blog');
+    }
+
+    const files = req.files || [];
+    
+    // Process cover image (keep old one if not uploaded)
+    const coverFile = files.find(f => f.fieldname === 'cover_image');
+    const coverImage = coverFile ? await processImageFile(coverFile) : post.cover_image;
+
+    // Process blocks JSON
+    let blocks = [];
+    try {
+      if (req.body.content_blocks) {
+        blocks = JSON.parse(req.body.content_blocks);
+      }
+    } catch (e) {
+      console.error('Error parsing content_blocks JSON:', e);
+    }
+
+    // Process dynamic image slots for each grid
+    for (let grid of blocks) {
+      const numImages = parseInt(grid.layout || '1');
+      if (!Array.isArray(grid.images)) {
+        grid.images = [];
+      }
+      for (let i = 0; i < numImages; i++) {
+        const fileKey = `block_image_${grid.blockId}_${i}`;
+        const blockFile = files.find(f => f.fieldname === fileKey);
+        
+        // Ensure every item of grid.images is converted from string to object { url, title, subtitle }
+        if (!grid.images[i]) {
+          grid.images[i] = { url: '', title: '', subtitle: '' };
+        } else if (typeof grid.images[i] === 'string') {
+          grid.images[i] = { url: grid.images[i], title: '', subtitle: '' };
+        } else {
+          grid.images[i].url = grid.images[i].url || '';
+          grid.images[i].title = grid.images[i].title || '';
+          grid.images[i].subtitle = grid.images[i].subtitle || '';
+        }
+
+        if (blockFile) {
+          grid.images[i].url = await processImageFile(blockFile);
+        }
+      }
+      grid.images = grid.images.slice(0, numImages);
+    }
+
+    // Legacy fallback fields for backwards compatibility
+    const legacyImages = [];
+    for (let grid of blocks) {
+      if (Array.isArray(grid.images)) {
+        for (let img of grid.images) {
+          const imgUrl = typeof img === 'object' ? img.url : img;
+          if (imgUrl) legacyImages.push(imgUrl);
+        }
+      }
+    }
+
+    await BlogPost.update(post.id, {
+      title: req.body.title,
+      category: req.body.category,
+      subtitle: req.body.subtitle,
+      client_name: req.body.client_name,
+      location: req.body.location,
+      photographer: req.body.photographer,
+      concept: req.body.concept,
+      quote: req.body.quote || null,
+      summary: req.body.summary,
+      content: req.body.content,
+      content_outro: req.body.content_outro || null,
+      content_blocks: blocks,
+      cover_image: coverImage,
+      images: legacyImages,
+      is_featured: req.body.is_featured === '1' ? 1 : 0,
+      status: req.body.status || 'published'
+    });
+
+    req.flash('success', 'Cập nhật bài viết thành công!');
+    res.redirect('/admin/blog');
+  } catch (err) {
+    console.error(err);
+    req.flash('error', 'Lỗi cập nhật bài viết.');
+    res.redirect('/admin/blog');
+  }
+};
+
+exports.deletePost = async (req, res) => {
+  try {
+    await BlogPost.delete(req.params.id);
+    req.flash('success', 'Đã xoá bài viết.');
+    res.redirect('/admin/blog');
+  } catch (err) {
+    console.error(err);
+    req.flash('error', 'Lỗi xoá bài viết.');
+    res.redirect('/admin/blog');
+  }
 };

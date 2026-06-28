@@ -35,7 +35,17 @@
                 <div style="font-weight: 400;"><%= a.title %></div>
                 <div style="font-size: 12px; color: var(--smoke);"><%= a.slug %></div>
               </td>
-              <td><span class="badge badge-confirmed"><%= a.category %></span></td>
+              <td>
+                <% if (a.category === 'ca-nhan') { %>
+                  <span class="badge badge-confirmed">Cá Nhân</span>
+                <% } else if (a.category === 'doanh-nghiep') { %>
+                  <span class="badge badge-confirmed">Doanh Nghiệp</span>
+                <% } else if (a.category === 'mo-rong') { %>
+                  <span class="badge badge-confirmed">Mở Rộng</span>
+                <% } else { %>
+                  <span class="badge badge-confirmed"><%= a.category %></span>
+                <% } %>
+              </td>
               <td><%= a.is_featured ? '✓' : '—' %></td>
               <td>
                 <form method="POST" action="/admin/portfolio/<%= a.id %>/delete"
@@ -63,11 +73,9 @@
       <div class="form-group-admin">
         <label class="form-label">Danh mục</label>
         <select name="category" class="form-control">
-          <option value="portrait">Portrait</option>
-          <option value="event">Event</option>
-          <option value="studio">Studio</option>
-          <option value="commercial">Commercial</option>
-          <option value="outdoor">Outdoor</option>
+          <option value="ca-nhan">Cá Nhân</option>
+          <option value="doanh-nghiep">Doanh Nghiệp</option>
+          <option value="mo-rong">Mở Rộng</option>
         </select>
       </div>
       <div class="form-group-admin">

@@ -1,0 +1,32 @@
+BẢNG GIÁ DỊCH VỤ CHỤP ẢNH GỐC (BASELINE PACKAGES):
+1. Gói Chân Dung Chuyên Nghiệp (Portrait Studio):
+   - Chi phí: Từ 1.500.000đ
+   - Bao gồm: 60 phút chụp tại studio, hỗ trợ các phụ kiện cơ bản, bàn giao toàn bộ file gốc, chỉnh sửa (retouch) chuyên sâu 10 ảnh nghệ thuật.
+   - Chưa bao gồm dịch vụ Makeup.
+
+2. Gói Áo Dài / Kỷ Yếu Nghệ Thuật:
+   - Chi phí: Từ 1.800.000đ
+   - Bao gồm: Chụp ảnh ngoại cảnh tự nhiên tại các địa điểm TP.HCM, thời gian chụp 90 phút, hỗ trợ tối đa 3 bộ trang phục áo dài/cổ phục của studio, bàn giao toàn bộ file gốc, chỉnh sửa màu sắc toàn bộ ảnh.
+   - Chưa bao gồm dịch vụ Makeup.
+
+3. Gói Concept Sáng Tạo (Cinematic Concept):
+   - Chi phí: Từ 2.500.000đ
+   - Bao gồm: Thiết lập concept nghệ thuật riêng biệt, thời gian chụp 90-120 phút, bao gồm 1 layout trang điểm và làm tóc chuyên nghiệp, hỗ trợ trang phục thiết kế riêng của concept, chỉnh sửa chuyên sâu 15 ảnh chất lượng cao, bàn giao toàn bộ file gốc.
+
+4. Gói Sự Kiện Basic (Event):
+   - Chi phí: Từ 3.000.000đ
+   - Bao gồm: 1 nhiếp ảnh gia chính chụp phóng sự tự nhiên, trả toàn bộ file ảnh gốc chất lượng cao, chỉnh sửa (retouch) 30 ảnh tuyển chọn.
+
+5. Gói Sự Kiện Cao Cấp (Event Premium):
+   - Chi phí: Từ 6.000.000đ
+   - Bao gồm: 2 nhiếp ảnh gia chuyên nghiệp, trang bị thiết bị chiếu sáng di động chuyên dụng cho sự kiện lớn, chỉnh sửa 60 ảnh nghệ thuật, bàn giao nhanh trong 48h.
+
+DANH SÁCH DỊCH VỤ CỘNG THÊM (ADD-ONS - CÓ THỂ CỘNG DỒN):
+1. Dịch vụ Trang điểm & Làm tóc chuyên nghiệp (Makeup & Hair):
+   - Gói Makeup tại Studio: 500.000đ / người.
+   - Gói Makeup đi theo dặm phấn ngoại cảnh: 900.000đ / buổi.
+2. Thuê thêm trang phục thiết kế của studio: 200.000đ / bộ.
+3. Chỉnh sửa thêm ảnh nghệ thuật (Retouch phụ trội): 50.000đ / tấm.
+4. Chụp thêm giờ (Overtime): 400.000đ / giờ phát sinh.
+5. Thuê Studio riêng ngoài danh mục mặc định của gói: 500.000đ / giờ.
+6. Phụ thu thêm 1 người chụp chung trong bộ ảnh cá nhân: 300.000đ / người (chưa bao gồm makeup phát sinh cho người đó).

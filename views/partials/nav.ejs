@@ -5,6 +5,7 @@
       <li><a href="/" class="<%= currentPath === '/' ? 'active' : '' %>">Trang chủ</a></li>
       <li><a href="/services" class="<%= currentPath === '/services' ? 'active' : '' %>">Dịch vụ</a></li>
       <li><a href="/portfolio" class="<%= currentPath.startsWith('/portfolio') ? 'active' : '' %>">Portfolio</a></li>
+      <li><a href="/blog" class="<%= currentPath.startsWith('/blog') ? 'active' : '' %>">Blog</a></li>
     </ul>
 
     <!-- Logo trung tâm -->
@@ -17,16 +18,8 @@
       <li><a href="/pricing" class="<%= currentPath === '/pricing' ? 'active' : '' %>">Bảng giá</a></li>
       <li><a href="/about" class="<%= currentPath === '/about' ? 'active' : '' %>">Về chúng tôi</a></li>
       <li><a href="/contact" class="<%= currentPath === '/contact' ? 'active' : '' %>">Liên hệ</a></li>
+      <li><a href="/booking" class="nav-cta"><span>Đặt lịch</span></a></li>
     </ul>
-
-    <!-- Nhóm chức năng (CTA & Ngôn ngữ) -->
-    <div class="nav-actions">
-      <a href="/booking" class="nav-cta"><span>Đặt lịch</span></a>
-      <div class="lang-pill notranslate" id="lang-pill">
-        <button class="lang-btn active" data-lang="vi">VI</button>
-        <button class="lang-btn" data-lang="en">EN</button>
-      </div>
-    </div>
 
     <!-- Hamburger (mobile) -->
     <button class="nav-hamburger" id="hamburger" aria-label="Mở menu">

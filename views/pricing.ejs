@@ -22,19 +22,19 @@
           
           <div class="pricing-details">
             <div class="pricing-cost">
-              <strong><%= (s.price_from / 1000000).toFixed(1) %></strong>
-              <span>Triệu đồng</span>
+              <span class="pricing-cost-from">Từ</span>
+              <strong><%= s.price_from.toLocaleString('vi-VN') %>đ</strong>
             </div>
             
             <div class="pricing-features">
               <div class="pricing-feature">Thời lượng: <%= s.duration_minutes %> phút</div>
-              <div class="pricing-feature">Tư vấn concept & trang phục</div>
+              <div class="pricing-feature">Tư vấn concept &amp; trang phục</div>
               <div class="pricing-feature">10 ảnh chỉnh sửa chuyên sâu (retouch)</div>
               <div class="pricing-feature">Toàn bộ file gốc sau buổi chụp</div>
             </div>
             
             <div class="pricing-actions">
-              <a href="/booking?service=<%= s.slug %>" class="btn btn-outline-dark">Đặt lịch ngay</a>
+              <a href="/booking?service=<%= s.slug %>" class="btn btn-outline-dark pricing-btn"><span>Đặt lịch ngay</span></a>
             </div>
           </div>
         </div>

@@ -38,6 +38,7 @@ app.use((req, res, next) => {
   res.locals.success = req.flash('success');
   res.locals.error = req.flash('error');
   res.locals.currentPath = req.path;
+  res.locals.baseUrl = req.protocol + '://' + req.get('host');
   next();
 });
 

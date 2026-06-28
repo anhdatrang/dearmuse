@@ -274,6 +274,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Handle browser back button (BFCache) to prevent transition overlay from getting stuck
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted) {
+      const pto = document.getElementById('page-transition-overlay');
+      const ptoText = pto ? pto.querySelector('.pto-text') : null;
+      if (pto) {
+        pto.style.transition = 'none';
+        pto.style.transform = 'translateY(-110%)';
+        if (ptoText) {
+          ptoText.style.transition = 'none';
+          ptoText.style.opacity = '0';
+          ptoText.style.transform = 'translateY(28px)';
+        }
+      }
+    }
+  });
+
   // ─── GLightbox ────────────────────────────
   if (typeof GLightbox !== 'undefined') {
     // Tự động biến tất cả ảnh thành dạng click để phóng to (Lightbox)
@@ -411,7 +428,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ─── Language Switcher (Google Translate Wrapper) ───
-  const langBtns = document.querySelectorAll('.lang-btn');
+  const langToggle = document.getElementById('lang-toggle');
+  const langLabel = langToggle ? langToggle.querySelector('.lang-label') : null;
+  let currentLanguage = 'vi'; // default
   
   function triggerGoogleTranslate(langCode) {
     const selectField = document.querySelector('.goog-te-combo');
@@ -423,51 +442,89 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function initLanguageState() {
     const match = document.cookie.match(/(^|;) ?googtrans=([^;]*)(;|$)/);
-    let currentLang = 'vi'; // default
     if (match && match[2]) {
       const parts = decodeURIComponent(match[2]).split('/');
-      if (parts.length > 2) currentLang = parts[2];
+      if (parts.length > 2) currentLanguage = parts[2];
     }
-    
-    langBtns.forEach(btn => {
-      if (btn.dataset.lang === currentLang) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
-    });
+    updateLangUI();
+  }
+
+  function updateLangUI() {
+    if (langLabel) {
+      langLabel.textContent = currentLanguage.toUpperCase();
+    }
   }
 
   setTimeout(initLanguageState, 1000);
 
-  langBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
+  if (langToggle) {
+    langToggle.addEventListener('click', (e) => {
       e.preventDefault();
-      const targetLang = btn.dataset.lang;
-      
-      langBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      
-      triggerGoogleTranslate(targetLang);
+      currentLanguage = currentLanguage === 'vi' ? 'en' : 'vi';
+      updateLangUI();
+      triggerGoogleTranslate(currentLanguage);
     });
-  });
+  }
 
   // ─── Behavioral Tracking Telemetry ───────────
-  function trackEvent(eventType, eventValue = '') {
+  function trackEvent(eventType, eventValue = '', durationSeconds = 0) {
     fetch('/api/track', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ event_type: eventType, event_value: eventValue })
+      body: JSON.stringify({ 
+        event_type: eventType, 
+        event_value: eventValue, 
+        duration_seconds: durationSeconds 
+      })
     }).catch(err => console.error('Tracking failed:', err));
   }
 
-  // 1. Page view tracking
+  // Expose globally so other scripts (like effects.js) can log events
+  window.trackEvent = trackEvent;
+
+  // 1. Page view & Time on page tracking
   trackEvent('page_view', window.location.pathname);
 
-  // 2. Booking button clicks
+  const startTime = Date.now();
+  let timeTracked = false;
+
+  function sendTimeOnPage() {
+    if (timeTracked) return;
+    const durationSeconds = Math.round((Date.now() - startTime) / 1000);
+    // Only track if stayed >= 3 seconds (filters bounces)
+    if (durationSeconds >= 3) {
+      timeTracked = true;
+      trackEvent('time_on_page', window.location.pathname, durationSeconds);
+    }
+  }
+
+  // Use visibilitychange and pagehide for reliable mobile & tab-close tracking
+  window.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+      sendTimeOnPage();
+    }
+  });
+  window.addEventListener('pagehide', sendTimeOnPage);
+  window.addEventListener('beforeunload', sendTimeOnPage);
+
+  // 2. Booking button clicks & classification
   document.querySelectorAll('a[href="/booking"], .nav-cta, .btn-hero-primary, .btn-cta-primary, .fab-item[href="/booking"]').forEach(btn => {
     btn.addEventListener('click', () => {
+      let locationLabel = 'General';
+      if (btn.classList.contains('nav-cta') || btn.closest('header') || btn.closest('.nav-links')) {
+        locationLabel = 'Header';
+      } else if (btn.closest('.hero')) {
+        locationLabel = 'Hero Slideshow';
+      } else if (btn.closest('.cta-section')) {
+        locationLabel = 'CTA Block';
+      } else if (btn.classList.contains('fab-item') || btn.closest('.floating-contact')) {
+        locationLabel = 'Floating FAB';
+      } else if (btn.closest('footer')) {
+        locationLabel = 'Footer';
+      }
+      
       trackEvent('click_booking', window.location.pathname);
+      trackEvent('click_element', `Booking Button (${locationLabel})`);
     });
   });
 
@@ -476,6 +533,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (contactForm) {
     contactForm.addEventListener('submit', () => {
       trackEvent('submit_contact', 'Form Submitted');
+      trackEvent('click_element', 'Contact: Form Submitted');
     });
   }
 
@@ -487,9 +545,32 @@ document.addEventListener('DOMContentLoaded', () => {
       const slug = match ? match[1] : '';
       const h3 = card.querySelector('h3');
       const name = h3 ? h3.textContent.trim() : slug;
+      
       trackEvent('click_concept', name || 'Concept');
+      trackEvent('click_element', `Concept Click: ${name || slug}`);
     });
   });
+
+  // 5. Contact channel clicks (Zalo, Phone, Facebook)
+  document.querySelectorAll('a[href*="zalo.me"], a[href^="tel:"], a[href*="facebook.com"], a[href*="m.me"]').forEach(link => {
+    link.addEventListener('click', () => {
+      const href = link.getAttribute('href') || '';
+      let platform = 'Other Link';
+      if (href.includes('zalo.me')) platform = 'Zalo';
+      else if (href.startsWith('tel:')) platform = 'Hotline Phone';
+      else if (href.includes('facebook.com') || href.includes('m.me')) platform = 'Facebook';
+      
+      trackEvent('click_element', `Contact Channel: ${platform}`);
+    });
+  });
+
+  // 6. Chatbot Mascot Clicks
+  const chatbotToggle = document.getElementById('chatbot-toggle') || document.querySelector('.chatbot-mascot-widget');
+  if (chatbotToggle) {
+    chatbotToggle.addEventListener('click', () => {
+      trackEvent('click_element', 'Chatbot: Mascot Clicked');
+    });
+  }
 
 });
 

@@ -135,7 +135,7 @@
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--logo-mocha);
+  color: var(--avocado-cream, #D4DB74);
   opacity: 0;
   animation: heroReveal 0.8s var(--ease-out-expo) 0.6s forwards;
 }
@@ -178,7 +178,7 @@
 .hero-title {
   font-family: var(--font-display);
   font-weight: 400;
-  line-height: 1.0;
+  line-height: 1.05;
   margin-bottom: 40px;
   display: flex;
   flex-direction: column;
@@ -186,7 +186,6 @@
 
 .hero-title-line {
   display: block;
-  font-size: clamp(62px, 9.5vw, 108px);
   color: var(--vanilla-cream);
   letter-spacing: -0.025em;
   text-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
@@ -196,20 +195,23 @@
 
 .hero-title-line:nth-child(1) {
   --i: 0;
+  font-size: clamp(62px, 9vw, 110px); /* Slightly smaller than middle line, but larger than before */
 }
 
 .hero-title-line:nth-child(2) {
   --i: 1;
+  font-size: clamp(85px, 12.5vw, 160px); /* Keep it massive */
+  font-style: italic;
+  color: var(--avocado-cream, #D4DB74);
+  margin: -5px 0;
 }
 
 .hero-title-line:nth-child(3) {
   --i: 2;
+  font-size: clamp(62px, 9vw, 110px); /* Slightly smaller than middle line */
 }
 
-.hero-title-line.italic {
-  font-style: italic;
-  color: var(--logo-mocha);
-}
+
 
 .hero-actions {
   display: flex;
@@ -232,6 +234,7 @@
   background: var(--vanilla-cream);
   color: var(--ink);
   padding: 16px 32px;
+  border-radius: 50px;
   text-decoration: none;
   transition: background 0.3s, transform 0.25s var(--ease-silk), gap 0.3s;
   position: relative;
@@ -246,6 +249,7 @@
   transform: scaleX(0);
   transform-origin: right;
   transition: transform 0.4s var(--ease-out-expo);
+  border-radius: 50px;
 }
 
 .btn-hero-primary:hover::before {
@@ -277,6 +281,7 @@
   text-decoration: none;
   padding: 16px 32px;
   border: 1px solid rgba(255, 247, 230, 0.4);
+  border-radius: 50px;
   transition: all 0.3s var(--ease-silk);
 }
 
@@ -434,12 +439,14 @@
   box-shadow: 0 25px 50px rgba(26, 25, 22, 0.15);
   transition: all 0.8s var(--ease-out-expo);
   overflow: visible;
+  border-radius: 16px;
 }
 
 .collage-layer img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 8px;
 }
 
 .collage-bg {
@@ -582,7 +589,7 @@
 
 .gallery-heading em {
   font-style: italic;
-  color: var(--logo-mocha);
+  color: var(--ink);
 }
 
 /* Masonry layout for artistic photography gallery */
@@ -598,7 +605,7 @@
   position: relative;
   overflow: hidden;
   margin-bottom: 16px;
-  border-radius: 4px;
+  border-radius: 16px;
 }
 
 .gallery-item img {
@@ -666,7 +673,7 @@
 
 /* ─── NUMBERS SECTION ────────────────────────────────── */
 .numbers-section {
-  background: var(--parchment);
+  background: var(--vanilla-cream);
   padding: var(--section-gap) 0;
   border-top: 0.5px solid var(--bone);
   border-bottom: 0.5px solid var(--bone);
@@ -697,7 +704,7 @@
 }
 
 .number-item {
-  background: var(--parchment);
+  background: var(--vanilla-cream);
   padding: 48px 36px;
   position: relative;
   overflow: hidden;
@@ -763,7 +770,14 @@
 
 /* ─── SERVICES LIST ──────────────────────────────────── */
 .services-section {
-  background: var(--vanilla-cream);
+  background-color: #F5E8E1;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 15% 20%, rgba(247, 200, 211, 0.85) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 45% at 80% 10%, rgba(255, 230, 235, 0.6) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 55% at 90% 70%, rgba(242, 218, 228, 0.75) 0%, transparent 60%),
+    radial-gradient(ellipse 65% 50% at 10% 85%, rgba(255, 245, 238, 0.7) 0%, transparent 60%),
+    radial-gradient(ellipse 45% 40% at 50% 50%, rgba(250, 225, 215, 0.5) 0%, transparent 70%),
+    radial-gradient(ellipse 30% 35% at 65% 35%, rgba(253, 236, 208, 0.55) 0%, transparent 55%);
   padding: var(--section-gap) 0;
 }
 
@@ -798,7 +812,14 @@
 
 /* Grid-style services cards -> Marquee */
 .services-section {
-  background: var(--vanilla-cream);
+  background-color: #F5E8E1;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 15% 20%, rgba(247, 200, 211, 0.85) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 45% at 80% 10%, rgba(255, 230, 235, 0.6) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 55% at 90% 70%, rgba(242, 218, 228, 0.75) 0%, transparent 60%),
+    radial-gradient(ellipse 65% 50% at 10% 85%, rgba(255, 245, 238, 0.7) 0%, transparent 60%),
+    radial-gradient(ellipse 45% 40% at 50% 50%, rgba(250, 225, 215, 0.5) 0%, transparent 70%),
+    radial-gradient(ellipse 30% 35% at 65% 35%, rgba(253, 236, 208, 0.55) 0%, transparent 55%);
   padding: var(--section-gap) 0;
   overflow: hidden;
 }
@@ -1205,9 +1226,14 @@
 
 /* ─── ABOUT SNAP ─────────────────────────────────────── */
 .about-snap {
-  background: var(--parchment);
+  background-color: #F5E8E1;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 85% 20%, rgba(247, 200, 211, 0.75) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 45% at 20% 10%, rgba(255, 230, 235, 0.5) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 55% at 10% 70%, rgba(242, 218, 228, 0.65) 0%, transparent 60%),
+    radial-gradient(ellipse 45% 40% at 50% 50%, rgba(250, 225, 215, 0.4) 0%, transparent 70%);
   padding: var(--section-gap) 0;
-  border-top: 0.5px solid var(--bone);
+  border-top: 0.5px solid rgba(242, 218, 228, 0.5);
 }
 
 .about-snap-grid {
@@ -1221,6 +1247,7 @@
   position: relative;
   aspect-ratio: 3/4;
   overflow: hidden;
+  border-radius: 16px;
 }
 
 .about-snap-frame img {
@@ -1343,9 +1370,18 @@
 /* ─── CTA SECTION ────────────────────────────────────── */
 .cta-section {
   position: relative;
-  background: var(--avocado-cream);
+  background: var(--vanilla-cream);
   padding: 100px 0;
   overflow: hidden;
+}
+
+/* Section tag trên nền hồng */
+.cta-section .section-tag {
+  color: var(--logo-mocha);
+}
+
+.cta-section .section-tag::before {
+  background: var(--logo-mocha);
 }
 
 /* Subtle grain over CTA */
@@ -1385,7 +1421,7 @@
 .cta-text p {
   font-size: 14px;
   font-weight: 300;
-  color: rgba(26, 25, 22, 0.65);
+  color: rgba(26, 25, 22, 0.6);
   margin-bottom: 36px;
   letter-spacing: 0.02em;
 }
@@ -1396,7 +1432,7 @@
   gap: 20px;
 }
 
-/* Dark primary button */
+/* Primary button — nền hồng → nút màu đen sang trọng */
 .btn-cta-primary {
   display: inline-flex;
   align-items: center;
@@ -1411,6 +1447,7 @@
   text-decoration: none;
   position: relative;
   overflow: hidden;
+  border-radius: 50px !important;
   transition: transform 0.25s var(--ease-silk);
 }
 
@@ -1419,6 +1456,7 @@
   position: absolute;
   inset: 0;
   background: var(--logo-mocha);
+  opacity: 1;
   transform: scaleX(0);
   transform-origin: right;
   transition: transform 0.4s var(--ease-out-expo);
@@ -1444,10 +1482,10 @@
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(26, 25, 22, 0.6);
+  color: rgba(26, 25, 22, 0.55);
   text-decoration: none;
   padding-bottom: 3px;
-  border-bottom: 0.5px solid rgba(26, 25, 22, 0.25);
+  border-bottom: 0.5px solid rgba(26, 25, 22, 0.3);
   transition: color 0.25s, border-color 0.25s;
 }
 
@@ -1466,6 +1504,7 @@
   position: relative;
   z-index: 1;
   box-shadow: 0 20px 60px rgba(26, 25, 22, 0.15);
+  border-radius: 16px;
 }
 
 .cta-img-frame img {
@@ -1485,7 +1524,7 @@
   left: -16px;
   width: 55%;
   height: 55%;
-  border: 1px solid rgba(26, 25, 22, 0.12);
+  border: 1px solid rgba(26, 25, 22, 0.15);
   z-index: 0;
   pointer-events: none;
 }
@@ -1568,8 +1607,12 @@
     display: none;
   }
 
-  .hero-title-line {
-    font-size: clamp(48px, 14vw, 70px);
+  .hero-title-line:nth-child(1),
+  .hero-title-line:nth-child(3) {
+    font-size: clamp(40px, 9vw, 62px) !important;
+  }
+  .hero-title-line:nth-child(2) {
+    font-size: clamp(62px, 14vw, 98px) !important;
   }
 
   .hero-badge {
@@ -1649,5 +1692,20 @@
 
   .number-item {
     padding: 36px 24px;
+  }
+}
+
+/* Mobile responsive styles for Hero Section */
+@media (max-width: 768px) {
+  .hero-actions {
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 320px;
+  }
+  .btn-hero-primary,
+  .btn-hero-ghost {
+    width: 100%;
+    justify-content: center;
   }
 }

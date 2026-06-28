@@ -4,10 +4,10 @@ class Analytics {
   /**
    * Log an event into the tracking database
    */
-  static async logEvent(eventType, eventValue, ipAddress, location) {
+  static async logEvent(eventType, eventValue, ipAddress, location, durationSeconds = 0) {
     const [result] = await db.execute(
-      `INSERT INTO analytics_events (event_type, event_value, ip_address, location) VALUES (?, ?, ?, ?)`,
-      [eventType, eventValue, ipAddress, location]
+      `INSERT INTO analytics_events (event_type, event_value, ip_address, location, duration_seconds) VALUES (?, ?, ?, ?, ?)`,
+      [eventType, eventValue, ipAddress, location, durationSeconds]
     );
     return result;
   }
@@ -66,6 +66,33 @@ class Analytics {
        GROUP BY DATE_FORMAT(created_at, '%Y-%m-%d') 
        ORDER BY date ASC 
        LIMIT 14`
+    );
+  }
+
+  /**
+   * Get average time spent on each page
+   */
+  static async getAverageTimeOnPage() {
+    const [rows] = await db.execute(
+      `SELECT event_value as page, ROUND(AVG(duration_seconds), 1) as avg_duration, COUNT(*) as visits 
+       FROM analytics_events 
+       WHERE event_type = 'time_on_page' AND duration_seconds >= 3
+       GROUP BY event_value 
+       ORDER BY avg_duration DESC`
+    );
+    return rows;
+  }
+
+  /**
+   * Get detailed clicked elements
+   */
+  static async getDetailedClicks() {
+    const [rows] = await db.execute(
+      `SELECT event_value as element, COUNT(*) as count 
+       FROM analytics_events 
+       WHERE event_type = 'click_element' 
+       GROUP BY event_value 
+       ORDER BY count DESC`
     );
     return rows;
   }

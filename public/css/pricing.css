@@ -46,26 +46,29 @@
   gap: 40px;
 }
 
+/* ── Giá hiển thị đầy đủ số ── */
 .pricing-cost {
   display: flex;
   align-items: baseline;
-  gap: 12px;
+  gap: 10px;
+}
+
+.pricing-cost-from {
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--smoke);
 }
 
 .pricing-cost strong {
   font-family: var(--font-display);
-  font-size: clamp(48px, 6vw, 72px);
+  font-size: clamp(36px, 4.5vw, 56px);
   font-style: italic;
   font-weight: 400;
   color: var(--logo-mocha);
   line-height: 1;
-}
-
-.pricing-cost span {
-  font-size: 14px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--smoke);
+  letter-spacing: -0.02em;
 }
 
 .pricing-features {
@@ -90,10 +93,16 @@
   height: 1px;
   background: var(--logo-taupe);
   opacity: 0.5;
+  flex-shrink: 0;
 }
 
 .pricing-actions {
-  margin-top: 16px;
+  margin-top: 8px;
+}
+
+/* ── Nút đặt lịch bo tròn + hover xanh ── */
+.pricing-btn {
+  border-radius: 100px !important;
 }
 
 @media (max-width: 768px) {
@@ -101,5 +110,9 @@
     grid-template-columns: 1fr;
     gap: 32px;
     padding: 48px 0;
+  }
+
+  .pricing-cost strong {
+    font-size: clamp(32px, 8vw, 46px);
   }
 }

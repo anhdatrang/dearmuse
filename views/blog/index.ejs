@@ -1,0 +1,69 @@
+<% pageCss = 'blog.css'; %>
+
+<!-- Editorial Hero -->
+<section class="blog-hero">
+  <div class="blog-hero-bg">
+    <img src="/source/N%C3%A0ng%20th%C6%A1/Xanh%20Xanh%20002.JPG" alt="Blog Background">
+  </div>
+  <div class="blog-hero-content reveal">
+    <h1>Journal</h1>
+    <p>Góc nhỏ chia sẻ tin tức & những bộ ảnh đầy chất thơ</p>
+  </div>
+</section>
+
+<!-- Blog Content -->
+<section style="padding: 80px 0 var(--section-gap);">
+  <div class="container">
+
+    <!-- Luxury Filters -->
+    <div class="blog-filters reveal" data-delay="1">
+      <a href="/blog" class="filter-btn <%= activeCategory === 'all' ? 'active' : '' %>">Tất cả</a>
+      <a href="/blog?category=news" class="filter-btn <%= activeCategory === 'news' ? 'active' : '' %>">Tin tức Studio</a>
+      <a href="/blog?category=customer_photos" class="filter-btn <%= activeCategory === 'customer_photos' ? 'active' : '' %>">Ảnh khách hàng</a>
+    </div>
+
+    <!-- Editorial Blog Grid -->
+    <div class="blog-grid">
+      <% posts.forEach((post, i) => { %>
+        <article class="blog-card reveal" data-delay="<%= (i % 3) + 1 %>">
+          <a href="/blog/<%= post.slug %>" class="blog-card-img-wrap" style="border-radius: 16px; overflow: hidden;">
+            <img src="<%= post.cover_image %>" alt="<%= post.title %>" loading="<%= i < 3 ? 'eager' : 'lazy' %>" style="border-radius: 16px; object-fit: cover; width: 100%; height: 100%;">
+            <span class="blog-card-category <%= post.category %>">
+              <%= post.category === 'news' ? 'Tin tức' : 'Ảnh khách hàng' %>
+            </span>
+          </a>
+          <div class="blog-card-body">
+            <span class="blog-card-date"><%= new Date(post.created_at).toLocaleDateString('vi-VN', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+            <h2 class="blog-card-title">
+              <a href="/blog/<%= post.slug %>"><%= post.title %></a>
+            </h2>
+            <p class="blog-card-summary"><%= post.summary %></p>
+            <a href="/blog/<%= post.slug %>" class="blog-card-link">
+              <span>Đọc chi tiết</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+
+    <% if (posts.length === 0) { %>
+      <div class="text-center" style="padding: 120px 0;">
+        <p class="body-text" style="font-style: italic; text-align: center;">Chưa có bài viết nào trong danh mục này.</p>
+      </div>
+    <% } %>
+
+  </div>
+</section>
+
+<!-- Booking CTA -->
+<section style="background: var(--vanilla-cream); color: var(--ink); padding: 120px 0; text-align: center; border-top: 0.5px solid var(--bone);">
+  <div class="container">
+    <h2 class="section-heading reveal" style="color: var(--ink); margin-bottom: 24px; font-size: clamp(36px, 5vw, 56px);">Sẵn sàng ghi dấu khoảnh khắc?</h2>
+    <p class="body-text reveal" style="color: var(--smoke); margin-bottom: 48px; font-size: 16px;">Đặt lịch chụp cùng Dear Musé ngay hôm nay để nhận tư vấn chi tiết nhất.</p>
+    <a href="/booking" class="btn btn-outline-dark blog-cta-btn reveal"><span>Đặt lịch chụp ngay</span></a>
+  </div>
+</section>

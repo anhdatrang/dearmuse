@@ -1,0 +1,442 @@
+<div style="max-width: 800px; margin: 0 auto;">
+
+  <div style="margin-bottom: 24px;">
+    <a href="/admin/blog"
+      style="font-size: 13px; color: var(--smoke); display: inline-flex; align-items: center; gap: 8px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+        stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Quay lại danh sách blog</span>
+    </a>
+  </div>
+
+  <div class="admin-header" style="margin-bottom: 32px;">
+    <h1>Chỉnh sửa bài viết</h1>
+  </div>
+
+  <% if (success && success.length> 0) { %>
+    <div class="flash-success admin-card"
+      style="background: #dcfce7; border: none; border-left: 2px solid #16a34a; color: #166534; margin-bottom: 16px;">
+      <%= success[0] %>
+    </div>
+    <% } %>
+      <% if (error && error.length> 0) { %>
+        <div class="flash-error admin-card"
+          style="background: #fee2e2; border: none; border-left: 2px solid #dc2626; color: #991b1b; margin-bottom: 16px;">
+          <%= error[0] %>
+        </div>
+        <% } %>
+
+          <div class="admin-card">
+            <form method="POST" action="/admin/blog/<%= post.id %>/edit" enctype="multipart/form-data">
+
+              <!-- PHẦN 1: NỘI DUNG CHÍNH -->
+              <fieldset
+                style="border: 0.5px solid var(--bone); padding: 20px; margin-bottom: 24px; border-radius: 2px;">
+                <legend
+                  style="font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--smoke); padding: 0 8px;">
+                  1. Nội dung chính</legend>
+
+                <div class="form-group-admin" style="margin-bottom: 16px;">
+                  <label class="form-label"
+                    style="display: block; font-size: 11px; margin-bottom: 6px; font-weight: 500;">Tiêu đề bài viết
+                    *</label>
+                  <input type="text" name="title" class="form-control" required value="<%= post.title %>"
+                    style="width: 100%; border: 1.5px solid var(--bone); padding: 10px; font-family: var(--font-body); font-size: 14px;">
+                </div>
+
+                <div class="form-group-admin" style="margin-bottom: 16px;">
+                  <label class="form-label"
+                    style="display: block; font-size: 11px; margin-bottom: 6px; font-weight: 500;">Tiêu đề phụ /
+                    Slogan</label>
+                  <input type="text" name="subtitle" class="form-control" value="<%= post.subtitle || '' %>"
+                    style="width: 100%; border: 1.5px solid var(--bone); padding: 10px; font-family: var(--font-body); font-size: 14px;">
+                </div>
+
+                <div class="form-group-admin" style="margin-bottom: 16px;">
+                  <label class="form-label"
+                    style="display: block; font-size: 11px; margin-bottom: 6px; font-weight: 500;">Danh mục</label>
+                  <select name="category" class="form-control"
+                    style="width: 100%; border: 1.5px solid var(--bone); padding: 10px; font-family: var(--font-body); font-size: 14px; background: white;">
+                    <option value="news" <%=post.category==='news' ? 'selected' : '' %>>Tin tức studio</option>
+                    <option value="customer_photos" <%=post.category==='customer_photos' ? 'selected' : '' %>>Ảnh khách
+                      hàng</option>
+                  </select>
+                </div>
+
+                <div class="form-group-admin" style="margin-bottom: 16px;">
+                  <label class="form-label"
+                    style="display: block; font-size: 11px; margin-bottom: 6px; font-weight: 500;">Tóm tắt ngắn
+                    *</label>
+                  <textarea name="summary" class="form-control" rows="3" required
+                    style="resize: vertical; border: 1.5px solid var(--bone); padding: 10px; width: 100%; font-family: var(--font-body); font-size: 14px; line-height: 1.5;"><%= post.summary %></textarea>
+                </div>
+
+                <div class="form-group-admin" style="margin-bottom: 16px;">
+                  <label class="form-label"
+                    style="display: block; font-size: 11px; margin-bottom: 6px; font-weight: 500;">Nội dung dẫn nhập /
+                    Thân bài 1 *</label>
+                  <textarea name="content" class="form-control" rows="6" required
+                    style="resize: vertical; border: 1.5px solid var(--bone); padding: 10px; width: 100%; font-family: var(--font-body); font-size: 14px; line-height: 1.5;"><%= post.content %></textarea>
+                </div>
+
+                <div class="form-group-admin" style="margin-bottom: 16px;">
+                  <label class="form-label"
+                    style="display: block; font-size: 11px; margin-bottom: 6px; font-weight: 500;">Lời kết / Cảm ơn
+                    (Thân bài 2)</label>
+                  <textarea name="content_outro" class="form-control" rows="4"
+                    style="resize: vertical; border: 1.5px solid var(--bone); padding: 10px; width: 100%; font-family: var(--font-body); font-size: 14px; line-height: 1.5;"><%= post.content_outro || '' %></textarea>
+                </div>
+
+                <div class="form-group-admin" style="margin-bottom: 16px;">
+                  <label class="form-label"
+                    style="display: block; font-size: 11px; margin-bottom: 6px; font-weight: 500;">Trích dẫn nổi bật
+                    (Giữa bài viết)</label>
+                  <textarea name="quote" class="form-control" rows="2"
+                    style="resize: vertical; border: 1.5px solid var(--bone); padding: 10px; width: 100%; font-family: var(--font-body); font-size: 14px; line-height: 1.5;"><%= post.quote || '' %></textarea>
+                </div>
+              </fieldset>
+
+              <!-- PHẦN 2: THÔNG TIN BUỔI CHỤP -->
+              <fieldset
+                style="border: 0.5px solid var(--bone); padding: 20px; margin-bottom: 24px; border-radius: 2px;">
+                <legend
+                  style="font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--smoke); padding: 0 8px;">
+                  2. Thông tin buổi chụp (Metadata)</legend>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                  <div class="form-group-admin" style="margin-bottom: 16px;">
+                    <label class="form-label"
+                      style="display: block; font-size: 11px; margin-bottom: 6px; font-weight: 500;">Khách hàng / Cặp
+                      đôi</label>
+                    <input type="text" name="client_name" class="form-control" value="<%= post.client_name || '' %>"
+                      style="width: 100%; border: 1.5px solid var(--bone); padding: 10px; font-family: var(--font-body); font-size: 14px;">
+                  </div>
+                  <div class="form-group-admin" style="margin-bottom: 16px;">
+                    <label class="form-label"
+                      style="display: block; font-size: 11px; margin-bottom: 6px; font-weight: 500;">Địa điểm
+                      chụp</label>
+                    <input type="text" name="location" class="form-control" value="<%= post.location || '' %>"
+                      style="width: 100%; border: 1.5px solid var(--bone); padding: 10px; font-family: var(--font-body); font-size: 14px;">
+                  </div>
+                  <div class="form-group-admin" style="margin-bottom: 16px;">
+                    <label class="form-label"
+                      style="display: block; font-size: 11px; margin-bottom: 6px; font-weight: 500;">Nhiếp ảnh
+                      gia</label>
+                    <input type="text" name="photographer" class="form-control" value="<%= post.photographer || '' %>"
+                      style="width: 100%; border: 1.5px solid var(--bone); padding: 10px; font-family: var(--font-body); font-size: 14px;">
+                  </div>
+                  <div class="form-group-admin" style="margin-bottom: 16px;">
+                    <label class="form-label"
+                      style="display: block; font-size: 11px; margin-bottom: 6px; font-weight: 500;">Chủ đề /
+                      Concept</label>
+                    <input type="text" name="concept" class="form-control" value="<%= post.concept || '' %>"
+                      style="width: 100%; border: 1.5px solid var(--bone); padding: 10px; font-family: var(--font-body); font-size: 14px;">
+                  </div>
+                </div>
+              </fieldset>
+
+              <!-- PHẦN 3: ẢNH BÌA & CÀI ĐẶT -->
+              <fieldset
+                style="border: 0.5px solid var(--bone); padding: 20px; margin-bottom: 24px; border-radius: 2px;">
+                <legend
+                  style="font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--smoke); padding: 0 8px;">
+                  3. Ảnh bìa & Cài đặt</legend>
+
+                <div class="form-group-admin" style="margin-bottom: 16px;">
+                  <label class="form-label"
+                    style="display: block; font-size: 11px; margin-bottom: 6px; font-weight: 500;">Ảnh bìa hiện
+                    tại</label>
+                  <div style="margin-bottom: 12px;">
+                    <img src="<%= post.cover_image %>"
+                      style="max-width: 200px; max-height: 150px; object-fit: contain; border: 1px solid var(--bone); border-radius: 8px; background: #fff;"
+                      alt="Ảnh bìa">
+                  </div>
+                  <label class="form-label"
+                    style="display: block; font-size: 11px; margin-bottom: 6px; font-weight: 500;">Thay ảnh bìa mới (nếu
+                    muốn)</label>
+                  <input type="file" name="cover_image" id="cover_image_input" class="form-control" accept="image/*"
+                    style="border: none; padding: 0; font-family: var(--font-body);">
+                  <div id="cover_image_preview_container" style="margin-top: 12px; display: none;">
+                    <span style="font-size: 9px; color: var(--smoke); display: block; margin-bottom: 4px;">Xem trước ảnh
+                      bìa mới:</span>
+                    <img id="cover_image_preview" src=""
+                      style="max-width: 200px; max-height: 150px; object-fit: contain; border: 1px solid var(--bone); border-radius: 8px; background: #fff;">
+                  </div>
+                </div>
+
+                <div class="form-group-admin" style="display: flex; gap: 32px; align-items: center; margin-top: 20px;">
+                  <label class="form-label"
+                    style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin-bottom: 0; font-size: 13px;">
+                    <input type="checkbox" name="is_featured" value="1" <%=post.is_featured ? 'checked' : '' %>> Bài nổi
+                    bật
+                  </label>
+                  <label class="form-label"
+                    style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin-bottom: 0; font-size: 13px;">
+                    Trạng thái:
+                    <select name="status"
+                      style="border: none; border-bottom: 1.5px solid var(--bone); background: transparent; padding: 2px 4px; font-family: var(--font-body); font-size: 13px; outline: none; background: white;">
+                      <option value="published" <%=post.status==='published' ? 'selected' : '' %>>Xuất bản</option>
+                      <option value="draft" <%=post.status==='draft' ? 'selected' : '' %>>Nháp</option>
+                    </select>
+                  </label>
+                </div>
+              </fieldset>
+
+              <!-- PHẦN 4: CÁC CỤM HÌNH ẢNH HIỂN THỊ (Bố cục tùy chọn) -->
+              <fieldset
+                style="border: 0.5px solid var(--bone); padding: 20px; margin-bottom: 24px; border-radius: 2px;">
+                <legend
+                  style="font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--smoke); padding: 0 8px;">
+                  4. Các cụm hình ảnh (Tùy chọn bố cục chia cột)</legend>
+
+                <input type="hidden" name="content_blocks" id="content_blocks_input" value="[]">
+                <div id="blocks_container"
+                  style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px;"></div>
+
+                <button type="button" class="btn-sm btn-sm-dark" onclick="addImageGrid()"
+                  style="width: 100%; padding: 12px; font-size: 11px; letter-spacing: 0.05em; border: none; font-weight: 500;">
+                  + THÊM CỤM ẢNH MỚI
+                </button>
+              </fieldset>
+
+              <button type="submit" class="btn-sm btn-sm-dark"
+                style="width: 100%; padding: 14px; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; border: none; font-weight: 500; margin-top: 8px;">
+                Cập nhật bài viết
+              </button>
+            </form>
+          </div>
+
+</div>
+
+<script>
+  // Initial grids loaded from DB
+  let grids = <%- JSON.stringify(post.content_blocks || []) %>;
+
+  // Ensure every grid has a blockId and images are fully initialized objects
+  grids.forEach((grid, idx) => {
+    if (!grid.blockId) {
+      grid.blockId = 'loaded_' + idx + '_' + Math.floor(Math.random() * 1000);
+    }
+    // Backward compatibility if images is not an array
+    if (!Array.isArray(grid.images)) {
+      grid.images = [grid.image || ''];
+    }
+    // Convert string array items to objects
+    grid.images = grid.images.map(img => {
+      if (typeof img === 'string') {
+        return { url: img, title: '', subtitle: '' };
+      }
+      return { url: img.url || '', title: img.title || '', subtitle: img.subtitle || '' };
+    });
+    // Match dynamic layouts from 1 to 6
+    if (grid.layout === 'left_img' || grid.layout === 'right_img' || grid.layout === 'full_img_top' || grid.layout === 'full_img_bottom') {
+      grid.layout = '1';
+    }
+  });
+
+  function renderGrids() {
+    const container = document.getElementById('blocks_container');
+    saveCurrentValues();
+
+    container.innerHTML = '';
+    if (grids.length === 0) {
+      container.innerHTML = '<div style="text-align: center; color: var(--smoke); font-size: 11px; padding: 24px; border: 1px dashed var(--bone); background: var(--parchment);">Chưa có cụm hình ảnh nào. Hãy nhấn nút "+ Thêm Cụm Ảnh Mới".</div>';
+      return;
+    }
+
+    grids.forEach((grid, index) => {
+      const div = document.createElement('div');
+      div.className = 'block-card';
+      div.style = 'border: 0.5px solid var(--bone); background: var(--parchment); padding: 16px; position: relative; border-radius: 2px; margin-bottom: 12px;';
+
+      const numImages = parseInt(grid.layout || '1');
+
+      // Build file input slots dynamically based on numImages
+      let filesHtml = '';
+      for (let i = 0; i < numImages; i++) {
+        const imgVal = grid.images[i] || '';
+        const imgUrl = typeof imgVal === 'object' ? (imgVal.url || '') : imgVal;
+        const imgTitle = typeof imgVal === 'object' ? (imgVal.title || '') : '';
+        const imgSubtitle = typeof imgVal === 'object' ? (imgVal.subtitle || '') : '';
+        filesHtml += `
+          <div style="border: 0.5px solid var(--bone); padding: 10px; background: var(--vanilla); margin-bottom: 8px;">
+            <label style="font-size: 9px; font-weight: 500; text-transform: uppercase; color: var(--smoke); display: block; margin-bottom: 4px;">Ảnh ${i + 1}</label>
+            ${imgUrl ? `<div style="margin-bottom: 8px;"><img src="${imgUrl}" style="max-height: 120px; max-width: 100%; object-fit: contain; border-radius: 8px; border: 1px solid var(--bone); background: #fff;"></div>` : ''}
+            <input type="file" name="block_image_${grid.blockId}_${i}" class="grid-image-file" data-grid-index="${index}" data-img-index="${i}" accept="image/*" style="font-size: 11px; display: block; width: 100%;">
+            <div class="image-preview-container" id="preview_${grid.blockId}_${i}" style="margin-top: 8px; display: none;">
+              <span style="font-size: 9px; color: var(--smoke); display: block; margin-bottom: 4px;">Xem trước ảnh mới:</span>
+              <img src="" style="max-height: 120px; max-width: 100%; object-fit: contain; border-radius: 8px; border: 1px solid var(--bone); background: #fff;">
+            </div>
+            
+            <div style="margin-top: 8px;">
+              <label style="font-size: 8px; text-transform: uppercase; color: var(--smoke); display: block; margin-bottom: 2px;">Tiêu đề chính ảnh</label>
+              <input type="text" class="grid-image-title" data-grid-index="${index}" data-img-index="${i}" value="${imgTitle}" placeholder="Nhập tiêu đề chính..." style="font-size: 11px; display: block; width: 100%; border: 0.5px solid var(--bone); padding: 4px; font-family: var(--font-body); outline: none; background: white;">
+            </div>
+            <div style="margin-top: 6px;">
+              <label style="font-size: 8px; text-transform: uppercase; color: var(--smoke); display: block; margin-bottom: 2px;">Tiêu đề phụ ảnh</label>
+              <input type="text" class="grid-image-subtitle" data-grid-index="${index}" data-img-index="${i}" value="${imgSubtitle}" placeholder="Nhập tiêu đề phụ..." style="font-size: 11px; display: block; width: 100%; border: 0.5px solid var(--bone); padding: 4px; font-family: var(--font-body); outline: none; background: white;">
+            </div>
+          </div>
+        `;
+      }
+
+      div.innerHTML = `
+        <div style="display: grid; grid-template-columns: 1fr 40px; gap: 12px; align-items: start;">
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div style="font-size: 10px; font-weight: 500; text-transform: uppercase; color: var(--smoke); border-bottom: 0.5px solid var(--bone); padding-bottom: 4px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+              <span>Cụm ảnh #${index + 1}</span>
+              <label style="display: flex; align-items: center; gap: 4px; text-transform: none; font-size: 11px;">
+                Số lượng ảnh:
+                <select class="grid-layout-select" data-index="${index}" onchange="changeGridLayout(${index}, this.value)" style="border: 0.5px solid var(--bone); background: white; padding: 2px; font-family: var(--font-body); font-size: 11px;">
+                  <option value="1" ${grid.layout === '1' ? 'selected' : ''}>1 ảnh (Toàn dòng)</option>
+                  <option value="2" ${grid.layout === '2' ? 'selected' : ''}>2 ảnh (Song song)</option>
+                  <option value="3" ${grid.layout === '3' ? 'selected' : ''}>3 ảnh (1 trên, 2 dưới)</option>
+                  <option value="4" ${grid.layout === '4' ? 'selected' : ''}>4 ảnh (2x2 grid)</option>
+                  <option value="5" ${grid.layout === '5' ? 'selected' : ''}>5 ảnh (3 trên, 2 dưới)</option>
+                  <option value="6" ${grid.layout === '6' ? 'selected' : ''}>6 ảnh (3x2 grid)</option>
+                </select>
+              </label>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px;">
+              ${filesHtml}
+            </div>
+          </div>
+          
+          <div style="display: flex; flex-direction: column; gap: 4px; align-items: center; justify-content: center; height: 100%; padding-top: 16px;">
+            <button type="button" onclick="moveGrid(${index}, -1)" style="border: 0.5px solid var(--bone); background: var(--vanilla); color: var(--ink); width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 9px; cursor: pointer;" ${index === 0 ? 'disabled style="opacity: 0.3;"' : ''}>▲</button>
+            <button type="button" onclick="moveGrid(${index}, 1)" style="border: 0.5px solid var(--bone); background: var(--vanilla); color: var(--ink); width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 9px; cursor: pointer;" ${index === grids.length - 1 ? 'disabled style="opacity: 0.3;"' : ''}>▼</button>
+            <button type="button" onclick="deleteGrid(${index})" style="border: none; background: transparent; color: #b91c1c; font-size: 10px; cursor: pointer; padding: 4px 0; margin-top: 4px; font-weight: 500;">Xoá</button>
+          </div>
+        </div>
+      `;
+
+      container.appendChild(div);
+    });
+
+    // Bind file input change preview listeners
+    document.querySelectorAll('.grid-image-file').forEach(input => {
+      input.addEventListener('change', function (e) {
+        const gridIndex = parseInt(this.getAttribute('data-grid-index'));
+        const imgIndex = parseInt(this.getAttribute('data-img-index'));
+        const file = e.target.files[0];
+        const gridId = grids[gridIndex].blockId;
+        const previewDiv = document.getElementById(`preview_${gridId}_${imgIndex}`);
+        if (file && previewDiv) {
+          const reader = new FileReader();
+          reader.onload = function (evt) {
+            previewDiv.querySelector('img').src = evt.target.result;
+            previewDiv.style.display = 'block';
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    });
+  }
+
+  function saveCurrentValues() {
+    document.querySelectorAll('.grid-layout-select').forEach(select => {
+      const index = parseInt(select.getAttribute('data-index'));
+      if (grids[index]) {
+        grids[index].layout = select.value;
+      }
+    });
+
+    document.querySelectorAll('.grid-image-title').forEach(input => {
+      const gridIndex = parseInt(input.getAttribute('data-grid-index'));
+      const imgIndex = parseInt(input.getAttribute('data-img-index'));
+      if (grids[gridIndex]) {
+        if (!grids[gridIndex].images[imgIndex]) {
+          grids[gridIndex].images[imgIndex] = { url: '', title: '', subtitle: '' };
+        } else if (typeof grids[gridIndex].images[imgIndex] === 'string') {
+          grids[gridIndex].images[imgIndex] = { url: grids[gridIndex].images[imgIndex], title: '', subtitle: '' };
+        }
+        grids[gridIndex].images[imgIndex].title = input.value;
+      }
+    });
+
+    document.querySelectorAll('.grid-image-subtitle').forEach(input => {
+      const gridIndex = parseInt(input.getAttribute('data-grid-index'));
+      const imgIndex = parseInt(input.getAttribute('data-img-index'));
+      if (grids[gridIndex]) {
+        if (!grids[gridIndex].images[imgIndex]) {
+          grids[gridIndex].images[imgIndex] = { url: '', title: '', subtitle: '' };
+        } else if (typeof grids[gridIndex].images[imgIndex] === 'string') {
+          grids[gridIndex].images[imgIndex] = { url: grids[gridIndex].images[imgIndex], title: '', subtitle: '' };
+        }
+        grids[gridIndex].images[imgIndex].subtitle = input.value;
+      }
+    });
+  }
+
+  function changeGridLayout(index, val) {
+    saveCurrentValues();
+    grids[index].layout = val;
+    const targetSize = parseInt(val);
+    while (grids[index].images.length < targetSize) {
+      grids[index].images.push({ url: '', title: '', subtitle: '' });
+    }
+    if (grids[index].images.length > targetSize) {
+      grids[index].images = grids[index].images.slice(0, targetSize);
+    }
+    renderGrids();
+  }
+
+  function addImageGrid() {
+    saveCurrentValues();
+    const blockId = 'grid_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+    grids.push({
+      layout: '1',
+      images: [{ url: '', title: '', subtitle: '' }],
+      blockId: blockId
+    });
+    renderGrids();
+  }
+
+  function deleteGrid(index) {
+    saveCurrentValues();
+    grids.splice(index, 1);
+    renderGrids();
+  }
+
+  function moveGrid(index, direction) {
+    saveCurrentValues();
+    const targetIndex = index + direction;
+    if (targetIndex >= 0 && targetIndex < grids.length) {
+      const temp = grids[index];
+      grids[index] = grids[targetIndex];
+      grids[targetIndex] = temp;
+      renderGrids();
+    }
+  }
+
+  // Before form submit, serialize blocks into JSON hidden input
+  document.querySelector('form').addEventListener('submit', function () {
+    saveCurrentValues();
+    document.getElementById('content_blocks_input').value = JSON.stringify(grids);
+  });
+
+  // Preview cover image
+  const coverInput = document.getElementById('cover_image_input');
+  if (coverInput) {
+    coverInput.addEventListener('change', function (e) {
+      const file = e.target.files[0];
+      const previewContainer = document.getElementById('cover_image_preview_container');
+      const previewImg = document.getElementById('cover_image_preview');
+      if (file && previewContainer && previewImg) {
+        const reader = new FileReader();
+        reader.onload = function (evt) {
+          previewImg.src = evt.target.result;
+          previewContainer.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+
+  // Initialize
+  renderGrids();
+</script>

@@ -1,0 +1,167 @@
+<% pageCss = 'blog.css'; %>
+
+<section class="blog-detail-sec">
+  <div class="container">
+    
+    <!-- Back button -->
+    <div class="blog-back-wrap reveal">
+      <a href="/blog" class="blog-back-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>Quay lại Journal</span>
+      </a>
+    </div>
+
+    <!-- Article Header -->
+    <header class="blog-detail-header text-center reveal" data-delay="1">
+      <span class="blog-detail-cat <%= post.category %>">
+        <%= post.category === 'news' ? 'Tin tức Studio' : 'Ảnh khách hàng' %>
+      </span>
+      <h1 class="blog-detail-title"><%= post.title %></h1>
+      <% if (post.subtitle) { %>
+        <p class="blog-detail-subtitle"><%= post.subtitle %></p>
+      <% } %>
+      <div class="blog-detail-meta">
+        <span class="blog-date"><%= new Date(post.created_at).toLocaleDateString('vi-VN', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+      </div>
+    </header>
+
+    <!-- Cover Image -->
+    <div class="blog-detail-cover reveal" data-delay="2" style="border-radius: 16px; overflow: hidden;">
+      <img src="<%= post.cover_image %>" alt="<%= post.title %>" style="border-radius: 16px; width: 100%; height: auto; display: block;">
+    </div>
+
+    <!-- Article Content Grid -->
+    <div class="blog-detail-grid-layout reveal" data-delay="3">
+      
+      <!-- Main Content (Left Column) -->
+      <div class="blog-detail-main-col">
+        <% if (post.summary) { %>
+          <div class="blog-detail-summary">
+            <p><%= post.summary %></p>
+          </div>
+        <% } %>
+        
+        <div class="blog-detail-body">
+          <!-- 1. Content (Nội dung dẫn nhập / Thân bài 1) -->
+          <% if (post.content) { %>
+            <% 
+              const paragraphs = post.content.split('\n').filter(p => p.trim() !== '');
+              paragraphs.forEach(p => {
+            %>
+              <p><%= p %></p>
+            <% }) %>
+          <% } %>
+
+          <!-- 2. Dynamic Image Grids -->
+          <% 
+            const grids = typeof post.content_blocks === 'string' ? JSON.parse(post.content_blocks) : (post.content_blocks || []);
+            if (grids && grids.length > 0) { 
+              grids.forEach(grid => { 
+                const gridImages = Array.isArray(grid.images) ? grid.images : (grid.image ? [grid.image] : []);
+                const validImages = gridImages.filter(img => img);
+                if (validImages.length > 0) {
+          %>
+                  <div class="blog-image-grid-block layout-<%= grid.layout || '1' %>">
+                    <% 
+                      validImages.forEach((img, idx) => { 
+                        const imgUrl = typeof img === 'object' ? (img.url || '') : img;
+                        const imgTitle = typeof img === 'object' ? (img.title || '') : '';
+                        const imgSubtitle = typeof img === 'object' ? (img.subtitle || '') : '';
+                        if (imgUrl) {
+                    %>
+                          <div class="grid-item">
+                            <a href="<%= imgUrl %>" class="glightbox" data-gallery="blog-post-gallery">
+                              <img src="<%= imgUrl %>" alt="<%= imgTitle || (post.title + ' - ' + (idx + 1)) %>" loading="lazy">
+                            </a>
+                            <% if (imgTitle || imgSubtitle) { %>
+                              <div class="grid-item-caption">
+                                <% if (imgTitle) { %>
+                                  <h4 class="grid-item-title"><%= imgTitle %></h4>
+                                <% } %>
+                                <% if (imgSubtitle) { %>
+                                  <p class="grid-item-subtitle"><%= imgSubtitle %></p>
+                                <% } %>
+                              </div>
+                            <% } %>
+                          </div>
+                    <% 
+                        }
+                      }); 
+                    %>
+                  </div>
+          <% 
+                }
+              });
+            } 
+          %>
+
+          <!-- 3. Quote Block (Accent Highlight) -->
+          <% if (post.quote) { %>
+            <div class="blog-detail-quote-wrap text-center">
+              <div class="quote-line"></div>
+              <blockquote class="blog-detail-quote">
+                "<%= post.quote %>"
+              </blockquote>
+              <div class="quote-line"></div>
+            </div>
+          <% } %>
+
+          <!-- 4. Outro Content / Lời kết -->
+          <% if (post.content_outro) { %>
+            <div class="blog-detail-outro-wrap" style="margin-top: 48px; border-top: 1px solid var(--bone); padding-top: 32px;">
+              <% 
+                const outroParagraphs = post.content_outro.split('\n').filter(p => p.trim() !== '');
+                outroParagraphs.forEach(p => { 
+              %>
+                <p><%= p %></p>
+              <% }) %>
+            </div>
+          <% } %>
+
+        </div>
+      </div>
+
+      <!-- Metadata Box (Right Column) -->
+      <% if (post.client_name || post.location || post.photographer || post.concept) { %>
+        <aside class="blog-detail-meta-box">
+          <h3>Chi tiết buổi chụp</h3>
+          <div class="meta-box-inner">
+            <% if (post.client_name) { %>
+              <div class="meta-item">
+                <span class="meta-label">Khách hàng:</span>
+                <span class="meta-value"><%= post.client_name %></span>
+              </div>
+            <% } %>
+            <% if (post.location) { %>
+              <div class="meta-item">
+                <span class="meta-label">Địa điểm:</span>
+                <span class="meta-value"><%= post.location %></span>
+              </div>
+            <% } %>
+            <% if (post.photographer) { %>
+              <div class="meta-item">
+                <span class="meta-label">Nhiếp ảnh:</span>
+                <span class="meta-value"><%= post.photographer %></span>
+              </div>
+            <% } %>
+            <% if (post.concept) { %>
+              <div class="meta-item">
+                <span class="meta-label">Concept:</span>
+                <span class="meta-value"><%= post.concept %></span>
+              </div>
+            <% } %>
+            <div class="meta-item">
+              <span class="meta-label">Ngày đăng:</span>
+              <span class="meta-value"><%= new Date(post.created_at).toLocaleDateString('vi-VN') %></span>
+            </div>
+          </div>
+        </aside>
+      <% } %>
+
+    </div>
+
+  </div>
+</section>

@@ -28,6 +28,13 @@ router.get('/portfolio', requireAdmin, adminController.portfolioAdmin);
 router.post('/portfolio/create', requireAdmin, adminController.uploadMiddleware, adminController.createAlbum);
 router.post('/portfolio/:id/delete', requireAdmin, adminController.deleteAlbum);
 
+// Blog
+router.get('/blog', requireAdmin, adminController.blogAdmin);
+router.post('/blog/create', requireAdmin, adminController.uploadAny, adminController.createPost);
+router.get('/blog/:id/edit', requireAdmin, adminController.editPost);
+router.post('/blog/:id/edit', requireAdmin, adminController.uploadAny, adminController.updatePost);
+router.post('/blog/:id/delete', requireAdmin, adminController.deletePost);
+
 // Contacts
 router.get('/contacts', requireAdmin, adminController.contacts);
 router.post('/contacts/:id/read', requireAdmin, adminController.markContactRead);

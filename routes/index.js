@@ -6,6 +6,8 @@ const homeController = require('../controllers/homeController');
 const portfolioController = require('../controllers/portfolioController');
 const bookingController = require('../controllers/bookingController');
 const contactController = require('../controllers/contactController');
+const blogController = require('../controllers/blogController');
+const chatbotController = require('../controllers/chatbotController');
 const Service = require('../models/Service');
 
 // Home
@@ -15,25 +17,44 @@ router.get('/', homeController.home);
 router.get('/portfolio', portfolioController.index);
 router.get('/portfolio/:slug', portfolioController.detail);
 
+// Blog
+router.get('/blog', blogController.index);
+router.get('/blog/:slug', blogController.detail);
+
 // Services
 router.get('/services', async (req, res) => {
   try {
     const services = await Service.findAll();
-    res.render('services', { title: 'Dịch Vụ — Dear Musé', services });
+    res.render('services', {
+      title: 'Gói Dịch Vụ Chụp Ảnh Nghệ Thuật — Dear Musé',
+      metaDescription: 'Các gói dịch vụ chụp ảnh nghệ thuật chuyên nghiệp tại Dear Musé: Chụp ảnh Cá Nhân, Chụp ảnh Doanh Nghiệp, và các gói Mở Rộng độc bản. Đặt lịch chụp tư vấn miễn phí ngay hôm nay.',
+      services
+    });
   } catch (err) {
-    res.render('services', { title: 'Dịch Vụ — Dear Musé', services: [] });
+    res.render('services', {
+      title: 'Gói Dịch Vụ Chụp Ảnh Nghệ Thuật — Dear Musé',
+      metaDescription: 'Các gói dịch vụ chụp ảnh nghệ thuật chuyên nghiệp tại Dear Musé: Chụp ảnh Cá Nhân, Chụp ảnh Doanh Nghiệp, và các gói Mở Rộng độc bản. Đặt lịch chụp tư vấn miễn phí ngay hôm nay.',
+      services: []
+    });
   }
 });
 
 // Pricing
 router.get('/pricing', async (req, res) => {
   const services = await Service.findAll().catch(() => []);
-  res.render('pricing', { title: 'Bảng Giá — Dear Musé', services });
+  res.render('pricing', {
+    title: 'Bảng Giá Dịch Vụ Chụp Ảnh — Dear Musé',
+    metaDescription: 'Xem chi tiết bảng giá các gói chụp ảnh nghệ thuật tại Dear Musé Studio. Cam kết không phát sinh chi phí, hỗ trợ tư vấn trang phục & concept, trả toàn bộ file gốc và ảnh chỉnh sửa chuyên sâu.',
+    services
+  });
 });
 
 // About
 router.get('/about', (req, res) => {
-  res.render('about', { title: 'Về Chúng Tôi — Dear Musé' });
+  res.render('about', {
+    title: 'Câu Chuyện Thương Hiệu & Triết Lý — Dear Musé',
+    metaDescription: 'Tìm hiểu về hành trình của Dear Musé Studio. Triết lý nhiếp ảnh tôn trọng cảm xúc chân thật, tận dụng ánh sáng tự nhiên và kiến tạo những tác phẩm nghệ thuật độc bản cho từng khách hàng.'
+  });
 });
 
 // Contact
@@ -61,7 +82,7 @@ router.post('/booking', [
 router.post('/api/track', async (req, res) => {
   res.sendStatus(204); // Respond immediately to client
 
-  const { event_type, event_value } = req.body;
+  const { event_type, event_value, duration_seconds } = req.body;
   if (!event_type) return;
 
   const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '';
@@ -99,10 +120,13 @@ router.post('/api/track', async (req, res) => {
 
   try {
     const location = await resolveLocation();
-    await Analytics.logEvent(event_type, event_value, cleanIp, location);
+    await Analytics.logEvent(event_type, event_value, cleanIp, location, duration_seconds || 0);
   } catch (err) {
     console.error('Analytics tracking error:', err);
   }
 });
+
+// Chatbot API
+router.post('/api/chatbot', chatbotController.chat);
 
 module.exports = router;

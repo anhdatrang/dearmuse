@@ -1,135 +1,487 @@
 <div class="admin-header">
   <div>
     <h1>Phân tích hành vi người dùng</h1>
-    <p style="color: var(--smoke); font-size: 13px; margin-top: 4px;">Số liệu thống kê chi tiết về tương tác và nguồn truy cập thực tế của khách hàng</p>
+    <p style="color: var(--smoke); font-size: 13px; margin-top: 4px;">Hệ thống biểu đồ trực quan hóa dữ liệu tương tác, click và thời gian trải nghiệm thực tế</p>
   </div>
 </div>
 
-<!-- Stats Cards -->
-<div class="stats-grid" style="grid-template-columns: repeat(5, 1fr); margin-bottom: 32px;">
-  <div class="stat-card">
-    <div class="stat-label">Lượt xem trang</div>
-    <div class="stat-value"><%= summary.page_view || 0 %></div>
+<!-- Tabbed Navigation -->
+<div class="analytics-tabs-wrapper">
+  <div class="analytics-tabs">
+    <button class="analytics-tab-btn active" data-tab="tab-overview">📈 Tổng quan & Xu hướng</button>
+    <button class="analytics-tab-btn" data-tab="tab-engagement">⏱️ Thời gian xem trang</button>
+    <button class="analytics-tab-btn" data-tab="tab-clicks">🎯 Bản đồ Click & Hành vi</button>
+    <button class="analytics-tab-btn" data-tab="tab-demographics">📍 Concept & Vị trí</button>
   </div>
-  <div class="stat-card">
-    <div class="stat-label">Click Đặt lịch</div>
-    <div class="stat-value" style="color: var(--mocha);"><%= summary.click_booking || 0 %></div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-label">Click Concept</div>
-    <div class="stat-value"><%= summary.click_concept || 0 %></div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-label">Lượt liên hệ</div>
-    <div class="stat-value"><%= summary.submit_contact || 0 %></div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-label">Tỷ lệ chuyển đổi</div>
-    <% 
-      const conversionRate = summary.click_booking > 0 
-        ? ((totalBookings / summary.click_booking) * 100).toFixed(1) 
+</div>
+
+<!-- ═══════════════════════════════════════════
+   TAB 1: OVERVIEW & TRENDS
+═══════════════════════════════════════════ -->
+<div id="tab-overview" class="analytics-tab-content active">
+  <!-- Stats Cards -->
+  <div class="stats-grid" style="grid-template-columns: repeat(5, 1fr); margin-bottom: 24px;">
+    <div class="stat-card">
+      <div class="stat-label">Lượt xem trang</div>
+      <div class="stat-value"><%= summary.page_view || 0 %></div>
+      <p style="font-size: 10px; color: var(--smoke); margin-top: 4px;">Tổng lượt load trang</p>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Click Đặt lịch</div>
+      <div class="stat-value" style="color: var(--mocha);"><%= summary.click_booking || 0 %></div>
+      <p style="font-size: 10px; color: var(--smoke); margin-top: 4px;">Tất cả nút bấm đặt lịch</p>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Click Concept</div>
+      <div class="stat-value"><%= summary.click_concept || 0 %></div>
+      <p style="font-size: 10px; color: var(--smoke); margin-top: 4px;">Click xem các gói concept</p>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Lượt liên hệ</div>
+      <div class="stat-value"><%= summary.submit_contact || 0 %></div>
+      <p style="font-size: 10px; color: var(--smoke); margin-top: 4px;">Form contact được gửi</p>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Tỷ lệ chuyển đổi</div>
+      <% const conversionRate = summary.click_booking
+        ? ((totalBookings / summary.click_booking) * 100).toFixed(1)
         : '0.0';
-    %>
-    <div class="stat-value confirmed"><%= conversionRate + '%' %></div>
-    <p style="font-size: 10px; color: var(--smoke); margin-top: 4px;">Đơn thành công / Click</p>
+      %>
+      <div class="stat-value confirmed"><%= conversionRate %>%</div>
+      <p style="font-size: 10px; color: var(--smoke); margin-top: 4px;">Đơn thành công / Click</p>
+    </div>
+  </div>
+
+  <!-- Trends Line Chart -->
+  <div class="admin-card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <h2>Lượng tương tác 14 ngày qua</h2>
+      <span style="font-size: 12px; color: var(--smoke);">Tổng số lượt click & load trang theo ngày</span>
+    </div>
+    <div style="height: 380px; position: relative;">
+      <canvas id="timelineChart"></canvas>
+    </div>
   </div>
 </div>
 
-<!-- Detailed Analytics Grid -->
-<div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; margin-bottom: 40px;">
-  
-  <!-- Left Side: Concepts & Timeline -->
-  <div>
-    <!-- Concept clicks -->
-    <div class="admin-card" style="margin-bottom: 24px;">
-      <h2>Concept được quan tâm nhất</h2>
-      <% if (topConcepts && topConcepts.length > 0) { %>
-        <% 
-          const maxConceptCount = topConcepts[0].count || 1; 
-        %>
-        <div style="display: flex; flex-direction: column; gap: 16px;">
-          <% topConcepts.forEach(item => { %>
-            <% const percent = ((item.count / maxConceptCount) * 100).toFixed(0); %>
-            <div>
-              <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;">
-                <strong><%= item.concept %></strong>
-                <span style="color: var(--smoke);"><%= item.count %> lượt click</span>
-              </div>
-              <div style="height: 8px; background: var(--bone); border-radius: 4px; overflow: hidden;">
-                <div style="height: 100%; width: <%= percent + '%' %>; background: var(--mocha); border-radius: 4px; transition: width 0.5s ease-in-out;"></div>
-              </div>
-            </div>
-          <% }) %>
-        </div>
-      <% } else { %>
-        <div class="empty-state">Chưa có dữ liệu tracking concept.</div>
-      <% } %>
+<!-- ═══════════════════════════════════════════
+   TAB 2: ENGAGEMENT (TIME ON PAGE)
+═══════════════════════════════════════════ -->
+<div id="tab-engagement" class="analytics-tab-content">
+  <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px;">
+    <!-- Chart Card -->
+    <div class="admin-card">
+      <h2>Thời gian xem trung bình của các trang (Giây)</h2>
+      <p style="font-size: 12px; color: var(--smoke); margin-bottom: 16px;">Lọc bỏ lượt thoát trang nhanh (dưới 3 giây)</p>
+      <div style="height: 400px; position: relative;">
+        <canvas id="timeOnPageChart"></canvas>
+      </div>
     </div>
 
-    <!-- Timeline Activity -->
+    <!-- Data Table Card -->
     <div class="admin-card">
-      <h2>Hoạt động truy cập (14 ngày gần nhất)</h2>
-      <% if (timeline && timeline.length > 0) { %>
-        <table style="margin-top: 12px;">
+      <h2>Báo cáo tương tác chi tiết</h2>
+      <div style="max-height: 420px; overflow-y: auto; margin-top: 16px;">
+        <table>
           <thead>
             <tr>
-              <th>Ngày</th>
-              <th>Số lượt tương tác / click</th>
+              <th>Đường dẫn trang</th>
+              <th>Số lượt truy cập</th>
+              <th>Thời gian TB (Giây)</th>
             </tr>
           </thead>
           <tbody>
-            <% timeline.forEach(row => { %>
+            <% if (avgTimeOnPage && avgTimeOnPage.length) { %>
+              <% avgTimeOnPage.forEach(row => { %>
+                <tr>
+                  <td><code style="color: var(--mocha);"><%= row.page %></code></td>
+                  <td><%= row.visits %> lượt</td>
+                  <td><strong><%= row.avg_duration %>s</strong></td>
+                </tr>
+              <% }) %>
+            <% } else { %>
               <tr>
-                <td><%= row.date %></td>
-                <td><strong><%= row.count %></strong></td>
+                <td colspan="3" class="empty-state" style="text-align: center; padding: 40px 0;">Chưa có dữ liệu giữ chân người dùng.</td>
               </tr>
-            <% }) %>
+            <% } %>
           </tbody>
         </table>
-      <% } else { %>
-        <div class="empty-state">Chưa có dữ liệu hoạt động theo ngày.</div>
-      <% } %>
-    </div>
-  </div>
-
-  <!-- Right Side: Top Provinces & Geolocation details -->
-  <div>
-    <!-- Top Provinces -->
-    <div class="admin-card" style="margin-bottom: 24px;">
-      <h2>Vị trí tỉnh/thành truy cập nhiều nhất</h2>
-      <% if (topLocations && topLocations.length > 0) { %>
-        <% 
-          const maxLocationCount = topLocations[0].count || 1; 
-        %>
-        <div style="display: flex; flex-direction: column; gap: 16px;">
-          <% topLocations.forEach(item => { %>
-            <% const percent = ((item.count / maxLocationCount) * 100).toFixed(0); %>
-            <div>
-              <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;">
-                <strong><%= item.location %></strong>
-                <span style="color: var(--smoke);"><%= item.count %> lượt</span>
-              </div>
-              <div style="height: 8px; background: var(--bone); border-radius: 4px; overflow: hidden;">
-                <div style="height: 100%; width: <%= percent + '%' %>; background: var(--avocado); border-radius: 4px; transition: width 0.5s ease-in-out;"></div>
-              </div>
-            </div>
-          <% }) %>
-        </div>
-      <% } else { %>
-        <div class="empty-state">Chưa có dữ liệu địa điểm truy cập.</div>
-      <% } %>
-    </div>
-
-    <!-- Notes & Guidelines -->
-    <div class="admin-card">
-      <h2>Lưu ý về dữ liệu</h2>
-      <div style="font-size: 13px; font-weight: 300; color: var(--smoke); line-height: 1.7;">
-        <p style="margin-bottom: 12px;">✦ Hệ thống tracking ghi nhận tự động lượt xem trang khi người dùng truy cập bất kỳ trang con nào trên website.</p>
-        <p style="margin-bottom: 12px;">✦ Lượt click <strong>Đặt lịch</strong> bao gồm toàn bộ thao tác bấm vào nút Đặt lịch trên thanh điều hướng, trang chủ, các trang dịch vụ hoặc nút tư vấn nhanh.</p>
-        <p style="margin-bottom: 12px;">✦ Địa điểm người dùng truy cập được xác định tự động qua địa chỉ IP. Các truy cập từ môi trường thử nghiệm (Localhost) được hệ thống giả lập phân bố ngẫu nhiên để phục vụ công tác kiểm thử trực quan.</p>
-        <p>✦ Tỷ lệ chuyển đổi giúp admin đánh giá chất lượng trải nghiệm của website và độ hấp dẫn của nội dung dịch vụ.</p>
       </div>
     </div>
   </div>
-
 </div>
+
+<!-- ═══════════════════════════════════════════
+   TAB 3: CLICK HEATMAP & BEHAVIOR
+═══════════════════════════════════════════ -->
+<div id="tab-clicks" class="analytics-tab-content">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+    <!-- Click Map Bar Chart -->
+    <div class="admin-card">
+      <h2>Tần suất click của các vị trí / nút tương tác</h2>
+      <p style="font-size: 12px; color: var(--smoke); margin-bottom: 16px;">Giúp định vị xem khu vực nào có tỉ lệ thu hút cao nhất</p>
+      <div style="height: 400px; position: relative;">
+        <canvas id="clicksChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Click Table Info -->
+    <div class="admin-card">
+      <h2>Chi tiết số lượt Click</h2>
+      <div style="max-height: 420px; overflow-y: auto; margin-top: 16px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Vị trí tương tác</th>
+              <th>Số lượt click</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (detailedClicks && detailedClicks.length) { %>
+              <% detailedClicks.forEach(row => { %>
+                <tr>
+                  <td><strong><%= row.element %></strong></td>
+                  <td><span class="platform-tag" style="background: var(--bone); color: var(--ink); border: 1px solid #ddd;"><%= row.count %> click</span></td>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr>
+                <td colspan="2" class="empty-state" style="text-align: center; padding: 40px 0;">Chưa có dữ liệu click tương tác.</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+   TAB 4: DEMOGRAPHICS & CONCEPTS
+═══════════════════════════════════════════ -->
+<div id="tab-demographics" class="analytics-tab-content">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+    <!-- Concept clicks distribution -->
+    <div class="admin-card">
+      <h2>Phân bổ Lượt quan tâm Concept (%)</h2>
+      <p style="font-size: 12px; color: var(--smoke); margin-bottom: 16px;">Nhận biết Concept nào thu hút khách hàng nhiều nhất</p>
+      <div style="height: 350px; position: relative; display: flex; justify-content: center;">
+        <div style="width: 320px; height: 320px;">
+          <canvas id="conceptsDonutChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Location demographics -->
+    <div class="admin-card">
+      <h2>Phân bổ tỉnh thành của khách truy cập</h2>
+      <p style="font-size: 12px; color: var(--smoke); margin-bottom: 16px;">Tập trung chạy quảng cáo khoanh vùng các tỉnh có nhiều lượt quan tâm</p>
+      <div style="height: 350px; position: relative; display: flex; justify-content: center;">
+        <div style="width: 320px; height: 320px;">
+          <canvas id="locationsDonutChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+   STYLES (TABS & DASHBOARD LUXURY LAYOUT)
+═══════════════════════════════════════════ -->
+<style>
+  /* Tabs layout css */
+  .analytics-tabs-wrapper {
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--bone);
+  }
+  .analytics-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: -1px;
+  }
+  .analytics-tab-btn {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--smoke);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .analytics-tab-btn:hover {
+    color: var(--mocha);
+  }
+  .analytics-tab-btn.active {
+    color: var(--mocha);
+    border-bottom-color: var(--mocha);
+    font-weight: 600;
+  }
+
+  /* Tab content visibility controller */
+  .analytics-tab-content {
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+  .analytics-tab-content.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Scrollbar customization */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--bone);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--smoke);
+  }
+</style>
+
+<!-- ═══════════════════════════════════════════
+   CHART.JS SCRIPTS & LOGIC
+═══════════════════════════════════════════ -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. Tải xử lý chuyển tab
+    const tabs = document.querySelectorAll('.analytics-tab-btn');
+    const contents = document.querySelectorAll('.analytics-tab-content');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        contents.forEach(c => c.classList.remove('active'));
+
+        tab.classList.add('active');
+        const targetId = tab.getAttribute('data-tab');
+        const targetContent = document.getElementById(targetId);
+        if (targetContent) {
+          targetContent.classList.add('active');
+        }
+      });
+    });
+
+    // 2. Chuyển đổi dữ liệu EJS sang Javascript
+    const timelineData = <%- JSON.stringify(timeline || []) %>;
+    const avgTimeData = <%- JSON.stringify(avgTimeOnPage || []) %>;
+    const clickData = <%- JSON.stringify(detailedClicks || []) %>;
+    const conceptData = <%- JSON.stringify(topConcepts || []) %>;
+    const locationData = <%- JSON.stringify(topLocations || []) %>;
+
+    // Định nghĩa màu thương hiệu Dear Musé
+    const colors = {
+      mocha: '#9C8474',
+      avocado: '#606E5A',
+      ink: '#1A1916',
+      bone: '#F2EFE9',
+      gold: '#C5A880',
+      smoke: '#8E8B82',
+      greenGlow: 'rgba(96, 110, 90, 0.2)',
+      mochaGlow: 'rgba(156, 132, 116, 0.2)'
+    };
+
+    // ─── BIỂU ĐỒ 1: DÒNG THỜI GIAN (LINE CHART) ───
+    if (timelineData && timelineData.length) {
+      const dates = timelineData.map(item => item.date);
+      const counts = timelineData.map(item => item.count);
+
+      const ctxTimeline = document.getElementById('timelineChart').getContext('2d');
+      new Chart(ctxTimeline, {
+        type: 'line',
+        data: {
+          labels: dates,
+          datasets: [{
+            label: 'Số tương tác/click',
+            data: counts,
+            borderColor: colors.mocha,
+            backgroundColor: colors.mochaGlow,
+            fill: true,
+            tension: 0.35,
+            borderWidth: 2.5,
+            pointBackgroundColor: colors.ink,
+            pointBorderColor: colors.mocha,
+            pointRadius: 4,
+            pointHoverRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: {
+              grid: { color: '#EAE7E1' },
+              ticks: { color: colors.smoke, stepSize: 5 }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { color: colors.smoke }
+            }
+          }
+        }
+      });
+    }
+
+    // ─── BIỂU ĐỒ 2: THỜI GIAN XEM TRANG (HORIZONTAL BAR CHART) ───
+    if (avgTimeData && avgTimeData.length) {
+      const pages = avgTimeData.map(item => item.page);
+      const durations = avgTimeData.map(item => item.avg_duration);
+
+      const ctxTimeOnPage = document.getElementById('timeOnPageChart').getContext('2d');
+      new Chart(ctxTimeOnPage, {
+        type: 'bar',
+        data: {
+          labels: pages,
+          datasets: [{
+            label: 'Số giây ở lại trang (trung bình)',
+            data: durations,
+            backgroundColor: colors.avocado,
+            borderColor: colors.avocado,
+            borderWidth: 1,
+            borderRadius: 4,
+            barThickness: 16
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            x: {
+              grid: { color: '#EAE7E1' },
+              ticks: { color: colors.smoke }
+            },
+            y: {
+              grid: { display: false },
+              ticks: { color: colors.ink, font: { weight: 'bold' } }
+            }
+          }
+        }
+      });
+    }
+
+    // ─── BIỂU ĐỒ 3: CLICK HEATMAP (VERTICAL BAR CHART) ───
+    if (clickData && clickData.length) {
+      const elements = clickData.map(item => item.element);
+      const counts = clickData.map(item => item.count);
+
+      const ctxClicks = document.getElementById('clicksChart').getContext('2d');
+      new Chart(ctxClicks, {
+        type: 'bar',
+        data: {
+          labels: elements,
+          datasets: [{
+            label: 'Lượt click',
+            data: counts,
+            backgroundColor: colors.mocha,
+            borderColor: colors.mocha,
+            borderWidth: 1,
+            borderRadius: 4,
+            barThickness: 24
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: {
+              grid: { color: '#EAE7E1' },
+              ticks: { color: colors.smoke }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { color: colors.ink, font: { size: 10 } }
+            }
+          }
+        }
+      });
+    }
+
+    // ─── BIỂU ĐỒ 4: CONCEPT DISTRIBUTION (DONUT) ───
+    if (conceptData && conceptData.length) {
+      const concepts = conceptData.map(item => item.concept);
+      const counts = conceptData.map(item => item.count);
+      const palette = [colors.mocha, colors.avocado, colors.gold, colors.smoke, colors.ink, '#D6CFC7'];
+
+      const ctxConcepts = document.getElementById('conceptsDonutChart').getContext('2d');
+      new Chart(ctxConcepts, {
+        type: 'doughnut',
+        data: {
+          labels: concepts,
+          datasets: [{
+            data: counts,
+            backgroundColor: palette.slice(0, concepts.length),
+            borderWidth: 2,
+            borderColor: '#FFFFFF'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { boxWidth: 12, font: { size: 11 } }
+            }
+          },
+          cutout: '65%'
+        }
+      });
+    }
+
+    // ─── BIỂU ĐỒ 5: LOCATIONS DISTRIBUTION (DONUT) ───
+    if (locationData && locationData.length) {
+      const locations = locationData.map(item => item.location);
+      const counts = locationData.map(item => item.count);
+      const palette = [colors.avocado, colors.mocha, colors.gold, '#D6CFC7', colors.ink, colors.smoke];
+
+      const ctxLocations = document.getElementById('locationsDonutChart').getContext('2d');
+      new Chart(ctxLocations, {
+        type: 'doughnut',
+        data: {
+          labels: locations,
+          datasets: [{
+            data: counts,
+            backgroundColor: palette.slice(0, locations.length),
+            borderWidth: 2,
+            borderColor: '#FFFFFF'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { boxWidth: 12, font: { size: 11 } }
+            }
+          },
+          cutout: '65%'
+        }
+      });
+    }
+  });
+</script>

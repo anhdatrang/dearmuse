@@ -55,7 +55,8 @@ exports.show = async (req, res) => {
     const services = await Service.findAll();
     const preselectedService = req.query.service || null;
     res.render('booking', {
-      title: 'Đặt Lịch — Dear Musé',
+      title: 'Đặt Lịch Chụp Ảnh Trực Tuyến — Dear Musé',
+      metaDescription: 'Đăng ký đặt lịch chụp ảnh nghệ thuật trực tuyến tại Dear Musé Studio. Quy trình nhanh gọn, phản hồi xác nhận nhanh chóng trong vòng 24h, hỗ trợ tư vấn concept hoàn toàn miễn phí.',
       services,
       preselectedService,
       errors: [],
@@ -63,7 +64,14 @@ exports.show = async (req, res) => {
     });
   } catch (err) {
     console.error(err);
-    res.render('booking', { title: 'Đặt Lịch — Dear Musé', services: [], preselectedService: null, errors: [], oldInput: {} });
+    res.render('booking', {
+      title: 'Đặt Lịch Chụp Ảnh Trực Tuyến — Dear Musé',
+      metaDescription: 'Đăng ký đặt lịch chụp ảnh nghệ thuật trực tuyến tại Dear Musé Studio. Quy trình nhanh gọn, phản hồi xác nhận nhanh chóng trong vòng 24h, hỗ trợ tư vấn concept hoàn toàn miễn phí.',
+      services: [],
+      preselectedService: null,
+      errors: [],
+      oldInput: {}
+    });
   }
 };
 
@@ -72,7 +80,8 @@ exports.submit = async (req, res) => {
   if (!errors.isEmpty()) {
     const services = await Service.findAll();
     return res.render('booking', {
-      title: 'Đặt Lịch — Dear Musé',
+      title: 'Đặt Lịch Chụp Ảnh Trực Tuyến — Dear Musé',
+      metaDescription: 'Đăng ký đặt lịch chụp ảnh nghệ thuật trực tuyến tại Dear Musé Studio. Quy trình nhanh gọn, phản hồi xác nhận nhanh chóng trong vòng 24h, hỗ trợ tư vấn concept hoàn toàn miễn phí.',
       services,
       preselectedService: req.body.service_id,
       errors: errors.array(),
@@ -90,13 +99,15 @@ exports.submit = async (req, res) => {
 
     res.render('booking-confirm', {
       title: 'Đặt lịch thành công — Dear Musé',
+      metaDescription: 'Yêu cầu đặt lịch chụp ảnh của bạn đã được tiếp nhận thành công. Dear Musé sẽ liên hệ xác nhận chi tiết concept chụp trong vòng 24 giờ.',
       booking: { ...booking, customer_name: req.body.customer_name },
     });
   } catch (err) {
     console.error(err);
     const services = await Service.findAll();
     res.render('booking', {
-      title: 'Đặt Lịch — Dear Musé',
+      title: 'Đặt Lịch Chụp Ảnh Trực Tuyến — Dear Musé',
+      metaDescription: 'Đăng ký đặt lịch chụp ảnh nghệ thuật trực tuyến tại Dear Musé Studio. Quy trình nhanh gọn, phản hồi xác nhận nhanh chóng trong vòng 24h, hỗ trợ tư vấn concept hoàn toàn miễn phí.',
       services,
       preselectedService: req.body.service_id,
       errors: [{ msg: 'Có lỗi xảy ra, vui lòng thử lại.' }],

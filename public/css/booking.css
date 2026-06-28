@@ -156,13 +156,32 @@
   margin-left: 16px;
 }
 
-.submit-btn {
-  width: 100%;
-  padding: 18px;
-  font-size: 13px;
-  letter-spacing: 0.14em;
+.btn.submit-btn {
+  width: auto;
+  min-width: 200px;
+  padding: 14px 32px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
   justify-content: center;
   margin-top: 8px;
+  border-radius: 100px !important;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+/* Hover xanh lá cho trang contact và booking (giống màu footer) */
+.contact-form-section .btn.submit-btn:hover,
+.contact-form-section .btn.submit-btn:focus,
+.booking-form-section .btn.submit-btn:hover,
+.booking-form-section .btn.submit-btn:focus {
+  background: var(--avocado-cream) !important;
+  color: var(--ink) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(212, 219, 116, 0.2);
+}
+
+.contact-form-section .btn.submit-btn::before,
+.booking-form-section .btn.submit-btn::before {
+  background: var(--avocado-cream) !important;
 }
 
 /* Confirm page */

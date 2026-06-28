@@ -63,9 +63,22 @@ document.addEventListener('DOMContentLoaded', () => {
   if (mascotWidget && mascotBubble && mascotCanvas && mascotVideo) {
     const ctx = mascotCanvas.getContext('2d', { willReadFrequently: true });
     
-    // Set internal resolution of the canvas (small for super low CPU usage)
+    // Set initial resolution of the canvas (small for low CPU, vertical ratio)
     mascotCanvas.width = 256;
-    mascotCanvas.height = 144; // 16:9 aspect ratio
+    mascotCanvas.height = 280; 
+    
+    let isVideoPlaying = false;
+
+    // Load and render placeholder image immediately on load
+    const placeholderImg = new Image();
+    placeholderImg.src = '/image/mascot_processed.png';
+    placeholderImg.onload = () => {
+      if (!isVideoPlaying) {
+        ctx.clearRect(0, 0, mascotCanvas.width, mascotCanvas.height);
+        ctx.drawImage(placeholderImg, 0, 0, mascotCanvas.width, mascotCanvas.height);
+        mascotCanvas.style.opacity = '1';
+      }
+    };
     
     // Chroma key parameters (calibrated to the green screen: R=12, G=160, B=35)
     const targetR = 12;
@@ -74,7 +87,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const threshold = 90;
     const smoothness = 35;
     
-    let isVideoPlaying = false;
+    // Recalculate size to match video aspect ratio when video metadata is ready
+    function adjustCanvasSize() {
+      const videoWidth = mascotVideo.videoWidth || 545;
+      const videoHeight = mascotVideo.videoHeight || 599;
+      const ratio = videoHeight / videoWidth;
+      mascotCanvas.width = 256;
+      mascotCanvas.height = Math.round(256 * ratio);
+    }
+
+    mascotVideo.addEventListener('loadedmetadata', adjustCanvasSize);
+    if (mascotVideo.readyState >= 1) {
+      adjustCanvasSize();
+    }
     
     function processChromaKey() {
       if (mascotVideo.paused || mascotVideo.ended) {
@@ -121,6 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Start keying when video plays
     mascotVideo.addEventListener('playing', () => {
+      isVideoPlaying = true;
       requestAnimationFrame(processChromaKey);
     });
     
@@ -131,18 +157,31 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // If already playing or starts playing immediately
     if (!mascotVideo.paused) {
+      isVideoPlaying = true;
       requestAnimationFrame(processChromaKey);
     }
+
+    // Try to trigger video play on early document interactions to bypass autoplay policy
+    const triggerVideoPlay = () => {
+      if (mascotVideo.paused) {
+        mascotVideo.play().then(() => {
+          document.removeEventListener('click', triggerVideoPlay);
+          document.removeEventListener('touchstart', triggerVideoPlay);
+        }).catch(() => {});
+      }
+    };
+    document.addEventListener('click', triggerVideoPlay);
+    document.addEventListener('touchstart', triggerVideoPlay);
     
-    // Bubble messages cycle
+    // Bubble messages cycle (shortened to be natural, brief, and punchy)
     const bubbleText = mascotBubble.querySelector('span');
     const bubbleMessages = [
       "Xin chào! 👋",
-      "Cười lên cái nào! 😊",
-      "Bạn cần tư vấn gì không? ✨",
-      "Đặt lịch ngay để có ảnh xinh nhé! 📸",
-      "Chúc bạn một ngày tốt lành! 🌸",
-      "Dear Musé rất vui được đón tiếp! 💕"
+      "Cười lên nha! 😊",
+      "Cần tư vấn? ✨",
+      "Chụp ảnh nhé? 📸",
+      "Ngày lành nha! 🌸",
+      "Thương mến! 💕"
     ];
     let msgIdx = 0;
     
@@ -285,13 +324,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
+      const formatMarkdownToHTML = (text) => {
+        if (!text) return '';
+        return text
+          .replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" style="max-width: 100%; border-radius: 8px; margin: 8px 0; border: 1.5px solid var(--bone); display: block; background: #fff;" loading="lazy">')
+          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+          .replace(/\*(.*?)\*/g, '<em>$1</em>')
+          .replace(/`([^`]+)`/g, '<code>$1</code>')
+          .replace(/\r?\n/g, '<br>');
+      };
+
       const appendMessage = (text, sender) => {
         const msgDiv = document.createElement('div');
         msgDiv.className = `chatbot-msg ${sender}`;
         
         const textDiv = document.createElement('div');
         textDiv.className = 'chatbot-bubble-text';
-        textDiv.innerHTML = text;
+        textDiv.innerHTML = formatMarkdownToHTML(text);
         
         msgDiv.appendChild(textDiv);
         chatbotMessages.appendChild(msgDiv);
@@ -334,34 +383,42 @@ document.addEventListener('DOMContentLoaded', () => {
         document.head.appendChild(style);
       }
 
-      const getBotResponse = (query) => {
-        const q = query.toLowerCase().trim();
-        
-        if (q.includes('giá') || q.includes('gia') || q.includes('bao nhiêu') || q.includes('bao nhieu') || q.includes('gói') || q.includes('goi') || q.includes('pricing') || q.includes('tiền') || q.includes('tien')) {
-          return "Dear Musé cung cấp các gói chụp nghệ thuật cao cấp:<br>✦ Gói Concept Sáng Tạo: từ 2.500.000đ<br>✦ Gói Áo Dài: từ 1.800.000đ<br>✦ Gói Chân Dung Cá Nhân: từ 1.500.000đ<br>Chi tiết xem tại trang <a href='/pricing'>Bảng Giá</a> nhé! ✨";
-        }
-        if (q.includes('concept') || q.includes('ý tưởng') || q.includes('y tuong') || q.includes('phong cách') || q.includes('phong cach') || q.includes('mẫu') || q.includes('mau')) {
-          return "Chúng mình có rất nhiều concept độc đáo:<br>✦ Concept nghệ thuật Nàng Thơ<br>✦ Chân Dung Studio hiện đại<br>✦ Áo Dài truyền thống<br>Chúng mình cũng thiết kế concept riêng theo mong muốn của bạn. Xem thêm tại trang <a href='/services'>Dịch Vụ</a> nha! 🌸";
-        }
-        if (q.includes('đặt') || q.includes('dat') || q.includes('lịch') || q.includes('lich') || q.includes('chụp') || q.includes('chup') || q.includes('book')) {
-          return "Để đặt lịch chụp, bạn có thể điền thông tin nhanh tại trang <a href='/booking'>Đặt Lịch Chụp</a>. Ekip Dear Musé sẽ liên hệ lại với bạn trong vòng 24h để xác nhận lịch! 📸";
-        }
-        if (q.includes('liên hệ') || q.includes('lien he') || q.includes('sđt') || q.includes('sdt') || q.includes('hotline') || q.includes('địa chỉ') || q.includes('dia chi') || q.includes('fb') || q.includes('facebook') || q.includes('insta')) {
-          return "Bạn có thể liên hệ trực tiếp với chúng mình qua:<br>✦ Hotline: 0912 345 678<br>✦ Facebook: <a href='https://facebook.com' target='_blank'>Dear Musé Facebook</a><br>✦ Instagram: <a href='https://instagram.com' target='_blank'>Dear Musé Instagram</a><br>Hoặc gửi thông tin tại trang <a href='/contact'>Liên Hệ</a> nhé! 💕";
-        }
-        return "Cảm ơn tin nhắn của bạn! Trợ lý ảo đã ghi nhận thông tin. Để được hỗ trợ nhanh nhất, bạn có thể liên hệ hotline 0912 345 678 hoặc gửi tin nhắn tại trang <a href='/contact'>Liên Hệ</a> nhé! 🥰";
-      };
+      let chatHistory = [];
 
-      const handleUserMessage = (text) => {
+      const handleUserMessage = async (text) => {
         appendMessage(text, 'user');
+        
+        if (window.trackEvent) {
+          window.trackEvent('click_element', 'Chatbot: Message Sent');
+        }
         
         const typingIndicator = showTypingIndicator();
         
-        setTimeout(() => {
+        try {
+          const res = await fetch('/api/chatbot', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              message: text,
+              history: chatHistory
+            })
+          });
+          const data = await res.json();
+          
           typingIndicator.remove();
-          const response = getBotResponse(text);
-          appendMessage(response, 'bot');
-        }, 800 + Math.random() * 600);
+          appendMessage(data.response, 'bot');
+          
+          // Lưu vào lịch sử cho lượt chat tiếp theo
+          chatHistory.push({ sender: 'user', text: text });
+          chatHistory.push({ sender: 'bot', text: data.response });
+          
+        } catch (err) {
+          console.error('Chatbot fetch error:', err);
+          typingIndicator.remove();
+          appendMessage('Dạ, kết nối bị gián đoạn. Bạn thử lại nhé! 😭', 'bot');
+        }
       };
 
       // Form submit

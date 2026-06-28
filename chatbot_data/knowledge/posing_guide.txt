@@ -1,0 +1,59 @@
+HƯỚNG DẪN TẠO DÁNG VÀ GÓC MẶT ĐẸP (POSING & FACIAL ANGLES GUIDE):
+
+1. Concept Nàng Thơ (Váy nhẹ nhàng, trong trẻo, thơ mộng):
+   - Tư vấn góc mặt: Tập trung vào góc nghiêng 3/4 mặt dưới ánh sáng tự nhiên nhẹ nhàng, nhắm hờ mắt để tạo cảm xúc mơ màng.
+   - Hướng dẫn tạo dáng: Tựa cằm nhẹ vào bàn tay, tay chạm khẽ lên tóc, hoặc tay cầm nhẹ bông hoa đặt sát gò má để che bớt một phần khuôn mặt tạo sự tò mò bí ẩn.
+   - Ảnh tạo dáng mẫu (Trả về dạng markdown ảnh bên dưới):
+     ![Tạo dáng nàng thơ 1](/image/chatbot_gallery/pose_nang_tho_1.jpg)
+     ![Tạo dáng nàng thơ 2](/image/chatbot_gallery/pose_nang_tho_2.jpg)
+
+2. Concept Áo Dài / Cổ Phục (Hoài cổ, truyền thống):
+   - Tư vấn góc mặt: Góc nghiêng mặt đón nắng nhẹ từ phía sau, mắt nhìn xa xăm hoặc cúi đầu e ấp cười mỉm duyên dáng.
+   - Hướng dẫn tạo dáng: Hai tay đan nhẹ trước bụng nâng tà áo dài, hoặc tay nâng nhẹ một bên tà áo bước đi chậm rãi đón gió, hoặc tựa người khẽ vào bức tường/lan can gỗ cổ kính.
+   - Ảnh tạo dáng mẫu (Trả về dạng markdown ảnh bên dưới):
+     ![Tạo dáng áo dài 1](/image/chatbot_gallery/pose_ao_dai_1.jpg)
+     ![Tạo dáng áo dài 2](/image/chatbot_gallery/pose_ao_dai_2.jpg)
+
+3. Concept Dạ Hội / Sang Trọng (Cinematic & Editorial):
+   - Tư vấn góc mặt: Góc nghiêng thần thái sang chảnh, mắt nhìn sắc sảo trực diện vào ống kính để bộc lộ cá tính cuốn hút.
+   - Hướng dẫn tạo dáng: Đứng nghiêng người tạo đường cong cơ thể chữ S, một tay đặt nhẹ lên hông, hoặc ngồi nghiêng chân dài thanh lịch trên ghế, tựa nhẹ lưng vào tường.
+   - Ảnh tạo dáng mẫu (Trả về dạng markdown ảnh bên dưới):
+     ![Tạo dáng dạ hội 1](/image/chatbot_gallery/pose_da_hoi_1.jpg)
+     ![Tạo dáng dạ hội 2](/image/chatbot_gallery/pose_da_hoi_2.jpg)
+
+4. Tư vấn Góc Mặt Trái / Phải, Góc Chính Diện & Các Góc Chụp Khác:
+   - Nếu khách hàng thuận/thích góc mặt bên trái:
+     + Tư vấn góc mặt: Khuyên khách xoay mặt nhẹ sang bên phải khoảng 30 - 45 độ để hướng góc mặt bên trái về phía ống kính.
+     + Hướng dẫn tạo dáng: Dùng tay phải chạm khẽ lên cằm hoặc tựa nhẹ vào má bên trái. Nghiêng vai phải ra sau một chút để vai trái hướng về phía trước, giúp làm nổi bật đường xương quai hàm bên trái thanh thoát và tạo cảm giác thon gọn cho khuôn mặt.
+     + Ảnh tạo dáng mẫu (Trả về dạng markdown ảnh bên dưới):
+       ![Tạo dáng góc mặt trái](/image/chatbot_gallery/pose_goc_mat_trai.jpg)
+   
+   - Nếu khách hàng thuận/thích góc mặt bên phải:
+     + Tư vấn góc mặt: Khuyên khách xoay mặt nhẹ sang bên trái khoảng 30 - 45 độ để hướng góc mặt bên phải về phía ống kính, tận dụng ánh sáng chiếu nghiêng tôn lên sống mũi.
+     + Hướng dẫn tạo dáng: Dùng tay trái chạm khẽ lên tóc, tựa cằm nhẹ lên vai phải đang hơi nhấc lên. Nghiêng đầu nhẹ về phía vai phải để tôn lên góc nghiêng thanh tú bên phải.
+     + Ảnh tạo dáng mẫu (Trả về dạng markdown ảnh bên dưới):
+       ![Tạo dáng góc mặt phải](/image/chatbot_gallery/pose_goc_mat_phai.jpg)
+
+   - Nếu khách hàng chụp góc chính diện (chính giữa khuôn mặt):
+     + Tư vấn góc mặt: Để ảnh không bị phẳng hoặc cứng nhắc như ảnh thẻ, khuyên khách nghiêng đầu nhẹ sang một bên khoảng 5-10 độ, mắt nhìn thẳng vào ống kính hoặc nhìn lệch nhẹ sang bên cạnh ống kính một chút để tạo sự tự nhiên.
+     + Hướng dẫn tạo dáng: Xoay người một góc 30 độ so với camera (tránh đứng đối diện thẳng tắp làm người trông to hơn), thả lỏng một bên vai. Sử dụng tay chạm nhẹ vào xương quai xanh hoặc vuốt tóc nhẹ để tạo đường nét bất đối xứng quyến rũ.
+     + Ảnh tạo dáng mẫu (Trả về dạng markdown ảnh bên dưới):
+       ![Tạo dáng góc chính diện](/image/chatbot_gallery/pose_goc_chinh_dien.jpg)
+
+   - Nếu khách hàng chụp góc nghiêng hoàn toàn (Profile - 90 độ):
+     + Tư vấn góc mặt: Chụp hoàn toàn từ một bên má. Giúp tôn vinh trọn vẹn sống mũi, bờ môi và hàng mi cong. Khuyên khách thả lỏng bờ môi (hé môi nhẹ) để tạo nét điện ảnh mơ màng.
+     + Hướng dẫn tạo dáng: Giữ lưng thẳng, đẩy ngực nhẹ ra phía trước và hạ vai xuống để kéo dài cổ. Cúi mặt nhẹ hoặc ngửa mặt lên đón ánh sáng từ phía trên.
+     + Ảnh tạo dáng mẫu (Trả về dạng markdown ảnh bên dưới):
+       ![Tạo dáng góc nghiêng 90 độ](/image/chatbot_gallery/pose_goc_nghieng_90.jpg)
+
+   - Tư vấn theo dáng khuôn mặt:
+     + Khuôn mặt tròn: Tránh góc chụp chính diện trực tiếp. Nên ưu tiên góc nghiêng 3/4 mặt, kết hợp góc máy hơi cao từ trên xuống để tạo hiệu ứng cằm V-line tự nhiên. Sử dụng các phụ kiện như hoa, tay tựa má hoặc các lọn tóc xõa tự nhiên để che bớt một phần má.
+     + Khuôn mặt vuông / góc cạnh: Tránh ánh sáng chiếu trực diện làm nổi bật xương hàm. Nên chụp góc nghiêng 3/4 nhẹ dưới ánh sáng dịu. Cười mỉm tự nhiên hoặc thả lỏng cơ mặt, nghiêng đầu nhẹ để làm mềm mại các đường nét góc cạnh.
+
+   - Tư vấn theo góc máy (Camera Angles):
+     + Góc máy từ trên xuống (High Angle): Giúp khuôn mặt thon gọn hơn, mắt to tròn sáng rõ hơn, mang lại cảm giác ngây thơ, trong trẻo (rất hợp với concept nàng thơ).
+     + Góc máy từ dưới lên (Low Angle): Tạo cảm giác quyền lực, thời trang cao cấp (high-fashion), kéo dài đôi chân và tôn vinh vóc dáng chữ S thanh lịch (rất hợp với concept dạ hội sang trọng).
+
+QUY TẮC BẮT BUỘC KHI PHÁT HÌNH ẢNH MINH HỌA:
+- Chỉ gửi tối đa 1-2 hình ảnh mẫu có định dạng markdown như trên (`![alt](url)`) cho mỗi câu hỏi để tránh làm loãng nội dung.
+- Dưới mỗi phần trả lời gửi ảnh mẫu, bắt buộc ghi chú thêm câu này: "Dạ đây là 1-2 hình ảnh tạo dáng tiêu biểu của concept này. Bạn có thể xem thêm hàng trăm bộ ảnh nghệ thuật hoàn chỉnh khác tại trang /portfolio của Dear Musé nha! 🌸"
