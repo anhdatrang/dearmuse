@@ -1,0 +1,40 @@
+<div class="admin-header">
+  <h1>Quản lý ảnh: <%= album.title %></h1>
+  <a href="/admin/customers/<%= album.user_id %>/albums" class="btn-sm">← Quay lại danh sách album</a>
+</div>
+
+<% if (error && error.length > 0) { %>
+  <div style="padding: 12px; background: #f8d7da; color: #721c24; margin-bottom: 24px; border-radius: 4px;">
+    <%= error %>
+  </div>
+<% } %>
+<% if (success && success.length > 0) { %>
+  <div style="padding: 12px; background: #d4edda; color: #155724; margin-bottom: 24px; border-radius: 4px;">
+    <%= success %>
+  </div>
+<% } %>
+
+<div class="admin-card">
+  <% if (photos && photos.length > 0) { %>
+    <p style="margin-bottom: 16px; color: var(--smoke);">Tổng cộng: <%= photos.length %> ảnh</p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px;">
+      <% photos.forEach(p => { %>
+        <div style="position: relative; border-radius: 4px; overflow: hidden; background: #f5f5f5; border: 1px solid #ddd;">
+          <a href="<%= p.original_url %>" target="_blank">
+            <img src="<%= p.thumbnail_url %>" style="width: 100%; height: 150px; object-fit: cover; display: block;">
+          </a>
+          <div style="padding: 8px; text-align: center; background: white;">
+            <span style="font-size: 11px; color: #666; display: block; margin-bottom: 8px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"><%= p.file_name %></span>
+            <form method="POST" action="/admin/albums/<%= album.id %>/photos/<%= p.id %>/delete" onsubmit="return confirm('Xóa ảnh này?');">
+              <button type="submit" class="btn-sm" style="background: #dc3545; color: white; border: none; width: 100%; padding: 4px; cursor: pointer; font-size: 11px;">Xóa Ảnh</button>
+            </form>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <div class="empty-state">
+      Album này chưa có ảnh nào.
+    </div>
+  <% } %>
+</div>

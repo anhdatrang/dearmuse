@@ -140,6 +140,44 @@ async function setup() {
     )
   `);
 
+  await conn.query(`
+    CREATE TABLE IF NOT EXISTS users (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      name VARCHAR(255) NOT NULL,
+      email VARCHAR(255) UNIQUE NOT NULL,
+      password_hash VARCHAR(255) NOT NULL,
+      phone VARCHAR(20),
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  await conn.query(`
+    CREATE TABLE IF NOT EXISTS customer_albums (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      user_id INT NOT NULL,
+      title VARCHAR(255) NOT NULL,
+      description TEXT,
+      cover_image VARCHAR(500),
+      status ENUM('booked', 'shooting', 'editing', 'completed') DEFAULT 'booked',
+      shoot_date DATE,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )
+  `);
+
+  await conn.query(`
+    CREATE TABLE IF NOT EXISTS album_images (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      album_id INT NOT NULL,
+      original_url VARCHAR(500) NOT NULL,
+      thumbnail_url VARCHAR(500) NOT NULL,
+      file_name VARCHAR(255),
+      file_size INT,
+      uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (album_id) REFERENCES customer_albums(id) ON DELETE CASCADE
+    )
+  `);
+
   console.log('✅ Các bảng đã được tạo');
 
   // Seed services

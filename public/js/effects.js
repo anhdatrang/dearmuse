@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </svg>
   `;
 
-  const flowerCount = window.innerWidth < 768 ? 25 : 50;
+  const flowerCount = window.innerWidth < 768 ? 10 : 20;
 
   for (let i = 0; i < flowerCount; i++) {
     const flower = document.createElement('div');
@@ -101,11 +101,32 @@ document.addEventListener('DOMContentLoaded', () => {
       adjustCanvasSize();
     }
     
+    let isWidgetVisible = true;
+    let isChromaRunning = false;
+
+    // Use Intersection Observer to only run Chroma Key when Mascot is visible
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        isWidgetVisible = entries[0].isIntersecting;
+        if (isWidgetVisible && !isChromaRunning && !mascotVideo.paused) {
+          isChromaRunning = true;
+          requestAnimationFrame(processChromaKey);
+        }
+      });
+      observer.observe(mascotWidget);
+    }
+
     function processChromaKey() {
+      if (!isWidgetVisible) {
+        isChromaRunning = false;
+        return; // Stop loop when off-screen
+      }
+
       if (mascotVideo.paused || mascotVideo.ended) {
-        requestAnimationFrame(processChromaKey);
+        isChromaRunning = false;
         return;
       }
+      isChromaRunning = true;
       
       // Draw frame and scale it down to canvas size
       ctx.drawImage(mascotVideo, 0, 0, mascotCanvas.width, mascotCanvas.height);
@@ -147,7 +168,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Start keying when video plays
     mascotVideo.addEventListener('playing', () => {
       isVideoPlaying = true;
-      requestAnimationFrame(processChromaKey);
+      if (!isChromaRunning && isWidgetVisible) {
+        isChromaRunning = true;
+        requestAnimationFrame(processChromaKey);
+      }
     });
     
     // Autoplay fallback
@@ -158,7 +182,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // If already playing or starts playing immediately
     if (!mascotVideo.paused) {
       isVideoPlaying = true;
-      requestAnimationFrame(processChromaKey);
+      if (!isChromaRunning && isWidgetVisible) {
+        isChromaRunning = true;
+        requestAnimationFrame(processChromaKey);
+      }
     }
 
     // Try to trigger video play on early document interactions to bypass autoplay policy

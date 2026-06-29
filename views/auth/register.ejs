@@ -1,0 +1,49 @@
+<%
+  pageCss = 'booking.css'; 
+%>
+
+<section style="padding-top: 120px; padding-bottom: var(--section-gap);">
+  <div class="container" style="max-width: 500px; margin: 0 auto;">
+    
+    <div style="text-align: center; margin-bottom: 48px;">
+      <span class="section-label reveal">Khách hàng</span>
+      <h1 class="section-heading reveal" style="font-size: clamp(28px, 4vw, 40px);">Đăng Ký</h1>
+      <p class="body-text reveal" style="margin-top: 12px;">Tạo tài khoản để nhận bộ ảnh từ Dear Musé.</p>
+    </div>
+
+    <div class="contact-form-section">
+      <form method="POST" action="/auth/register" novalidate>
+        <div class="form-group">
+          <label for="name">Họ tên <span class="form-required">*</span></label>
+          <input type="text" id="name" name="name" placeholder="Nguyễn Văn A" required autocomplete="name">
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Số điện thoại</label>
+          <input type="tel" id="phone" name="phone" placeholder="0912 345 678" autocomplete="tel">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email <span class="form-required">*</span></label>
+          <input type="email" id="email" name="email" placeholder="email@example.com" required autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Mật khẩu <span class="form-required">*</span></label>
+          <input type="password" id="password" name="password" placeholder="••••••••" required>
+        </div>
+
+        <button type="submit" class="btn btn-dark submit-btn" style="width: 100%; margin-top: 24px;">
+          <span>Đăng ký →</span>
+        </button>
+      </form>
+      
+      <div style="text-align: center; margin-top: 24px;">
+        <p style="font-size: 14px; color: var(--smoke);">
+          Đã có tài khoản? <a href="/auth/login" style="color: var(--logo-mocha); font-weight: 500;">Đăng nhập</a>
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>

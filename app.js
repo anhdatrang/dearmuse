@@ -4,8 +4,12 @@ const path = require('path');
 const session = require('express-session');
 const flash = require('connect-flash');
 const ejsLayouts = require('express-ejs-layouts');
+const compression = require('compression');
 
 const app = express();
+
+// Enable Gzip compression
+app.use(compression());
 
 // View engine
 app.set('view engine', 'ejs');
@@ -39,15 +43,20 @@ app.use((req, res, next) => {
   res.locals.error = req.flash('error');
   res.locals.currentPath = req.path;
   res.locals.baseUrl = req.protocol + '://' + req.get('host');
+  res.locals.sessionUser = req.session.userId ? { id: req.session.userId, name: req.session.userName } : null;
   next();
 });
 
 // Routes
 const indexRoutes = require('./routes/index');
 const adminRoutes = require('./routes/admin');
+const authRoutes = require('./routes/auth');
+const customerRoutes = require('./routes/customer');
 
 app.use('/', indexRoutes);
 app.use('/admin', adminRoutes);
+app.use('/auth', authRoutes);
+app.use('/customer', customerRoutes);
 
 // 404 handler
 app.use((req, res) => {

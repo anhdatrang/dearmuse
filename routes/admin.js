@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/adminController');
+const adminCustomerController = require('../controllers/adminCustomerController');
+const adminUploadController = require('../controllers/adminUploadController');
 
 // Auth middleware
 const requireAdmin = (req, res, next) => {
@@ -38,5 +40,15 @@ router.post('/blog/:id/delete', requireAdmin, adminController.deletePost);
 // Contacts
 router.get('/contacts', requireAdmin, adminController.contacts);
 router.post('/contacts/:id/read', requireAdmin, adminController.markContactRead);
+
+// Customer & Albums
+router.get('/customers', requireAdmin, adminCustomerController.listCustomers);
+router.get('/customers/:id/albums', requireAdmin, adminCustomerController.customerAlbums);
+router.post('/customers/albums/create', requireAdmin, adminCustomerController.createAlbum);
+router.post('/albums/:id/status', requireAdmin, adminCustomerController.updateAlbumStatus);
+router.post('/albums/:id/delete', requireAdmin, adminCustomerController.deleteAlbum);
+router.post('/albums/:id/upload', requireAdmin, adminUploadController.uploadMiddleware, adminUploadController.uploadPhotos);
+router.get('/albums/:id/photos', requireAdmin, adminUploadController.managePhotos);
+router.post('/albums/:id/photos/:photoId/delete', requireAdmin, adminUploadController.deletePhoto);
 
 module.exports = router;

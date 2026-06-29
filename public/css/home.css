@@ -7,7 +7,7 @@
 .hero {
   position: relative;
   min-height: 100dvh;
-  background: url('/image/anhmoi.jpg') center center / cover no-repeat;
+  background: url('/image/anhmoi.webp') center center / cover no-repeat;
   color: var(--ink);
   display: flex;
   flex-direction: column;

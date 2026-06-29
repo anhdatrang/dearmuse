@@ -10,7 +10,7 @@
 
     <!-- Logo trung tâm -->
     <a href="/" class="nav-logo" aria-label="Trang chủ Dear Musé">
-      <img src="/logo/logo.png" alt="Dear Musé Photo Studio" height="64">
+      <img src="/logo/logo.webp" alt="Dear Musé Photo Studio" height="64">
     </a>
 
     <!-- Nhóm phải -->
@@ -18,6 +18,13 @@
       <li><a href="/pricing" class="<%= currentPath === '/pricing' ? 'active' : '' %>">Bảng giá</a></li>
       <li><a href="/about" class="<%= currentPath === '/about' ? 'active' : '' %>">Về chúng tôi</a></li>
       <li><a href="/contact" class="<%= currentPath === '/contact' ? 'active' : '' %>">Liên hệ</a></li>
+      <li>
+        <a href="<%= typeof sessionUser !== 'undefined' && sessionUser ? '/customer/my-albums' : '/auth/login' %>" 
+           class="<%= currentPath.startsWith('/auth') || currentPath.startsWith('/customer') ? 'active' : '' %>">
+          <svg style="display:inline-block; vertical-align:middle; margin-right: 4px;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <%= typeof sessionUser !== 'undefined' && sessionUser ? 'Tài khoản' : 'Khách' %>
+        </a>
+      </li>
       <li><a href="/booking" class="nav-cta"><span>Đặt lịch</span></a></li>
     </ul>
 

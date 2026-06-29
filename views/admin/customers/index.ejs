@@ -1,0 +1,34 @@
+<div class="admin-header">
+  <h1>Khách Hàng</h1>
+</div>
+
+<div class="admin-card" style="padding: 0;">
+  <% if (users && users.length > 0) { %>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Tên</th>
+          <th>Email</th>
+          <th>SĐT</th>
+          <th>Ngày tạo</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% users.forEach(u => { %>
+          <tr>
+            <td><%= u.id %></td>
+            <td style="font-weight: 500;"><%= u.name %></td>
+            <td><%= u.email %></td>
+            <td><%= u.phone || '—' %></td>
+            <td><%= new Date(u.created_at).toLocaleDateString('vi-VN') %></td>
+            <td><a href="/admin/customers/<%= u.id %>/albums" class="btn-sm">Quản lý Album</a></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <div class="empty-state">Chưa có khách hàng nào.</div>
+  <% } %>
+</div>

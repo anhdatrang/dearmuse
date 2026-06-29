@@ -44,18 +44,18 @@ async function optimizeImage(filePath, ext) {
       pipeline = pipeline.resize({ width: MAX_WIDTH, withoutEnlargement: true });
     }
     
-    // Compress
-    if (ext === '.jpg' || ext === '.jpeg') {
-      pipeline = pipeline.jpeg({ quality: 80, mozjpeg: true });
-    } else if (ext === '.png') {
-      pipeline = pipeline.png({ quality: 80, compressionLevel: 8 });
-    }
+    // Compress to WebP
+    pipeline = pipeline.webp({ quality: 80, effort: 4 });
 
     await pipeline.toFile(tempPath);
     
-    // Replace original
-    fs.renameSync(tempPath, filePath);
-    console.log(`Optimized: ${filePath}`);
+    // Remove original file and rename temp to .webp
+    const newPath = filePath.substring(0, filePath.lastIndexOf('.')) + '.webp';
+    fs.renameSync(tempPath, newPath);
+    if (filePath !== newPath) {
+      fs.unlinkSync(filePath);
+    }
+    console.log(`Optimized to WebP: ${newPath}`);
   } catch (err) {
     console.error(`Error processing ${filePath}:`, err);
   }

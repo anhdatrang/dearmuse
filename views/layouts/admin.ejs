@@ -290,7 +290,7 @@
 <!-- Sidebar -->
 <aside class="admin-sidebar">
   <div class="admin-brand">
-    <img src="/logo/logo.png" alt="Dear Musé">
+    <img src="/logo/logo.webp" alt="Dear Musé">
     <p>Admin Panel</p>
   </div>
   <nav class="admin-nav">
@@ -316,6 +316,10 @@
       <% if (typeof unreadContacts !== 'undefined' && unreadContacts > 0) { %>
         <span class="badge badge-unread" style="margin-left: auto; font-size: 9px;"><%= unreadContacts %></span>
       <% } %>
+    </a>
+    <a href="/admin/customers" class="<%= currentPath.startsWith('/admin/customers') ? 'active' : '' %>">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Khách Hàng
     </a>
     <a href="/admin/analytics" class="<%= currentPath.startsWith('/admin/analytics') ? 'active' : '' %>">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>

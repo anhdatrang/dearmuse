@@ -105,7 +105,40 @@ INSERT IGNORE INTO portfolio (title, slug, category, description, cover_image, i
 
 -- Seed default admin (password: dearmuse2025)
 INSERT IGNORE INTO admins (username, password_hash) VALUES
-('admin', '$2a$10$rQnE7v6ZmYz8K2bL9xP1sOhW3dF4mN6jK8tG5cX7wV2yB1uR9pI0e');
+('admin', '$2b$10$Pnc9Bs./gs0wLNLBLkMG1OCd.GVAcDXBzl0xF8/mq8MltcwnLnpwm');
+
+-- Create Customer Tables
+CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  phone VARCHAR(20),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS customer_albums (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  description TEXT,
+  cover_image VARCHAR(500),
+  status ENUM('booked', 'shooting', 'editing', 'completed') DEFAULT 'booked',
+  shoot_date DATE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS album_images (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  album_id INT NOT NULL,
+  original_url VARCHAR(500) NOT NULL,
+  thumbnail_url VARCHAR(500) NOT NULL,
+  file_name VARCHAR(255),
+  file_size INT,
+  uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (album_id) REFERENCES customer_albums(id) ON DELETE CASCADE
+);
 
 -- Create Analytics table
 CREATE TABLE IF NOT EXISTS analytics_events (

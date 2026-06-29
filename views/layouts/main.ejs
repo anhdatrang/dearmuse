@@ -10,7 +10,7 @@
     const defaultDesc = 'Dear Musé là studio nhiếp ảnh nghệ thuật chuyên nghiệp tại Hà Nội. Chuyên chụp ảnh chân dung nghệ thuật (Portrait), chụp ảnh sự kiện (Event), chụp ảnh thương hiệu & kỷ yếu cá nhân. Lưu giữ khoảnh khắc bằng ánh sáng tự nhiên và góc nhìn điện ảnh.';
     const finalTitle = typeof title !== 'undefined' ? title : defaultTitle;
     const finalDesc = typeof metaDescription !== 'undefined' ? metaDescription : defaultDesc;
-    const shareImage = typeof ogImage !== 'undefined' ? (ogImage.startsWith('http') ? ogImage : baseUrl + ogImage) : baseUrl + '/logo/logo.png';
+    const shareImage = typeof ogImage !== 'undefined' ? (ogImage.startsWith('http') ? ogImage : baseUrl + ogImage) : baseUrl + '/logo/logo.webp';
   %>
 
   <title><%= finalTitle %></title>
@@ -62,7 +62,7 @@
       "@context": "https://schema.org",
       "@type": "PhotographyStore",
       "name": "Dear Musé",
-      "image": "<%= baseUrl %>/logo/logo.png",
+      "image": "<%= baseUrl %>/logo/logo.webp",
       "@id": "<%= baseUrl %>/#organization",
       "url": "<%= baseUrl %>/",
       "telephone": "+84912345678",

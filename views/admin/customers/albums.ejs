@@ -1,0 +1,73 @@
+<div class="admin-header">
+  <h1>Album của <%= user.name %></h1>
+  <a href="/admin/customers" class="btn-sm">← Quay lại</a>
+</div>
+
+<!-- Form tạo album mới -->
+<div class="admin-card" style="margin-bottom: 24px;">
+  <h3 style="margin-bottom: 16px;">Tạo Album Mới</h3>
+  <form method="POST" action="/admin/customers/albums/create" style="display: grid; gap: 16px; max-width: 500px;">
+    <input type="hidden" name="user_id" value="<%= user.id %>">
+    <div>
+      <label style="display: block; margin-bottom: 8px;">Tên Album</label>
+      <input type="text" name="title" required style="width: 100%; padding: 8px; border: 1px solid #ddd;">
+    </div>
+    <div>
+      <label style="display: block; margin-bottom: 8px;">Ngày chụp</label>
+      <input type="date" name="shoot_date" style="width: 100%; padding: 8px; border: 1px solid #ddd;">
+    </div>
+    <div>
+      <label style="display: block; margin-bottom: 8px;">Mô tả</label>
+      <textarea name="description" style="width: 100%; padding: 8px; border: 1px solid #ddd;" rows="3"></textarea>
+    </div>
+    <button type="submit" class="btn-sm btn-sm-dark" style="padding: 10px;">Tạo Album</button>
+  </form>
+</div>
+
+<!-- Danh sách album -->
+<% if (albums && albums.length > 0) { %>
+  <div style="display: grid; gap: 24px;">
+    <% albums.forEach(a => { %>
+      <div class="admin-card">
+        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 16px;">
+          <div>
+            <h3 style="margin-bottom: 4px;"><%= a.title %></h3>
+            <div style="font-size: 13px; color: var(--smoke);">
+              <%= a.shoot_date ? new Date(a.shoot_date).toLocaleDateString('vi-VN') : '—' %> | <%= a.photo_count %> ảnh
+            </div>
+          </div>
+          <!-- Quản lý trạng thái & Xóa -->
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <form method="POST" action="/admin/albums/<%= a.id %>/status" style="display: flex; gap: 8px;">
+              <select name="status" style="padding: 4px 8px; border: 1px solid #ddd;">
+                <option value="booked" <%= a.status === 'booked' ? 'selected' : '' %>>Booked</option>
+                <option value="shooting" <%= a.status === 'shooting' ? 'selected' : '' %>>Shooting</option>
+                <option value="editing" <%= a.status === 'editing' ? 'selected' : '' %>>Editing</option>
+                <option value="completed" <%= a.status === 'completed' ? 'selected' : '' %>>Completed</option>
+              </select>
+              <button type="submit" class="btn-sm" style="cursor: pointer;">Cập nhật</button>
+            </form>
+            
+            <form method="POST" action="/admin/albums/<%= a.id %>/delete" onsubmit="return confirm('Bạn có chắc chắn muốn xóa toàn bộ album và tất cả ảnh bên trong?');">
+              <button type="submit" class="btn-sm" style="background: #dc3545; color: white; border: none; cursor: pointer;">Xóa Album</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Form upload & Quản lý ảnh -->
+        <div style="padding-top: 16px; border-top: 1px solid var(--parchment); display: flex; justify-content: space-between; align-items: center;">
+          <form method="POST" action="/admin/albums/<%= a.id %>/upload" enctype="multipart/form-data" style="display: flex; gap: 12px; align-items: center;">
+            <input type="file" name="photos" multiple accept="image/*" required>
+            <button type="submit" class="btn-sm" style="background: var(--ink); color: white; cursor: pointer;">Upload Ảnh</button>
+          </form>
+          
+          <a href="/admin/albums/<%= a.id %>/photos" class="btn-sm" style="background: var(--smoke); color: white; text-decoration: none;">Quản lý ảnh (<%= a.photo_count %>)</a>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+<% } else { %>
+  <div class="admin-card">
+    <div class="empty-state">Chưa có album nào.</div>
+  </div>
+<% } %>
