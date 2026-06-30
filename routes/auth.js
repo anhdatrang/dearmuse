@@ -16,6 +16,15 @@ router.post('/login', redirectIfLoggedIn, authController.postLogin);
 router.get('/register', redirectIfLoggedIn, authController.getRegister);
 router.post('/register', redirectIfLoggedIn, authController.postRegister);
 
+router.get('/verify-otp', redirectIfLoggedIn, authController.getVerifyOTP);
+router.post('/verify-otp', redirectIfLoggedIn, authController.postVerifyOTP);
+
+router.get('/forgot-password', redirectIfLoggedIn, authController.getForgotPassword);
+router.post('/forgot-password', redirectIfLoggedIn, authController.postForgotPassword);
+
+router.get('/reset-password', redirectIfLoggedIn, authController.getResetPassword);
+router.post('/reset-password', redirectIfLoggedIn, authController.postResetPassword);
+
 router.get('/logout', authController.logout);
 
 module.exports = router;

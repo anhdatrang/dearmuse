@@ -114,6 +114,7 @@ CREATE TABLE IF NOT EXISTS users (
   email VARCHAR(255) UNIQUE NOT NULL,
   password_hash VARCHAR(255) NOT NULL,
   phone VARCHAR(20),
+  is_verified TINYINT(1) DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -159,3 +160,22 @@ CREATE TABLE IF NOT EXISTS analytics_events (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Create OTPs table for authentication
+CREATE TABLE IF NOT EXISTS otps (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(255) NOT NULL,
+  otp VARCHAR(6) NOT NULL,
+  purpose ENUM('register', 'reset_password') NOT NULL,
+  expires_at DATETIME NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create Email History table
+CREATE TABLE IF NOT EXISTS email_history (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  subject VARCHAR(255) NOT NULL,
+  recipient VARCHAR(255) NOT NULL,
+  content TEXT,
+  status VARCHAR(50) DEFAULT 'sent',
+  sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

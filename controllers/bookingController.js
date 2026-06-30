@@ -1,50 +1,14 @@
 const { validationResult } = require('express-validator');
 const Booking = require('../models/Booking');
 const Service = require('../models/Service');
-const nodemailer = require('nodemailer');
+const emailService = require('../services/emailService');
+const db = require('../config/db');
 
 async function sendConfirmationEmail(booking, service) {
   if (!booking.customer_email) return;
-  
   try {
-    const transporter = nodemailer.createTransport({
-      host: process.env.MAIL_HOST,
-      port: process.env.MAIL_PORT,
-      secure: false,
-      auth: {
-        user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASS,
-      },
-    });
-
-    const serviceName = service ? service.name : 'Dịch vụ chụp ảnh';
-    const dateStr = new Date(booking.preferred_date).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
-
-    await transporter.sendMail({
-      from: process.env.MAIL_FROM,
-      to: booking.customer_email,
-      subject: `[Dear Musé] Xác nhận đặt lịch #${booking.booking_code}`,
-      html: `
-        <div style="font-family: 'Georgia', serif; max-width: 600px; margin: 0 auto; background: #FFF7E6; padding: 40px;">
-          <div style="text-align: center; margin-bottom: 32px;">
-            <p style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #9C8474; margin: 0 0 8px;">DEAR MUSÉ PHOTO STUDIO</p>
-            <h1 style="font-size: 28px; color: #1A1916; margin: 0; font-style: italic;">Đặt lịch thành công</h1>
-          </div>
-          <hr style="border: none; border-top: 0.5px solid #EDE8DF; margin: 24px 0;" />
-          <p style="color: #1A1916; line-height: 1.8;">Xin chào <strong>${booking.customer_name}</strong>,</p>
-          <p style="color: #6B6860; line-height: 1.8;">Chúng tôi đã nhận được yêu cầu đặt lịch của bạn và sẽ liên hệ xác nhận trong vòng 24 giờ.</p>
-          <div style="background: #F2EDE4; padding: 24px; border-radius: 4px; margin: 24px 0;">
-            <p style="margin: 0 0 8px;"><strong>Mã đặt lịch:</strong> ${booking.booking_code}</p>
-            <p style="margin: 0 0 8px;"><strong>Dịch vụ:</strong> ${serviceName}</p>
-            <p style="margin: 0 0 8px;"><strong>Ngày mong muốn:</strong> ${dateStr}</p>
-            <p style="margin: 0;"><strong>Hình thức:</strong> ${booking.location_type === 'studio' ? 'Studio' : booking.location_type === 'outdoor' ? 'Ngoại cảnh' : 'Studio & Ngoại cảnh'}</p>
-          </div>
-          <p style="color: #6B6860; line-height: 1.8; font-size: 14px;">Nếu có thắc mắc, vui lòng liên hệ qua Facebook hoặc Instagram của <em>Dear Musé</em>.</p>
-          <hr style="border: none; border-top: 0.5px solid #EDE8DF; margin: 24px 0;" />
-          <p style="text-align: center; color: #9C8474; font-size: 12px; letter-spacing: 0.1em;">© 2025 Dear Musé · Crafted with care.</p>
-        </div>
-      `,
-    });
+    booking.serviceName = service ? service.name : 'Dịch vụ chụp ảnh';
+    await emailService.sendBookingConfirmation(booking);
   } catch (err) {
     console.error('Email send failed:', err.message);
   }
@@ -54,13 +18,26 @@ exports.show = async (req, res) => {
   try {
     const services = await Service.findAll();
     const preselectedService = req.query.service || null;
+    
+    let oldInput = {};
+    if (req.session && req.session.userId) {
+      const [users] = await db.query('SELECT name, email, phone FROM users WHERE id = ?', [req.session.userId]);
+      if (users.length > 0) {
+        oldInput = {
+          customer_name: users[0].name,
+          customer_email: users[0].email,
+          customer_phone: users[0].phone
+        };
+      }
+    }
+
     res.render('booking', {
       title: 'Đặt Lịch Chụp Ảnh Trực Tuyến — Dear Musé',
       metaDescription: 'Đăng ký đặt lịch chụp ảnh nghệ thuật trực tuyến tại Dear Musé Studio. Quy trình nhanh gọn, phản hồi xác nhận nhanh chóng trong vòng 24h, hỗ trợ tư vấn concept hoàn toàn miễn phí.',
       services,
       preselectedService,
       errors: [],
-      oldInput: {},
+      oldInput,
     });
   } catch (err) {
     console.error(err);

@@ -248,6 +248,20 @@ exports.markContactRead = async (req, res) => {
   res.redirect('/admin/contacts');
 };
 
+const emailService = require('../services/emailService');
+
+exports.sendInterviewContact = async (req, res) => {
+  try {
+    const { email, subject, content } = req.body;
+    await emailService.sendInterviewContact(email, subject, content);
+    await Contact.markRead(req.params.id); // Mark as read when replied
+    res.redirect('/admin/contacts');
+  } catch (err) {
+    console.error(err);
+    res.redirect('/admin/contacts');
+  }
+};
+
 // ─── Blog Management ────────────────────────────────────
 exports.blogAdmin = async (req, res) => {
   try {

@@ -3,6 +3,7 @@ const router = express.Router();
 const adminController = require('../controllers/adminController');
 const adminCustomerController = require('../controllers/adminCustomerController');
 const adminUploadController = require('../controllers/adminUploadController');
+const emailController = require('../controllers/emailController');
 
 // Auth middleware
 const requireAdmin = (req, res, next) => {
@@ -40,6 +41,7 @@ router.post('/blog/:id/delete', requireAdmin, adminController.deletePost);
 // Contacts
 router.get('/contacts', requireAdmin, adminController.contacts);
 router.post('/contacts/:id/read', requireAdmin, adminController.markContactRead);
+router.post('/contacts/:id/interview', requireAdmin, adminController.sendInterviewContact);
 
 // Customer & Albums
 router.get('/customers', requireAdmin, adminCustomerController.listCustomers);
@@ -51,5 +53,11 @@ router.post('/albums/:id/upload', requireAdmin, adminUploadController.uploadMidd
 router.get('/albums/:id/photos', requireAdmin, adminUploadController.managePhotos);
 router.post('/albums/:id/photos/:photoId/delete', requireAdmin, adminUploadController.deletePhoto);
 router.post('/albums/:id/reprocess-faces', requireAdmin, adminUploadController.reprocessFaces);
+
+// Email Marketing
+router.get('/email-marketing', requireAdmin, emailController.marketingPage);
+router.post('/email-marketing/send', requireAdmin, emailController.sendMarketingEmail);
+router.post('/email-marketing/preview', requireAdmin, emailController.previewMarketingEmail);
+router.get('/email-history', requireAdmin, emailController.emailHistory);
 
 module.exports = router;

@@ -1,0 +1,18 @@
+<%- include('layout', { body: `
+  <h2 style="font-weight: 400; font-size: 20px; margin-top: 0;">Xin chào ${booking.customer_name},</h2>
+  <p style="color: #4a4a4a;">Cảm ơn bạn đã tin tưởng và đặt lịch chụp tại Dear Musé Studio. Chúng tôi đã nhận được yêu cầu của bạn và sẽ sớm liên hệ để xác nhận chi tiết.</p>
+  
+  <div style="background-color: #faf9f6; padding: 25px; border-radius: 6px; margin: 30px 0; border: 1px solid #eeeeee;">
+    <h3 style="margin-top: 0; font-weight: 500; font-size: 16px; border-bottom: 1px solid #e0e0e0; padding-bottom: 10px; margin-bottom: 15px;">Thông tin đặt lịch</h3>
+    <ul style="list-style: none; padding: 0; margin: 0; color: #4a4a4a; line-height: 2;">
+      <li><strong>Mã đặt lịch:</strong> ${booking.booking_code || '—'}</li>
+      <li><strong>Ngày dự kiến:</strong> ${new Date(booking.preferred_date).toLocaleDateString('vi-VN')}</li>
+      <li><strong>Thời gian:</strong> ${booking.preferred_time || 'Chưa xác định'}</li>
+      <li><strong>Địa điểm:</strong> ${booking.location_type === 'studio' ? 'Tại Studio' : (booking.location_type === 'outdoor' ? 'Ngoại cảnh' : 'Studio & Ngoại cảnh')}</li>
+    </ul>
+  </div>
+
+  <p style="color: #4a4a4a;">Nếu bạn có bất kỳ thay đổi nào, vui lòng liên hệ lại với chúng tôi qua email này hoặc hotline của Studio.</p>
+  
+  <p style="color: #4a4a4a; margin-top: 40px;">Trân trọng,<br><strong>Dear Musé Team</strong></p>
+`}) %>

@@ -325,6 +325,14 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
       Phân tích
     </a>
+    <a href="/admin/email-marketing" class="<%= currentPath.startsWith('/admin/email-marketing') ? 'active' : '' %>">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Email Marketing
+    </a>
+    <a href="/admin/email-history" class="<%= currentPath.startsWith('/admin/email-history') ? 'active' : '' %>">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="12 8 12 12 14 14"/><circle cx="12" cy="12" r="10"/></svg>
+      Lịch sử Email
+    </a>
   </nav>
   <div class="admin-footer">
     <p class="user">@<%= typeof adminUsername !== 'undefined' ? adminUsername : 'admin' %></p>

@@ -147,9 +147,20 @@ async function setup() {
       email VARCHAR(255) UNIQUE NOT NULL,
       password_hash VARCHAR(255) NOT NULL,
       phone VARCHAR(20),
+      is_verified TINYINT(1) DEFAULT 0,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
   `);
+
+  // Thêm cột is_verified nếu bảng đã tồn tại từ trước
+  try {
+    await conn.query(`ALTER TABLE users ADD COLUMN is_verified TINYINT(1) DEFAULT 0`);
+    console.log('✅ Đã thêm cột is_verified vào bảng users');
+  } catch (e) {
+    if (e.code !== 'ER_DUP_FIELDNAME') {
+      console.warn('⚠️ Cảnh báo thêm cột is_verified:', e.message);
+    }
+  }
 
   await conn.query(`
     CREATE TABLE IF NOT EXISTS customer_albums (
@@ -185,6 +196,28 @@ async function setup() {
       descriptor JSON NOT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (image_id) REFERENCES album_images(id) ON DELETE CASCADE
+    )
+  `);
+
+  await conn.query(`
+    CREATE TABLE IF NOT EXISTS otps (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      email VARCHAR(255) NOT NULL,
+      otp VARCHAR(6) NOT NULL,
+      purpose ENUM('register', 'reset_password') NOT NULL,
+      expires_at DATETIME NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  await conn.query(`
+    CREATE TABLE IF NOT EXISTS email_history (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      subject VARCHAR(255) NOT NULL,
+      recipient VARCHAR(255) NOT NULL,
+      content TEXT,
+      status VARCHAR(50) DEFAULT 'sent',
+      sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
   `);
 

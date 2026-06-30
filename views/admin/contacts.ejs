@@ -40,6 +40,9 @@
                   <button type="submit" class="btn-sm">Đánh dấu đã đọc</button>
                 </form>
               <% } %>
+              <% if (c.email) { %>
+                <button type="button" class="btn-sm" onclick="openInterviewModal('<%= c.id %>', '<%= c.email %>')" style="margin-left: 8px;">Gửi email</button>
+              <% } %>
             </td>
           </tr>
         <% }) %>
@@ -49,3 +52,89 @@
     <div class="empty-state">Chưa có tin nhắn nào.</div>
   <% } %>
 </div>
+
+<!-- Modal Gửi Phỏng Vấn/Liên hệ -->
+<div id="interviewModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeInterviewModal()">&times;</span>
+    <h2 style="font-family: var(--font-body); font-size: 16px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--smoke); margin-bottom: 24px;">Gửi Thư Phỏng Vấn / Liên Hệ</h2>
+    <form id="interviewForm" method="POST" action="">
+      <input type="hidden" id="interviewEmail" name="email">
+      
+      <div class="form-group-admin">
+        <label class="form-label">Tiêu đề</label>
+        <input type="text" name="subject" class="form-control" value="Dear Musé - Thư mời phỏng vấn" required>
+      </div>
+      
+      <div class="form-group-admin">
+        <label class="form-label">Nội dung</label>
+        <textarea name="content" class="form-control" rows="6" required placeholder="Nhập nội dung thư... (Có thể sử dụng thẻ HTML cơ bản)"></textarea>
+      </div>
+      
+      <div style="text-align: right; margin-top: 24px; display: flex; gap: 12px; justify-content: flex-end;">
+        <button type="button" class="btn-sm" onclick="closeInterviewModal()">Huỷ</button>
+        <button type="submit" class="btn-sm btn-sm-dark">Gửi email</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+/* CSS cho Modal */
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 1000; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
+  background-color: rgba(26, 25, 22, 0.5); /* Overlay mờ */
+}
+
+.modal-content {
+  background-color: var(--vanilla);
+  margin: 10% auto; 
+  padding: 32px;
+  border: 0.5px solid var(--bone);
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.close {
+  color: var(--smoke);
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  font-size: 28px;
+  font-weight: 300;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close:hover {
+  color: var(--ink);
+}
+</style>
+
+<script>
+function openInterviewModal(id, email) {
+  document.getElementById('interviewForm').action = '/admin/contacts/' + id + '/interview';
+  document.getElementById('interviewEmail').value = email;
+  document.getElementById('interviewModal').style.display = 'block';
+}
+function closeInterviewModal() {
+  document.getElementById('interviewModal').style.display = 'none';
+}
+
+// Đóng modal khi click ra ngoài
+window.onclick = function(event) {
+  const modal = document.getElementById('interviewModal');
+  if (event.target == modal) {
+    modal.style.display = 'none';
+  }
+}
+</script>
