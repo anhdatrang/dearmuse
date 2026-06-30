@@ -2,6 +2,7 @@ const { validationResult } = require('express-validator');
 const Booking = require('../models/Booking');
 const Service = require('../models/Service');
 const emailService = require('../services/emailService');
+const discordService = require('../services/discordService');
 const db = require('../config/db');
 
 async function sendConfirmationEmail(booking, service) {
@@ -73,6 +74,7 @@ exports.submit = async (req, res) => {
       service = await Service.findById(req.body.service_id);
     }
     await sendConfirmationEmail({ ...booking, ...req.body }, service);
+    await discordService.notifyBooking({ ...booking, ...req.body }, service ? service.name : 'Dịch vụ chụp ảnh');
 
     res.render('booking-confirm', {
       title: 'Đặt lịch thành công — Dear Musé',

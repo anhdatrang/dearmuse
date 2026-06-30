@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const db = require('../config/db');
 const emailService = require('../services/emailService');
+const discordService = require('../services/discordService');
 
 function generateOTP() {
   return crypto.randomInt(100000, 999999).toString();
@@ -104,6 +105,12 @@ exports.postVerifyOTP = async (req, res) => {
     // Mark user as verified
     await db.query('UPDATE users SET is_verified = 1 WHERE email = ?', [email]);
     await db.query('DELETE FROM otps WHERE email = ? AND purpose = ?', [email, 'register']);
+
+    // Fetch user details to send notification
+    const [users] = await db.query('SELECT name, email, phone FROM users WHERE email = ?', [email]);
+    if (users.length > 0) {
+      await discordService.notifyNewUser(users[0]);
+    }
 
     req.flash('success', 'Xác thực tài khoản thành công. Vui lòng đăng nhập.');
     res.redirect('/auth/login');

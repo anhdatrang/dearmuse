@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator');
 const Contact = require('../models/Contact');
+const discordService = require('../services/discordService');
 
 exports.show = (req, res) => {
   res.render('contact', {
@@ -25,6 +26,7 @@ exports.submit = async (req, res) => {
 
   try {
     await Contact.create(req.body);
+    await discordService.notifyContact(req.body);
     res.render('contact', {
       title: 'Liên Hệ Tư Vấn & Đặt Lịch — Dear Musé',
       metaDescription: 'Liên hệ với Dear Musé Studio tại Hà Nội. Gửi tin nhắn chia sẻ ý tưởng, thắc mắc về các gói chụp chân dung nghệ thuật, sự kiện và thương hiệu để được hỗ trợ nhanh nhất trong vòng 24 giờ.',
