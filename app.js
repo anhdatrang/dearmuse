@@ -52,11 +52,13 @@ const indexRoutes = require('./routes/index');
 const adminRoutes = require('./routes/admin');
 const authRoutes = require('./routes/auth');
 const customerRoutes = require('./routes/customer');
+const loyaltyRoutes = require('./routes/loyalty');
 
 app.use('/', indexRoutes);
 app.use('/admin', adminRoutes);
 app.use('/auth', authRoutes);
 app.use('/customer', customerRoutes);
+app.use('/api/loyalty', loyaltyRoutes);
 
 // 404 handler
 app.use((req, res) => {

@@ -5,7 +5,7 @@ const Portfolio = require('../models/Portfolio');
 const allSourceImages = {
   'Cá Nhân': [
     { src: '/source/N%C3%A0ng%20th%C6%A1/H%C6%B0%E1%BB%9Bng%20d%C6%B0%C6%A1ng%20001_.webp', category: 'ca-nhan', alt: 'Chân dung hướng dương' },
-    { src: '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207836(1).JPEG', category: 'ca-nhan', alt: 'Concept nghệ thuật' },
+    { src: '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207836(1).webp', category: 'ca-nhan', alt: 'Concept nghệ thuật' },
     { src: '/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6382.webp', category: 'ca-nhan', alt: 'Áo dài nghệ thuật' },
     { src: '/source/N%C3%A0ng%20th%C6%A1/N%C3%A0ng%20th%C6%A1%20001.webp', category: 'ca-nhan', alt: 'Nàng thơ chân dung' },
     { src: '/source/N%C3%A0ng%20th%C6%A1/N%C3%A0ng%20th%C6%A1%20002.webp', category: 'ca-nhan', alt: 'Portrait nghệ thuật' },
@@ -35,8 +35,8 @@ const heroImages = [
   '/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6368.webp',
   '/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6371.webp',
   '/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6382.webp',
-  '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207836(1).JPEG',
-  '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207938(1).JPEG',
+  '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207836(1).webp',
+  '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207938(1).webp',
   '/source/N%C3%A0ng%20th%C6%A1/N%C3%A0ng%20th%C6%A1%20001.webp',
   '/source/N%C3%A0ng%20th%C6%A1/N%C3%A0ng%20th%C6%A1%20002.webp',
   '/source/N%C3%A0ng%20th%C6%A1/Xanh%20Xanh%20002.webp',
@@ -78,7 +78,7 @@ const featuredImages = [
   allSourceImages['Cá Nhân'][5],
 ];
 
-const aboutImage = '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207836(1).JPEG';
+const aboutImage = '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207836(1).webp';
 
 exports.home = async (req, res) => {
   try {
@@ -87,9 +87,17 @@ exports.home = async (req, res) => {
       title: 'Dear Musé — Studio Nhiếp Ảnh Nghệ Thuật tại Hà Nội',
       metaDescription: 'Dear Musé là studio nhiếp ảnh nghệ thuật chuyên nghiệp tại Hà Nội. Chuyên chụp ảnh chân dung nghệ thuật (Portrait), chụp ảnh sự kiện (Event), chụp ảnh thương hiệu & kỷ yếu cá nhân. Lưu giữ khoảnh khắc bằng ánh sáng tự nhiên và góc nhìn điện ảnh.',
       heroImages,
-      featuredImages,
-      services,
-      aboutImage,
+      featuredImages: featuredImages.map(img => ({
+        ...img,
+        src: `/cdn/image?w=800&src=${encodeURIComponent(img.src)}`
+      })),
+      services: services.map(s => {
+        s.img = s.cover_image 
+          ? `/cdn/image?w=600&src=${encodeURIComponent(s.cover_image)}` 
+          : '/images/service-placeholder.webp';
+        return s;
+      }),
+      aboutImage: `/cdn/image?w=800&src=${encodeURIComponent(aboutImage)}`,
     });
   } catch (err) {
     console.error(err);
@@ -97,9 +105,12 @@ exports.home = async (req, res) => {
       title: 'Dear Musé — Studio Nhiếp Ảnh Nghệ Thuật tại Hà Nội',
       metaDescription: 'Dear Musé là studio nhiếp ảnh nghệ thuật chuyên nghiệp tại Hà Nội. Chuyên chụp ảnh chân dung nghệ thuật (Portrait), chụp ảnh sự kiện (Event), chụp ảnh thương hiệu & kỷ yếu cá nhân. Lưu giữ khoảnh khắc bằng ánh sáng tự nhiên và góc nhìn điện ảnh.',
       heroImages,
-      featuredImages,
+      featuredImages: featuredImages.map(img => ({
+        ...img,
+        src: `/cdn/image?w=800&src=${encodeURIComponent(img.src)}`
+      })),
       services: [],
-      aboutImage,
+      aboutImage: `/cdn/image?w=800&src=${encodeURIComponent(aboutImage)}`,
     });
   }
 };

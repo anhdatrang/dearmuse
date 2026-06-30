@@ -6,9 +6,9 @@ const allImages = {
     { src: '/source/N%C3%A0ng%20th%C6%A1/H%C6%B0%E1%BB%9Bng%20d%C6%B0%C6%A1ng%20003.webp', category: 'ca-nhan', alt: 'Nàng thơ hướng dương', album: 'Nàng Thơ' },
     { src: '/source/N%C3%A0ng%20th%C6%A1/N%C3%A0ng%20th%C6%A1%20001.webp', category: 'ca-nhan', alt: 'Nàng thơ trong trẻo', album: 'Nàng Thơ' },
     { src: '/source/N%C3%A0ng%20th%C6%A1/N%C3%A0ng%20th%C6%A1%20002.webp', category: 'ca-nhan', alt: 'Chân dung nghệ thuật', album: 'Nàng Thơ' },
-    { src: '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207836(1).JPEG', category: 'ca-nhan', alt: 'Concept nàng thơ', album: 'Concept Nghệ Thuật' },
-    { src: '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207938(1).JPEG', category: 'ca-nhan', alt: 'Chân dung điện ảnh', album: 'Concept Nghệ Thuật' },
-    { src: '/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6382.webp', category: 'ca-nhan', alt: 'Áo dài truyền thống', album: 'Áo Dài' },
+    { src: '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207836(1).webp', category: 'ca-nhan', alt: 'Concept nàng thơ', album: 'Concept Nghệ Thuật' },
+    { src: '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207938(1).webp', category: 'ca-nhan', alt: 'Chân dung điện ảnh', album: 'Concept Nghệ Thuật' },
+    { src: '/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6389.webp', category: 'ca-nhan', alt: 'Áo dài truyền thống', album: 'Áo Dài' },
     { src: '/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6415.webp', category: 'ca-nhan', alt: 'Áo dài trắng thướt tha', album: 'Áo Dài' },
     { src: '/source/C%C3%81%20NH%C3%82N/PROFILE/IMG_4925.webp', category: 'ca-nhan', alt: 'Profile nghệ thuật', album: 'Profile' },
     { src: '/source/C%C3%81%20NH%C3%82N/PROFILE/IMG_4933.webp', category: 'ca-nhan', alt: 'Chân dung tối giản', album: 'Profile' },
@@ -74,7 +74,7 @@ const groupMetadata = {
 
 exports.index = async (req, res) => {
   const category = req.query.category || 'all';
-  
+
   // Decide which groups to render
   let activeGroups = [];
   if (category === 'all') {
@@ -89,7 +89,10 @@ exports.index = async (req, res) => {
   const magazineGroups = activeGroups.map(catKey => {
     return {
       ...groupMetadata[catKey],
-      images: allImages[catKey]
+      images: allImages[catKey].map(img => ({
+        ...img,
+        src: `/cdn/image?w=800&src=${encodeURIComponent(img.src)}`
+      }))
     };
   });
 
@@ -112,8 +115,8 @@ exports.detail = async (req, res) => {
   try {
     const portfolio = await Portfolio.findBySlug(req.params.slug);
     if (!portfolio) return res.redirect('/portfolio');
-    
-    const descText = portfolio.description 
+
+    const descText = portfolio.description
       ? portfolio.description.replace(/<[^>]*>/g, '').substring(0, 155) + '...'
       : `Xem chi tiết bộ ảnh nghệ thuật "${portfolio.title}" được thực hiện bởi Dear Musé Studio.`;
 

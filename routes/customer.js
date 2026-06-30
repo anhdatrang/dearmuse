@@ -21,4 +21,9 @@ router.get('/download-album/:id', customerController.downloadAlbum);
 router.post('/albums/:id/filter-face', upload.single('photo'), customerController.filterFace);
 router.post('/albums/:id/download-selected', customerController.downloadCustom);
 
+// Loyalty UI Routes
+router.get('/my-card', customerController.myCard);
+router.get('/redeem', customerController.redeem);
+router.get('/loyalty-history', customerController.loyaltyHistory);
+
 module.exports = router;

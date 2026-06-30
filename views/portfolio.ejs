@@ -1,263 +1,378 @@
-<% pageCss = 'portfolio.css'; %>
+<% pageCss='portfolio.css' ; %>
 
-<!-- Editorial Hero -->
-<section class="portfolio-hero">
-  <div class="portfolio-hero-bg">
-    <img src="/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207836(1).webp" alt="Portfolio Background">
-  </div>
-  <div class="portfolio-hero-content reveal">
-    <h1>Portfolio</h1>
-    <p>Khám phá các tác phẩm</p>
-  </div>
-</section>
-
-<!-- Portfolio Content -->
-<section style="padding: 80px 0 var(--section-gap); background: var(--bone);">
-  <div class="container">
-
-    <!-- Luxury Filters -->
-    <div class="portfolio-filters reveal" data-delay="1">
-      <a href="/portfolio" class="filter-btn <%= activeCategory === 'all' ? 'active' : '' %>">Tất cả</a>
-      <a href="/portfolio?category=ca-nhan" class="filter-btn <%= activeCategory === 'ca-nhan' ? 'active' : '' %>">Cá Nhân</a>
-      <a href="/portfolio?category=doanh-nghiep" class="filter-btn <%= activeCategory === 'doanh-nghiep' ? 'active' : '' %>">Doanh Nghiệp</a>
-      <a href="/portfolio?category=mo-rong" class="filter-btn <%= activeCategory === 'mo-rong' ? 'active' : '' %>">Mở Rộng</a>
+  <!-- Editorial Hero -->
+  <section class="portfolio-hero">
+    <div class="portfolio-hero-bg">
+      <img src="/cdn/image?w=1920&src=%2Fsource%2FC%C3%81%20NH%C3%82N%2FCONCEPT%2FSU207836(1).webp" alt="Portfolio Background" fetchpriority="high" decoding="async">
     </div>
+    <div class="portfolio-hero-content reveal">
+      <h1>Portfolio</h1>
+      <p>Khám phá các tác phẩm</p>
+    </div>
+  </section>
 
-    <!-- Magazine Editorial Container -->
-    <div class="magazine-container">
-      <% magazineGroups.forEach(function(group, groupIndex) { %>
+  <!-- Portfolio Content -->
+  <section style="padding: 80px 0 var(--section-gap); background: var(--bone);">
+    <div class="container portfolio-container-wide">
+
+      <!-- Luxury Filters -->
+      <div class="portfolio-filters reveal" data-delay="1">
+        <a href="/portfolio" class="filter-btn <%= activeCategory === 'all' ? 'active' : '' %>">Tất cả</a>
+        <a href="/portfolio?category=ca-nhan" class="filter-btn <%= activeCategory === 'ca-nhan' ? 'active' : '' %>">Cá
+          Nhân</a>
+        <a href="/portfolio?category=doanh-nghiep"
+          class="filter-btn <%= activeCategory === 'doanh-nghiep' ? 'active' : '' %>">Doanh Nghiệp</a>
+        <a href="/portfolio?category=mo-rong" class="filter-btn <%= activeCategory === 'mo-rong' ? 'active' : '' %>">Mở
+          Rộng</a>
+      </div>
+
+      <!-- Magazine Editorial Container -->
+      <div class="magazine-container">
+        <% magazineGroups.forEach(function(group, groupIndex) { %>
         <%
-          // Group images into chunks of 5
+          // Group images into chunks of 6
           var chunks = [];
-          var chunkSize = 5;
+          var chunkSize = 6;
           for (var i = 0; i < group.images.length; i += chunkSize) {
             chunks.push(group.images.slice(i, i + chunkSize));
           }
         %>
-        
-        <% chunks.forEach(function(chunk, chunkIndex) { %>
-          <!-- Magazine Issue Block (2x2 Grid representing flat open spreads) -->
-          <div class="magazine-issue reveal" data-delay="1">
-            <div class="magazine-book-wrap">
-            <div class="magazine-grid">
-              
-              <!-- PAGE 1: COVER (FULL-BLEED PHOTO) -->
-              <div class="magazine-page m-page-cover">
-                <!-- Cover Full Background Image -->
-                <div class="cover-full-bg">
-                  <img src="<%= chunk[0].src %>" alt="<%= chunk[0].alt %>">
-                </div>
-                
-                <!-- Cover Content Overlay -->
-                <div class="cover-overlay-content">
-                  <div class="cover-header">
-                    <span class="cover-subtitle">DEAR MUSÉ MAGAZINE</span>
-                    <h2 class="cover-title">DEAR MUSÉ</h2>
-                    <div class="cover-meta">
-                      <span>Số 06 / 2026</span>
-                      <span>dearmuse.vn</span>
-                    </div>
-                  </div>
-                  
-                  <div class="cover-body">
-                    <!-- Left side teasers -->
-                    <div class="cover-teasers-left">
-                      <% 
-                        var t1Key = group.teaserCategory1;
-                        var t1Img = allImages[t1Key] && allImages[t1Key][0] ? allImages[t1Key][0] : null;
-                      %>
-                      <% if (t1Img) { %>
-                        <div class="teaser-block">
-                          <span class="teaser-tag">FEATURED</span>
-                          <a href="/portfolio?category=<%= t1Key %>" class="teaser-link">
-                            <div class="teaser-img-wrap">
-                              <img src="<%= t1Img.src %>" alt="Teaser 1">
-                            </div>
-                            <h4><%= t1Key === 'doanh-nghiep' ? 'BUSINESS' : (t1Key === 'mo-rong' ? 'COMMERCIAL' : 'PORTRAIT') %></h4>
-                            <p>Nâng tầm thương hiệu</p>
-                          </a>
+
+            <% chunks.forEach(function(chunk, chunkIndex) { %>
+              <!-- Magazine Issue Block (6-Page Spread Set) -->
+              <div class="magazine-issue reveal" data-delay="1">
+                <div class="magazine-book-wrap">
+
+                  <!-- ROW 1: COVER (1 page) + EDITORIAL I (2 pages) -->
+                  <div class="magazine-row-1">
+                    <!-- SPREAD 1: COVER (Left) -->
+                    <div class="magazine-grid cover-grid">
+                      <!-- PAGE 1: COVER (FULL-BLEED PHOTO) -->
+                      <div class="magazine-page m-page-cover">
+                        <!-- Cover Full Background Image -->
+                        <div class="cover-full-bg">
+                          <img src="<%= chunk[0].src %>" alt="<%= chunk[0].alt %>" loading="lazy" decoding="async">
                         </div>
-                      <% } %>
-                    </div>
-                    
-                    <!-- Center Sunken Title -->
-                    <div class="cover-center-content">
-                      <div class="sunken-title-wrapper">
-                        <div class="sunken-bg-text"><%= group.englishTitle %></div>
-                      </div>
-                    </div>
-                    
-                    <!-- Right side teasers -->
-                    <div class="cover-teasers-right">
-                      <% 
-                        var t2Key = group.teaserCategory2;
-                        var t2Img = allImages[t2Key] && allImages[t2Key][0] ? allImages[t2Key][0] : null;
-                      %>
-                      <% if (t2Img) { %>
-                        <div class="teaser-block">
-                          <span class="teaser-tag">TRENDING</span>
-                          <a href="/portfolio?category=<%= t2Key %>" class="teaser-link">
-                            <div class="teaser-img-wrap">
-                              <img src="<%= t2Img.src %>" alt="Teaser 2">
+
+                        <!-- Cover Content Overlay -->
+                        <div class="cover-overlay-content">
+                          <div class="cover-header">
+                            <span class="cover-subtitle">DEAR MUSÉ MAGAZINE</span>
+                            <h2 class="cover-title">DEAR MUSÉ</h2>
+                            <div class="cover-meta">
+                              <span>Số 06 / 2026</span>
+                              <span>dearmuse.vn</span>
                             </div>
-                            <h4><%= t2Key === 'doanh-nghiep' ? 'BUSINESS' : (t2Key === 'mo-rong' ? 'COMMERCIAL' : 'PORTRAIT') %></h4>
-                            <p>Sự tinh tế độc bản</p>
-                          </a>
-                        </div>
-                      <% } %>
-                    </div>
-                  </div>
-                  
-                  <div class="cover-footer">
-                    <span class="concept-label">CONCEPT CHUYÊN ĐỀ</span>
-                    <h3 class="concept-name"><%= group.title %></h3>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- PAGE 2: INSIDE SPREAD 1 (EDITORIAL CONTENT) -->
-              <div class="magazine-page m-page-content-1">
-                <div class="editorial-header">
-                  <span class="page-num"><%= (groupIndex * chunks.length + chunkIndex) * 4 + 2 %></span>
-                  <span class="editorial-cat"><%= group.title %> — EDITORIAL</span>
-                </div>
-                
-                <div class="editorial-body">
-                  <h3 class="editorial-title">TẠO VẺ NGOÀI <span>Ấn tượng</span></h3>
-                  <div class="editorial-row">
-                    <div class="editorial-col-text">
-                      <p class="editorial-paragraph">
-                        <span class="drop-cap"><%= group.title.charAt(0) %></span><%= group.introText %>
-                      </p>
-                      <p class="editorial-paragraph">
-                        Mỗi bức hình là một tác phẩm chứa đựng tâm hồn, ánh sáng chân thực và cảm xúc tự nhiên nguyên bản nhất. Hãy để chúng tôi kể lại câu chuyện của bạn bằng ngôn ngữ của nghệ thuật nhiếp ảnh hiện đại.
-                      </p>
-                      <% if (chunk.length < 3) { %>
-                        <blockquote class="editorial-quote">
-                          "Nhiếp ảnh là cách chúng tôi lưu giữ khoảnh khắc và thổi hồn cho những bức ảnh trở thành một tác phẩm nghệ thuật trường tồn."
-                        </blockquote>
-                      <% } %>
-                    </div>
-                    
-                    <div class="editorial-col-images">
-                      <div class="main-portrait-wrap">
-                        <% if (chunk[1]) { %>
-                          <img src="<%= chunk[1].src %>" alt="<%= chunk[1].alt %>">
-                          <span class="img-caption"><%= chunk[1].album %> — DEAR MUSÉ</span>
-                        <% } else { %>
-                          <div class="typo-placeholder">
-                            <p class="typo-quote">“Nhiếp ảnh là cách giữ lại khoảnh khắc mà không cần lời nói.”</p>
                           </div>
-                        <% } %>
+
+                          <div class="cover-body">
+                            <div class="cover-center-content">
+                              <div class="sunken-title-wrapper">
+                                <div class="sunken-bg-text">
+                                  <%= group.englishTitle %>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="cover-footer">
+                            <span class="concept-label">CONCEPT CHUYÊN ĐỀ</span>
+                            <h3 class="concept-name">
+                              <%= group.title %>
+                            </h3>
+                          </div>
+                        </div>
                       </div>
-                      
-                      <% if (chunk[2]) { %>
-                        <div class="sub-portrait-wrap">
-                          <img src="<%= chunk[2].src %>" alt="<%= chunk[2].alt %>">
-                        </div>
-                      <% } %>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- PAGE 3: INSIDE SPREAD 2 (CREDITS & LETTERS) -->
-              <div class="magazine-page m-page-content-2">
-                <div class="editorial-header">
-                  <span class="editorial-cat">DEAR MUSÉ EDITORIAL</span>
-                  <span class="page-num"><%= (groupIndex * chunks.length + chunkIndex) * 4 + 3 %></span>
-                </div>
-                
-                <div class="editorial-body flex-layout">
-                  <div class="credits-column">
-                    <h4 class="editorial-subheading">BAN BIÊN TẬP</h4>
-                    <table class="credits-table">
-                      <tr>
-                        <td>Phụ trách nội dung</td>
-                        <td>Lê Ngọc Bích</td>
-                      </tr>
-                      <tr>
-                        <td>Giám đốc sáng tạo</td>
-                        <td>Y Steven Nie Hrah</td>
-                      </tr>
-                      <tr>
-                        <td>Thiết kế mỹ thuật</td>
-                        <td>Lê Ngọc Bích</td>
-                      </tr>
-                      <tr>
-                        <td>Nhiếp ảnh chính</td>
-                        <td>Dũng TN</td>
-                      </tr>
-                      <tr>
-                        <td>Hậu kỳ & Ánh sáng</td>
-                        <td>Dear Musé Team</td>
-                      </tr>
-                    </table>
-                    
-                    <div class="magazine-info-box">
-                      <p><strong>TOÀ SOẠN DEAR MUSÉ:</strong> Hà Nội, Việt Nam</p>
-                      <p><strong>HOTLINE:</strong> 091 234 5678</p>
-                    </div>
-                  </div>
-                  
-                  <div class="letter-column">
-                    <h3 class="letter-title">Thư Ngỏ</h3>
-                    <span class="letter-recipient">Độc giả thân mến,</span>
-                    <p class="letter-text">
-                      Lời cảm ơn sâu sắc nhất từ Dear Musé vì đã tin tưởng lựa chọn chúng tôi làm người lưu giữ những kỷ niệm độc bản của bạn. Từng góc máy, từng gam màu đều được chăm chút kỹ lưỡng để mang đến trải nghiệm cao cấp nhất.
-                    </p>
-                    
-                    <div class="letter-photo-wrap">
-                      <% if (chunk[3]) { %>
-                        <img src="<%= chunk[3].src %>" alt="<%= chunk[3].alt %>">
-                      <% } else { %>
-                        <div class="signature-block">
-                          <p class="signature-title">Dear Musé Studio</p>
-                          <p class="signature-date">Hà Nội, 2026</p>
-                        </div>
-                      <% } %>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- PAGE 4: BACK COVER / BRAND ADVERTISEMENT (NO BARCODE) -->
-              <div class="magazine-page m-page-ad">
-                <div class="ad-full-bg">
-                  <% if (chunk[4]) { %>
-                    <img src="<%= chunk[4].src %>" alt="<%= chunk[4].alt %>">
-                  <% } else if (group.images[0]) { %>
-                    <img src="<%= group.images[0].src %>" alt="<%= group.images[0].alt %>" style="filter: saturate(0.6) brightness(0.8);">
-                  <% } %>
-                </div>
-                
-                <div class="ad-overlay-content ad-minimal">
-                  <h2 class="ad-brand-title"><%= group.englishTitle %></h2>
-                  <p class="ad-brand-subtitle">EDITORIAL BY DEAR MUSÉ</p>
-                </div>
-              </div>
-              
-            </div>
-            </div><!-- /.magazine-book-wrap -->
-          </div>
-        <% }) %>
-      <% }) %>
-    </div>
+                    </div><!-- /.cover-grid -->
 
-    <% if (magazineGroups.length === 0 || magazineGroups[0].images.length === 0) { %>
-      <div class="text-center" style="padding: 120px 0;">
-        <p class="body-text" style="font-style: italic;">Chưa có tác phẩm trong danh mục này.</p>
+                    <!-- SPREAD 2: EDITORIAL CONTENT I (Right - Page 2 & Page 3 Side-by-Side) -->
+                    <div class="magazine-grid content-grid">
+                      <!-- PAGE 2: INSIDE SPREAD 1 (EDITORIAL 1) -->
+                      <div class="magazine-page m-page-content-1">
+                        <div class="editorial-header">
+                          <span class="page-num">
+                            <%= (groupIndex * chunks.length + chunkIndex) * 6 + 2 %>
+                          </span>
+                          <span class="editorial-cat">
+                            <%= group.title %> — EDITORIAL I
+                          </span>
+                        </div>
+
+                        <div class="editorial-body editorial-layout-elle">
+                          <!-- Left Main Column (ELLE style layout) -->
+                          <div class="editorial-main-col">
+                            <h3 class="editorial-title">TẠO VẺ NGOÀI <span>Ấn tượng</span></h3>
+                            <div class="editorial-sub-banner">HÃY LÀ CHÍNH MÌNH</div>
+
+                            <div class="main-portrait-wrap">
+                              <% var img1=chunk[1] || group.images[1 % group.images.length]; %>
+                                <% if (img1) { %>
+                                  <img src="<%= img1.src %>" alt="<%= img1.alt %>" loading="lazy" decoding="async">
+                                  <% } else { %>
+                                    <div class="typo-placeholder">
+                                      <p class="typo-quote">"Nhiếp ảnh là cách giữ lại khoảnh khắc mà không cần lời
+                                        nói."</p>
+                                    </div>
+                                    <% } %>
+                            </div>
+
+                            <div class="editorial-two-cols">
+                              <p class="editorial-paragraph">
+                                <span class="drop-cap">
+                                  <%= group.introText.charAt(0) %>
+                                </span>
+                                <%= group.introText.slice(1) %>
+                              </p>
+                              <p class="editorial-paragraph">
+                                Mỗi bức hình là một tác phẩm chứa đựng tâm hồn, ánh sáng chân thực và cảm xúc tự nhiên
+                                nguyên bản nhất. Hãy để chúng tôi kể lại câu chuyện của bạn bằng ngôn ngữ của nghệ thuật
+                                nhiếp ảnh hiện đại.
+                              </p>
+                            </div>
+                          </div>
+
+                          <!-- Right Side Column -->
+                          <div class="editorial-side-col">
+                            <div class="side-text-block">
+                              <p>Sự tự tin làm nên sức hấp dẫn của một người phụ nữ, vì thế, hãy mặc bộ trang phục khiến
+                                bạn cảm thấy tự tin nhất. Việc mặc trang phục khiến bạn không thoải mái, dù chúng gợi
+                                cảm đến mấy cũng chỉ làm bạn mất điểm trong mắt chàng. Đôi khi chỉ cần một chiếc áo pull
+                                dáng ôm, phối cùng quần jeans trẻ trung cũng đủ khiến bạn trông năng động và cuốn hút.
+                              </p>
+                            </div>
+
+                            <div class="side-decor-box">
+                              <span class="side-decor-title">ART & MIND</span>
+                              <p class="side-decor-quote">Sự thấu cảm tạo nên những góc máy có hồn nhất.</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- PAGE 3: INSIDE SPREAD 2 (EDITORIAL 2 - NEW ELLE PAGE 45) -->
+                      <div class="magazine-page m-page-content-2-elle">
+                        <div class="editorial-header">
+                          <span class="editorial-cat">
+                            <%= group.title %> — EDITORIAL II
+                          </span>
+                          <span class="page-num">
+                            <%= (groupIndex * chunks.length + chunkIndex) * 6 + 3 %>
+                          </span>
+                        </div>
+
+                        <div class="editorial-body editorial-2-layout-elle">
+                          <!-- Left Column: Main Image & Drop cap Paragraph -->
+                          <div class="editorial-2-main-col">
+                            <div class="editorial-2-sub-banner">KHÔNG TRANG ĐIỂM "QUÁ TAY"</div>
+
+                            <div class="editorial-2-portrait-wrap">
+                              <% var img2=chunk[2] || group.images[2 % group.images.length]; %>
+                                <% if (img2) { %>
+                                  <img src="<%= img2.src %>" alt="<%= img2.alt %>" loading="lazy" decoding="async">
+                                  <% } else { %>
+                                    <div class="typo-placeholder">
+                                      <p class="typo-quote">“Nghệ thuật là sự đơn giản hóa các chi tiết dư thừa.”</p>
+                                    </div>
+                                    <% } %>
+                            </div>
+
+                            <p class="editorial-2-paragraph">
+                              <span class="drop-cap-large">K</span>hi làm mệt mỏi trong những tòa nhà kính, hay theo
+                              đuổi các cuộc họp trong văn phòng đóng kín cửa, bạn chỉ ước có được ngày hè dịu dàng trôi,
+                              để được dung dăng dung dẻ, tự do hoang dã. Cơn gió tự do ấy đã thổi làn gió mới cho diện
+                              mạo ngày hè, mang lại cho bạn những phút giây thư giãn, tìm về vẻ đẹp tự nhiên nguyên bản
+                              nhất.
+                            </p>
+                          </div>
+
+                          <!-- Right Column: Banner & Content Text -->
+                          <div class="editorial-2-side-col">
+                            <div class="editorial-2-side-banner">ĐỪNG QUÊN PHỤ KIỆN</div>
+
+                            <p class="editorial-2-side-text">
+                              Những món trang sức, một chiếc túi xách sang trọng hay kính mát phù hợp không chỉ làm điểm
+                              nhấn cho trang phục mà còn định hình phong cách cá nhân độc bản. Hãy khéo léo kết hợp để
+                              mang lại sự cân bằng hoàn hảo cho diện mạo ngày hè của bạn.
+                            </p>
+
+                            <div class="side-brand-quote">
+                              <p class="brand-quote-title">DEAR MUSÉ</p>
+                              <p class="brand-quote-text">Vẻ đẹp chân thực trường tồn.</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div><!-- /.content-grid -->
+                  </div><!-- /.magazine-row-1 -->
+
+                  <!-- ROW 2: EDITORIAL II (2 pages - Left) vs BACK COVER (1 page - Right) -->
+                  <div class="magazine-row-2">
+                    <!-- SPREAD 3: EDITORIAL II (Left - 2 pages side-by-side) -->
+                    <div class="magazine-grid content-grid">
+                      <!-- PAGE 4: NEW EDITORIAL 3 -->
+                      <div class="magazine-page m-page-content-3-elle">
+                        <div class="editorial-header">
+                          <span class="page-num">
+                            <%= (groupIndex * chunks.length + chunkIndex) * 6 + 4 %>
+                          </span>
+                          <span class="editorial-cat">
+                            <%= group.title %> — EDITORIAL III
+                          </span>
+                        </div>
+
+                        <div class="editorial-body editorial-layout-elle">
+                          <!-- Left Main Column -->
+                          <div class="editorial-main-col">
+                            <h3 class="editorial-title">ĐỊNH HÌNH <span>Phong cách</span></h3>
+                            <div class="editorial-sub-banner">NÂNG TẦM BẢN THÂN</div>
+
+                            <div class="main-portrait-wrap">
+                              <% var img3=chunk[3] || group.images[3 % group.images.length]; %>
+                                <% if (img3) { %>
+                                  <img src="<%= img3.src %>" alt="<%= img3.alt %>" loading="lazy" decoding="async">
+                                  <% } else { %>
+                                    <div class="typo-placeholder">
+                                      <p class="typo-quote">"Phong cách là một cách đơn giản để nói những điều phức
+                                        tạp."</p>
+                                    </div>
+                                    <% } %>
+                            </div>
+
+                            <div class="editorial-two-cols">
+                              <p class="editorial-paragraph">
+                                Việc lựa chọn trang phục phù hợp với vóc dáng không chỉ giúp bạn tôn vinh những ưu điểm
+                                cơ thể mà còn thể hiện gu thẩm mỹ tinh tế. Hãy chú trọng đến chất liệu vải tự nhiên như
+                                linen, lụa hoặc cotton cao cấp.
+                              </p>
+                              <p class="editorial-paragraph">
+                                Phong cách tối giản luôn là lựa chọn hàng đầu của những tâm hồn duy mỹ. Sự sang trọng
+                                thực sự không nằm ở những chi tiết cầu kỳ, mà thể hiện qua sự hài hòa của tổng thể trang
+                                phục và phong thái tự tin.
+                              </p>
+                            </div>
+                          </div>
+
+                          <!-- Right Side Column -->
+                          <div class="editorial-side-col">
+                            <div class="side-text-block">
+                              <p>Mỗi chi tiết nhỏ trên trang phục đều góp phần kể câu chuyện riêng về phong cách của
+                                bạn. Từ cúc áo, đường may đến phụ kiện đi kèm.</p>
+                            </div>
+
+                            <div class="side-decor-box">
+                              <span class="side-decor-title">STYLE GUIDE</span>
+                              <p class="side-decor-quote">Sự đơn giản luôn là đỉnh cao của sự tinh tế.</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- PAGE 5: CREDITS & LETTERS (ELLE Style) -->
+                      <div class="magazine-page m-page-credits-new">
+                        <div class="editorial-header">
+                          <span class="page-num">
+                            <%= (groupIndex * chunks.length + chunkIndex) * 6 + 5 %>
+                          </span>
+                          <span class="editorial-cat">DEAR MUSÉ EDITORIAL</span>
+                        </div>
+
+                        <div class="editorial-body credits-layout-elle">
+                          <!-- Column 1: Credits -->
+                          <div class="credits-column-new">
+                            <h2 class="credits-logo-text">DEAR MUSÉ</h2>
+
+                            <div class="credits-section-group">
+                              <p class="credits-association">HIỆP HỘI NỮ DOANH NHÂN ĐẮK LẮK ( HNEW )</p>
+                              <p class="credits-president">CHỦ TỊCH : NGUYỄN THỊ HẰNG</p>
+                            </div>
+
+                            <div class="credits-section">
+                              <h5 class="credits-sec-title">BAN BIÊN TẬP</h5>
+                              <p class="credits-sec-desc">
+                                <strong>Phụ trách nội dung:</strong> Lê Ngọc Bích<br>
+                                <strong>Giám đốc sáng tạo:</strong> Y Steven Nie Hrah<br>
+                                <strong>Thiết kế mỹ thuật:</strong> Lê Ngọc Bích<br>
+                                <strong>Ảnh bìa:</strong> Dũng TN
+                              </p>
+                            </div>
+                          </div>
+
+                          <!-- Column 2: Letter -->
+                          <div class="letter-column-new">
+                            <h3 class="letter-title-new" style="font-size: 24px; margin-bottom: 8px;">Thư Ngỏ</h3>
+                            <span class="letter-recipient-new" style="font-size: 13px; margin-bottom: 8px;">Độc giả
+                              thân mến,</span>
+                            <p class="letter-text-new" style="font-size: 12.5px; line-height: 1.6;">
+                              Dear Musé mong muốn mỗi tác phẩm không chỉ dừng lại ở vẻ đẹp bên ngoài mà còn lột tả chiều
+                              sâu tâm hồn và cá tính độc bản của bạn. Từng góc máy, từng gam màu đều được chăm chút kỹ
+                              lượng để mang đến trải nghiệm cao cấp nhất. Hy vọng cuốn tạp chí này sẽ là nơi lưu giữ
+                              những hồi ức đẹp đẽ nhất trong hành trình đầy ý nghĩa của bạn.
+                            </p>
+                          </div>
+                        </div>
+
+                        <!-- New Bottom Section to fill empty space -->
+                        <div class="credits-bottom-section">
+                          <div class="credits-bottom-images">
+                            <% var img4 = chunk[4] || group.images[4 % group.images.length]; %>
+                            <% var imgExtra = chunk[1] || group.images[1 % group.images.length]; %>
+                            <div class="bottom-img-wrap">
+                               <% if (img4) { %><img src="<%= img4.src %>" alt="<%= img4.alt %>" loading="lazy" decoding="async"><% } %>
+                            </div>
+                            <div class="bottom-img-wrap">
+                               <% if (imgExtra) { %><img src="<%= imgExtra.src %>" alt="<%= imgExtra.alt %>" loading="lazy" decoding="async"><% } %>
+                            </div>
+                          </div>
+                          <div class="credits-bottom-text">
+                            <p>Mỗi bức ảnh là một lời tự sự không lời, ghi lại khoảnh khắc rực rỡ nhất trong câu chuyện riêng của bạn. Hãy trân trọng từng phút giây hiện tại.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div><!-- /.content-grid -->
+
+                    <!-- SPREAD 4: BACK COVER / BRAND ADVERTISEMENT (Right - 1 page) -->
+                    <div class="magazine-grid ad-grid">
+                      <div class="magazine-page m-page-ad">
+                        <div class="ad-full-bg">
+                          <% if (chunk[5]) { %>
+                            <img src="<%= chunk[5].src %>" alt="<%= chunk[5].alt %>" loading="lazy" decoding="async">
+                            <% } else if (group.images[0]) { %>
+                              <img src="<%= group.images[0].src %>" alt="<%= group.images[0].alt %>" loading="lazy" decoding="async">
+                              <% } %>
+                        </div>
+
+                        <div class="ad-overlay-content ad-minimal">
+                          <h2 class="ad-brand-title">
+                            <%= group.englishTitle %>
+                          </h2>
+                          <p class="ad-brand-subtitle">EDITORIAL BY DEAR MUSÉ</p>
+                        </div>
+                      </div>
+                    </div><!-- /.ad-grid -->
+                  </div><!-- /.magazine-row-2 -->
+                </div><!-- /.magazine-book-wrap -->
+              </div>
+              <% }) %>
+                <% }) %>
       </div>
-    <% } %>
+      <% if (magazineGroups.length===0 || magazineGroups[0].images.length===0) { %>
+        <div class="text-center" style="padding: 120px 0;">
+          <p class="body-text" style="font-style: italic;">Chưa có tác phẩm trong danh mục này.</p>
+        </div>
+        <% } %>
 
-  </div>
-</section>
+    </div>
+  </section>
 
-<!-- Booking CTA -->
-<section style="background: var(--parchment); color: var(--ink); padding: 120px 0; text-align: center; border-top: 0.5px solid var(--bone);">
-  <div class="container">
-    <h2 class="section-heading reveal" style="color: var(--ink); margin-bottom: 24px; font-size: clamp(36px, 5vw, 56px);">Thích những gì bạn thấy?</h2>
-    <p class="body-text reveal" style="color: var(--smoke); margin-bottom: 48px; font-size: 16px;">Hãy để chúng tôi tạo nên bộ ảnh tiếp theo dành riêng cho bạn.</p>
-    <a href="/booking" class="btn btn-outline-dark portfolio-cta-btn reveal"><span>Bắt đầu câu chuyện của bạn</span></a>
-  </div>
-</section>
+  <!-- Booking CTA -->
+  <section
+    style="background: var(--parchment); color: var(--ink); padding: 120px 0; text-align: center; border-top: 0.5px solid var(--bone);">
+    <div class="container">
+      <h2 class="section-heading reveal"
+        style="color: var(--ink); margin-bottom: 24px; font-size: clamp(36px, 5vw, 56px);">Thích những gì bạn thấy?</h2>
+      <p class="body-text reveal" style="color: var(--smoke); margin-bottom: 48px; font-size: 16px;">Hãy để chúng tôi
+        tạo nên bộ ảnh tiếp theo dành riêng cho bạn.</p>
+      <a href="/booking" class="btn btn-outline-dark portfolio-cta-btn reveal"><span>Bắt đầu câu chuyện của
+          bạn</span></a>
+    </div>
+  </section>

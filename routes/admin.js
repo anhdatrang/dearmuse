@@ -4,6 +4,7 @@ const adminController = require('../controllers/adminController');
 const adminCustomerController = require('../controllers/adminCustomerController');
 const adminUploadController = require('../controllers/adminUploadController');
 const emailController = require('../controllers/emailController');
+const adminServiceController = require('../controllers/adminServiceController');
 
 // Auth middleware
 const requireAdmin = (req, res, next) => {
@@ -59,5 +60,13 @@ router.get('/email-marketing', requireAdmin, emailController.marketingPage);
 router.post('/email-marketing/send', requireAdmin, emailController.sendMarketingEmail);
 router.post('/email-marketing/preview', requireAdmin, emailController.previewMarketingEmail);
 router.get('/email-history', requireAdmin, emailController.emailHistory);
+
+// Services
+router.get('/services', requireAdmin, adminServiceController.listServices);
+router.get('/services/create', requireAdmin, adminServiceController.createServicePage);
+router.post('/services/create', requireAdmin, adminServiceController.uploadMiddleware, adminServiceController.createService);
+router.get('/services/:id/edit', requireAdmin, adminServiceController.editServicePage);
+router.post('/services/:id/edit', requireAdmin, adminServiceController.uploadMiddleware, adminServiceController.updateService);
+router.post('/services/:id/delete', requireAdmin, adminServiceController.deleteService);
 
 module.exports = router;

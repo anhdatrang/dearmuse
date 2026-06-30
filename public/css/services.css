@@ -9,6 +9,10 @@
   overflow: visible;
 }
 
+.svc-split-section .container {
+  max-width: 1760px;
+}
+
 /* ──────────────────────────────────────────────────
    PODIUM CONTAINER: 3 columns, align bottom
    ────────────────────────────────────────────────── */
@@ -16,7 +20,7 @@
   display: flex;
   align-items: flex-end;       /* đáy bằng nhau → tạo bậc thang */
   gap: 40px;
-  max-width: 1200px;
+  max-width: 1760px;
   margin: 120px auto 80px;
   padding: 0 2.5rem;
 }
@@ -27,15 +31,13 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
   cursor: pointer;
   transition: opacity 0.45s ease, filter 0.45s ease;
 }
 
 /* Cột bên trái (Doanh Nghiệp) — thấp nhất, marginTop lớn nhất */
 .svc-podium-column.category-left {
-  margin-top: 160px;
+  margin-top: 140px;
 }
 
 /* Cột ở giữa (Cá Nhân) — cao nhất, không dịch */
@@ -45,27 +47,28 @@
 
 /* Cột bên phải (Mở Rộng) — thấp giống trái */
 .svc-podium-column.category-right {
-  margin-top: 160px;
+  margin-top: 140px;
 }
 
-/* SỐ CHỈ MỤC 01, 02, 03 — in-flow, tạo chiều cao cho cột */
+/* SỐ CHỈ MỤC 01, 02, 03 — chìm đằng sau ảnh */
 .svc-column-number {
   display: block;
   font-family: var(--font-body);
-  font-size: 100px;
+  font-size: 130px;
   font-weight: 800;
   line-height: 0.9;
-  color: rgba(26, 25, 22, 0.06);
+  color: var(--blush-petal); /* Hồng nhạt */
+  opacity: 1;
   pointer-events: none;
-  transition: all 0.45s ease;
+  transition: all 0.45s ease, transform 0.45s ease;
   white-space: nowrap;
   user-select: none;
   letter-spacing: -0.02em;
-  margin-bottom: -40px;   /* kéo ảnh lên để số trông như nhô ra bên trên ảnh */
+  margin-bottom: -65px;   /* Kéo ảnh đè lên số */
   align-self: flex-start; /* số căn trái */
-  padding-left: 8px;
+  padding-left: 16px;
   position: relative;
-  z-index: 3;
+  z-index: 1; /* Chìm sau ảnh */
 }
 
 /* ──────────────────────────────────────────────────
@@ -77,23 +80,39 @@
   border-radius: 28px;
   overflow: hidden;
   background: var(--ink);
-  z-index: 2;
+  z-index: 2; /* Đè lên số */
   box-shadow: 0 12px 40px rgba(26, 25, 22, 0.10);
   transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   border: 1.5px solid transparent;
 }
 
-/* Chiều cao ảnh: cột giữa cao nhất */
+/* Thêm lớp overlay tối đè lên ảnh để làm nổi chữ */
+.svc-pillar-image-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(26, 25, 22, 0.05) 0%,
+    rgba(26, 25, 22, 0) 40%,
+    rgba(26, 25, 22, 0.85) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+  transition: background 0.4s ease;
+}
+
+/* Chiều cao ảnh: thu nhỏ lại 1 chút */
 .svc-podium-column.category-left .svc-pillar-image-wrap {
-  height: 340px;
+  height: 420px;
 }
 
 .svc-podium-column.category-center .svc-pillar-image-wrap {
-  height: 480px;
+  height: 560px;
 }
 
 .svc-podium-column.category-right .svc-pillar-image-wrap {
-  height: 340px;
+  height: 420px;
 }
 
 .svc-pillar-image-wrap img {
@@ -109,23 +128,33 @@
    TÊN PHÂN KHÚC (bên dưới ảnh)
    ────────────────────────────────────────────────── */
 .svc-pillar-title {
-  font-family: var(--font-body);
-  font-size: 15px;
+  position: absolute;
+  bottom: 92px;
+  left: 0;
+  right: 0;
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-style: italic;
   font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--smoke);
-  margin-top: 24px;
-  margin-bottom: 16px;
+  letter-spacing: 0.04em;
+  color: var(--vanilla-cream); /* màu kem dễ nhìn */
+  text-align: center;
+  margin: 0;
+  padding: 0 20px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  z-index: 3; /* Nổi lên trên ảnh */
+  pointer-events: none;
   transition: color 0.3s ease;
-  z-index: 2;
-  position: relative;
 }
 
 /* ──────────────────────────────────────────────────
    NÚT MŨI TÊN TRÒN ĐEN
    ────────────────────────────────────────────────── */
 .svc-pillar-arrow-btn {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 52px;
   height: 52px;
   border-radius: 50%;
@@ -137,8 +166,7 @@
   border: none;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  z-index: 3;
-  position: relative;
+  z-index: 3; /* Nổi lên trên ảnh */
   flex-shrink: 0;
 }
 
@@ -158,11 +186,25 @@
 }
 
 .svc-podium-column:hover .svc-pillar-arrow-btn {
-  transform: scale(1.1);
+  transform: translateX(-50%) scale(1.1);
 }
 
 .svc-podium-column:hover .svc-pillar-title {
-  color: var(--ink);
+  color: var(--avocado-cream) !important;
+}
+
+.svc-podium-column:hover .svc-column-number {
+  color: #FF4B78;
+  transform: translateY(-5px);
+}
+
+.svc-podium-column:hover .svc-pillar-image-wrap::after {
+  background: linear-gradient(
+    to bottom,
+    rgba(26, 25, 22, 0.08) 0%,
+    rgba(26, 25, 22, 0) 40%,
+    rgba(26, 25, 22, 0.9) 100%
+  );
 }
 
 /* ──────────────────────────────────────────────────
@@ -180,13 +222,13 @@
 
 .svc-podium-column.active .svc-pillar-title {
   font-weight: 600;
-  color: var(--ink);
+  color: var(--avocado-cream) !important;
 }
 
 .svc-podium-column.active .svc-pillar-arrow-btn {
   background: var(--avocado-cream, #D4DB74) !important;
   color: var(--ink, #1A1916) !important;
-  transform: scale(1.05);
+  transform: translateX(-50%) scale(1.05);
 }
 
 .svc-podium-column.active .svc-pillar-arrow-btn svg {
@@ -194,7 +236,8 @@
 }
 
 .svc-podium-column.active .svc-column-number {
-  color: rgba(201, 169, 110, 0.18);
+  color: #FF4B78;
+  opacity: 1;
 }
 
 /* ──────────────────────────────────────────────────
@@ -214,7 +257,7 @@
    DETAILS CONTAINER
    ────────────────────────────────────────────────── */
 .svc-details-container {
-  max-width: 1200px;
+  max-width: 1760px;
   margin: 0 auto 60px;
   padding: 0 2.5rem;
   position: relative;
@@ -237,10 +280,19 @@
   transform: translateY(0);
 }
 
+/* Trên màn hình lớn, tất cả các panel hiển thị tối đa 4 cột để kích thước các thẻ luôn bằng nhau */
+@media (min-width: 1025px) {
+  .svc-panel.active {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 /* Thẻ chi tiết dịch vụ */
 .svc-detail-card {
-  background: #fff;
-  border: 1px solid var(--bone);
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(26, 25, 22, 0.06);
   border-radius: 20px;
   padding: 36px;
   display: flex;
@@ -251,9 +303,10 @@
 }
 
 .svc-detail-card:hover {
+  background: rgba(255, 255, 255, 0.5);
   border-color: #C9A96E;
   transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(26, 25, 22, 0.06);
+  box-shadow: 0 20px 40px rgba(26, 25, 22, 0.05);
 }
 
 .svc-card-header {
@@ -333,7 +386,7 @@
   font-size: 18px;
   font-style: italic;
   font-weight: 500;
-  color: var(--logo-mocha);
+  color: var(--logo-taupe);
 }
 
 /* ──────────────────────────────────────────────────
@@ -348,7 +401,7 @@
 
   .svc-podium-column.category-left,
   .svc-podium-column.category-right {
-    margin-top: 120px;
+    margin-top: 100px;
   }
 
   .svc-podium-column.category-center {
@@ -357,11 +410,25 @@
 
   .svc-podium-column.category-left .svc-pillar-image-wrap,
   .svc-podium-column.category-right .svc-pillar-image-wrap {
-    height: 280px;
+    height: 350px;
   }
 
   .svc-podium-column.category-center .svc-pillar-image-wrap {
-    height: 380px;
+    height: 450px;
+  }
+
+  .svc-column-number {
+    font-size: 80px;
+    margin-bottom: -40px;
+  }
+
+  .svc-pillar-title {
+    font-size: 20px;
+    bottom: 84px;
+  }
+
+  .svc-pillar-arrow-btn {
+    bottom: 20px;
   }
 
   .svc-details-container {
@@ -389,15 +456,41 @@
   }
 
   .svc-column-number {
-    font-size: 80px;
-    top: 0;
-    opacity: 0.06;
+    font-size: 72px; /* Đổi thành hồng chìm */
+    color: #FF7597;
+    opacity: 0.85;
+    margin-bottom: -35px;
+    padding-left: 16px;
+    z-index: 1;
   }
 
   .svc-podium-column.category-left .svc-pillar-image-wrap,
   .svc-podium-column.category-right .svc-pillar-image-wrap,
   .svc-podium-column.category-center .svc-pillar-image-wrap {
-    height: 220px;
+    height: 300px;
+    z-index: 2;
+  }
+
+  .svc-pillar-title {
+    position: absolute;
+    bottom: 80px;
+    left: 0;
+    right: 0;
+    font-size: 20px;
+    color: var(--vanilla-cream);
+    text-align: center;
+    margin: 0;
+    padding: 0 20px;
+    z-index: 3;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  }
+
+  .svc-pillar-arrow-btn {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
   }
 
   .svc-panel {

@@ -22,7 +22,7 @@
             <div class="hero-col-track">
               <% [...col, ...col].forEach(img=> { %>
                 <div class="hero-img-wrap">
-                  <img src="<%= img %>" alt="Dear Musé" loading="lazy">
+                  <img src="<%= img %>" alt="Dear Musé" fetchpriority="high" decoding="async">
                 </div>
                 <% }) %>
             </div>
@@ -88,11 +88,11 @@
       <!-- Left: Collage visual -->
       <div class="intro-visual collage-visual reveal-left">
         <div class="collage-layer collage-bg">
-          <img src="/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6382.webp" alt="Dear Musé - Áo dài" loading="lazy">
+          <img src="/cdn/image?w=600&src=%2Fsource%2FC%C3%81%20NH%C3%82N%2F%C3%81O%20D%C3%80I%2FIMG_6382.webp" alt="Dear Musé - Áo dài" loading="lazy" decoding="async">
         </div>
         <div class="collage-layer collage-fg">
-          <img src="/source/N%C3%A0ng%20th%C6%A1/N%C3%A0ng%20th%C6%A1%20001.webp" alt="Dear Musé — Portrait nghệ thuật"
-            loading="lazy">
+          <img src="/cdn/image?w=600&src=%2Fsource%2FN%C3%A0ng%20th%C6%A1%2FN%C3%A0ng%20th%C6%A1%20001.webp" alt="Dear Musé — Portrait nghệ thuật"
+            loading="lazy" decoding="async">
           <div class="intro-img-label">
             <span>Nàng Thơ & Áo Dài</span>
             <span class="intro-img-num">Bộ sưu tập kép</span>
@@ -143,7 +143,7 @@
       <% featuredImages.forEach((img, i)=> { %>
         <div class="gallery-item gallery-item--<%= (i % 5 === 0) ? 'tall' : (i % 5 === 2) ? 'wide' : 'normal' %> reveal"
           data-delay="<%= (i % 3) + 1 %>">
-          <img src="<%= img.src %>" alt="<%= img.alt %>" loading="lazy">
+          <img src="<%= img.src %>" alt="<%= img.alt %>" loading="lazy" decoding="async">
           <div class="gallery-item-overlay">
             <div class="gallery-item-meta">
               <span class="gallery-cat">
@@ -242,7 +242,7 @@
             <% [...customServices, ...customServices].forEach((s, i)=> { %>
               <a href="/booking?service=<%= s.slug %>" class="svc-card">
                 <div class="svc-card-bg">
-                  <img src="<%= s.img %>" alt="<%= s.name %>" loading="lazy">
+                  <img src="<%= s.img %>" alt="<%= s.name %>" loading="lazy" decoding="async">
                 </div>
                 <div class="svc-card-overlay">
                   <span class="svc-num">
@@ -292,7 +292,7 @@
         <div class="review-card review-card--featured reveal" data-delay="1">
           <div class="review-top">
             <div class="review-avatar">
-              <img src="/source/N%C3%A0ng%20th%C6%A1/Qu%E1%BA%A3%20chanh%20001.webp" alt="Khánh Linh" loading="lazy">
+              <img src="/cdn/image?w=400&src=%2Fsource%2FN%C3%A0ng%20th%C6%A1%2FQu%E1%BA%A3%20chanh%20001.webp" alt="Khánh Linh" loading="lazy" decoding="async">
             </div>
             <div class="review-stars">★★★★★</div>
           </div>
@@ -318,7 +318,7 @@
         <div class="review-card reveal" data-delay="2">
           <div class="review-top">
             <div class="review-avatar">
-              <img src="/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/IMG_8778.webp" alt="Hoàng Nam" loading="lazy">
+              <img src="/cdn/image?w=400&src=%2Fsource%2FDOANH%20NGHI%E1%BB%86P%2FPREMIUM%2FIMG_8778.webp" alt="Hoàng Nam" loading="lazy" decoding="async">
             </div>
             <div class="review-stars">★★★★★</div>
           </div>
@@ -343,7 +343,7 @@
         <div class="review-card reveal" data-delay="3">
           <div class="review-top">
             <div class="review-avatar">
-              <img src="/source/N%C3%A0ng%20th%C6%A1/Xanh%20Xanh%20002.webp" alt="Hà Vy" loading="lazy">
+              <img src="/cdn/image?w=400&src=%2Fsource%2FN%C3%A0ng%20th%C6%A1%2FXanh%20Xanh%20002.webp" alt="Hà Vy" loading="lazy" decoding="async">
             </div>
             <div class="review-stars">★★★★★</div>
           </div>
@@ -369,7 +369,7 @@
         <div class="review-card reveal" data-delay="4">
           <div class="review-top">
             <div class="review-avatar">
-              <img src="/source/N%C3%A0ng%20th%C6%A1/H%C6%B0%E1%BB%9Bng%20d%C6%B0%C6%A1ng%20004.webp" alt="Bảo Ngọc" loading="lazy">
+              <img src="/cdn/image?w=400&src=%2Fsource%2FN%C3%A0ng%20th%C6%A1%2FH%C6%B0%E1%BB%9Bng%20d%C6%B0%C6%A1ng%20004.webp" alt="Bảo Ngọc" loading="lazy" decoding="async">
             </div>
             <div class="review-stars">★★★★★</div>
           </div>
@@ -395,7 +395,7 @@
         <div class="review-card reveal" data-delay="5">
           <div class="review-top">
             <div class="review-avatar">
-              <img src="/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6415.webp" alt="Thu Phương" loading="lazy">
+              <img src="/cdn/image?w=400&src=%2Fsource%2FC%C3%81%20NH%C3%82N%2F%C3%81O%20D%C3%80I%2FIMG_6415.webp" alt="Thu Phương" loading="lazy" decoding="async">
             </div>
             <div class="review-stars">★★★★★</div>
           </div>
@@ -445,7 +445,7 @@
       <div class="about-snap-grid">
         <div class="about-snap-img reveal-left">
           <div class="about-snap-frame">
-            <img src="<%= aboutImage %>" alt="Dear Musé Studio" loading="lazy">
+            <img src="<%= aboutImage %>" alt="Dear Musé Studio" loading="lazy" decoding="async">
             <div class="about-snap-tag">
               <span>Dear Musé</span>
               <span>Est. 2023</span>
@@ -499,7 +499,7 @@
       </div>
       <div class="cta-visual reveal-right">
         <div class="cta-img-frame">
-          <img src="/source/N%C3%A0ng%20th%C6%A1/Xanh%20xanh%20005.webp" alt="Đặt lịch Dear Musé" loading="lazy">
+          <img src="/cdn/image?w=600&src=%2Fsource%2FN%C3%A0ng%20th%C6%A1%2FXanh%20xanh%20005.webp" alt="Đặt lịch Dear Musé" loading="lazy" decoding="async">
         </div>
         <div class="cta-img-accent"></div>
       </div>

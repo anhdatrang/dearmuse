@@ -1,0 +1,54 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2>Quản lý Gói Dịch Vụ</h2>
+  <a href="/admin/services/create" class="btn btn-primary">
+    <i class="fas fa-plus"></i> Thêm Gói Mới
+  </a>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Tên Gói</th>
+            <th>Slug</th>
+            <th>Giá từ</th>
+            <th>Thời lượng</th>
+            <th>Thứ tự</th>
+            <th>Thao tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (services && services.length > 0) { %>
+            <% services.forEach(s => { %>
+              <tr>
+                <td><strong><%= s.name %></strong> <%- s.is_featured ? '<span class="badge bg-warning text-dark ms-2">Nổi bật</span>' : '' %></td>
+                <td><%= s.slug %></td>
+                <td><%= s.price_from.toLocaleString('vi-VN') %>đ</td>
+                <td><%= s.duration_minutes %> phút</td>
+                <td><%= s.sort_order %></td>
+                <td>
+                  <div class="d-flex gap-2">
+                    <a href="/admin/services/<%= s.id %>/edit" class="btn btn-sm btn-outline-secondary" title="Sửa">
+                      <i class="fas fa-edit"></i> Sửa
+                    </a>
+                    <form action="/admin/services/<%= s.id %>/delete" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa gói dịch vụ này?');">
+                      <button type="submit" class="btn btn-sm btn-outline-danger" title="Xóa">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            <% }) %>
+          <% } else { %>
+            <tr>
+              <td colspan="6" class="text-center py-4 text-muted">Chưa có gói dịch vụ nào.</td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

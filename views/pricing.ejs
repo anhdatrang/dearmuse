@@ -27,10 +27,21 @@
             </div>
             
             <div class="pricing-features">
-              <div class="pricing-feature">Thời lượng: <%= s.duration_minutes %> phút</div>
-              <div class="pricing-feature">Tư vấn concept &amp; trang phục</div>
-              <div class="pricing-feature">10 ảnh chỉnh sửa chuyên sâu (retouch)</div>
-              <div class="pricing-feature">Toàn bộ file gốc sau buổi chụp</div>
+              <% if (s.duration_minutes > 0) { %>
+                <div class="pricing-feature">Thời lượng: <%= s.duration_minutes %> phút</div>
+              <% } %>
+              
+              <% 
+                let featureList = [];
+                if (typeof s.features === 'string') {
+                  try { featureList = JSON.parse(s.features); } catch(e){}
+                } else if (Array.isArray(s.features)) {
+                  featureList = s.features;
+                }
+              %>
+              <% featureList.forEach(f => { %>
+                <div class="pricing-feature"><%= f %></div>
+              <% }) %>
             </div>
             
             <div class="pricing-actions">

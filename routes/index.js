@@ -9,6 +9,11 @@ const contactController = require('../controllers/contactController');
 const blogController = require('../controllers/blogController');
 const chatbotController = require('../controllers/chatbotController');
 const Service = require('../models/Service');
+const conceptController = require('../controllers/conceptController');
+const cdnController = require('../controllers/cdnController');
+
+// Image CDN
+router.get('/cdn/image', cdnController.serveImage);
 
 // Home
 router.get('/', homeController.home);
@@ -34,10 +39,11 @@ router.get('/services', async (req, res) => {
     res.render('services', {
       title: 'Gói Dịch Vụ Chụp Ảnh Nghệ Thuật — Dear Musé',
       metaDescription: 'Các gói dịch vụ chụp ảnh nghệ thuật chuyên nghiệp tại Dear Musé: Chụp ảnh Cá Nhân, Chụp ảnh Doanh Nghiệp, và các gói Mở Rộng độc bản. Đặt lịch chụp tư vấn miễn phí ngay hôm nay.',
-      services: []
     });
   }
 });
+
+router.get('/services/:slug', conceptController.detail);
 
 // Pricing
 router.get('/pricing', async (req, res) => {

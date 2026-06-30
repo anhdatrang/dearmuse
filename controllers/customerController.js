@@ -132,3 +132,72 @@ exports.downloadCustom = async (req, res) => {
     res.status(500).send('Lỗi server');
   }
 };
+
+// ==========================================
+// LOYALTY SYSTEM UI CONTROLLERS
+// ==========================================
+
+exports.myCard = async (req, res) => {
+  try {
+    const LoyaltyService = require('../services/loyaltyService');
+    const member = await LoyaltyService.ensureMember(req.session.userId);
+    
+    res.render('customer/loyalty/my-card', {
+      title: 'Thẻ Của Tôi - Dear Musé',
+      member,
+      activeTab: 'my-card'
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Lỗi server');
+  }
+};
+
+exports.redeem = async (req, res) => {
+  try {
+    const LoyaltyService = require('../services/loyaltyService');
+    const member = await LoyaltyService.ensureMember(req.session.userId);
+    
+    const [vouchers] = await db.query('SELECT * FROM vouchers WHERE is_active = 1 AND voucher_type = "redeem"');
+    const [myVouchers] = await db.query(
+      `SELECT mv.*, v.name, v.discount_type, v.discount_value 
+       FROM member_vouchers mv 
+       JOIN vouchers v ON mv.voucher_id = v.id 
+       WHERE mv.member_id = ? ORDER BY mv.created_at DESC`,
+      [member.id]
+    );
+
+    res.render('customer/loyalty/redeem', {
+      title: 'Đổi Quà - Dear Musé',
+      member,
+      vouchers,
+      myVouchers,
+      activeTab: 'redeem'
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Lỗi server');
+  }
+};
+
+exports.loyaltyHistory = async (req, res) => {
+  try {
+    const LoyaltyService = require('../services/loyaltyService');
+    const member = await LoyaltyService.ensureMember(req.session.userId);
+    
+    const [transactions] = await db.query(
+      'SELECT * FROM manh_sang_transactions WHERE member_id = ? ORDER BY created_at DESC LIMIT 50',
+      [member.id]
+    );
+
+    res.render('customer/loyalty/history', {
+      title: 'Lịch Sử Điểm - Dear Musé',
+      member,
+      transactions,
+      activeTab: 'history'
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Lỗi server');
+  }
+};

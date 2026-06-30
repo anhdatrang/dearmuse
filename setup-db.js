@@ -36,6 +36,7 @@ async function setup() {
       price_from INT,
       duration_minutes INT,
       cover_image VARCHAR(500),
+      features JSON,
       is_featured TINYINT(1) DEFAULT 0,
       sort_order INT DEFAULT 0,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -162,6 +163,25 @@ async function setup() {
     }
   }
 
+  // Thêm cột features cho bảng services nếu bảng đã tồn tại từ trước
+  try {
+    await conn.query(`ALTER TABLE services ADD COLUMN features JSON`);
+    
+    // Seed default features cho các service hiện có nếu features là null
+    const defaultFeatures = JSON.stringify([
+      "Tư vấn concept & trang phục",
+      "10 ảnh chỉnh sửa chuyên sâu (retouch)",
+      "Toàn bộ file gốc sau buổi chụp"
+    ]);
+    await conn.query(`UPDATE services SET features = ? WHERE features IS NULL`, [defaultFeatures]);
+    
+    console.log('✅ Đã thêm cột features vào bảng services');
+  } catch (e) {
+    if (e.code !== 'ER_DUP_FIELDNAME') {
+      console.warn('⚠️ Cảnh báo thêm cột features:', e.message);
+    }
+  }
+
   await conn.query(`
     CREATE TABLE IF NOT EXISTS customer_albums (
       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -221,7 +241,146 @@ async function setup() {
     )
   `);
 
-  console.log('✅ Các bảng đã được tạo');
+  console.log('✅ Các bảng cơ bản đã được tạo');
+
+  // LOYALTY SYSTEM TABLES
+  await conn.query(`
+    CREATE TABLE IF NOT EXISTS members (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      user_id INT NOT NULL UNIQUE,
+      manh_sang_total INT NOT NULL DEFAULT 0,
+      manh_sang_balance INT NOT NULL DEFAULT 0,
+      card_tier ENUM('pearl', 'rose', 'gold', 'privilege') NOT NULL DEFAULT 'pearl',
+      is_first_booking_done TINYINT(1) NOT NULL DEFAULT 0,
+      is_first_register_done TINYINT(1) NOT NULL DEFAULT 0,
+      second_booking_rewarded TINYINT(1) NOT NULL DEFAULT 0,
+      referral_code VARCHAR(12) UNIQUE NOT NULL,
+      referred_by INT,
+      referral_count INT NOT NULL DEFAULT 0,
+      joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+      FOREIGN KEY (referred_by) REFERENCES members(id) ON DELETE SET NULL
+    )
+  `);
+
+  await conn.query(`
+    CREATE TABLE IF NOT EXISTS manh_sang_transactions (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      member_id INT NOT NULL,
+      amount INT NOT NULL,
+      balance_after INT NOT NULL,
+      type ENUM('spend', 'register_bonus', 'first_booking', 'early_deposit', 'second_visit', 'referral_reward', 'feedback_photo', 'social_share', 'birthday_booking', 'group_booking', 'voucher_redeem', 'admin_adjust', 'referral_milestone') NOT NULL,
+      description TEXT,
+      reference_id INT,
+      reference_type VARCHAR(30),
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE
+    )
+  `);
+
+  await conn.query(`
+    CREATE TABLE IF NOT EXISTS vouchers (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      code_prefix VARCHAR(20) NOT NULL,
+      name VARCHAR(100) NOT NULL,
+      description TEXT,
+      voucher_type ENUM('redeem', 'birthday', 'seasonal', 'referral', 'milestone', 'manual') NOT NULL,
+      discount_type ENUM('fixed', 'percent') NOT NULL,
+      discount_value DECIMAL(10,2) NOT NULL,
+      max_discount_amount DECIMAL(10,2),
+      min_order_value DECIMAL(10,2) DEFAULT 0,
+      manh_sang_cost INT,
+      required_tier ENUM('pearl', 'rose', 'gold', 'privilege'),
+      valid_days INT DEFAULT 90,
+      is_active TINYINT(1) NOT NULL DEFAULT 1,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    )
+  `);
+
+  await conn.query(`
+    CREATE TABLE IF NOT EXISTS member_vouchers (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      member_id INT NOT NULL,
+      voucher_id INT NOT NULL,
+      code VARCHAR(30) UNIQUE NOT NULL,
+      status ENUM('active', 'used', 'expired', 'cancelled') NOT NULL DEFAULT 'active',
+      manh_sang_spent INT DEFAULT 0,
+      used_at DATETIME,
+      used_on_booking_id INT,
+      issued_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      expires_at DATETIME NOT NULL,
+      issued_reason TEXT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE,
+      FOREIGN KEY (voucher_id) REFERENCES vouchers(id),
+      FOREIGN KEY (used_on_booking_id) REFERENCES bookings(id) ON DELETE SET NULL
+    )
+  `);
+
+  await conn.query(`
+    CREATE TABLE IF NOT EXISTS referrals (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      referrer_id INT NOT NULL,
+      referee_id INT NOT NULL,
+      status ENUM('pending', 'completed', 'cancelled') NOT NULL DEFAULT 'pending',
+      referrer_rewarded TINYINT(1) NOT NULL DEFAULT 0,
+      referee_rewarded TINYINT(1) NOT NULL DEFAULT 0,
+      completed_at DATETIME,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (referrer_id) REFERENCES members(id) ON DELETE CASCADE,
+      FOREIGN KEY (referee_id) REFERENCES members(id) ON DELETE CASCADE,
+      UNIQUE KEY uk_referral (referrer_id, referee_id)
+    )
+  `);
+
+  await conn.query(`
+    CREATE TABLE IF NOT EXISTS tier_upgrade_log (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      member_id INT NOT NULL,
+      from_tier VARCHAR(20) NOT NULL,
+      to_tier VARCHAR(20) NOT NULL,
+      manh_sang_at_change INT NOT NULL,
+      reason TEXT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE
+    )
+  `);
+
+  // Alter bookings table
+  try {
+    await conn.query(`ALTER TABLE bookings ADD COLUMN group_size INT DEFAULT 1`);
+    await conn.query(`ALTER TABLE bookings ADD COLUMN is_birthday_month TINYINT(1) DEFAULT 0`);
+    await conn.query(`ALTER TABLE bookings ADD COLUMN applied_voucher_id INT`);
+    await conn.query(`ALTER TABLE bookings ADD COLUMN manh_sang_earned INT DEFAULT 0`);
+    await conn.query(`ALTER TABLE bookings ADD COLUMN discount_amount DECIMAL(10,2) DEFAULT 0`);
+    await conn.query(`ALTER TABLE bookings ADD COLUMN final_amount DECIMAL(10,2) DEFAULT 0`);
+    console.log('✅ Đã thêm các cột Loyalty vào bảng bookings');
+  } catch (e) {
+    if (e.code !== 'ER_DUP_FIELDNAME') {
+      console.warn('⚠️ Cảnh báo thêm cột Loyalty vào bookings:', e.message);
+    }
+  }
+
+  // Seed Loyalty Vouchers
+  const [existingVouchers] = await conn.query(`SELECT COUNT(*) as count FROM vouchers`);
+  if (existingVouchers[0].count === 0) {
+    await conn.query(`
+      INSERT INTO vouchers (code_prefix, name, voucher_type, discount_type, discount_value, manh_sang_cost) VALUES
+      ('GLOW', 'Glow Voucher', 'redeem', 'fixed', 50000, 80),
+      ('ROSE', 'Rose Voucher', 'redeem', 'fixed', 100000, 200),
+      ('GOLD', 'Gold Voucher', 'redeem', 'fixed', 200000, 400),
+      ('SIGN', 'Signature Voucher', 'redeem', 'fixed', 0, 500)
+    `);
+    console.log('✅ Seed loyalty vouchers xong');
+  } else {
+    console.log('ℹ️  Vouchers đã có dữ liệu, bỏ qua seed');
+  }
+
+  console.log('✅ Các bảng Loyalty System đã sẵn sàng');
 
   // Seed services
   const [existingServices] = await conn.query(`SELECT COUNT(*) as count FROM services`);
