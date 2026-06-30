@@ -140,6 +140,14 @@ CREATE TABLE IF NOT EXISTS album_images (
   FOREIGN KEY (album_id) REFERENCES customer_albums(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS face_descriptors (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  image_id INT NOT NULL,
+  descriptor JSON NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (image_id) REFERENCES album_images(id) ON DELETE CASCADE
+);
+
 -- Create Analytics table
 CREATE TABLE IF NOT EXISTS analytics_events (
   id INT AUTO_INCREMENT PRIMARY KEY,

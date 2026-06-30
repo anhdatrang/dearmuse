@@ -3,6 +3,7 @@ const sharp = require('sharp');
 const path = require('path');
 const fs = require('fs').promises;
 const db = require('../config/db');
+const faceService = require('../services/faceService');
 
 // Đảm bảo thư mục upload tồn tại
 const uploadDir = path.join(__dirname, '../public/uploads/albums');
@@ -53,10 +54,15 @@ exports.uploadPhotos = async (req, res) => {
 
       const originalUrl = `/uploads/albums/${filename}`;
       const thumbnailUrl = `/uploads/albums/thumbs/${filename}`;
-      await db.query(`
+      const [result] = await db.query(`
         INSERT INTO album_images (album_id, original_url, thumbnail_url, file_name, file_size)
         VALUES (?, ?, ?, ?, ?)
       `, [albumId, originalUrl, thumbnailUrl, file.originalname, file.size]);
+
+      const imageId = result.insertId;
+      
+      // Chạy ngầm AI nhận diện khuôn mặt trên thumbnail (không dùng await để tránh block user)
+      faceService.processImageFaces(imageId, thumbPath).catch(err => console.error(err));
     }
 
     req.flash('success', `Đã tải lên ${req.files.length} ảnh`);
@@ -104,5 +110,45 @@ exports.deletePhoto = async (req, res) => {
     console.error(err);
     req.flash('error', 'Lỗi xoá ảnh');
     res.redirect(`/admin/albums/${id}/photos`);
+  }
+};
+
+exports.reprocessFaces = async (req, res) => {
+  const albumId = req.params.id;
+  try {
+    const [albums] = await db.query('SELECT * FROM customer_albums WHERE id = ?', [albumId]);
+    if (albums.length === 0) return res.redirect('/admin/customers');
+
+    const [photos] = await db.query('SELECT * FROM album_images WHERE album_id = ?', [albumId]);
+    
+    // Xóa descriptors cũ của album này trước
+    const photoIds = photos.map(p => p.id);
+    if (photoIds.length > 0) {
+      await db.query('DELETE FROM face_descriptors WHERE image_id IN (?)', [photoIds]);
+    }
+
+    req.flash('success', `Đang xử lý AI cho ${photos.length} ảnh... (chạy nền, mất vài phút)`);
+    res.redirect(`/admin/albums/${albumId}/photos`);
+
+    // Chạy ngầm sau khi redirect
+    (async () => {
+      let ok = 0, fail = 0;
+      for (const photo of photos) {
+        try {
+          const thumbPath = path.join(__dirname, '../public', photo.thumbnail_url);
+          await faceService.processImageFaces(photo.id, thumbPath);
+          ok++;
+        } catch (e) {
+          fail++;
+          console.error(`AI reprocess error for image ${photo.id}:`, e.message);
+        }
+      }
+      console.log(`✅ Reprocess xong album ${albumId}: ${ok} OK, ${fail} lỗi`);
+    })();
+
+  } catch (err) {
+    console.error(err);
+    req.flash('error', 'Lỗi xử lý lại AI');
+    res.redirect(`/admin/albums/${albumId}/photos`);
   }
 };

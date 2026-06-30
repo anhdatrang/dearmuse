@@ -24,6 +24,21 @@
   </form>
 </div>
 
+<!-- Upload Overlay cho Admin -->
+<div id="adminUploadOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; flex-direction: column; align-items: center; justify-content: center; color: white;">
+  <div style="width: 50px; height: 50px; border: 4px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;"></div>
+  <h3 style="margin: 0; font-family: 'Outfit', sans-serif;">Đang tải ảnh lên server...</h3>
+  <p style="color: #ccc; margin-top: 10px;">Quá trình này có thể mất vài phút. Vui lòng KHÔNG đóng trình duyệt.</p>
+</div>
+<style>
+  @keyframes spin { 100% { transform: rotate(360deg); } }
+</style>
+<script>
+  function showUploadOverlay() {
+    document.getElementById('adminUploadOverlay').style.display = 'flex';
+  }
+</script>
+
 <!-- Danh sách album -->
 <% if (albums && albums.length > 0) { %>
   <div style="display: grid; gap: 24px;">
@@ -56,7 +71,7 @@
 
         <!-- Form upload & Quản lý ảnh -->
         <div style="padding-top: 16px; border-top: 1px solid var(--parchment); display: flex; justify-content: space-between; align-items: center;">
-          <form method="POST" action="/admin/albums/<%= a.id %>/upload" enctype="multipart/form-data" style="display: flex; gap: 12px; align-items: center;">
+          <form method="POST" action="/admin/albums/<%= a.id %>/upload" enctype="multipart/form-data" style="display: flex; gap: 12px; align-items: center;" onsubmit="showUploadOverlay()">
             <input type="file" name="photos" multiple accept="image/*" required>
             <button type="submit" class="btn-sm" style="background: var(--ink); color: white; cursor: pointer;">Upload Ảnh</button>
           </form>

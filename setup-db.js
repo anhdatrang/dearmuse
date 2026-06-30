@@ -178,6 +178,16 @@ async function setup() {
     )
   `);
 
+  await conn.query(`
+    CREATE TABLE IF NOT EXISTS face_descriptors (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      image_id INT NOT NULL,
+      descriptor JSON NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (image_id) REFERENCES album_images(id) ON DELETE CASCADE
+    )
+  `);
+
   console.log('✅ Các bảng đã được tạo');
 
   // Seed services

@@ -12,8 +12,13 @@ const requireCustomer = (req, res, next) => {
 
 router.use(requireCustomer);
 
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 30 * 1024 * 1024 } }); // 30MB limit, client compresses before sending
+
 router.get('/my-albums', customerController.dashboard);
 router.get('/my-albums/:id', customerController.albumDetail);
 router.get('/download-album/:id', customerController.downloadAlbum);
+router.post('/albums/:id/filter-face', upload.single('photo'), customerController.filterFace);
+router.post('/albums/:id/download-selected', customerController.downloadCustom);
 
 module.exports = router;

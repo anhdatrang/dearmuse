@@ -74,4 +74,12 @@ app.listen(PORT, () => {
   console.log(`✨ Dear Musé đang chạy tại http://localhost:${PORT}`);
 });
 
+// Ngăn các lỗi từ background jobs (ví dụ: AI xử lý ảnh) làm crash toàn bộ server
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('[Background Job Error] Unhandled Promise Rejection:', reason?.message || reason);
+});
+process.on('uncaughtException', (err) => {
+  console.error('[Background Job Error] Uncaught Exception:', err.message);
+});
+
 module.exports = app;

@@ -50,5 +50,6 @@ router.post('/albums/:id/delete', requireAdmin, adminCustomerController.deleteAl
 router.post('/albums/:id/upload', requireAdmin, adminUploadController.uploadMiddleware, adminUploadController.uploadPhotos);
 router.get('/albums/:id/photos', requireAdmin, adminUploadController.managePhotos);
 router.post('/albums/:id/photos/:photoId/delete', requireAdmin, adminUploadController.deletePhoto);
+router.post('/albums/:id/reprocess-faces', requireAdmin, adminUploadController.reprocessFaces);
 
 module.exports = router;

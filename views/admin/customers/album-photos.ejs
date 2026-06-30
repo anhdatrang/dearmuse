@@ -1,6 +1,13 @@
-<div class="admin-header">
-  <h1>Quản lý ảnh: <%= album.title %></h1>
-  <a href="/admin/customers/<%= album.user_id %>/albums" class="btn-sm">← Quay lại danh sách album</a>
+<div class="admin-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+  <div>
+    <h1>Quản lý ảnh: <%= album.title %></h1>
+    <a href="/admin/customers/<%= album.user_id %>/albums" class="btn-sm">← Quay lại danh sách album</a>
+  </div>
+  <form method="POST" action="/admin/albums/<%= album.id %>/reprocess-faces" onsubmit="return confirm('Hệ thống sẽ xử lý lại AI nhận diện khuôn mặt cho toàn bộ ảnh trong album này. Quá trình chạy nền và có thể mất vài phút tuỳ số lượng ảnh.\n\nTiếp tục?');">
+    <button type="submit" class="btn-sm" style="background: #6f42c1; color: white; border: none; cursor: pointer; padding: 8px 16px;">
+      🤖 Xử lý AI khuôn mặt
+    </button>
+  </form>
 </div>
 
 <% if (error && error.length > 0) { %>
