@@ -3,7 +3,7 @@
 <!-- Editorial Hero -->
 <section class="blog-hero">
   <div class="blog-hero-bg">
-    <img src="/source/N%C3%A0ng%20th%C6%A1/Xanh%20Xanh%20002.webp" alt="Blog Background">
+    <img src="/cdn/image?w=1600&src=<%= encodeURIComponent('/source/Nàng thơ/Xanh Xanh 002.webp') %>" alt="Blog Background">
   </div>
   <div class="blog-hero-content reveal">
     <h1>Journal</h1>
@@ -27,7 +27,7 @@
       <% posts.forEach((post, i) => { %>
         <article class="blog-card reveal" data-delay="<%= (i % 3) + 1 %>">
           <a href="/blog/<%= post.slug %>" class="blog-card-img-wrap" style="border-radius: 16px; overflow: hidden;">
-            <img src="<%= post.cover_image %>" alt="<%= post.title %>" loading="<%= i < 3 ? 'eager' : 'lazy' %>" style="border-radius: 16px; object-fit: cover; width: 100%; height: 100%;">
+            <img src="/cdn/image?w=800&src=<%= encodeURIComponent(post.cover_image) %>" alt="<%= post.title %>" loading="<%= i < 3 ? 'eager' : 'lazy' %>" style="border-radius: 16px; object-fit: cover; width: 100%; height: 100%;">
             <span class="blog-card-category <%= post.category %>">
               <%= post.category === 'news' ? 'Tin tức' : 'Ảnh khách hàng' %>
             </span>

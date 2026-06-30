@@ -30,7 +30,7 @@
 
     <!-- Cover Image -->
     <div class="blog-detail-cover reveal" data-delay="2" style="border-radius: 16px; overflow: hidden;">
-      <img src="<%= post.cover_image %>" alt="<%= post.title %>" style="border-radius: 16px; width: 100%; height: auto; display: block;">
+      <img src="/cdn/image?w=1200&src=<%= encodeURIComponent(post.cover_image) %>" alt="<%= post.title %>" style="border-radius: 16px; width: 100%; height: auto; display: block;">
     </div>
 
     <!-- Article Content Grid -->
@@ -73,8 +73,8 @@
                         if (imgUrl) {
                     %>
                           <div class="grid-item">
-                            <a href="<%= imgUrl %>" class="glightbox" data-gallery="blog-post-gallery">
-                              <img src="<%= imgUrl %>" alt="<%= imgTitle || (post.title + ' - ' + (idx + 1)) %>" loading="lazy">
+                            <a href="/cdn/image?w=1920&src=<%= encodeURIComponent(imgUrl) %>" class="glightbox" data-gallery="blog-post-gallery">
+                              <img src="/cdn/image?w=800&src=<%= encodeURIComponent(imgUrl) %>" alt="<%= imgTitle || (post.title + ' - ' + (idx + 1)) %>" loading="lazy">
                             </a>
                             <% if (imgTitle || imgSubtitle) { %>
                               <div class="grid-item-caption">
