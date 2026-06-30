@@ -19,7 +19,16 @@ const initDirs = async () => {
 };
 initDirs();
 
-const storage = multer.memoryStorage();
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadDir);
+  },
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname).toLowerCase() || '.jpg';
+    const filename = `${Date.now()}-${Math.round(Math.random() * 1E9)}${ext}`;
+    cb(null, filename);
+  }
+});
 const upload = multer({
   storage,
     limits: { fileSize: 50 * 1024 * 1024 } // 50MB per file
@@ -38,35 +47,42 @@ exports.uploadPhotos = async (req, res) => {
       return res.redirect(`/admin/customers/${albums[0].user_id}/albums`);
     }
 
-    for (let file of req.files) {
-      const filename = `${Date.now()}-${Math.round(Math.random() * 1E9)}.jpg`;
-      const originalPath = path.join(uploadDir, filename);
-      const thumbPath = path.join(thumbDir, filename);
+    req.flash('success', `Đang tải lên và xử lý ${req.files.length} ảnh trong nền. Quá trình này sẽ mất vài phút, bạn có thể tải lại trang (F5) để xem tiến độ.`);
+    res.redirect(`/admin/albums/${albumId}/photos`);
 
-      // Lưu ĐÚNG BẢN GỐC (không dùng Sharp can thiệp để giữ nguyên chất lượng và dung lượng)
-      await fs.writeFile(originalPath, file.buffer);
+    // Chạy ngầm xử lý ảnh để tránh lỗi 504 Gateway Timeout của Cloudflare
+    (async () => {
+      let ok = 0;
+      for (let file of req.files) {
+        try {
+          const originalPath = file.path;
+          const filename = file.filename;
+          const thumbPath = path.join(thumbDir, filename);
 
-      // Tạo bản thu nhỏ (Thumbnail) để web mượt
-      await sharp(file.buffer)
-        .resize({ width: 600 })
-        .jpeg({ quality: 70 })
-        .toFile(thumbPath);
+          // Tạo bản thu nhỏ (Thumbnail) để web mượt
+          await sharp(originalPath)
+            .resize({ width: 600 })
+            .jpeg({ quality: 70 })
+            .toFile(thumbPath);
 
-      const originalUrl = `/uploads/albums/${filename}`;
-      const thumbnailUrl = `/uploads/albums/thumbs/${filename}`;
-      const [result] = await db.query(`
-        INSERT INTO album_images (album_id, original_url, thumbnail_url, file_name, file_size)
-        VALUES (?, ?, ?, ?, ?)
-      `, [albumId, originalUrl, thumbnailUrl, file.originalname, file.size]);
+          const originalUrl = `/uploads/albums/${filename}`;
+          const thumbnailUrl = `/uploads/albums/thumbs/${filename}`;
+          const [result] = await db.query(`
+            INSERT INTO album_images (album_id, original_url, thumbnail_url, file_name, file_size)
+            VALUES (?, ?, ?, ?, ?)
+          `, [albumId, originalUrl, thumbnailUrl, file.originalname, file.size]);
 
-      const imageId = result.insertId;
-      
-      // Chạy ngầm AI nhận diện khuôn mặt trên thumbnail (không dùng await để tránh block user)
-      faceService.processImageFaces(imageId, thumbPath).catch(err => console.error(err));
-    }
-
-    req.flash('success', `Đã tải lên ${req.files.length} ảnh`);
-    res.redirect(`/admin/customers/${albums[0].user_id}/albums`);
+          const imageId = result.insertId;
+          
+          // Chạy AI nhận diện khuôn mặt
+          await faceService.processImageFaces(imageId, thumbPath);
+          ok++;
+        } catch (e) {
+          console.error("Lỗi xử lý ảnh chạy nền:", e);
+        }
+      }
+      console.log(`✅ Hoàn tất upload và AI cho ${ok}/${req.files.length} ảnh của album ${albumId}`);
+    })();
   } catch (err) {
     console.error(err);
     req.flash('error', 'Lỗi upload ảnh');

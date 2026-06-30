@@ -137,6 +137,7 @@ async function setup() {
       event_value VARCHAR(255),
       ip_address VARCHAR(45),
       location VARCHAR(100),
+      duration_seconds INT DEFAULT 0,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
   `);
@@ -160,6 +161,16 @@ async function setup() {
   } catch (e) {
     if (e.code !== 'ER_DUP_FIELDNAME') {
       console.warn('⚠️ Cảnh báo thêm cột is_verified:', e.message);
+    }
+  }
+
+  // Thêm cột duration_seconds cho bảng analytics_events
+  try {
+    await conn.query(`ALTER TABLE analytics_events ADD COLUMN duration_seconds INT DEFAULT 0`);
+    console.log('✅ Đã thêm cột duration_seconds vào bảng analytics_events');
+  } catch (e) {
+    if (e.code !== 'ER_DUP_FIELDNAME') {
+      console.warn('⚠️ Cảnh báo thêm cột duration_seconds:', e.message);
     }
   }
 

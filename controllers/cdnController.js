@@ -7,7 +7,8 @@ function resolveRealFilePath(baseDir, relativePath) {
   const parts = relativePath.split(/[/\\]/).filter(p => p);
   let currentPath = baseDir;
   
-  for (const part of parts) {
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i];
     if (!fs.existsSync(currentPath)) return null;
     
     const exactPath = path.join(currentPath, part);
@@ -20,11 +21,27 @@ function resolveRealFilePath(baseDir, relativePath) {
     const lowerPartNFC = part.normalize('NFC').toLowerCase();
     const lowerPartNFD = part.normalize('NFD').toLowerCase();
     
-    const match = entries.find(e => {
+    let match = entries.find(e => {
       const eNFC = e.normalize('NFC').toLowerCase();
       const eNFD = e.normalize('NFD').toLowerCase();
       return eNFC === lowerPartNFC || eNFD === lowerPartNFD || e.toLowerCase() === part.toLowerCase();
     });
+    
+    // Fallback: If it's the last part (a file) and not found, try replacing the extension with .webp
+    if (!match && i === parts.length - 1) {
+      const parsedPart = path.parse(part);
+      if (parsedPart.ext && parsedPart.ext.toLowerCase() !== '.webp') {
+        const webpPart = parsedPart.name + '.webp';
+        const webpLowerNFC = webpPart.normalize('NFC').toLowerCase();
+        const webpLowerNFD = webpPart.normalize('NFD').toLowerCase();
+        
+        match = entries.find(e => {
+          const eNFC = e.normalize('NFC').toLowerCase();
+          const eNFD = e.normalize('NFD').toLowerCase();
+          return eNFC === webpLowerNFC || eNFD === webpLowerNFD || e.toLowerCase() === webpPart.toLowerCase();
+        });
+      }
+    }
     
     if (match) {
       currentPath = path.join(currentPath, match);
