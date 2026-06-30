@@ -2,6 +2,39 @@ const sharp = require('sharp');
 const path = require('path');
 const fs = require('fs');
 
+// Helper to find file case-insensitively and unicode-safely on Linux
+function resolveRealFilePath(baseDir, relativePath) {
+  const parts = relativePath.split(/[/\\]/).filter(p => p);
+  let currentPath = baseDir;
+  
+  for (const part of parts) {
+    if (!fs.existsSync(currentPath)) return null;
+    
+    const exactPath = path.join(currentPath, part);
+    if (fs.existsSync(exactPath)) {
+      currentPath = exactPath;
+      continue;
+    }
+    
+    const entries = fs.readdirSync(currentPath);
+    const lowerPartNFC = part.normalize('NFC').toLowerCase();
+    const lowerPartNFD = part.normalize('NFD').toLowerCase();
+    
+    const match = entries.find(e => {
+      const eNFC = e.normalize('NFC').toLowerCase();
+      const eNFD = e.normalize('NFD').toLowerCase();
+      return eNFC === lowerPartNFC || eNFD === lowerPartNFD || e.toLowerCase() === part.toLowerCase();
+    });
+    
+    if (match) {
+      currentPath = path.join(currentPath, match);
+    } else {
+      return null;
+    }
+  }
+  return currentPath;
+}
+
 exports.serveImage = async (req, res) => {
   const src = req.query.src;
   const w = parseInt(req.query.w) || 800;
@@ -15,17 +48,18 @@ exports.serveImage = async (req, res) => {
   const publicDir = path.join(__dirname, '../public');
   
   // Resolve path safely
-  // If decodedSrc starts with '/', we prepend publicDir
-  // Ensure we don't allow directory traversal
   const normalizedSrc = path.normalize(decodedSrc).replace(/^(\.\.[\/\\])+/, '');
-  const originalPath = path.join(publicDir, normalizedSrc);
-
-  // Security check: ensure the resolved path is inside publicDir
-  if (!originalPath.startsWith(publicDir)) {
+  
+  // Security check: ensure it doesn't traverse out
+  const intendedPath = path.join(publicDir, normalizedSrc);
+  if (!intendedPath.startsWith(publicDir)) {
     return res.status(403).send('Forbidden');
   }
 
-  if (!fs.existsSync(originalPath)) {
+  // Smart resolve for Linux (Case-insensitive & NFC/NFD safe)
+  const originalPath = resolveRealFilePath(publicDir, normalizedSrc);
+
+  if (!originalPath) {
     return res.status(404).send('Image not found');
   }
 

@@ -86,7 +86,7 @@ exports.home = async (req, res) => {
     res.render('home', {
       title: 'Dear Musé — Studio Nhiếp Ảnh Nghệ Thuật tại Hà Nội',
       metaDescription: 'Dear Musé là studio nhiếp ảnh nghệ thuật chuyên nghiệp tại Hà Nội. Chuyên chụp ảnh chân dung nghệ thuật (Portrait), chụp ảnh sự kiện (Event), chụp ảnh thương hiệu & kỷ yếu cá nhân. Lưu giữ khoảnh khắc bằng ánh sáng tự nhiên và góc nhìn điện ảnh.',
-      heroImages,
+      heroImages: heroImages.map(src => `/cdn/image?w=1200&src=${encodeURIComponent(src)}`),
       featuredImages: featuredImages.map(img => ({
         ...img,
         src: `/cdn/image?w=800&src=${encodeURIComponent(img.src)}`
