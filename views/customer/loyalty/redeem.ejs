@@ -187,22 +187,25 @@
 
 <script>
 async function redeemVoucher(id, name, cost) {
-  if (!confirm(`Xác nhận đổi ${cost.toLocaleString()} Mảnh Sáng lấy "${name}"?`)) return;
-  try {
-    const res = await fetch('/api/loyalty/vouchers/redeem', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ voucher_id: id })
-    });
-    const data = await res.json();
-    if (data.success) {
-      alert('Đổi thành công! Mã của bạn: ' + data.data.code);
-      location.reload();
-    } else {
-      alert('Lỗi: ' + data.message);
+  showConfirm(`Xác nhận đổi ${cost.toLocaleString()} Mảnh Sáng lấy "${name}"?`, async (confirmed) => {
+    if (!confirmed) return;
+    try {
+      const res = await fetch('/api/loyalty/vouchers/redeem', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ voucher_id: id })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showAlert('Đổi thành công! Mã của bạn: ' + data.data.code, () => {
+          location.reload();
+        });
+      } else {
+        showAlert('Lỗi: ' + data.message);
+      }
+    } catch {
+      showAlert('Lỗi kết nối, thử lại sau.');
     }
-  } catch {
-    alert('Lỗi kết nối, thử lại sau.');
-  }
+  });
 }
 </script>

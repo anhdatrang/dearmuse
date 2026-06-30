@@ -307,6 +307,189 @@
                       })();
                     </script>
 
+
+<!-- Custom Elegant Modal Alert -->
+<div id="custom-alert-modal" class="custom-alert-overlay" style="display: none;">
+  <div class="custom-alert-card">
+    <div class="custom-alert-header">DEAR MUSÉ</div>
+    <div class="custom-alert-message" id="custom-alert-message"></div>
+    <div class="custom-alert-footer">
+      <button class="custom-alert-btn" id="custom-alert-ok-btn">Đồng ý</button>
+    </div>
+  </div>
+</div>
+
+<!-- Custom Elegant Modal Confirm -->
+<div id="custom-confirm-modal" class="custom-alert-overlay" style="display: none;">
+  <div class="custom-alert-card">
+    <div class="custom-alert-header">DEAR MUSÉ</div>
+    <div class="custom-alert-message" id="custom-confirm-message"></div>
+    <div class="custom-alert-footer" style="display: flex; gap: 12px; justify-content: center; width: 100%;">
+      <button class="custom-alert-btn secondary" id="custom-confirm-cancel-btn" style="flex: 1;">Hủy</button>
+      <button class="custom-alert-btn" id="custom-confirm-ok-btn" style="flex: 1;">Đồng ý</button>
+    </div>
+  </div>
+</div>
+
+<style>
+.custom-alert-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 25, 22, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInModal 0.25s ease forwards;
+}
+
+.custom-alert-card {
+  background: var(--vanilla-cream, #fffdf8);
+  border: 1px solid var(--bone, #ede8df);
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  padding: 32px 28px;
+  box-shadow: 0 20px 50px rgba(26, 25, 22, 0.12);
+  transform: translateY(20px);
+  animation: slideUpModal 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.custom-alert-header {
+  font-family: var(--font-display, "Playfair Display", serif);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--ink, #1a1916);
+  text-align: center;
+  margin-bottom: 16px;
+  border-bottom: 0.5px solid var(--bone, #ede8df);
+  padding-bottom: 12px;
+  width: 100%;
+}
+
+.custom-alert-message {
+  font-family: var(--font-body, "Montserrat", sans-serif);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--smoke, #555);
+  text-align: center;
+  margin-bottom: 24px;
+  width: 100%;
+  word-break: break-word;
+}
+
+.custom-alert-footer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.custom-alert-btn {
+  font-family: var(--font-body, "Montserrat", sans-serif);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--ink, #1a1916);
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.custom-alert-btn:hover {
+  background: var(--mocha, #7a5c4a);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(122, 92, 74, 0.2);
+}
+
+.custom-alert-btn.secondary {
+  background: transparent;
+  color: var(--smoke, #555);
+  border: 1px solid var(--bone, #ede8df);
+}
+
+.custom-alert-btn.secondary:hover {
+  background: rgba(0,0,0,0.03);
+  color: var(--ink, #1a1916);
+  box-shadow: none;
+  transform: none;
+}
+
+@keyframes fadeInModal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUpModal {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+</style>
+
+<script>
+window.showAlert = function(message, callback) {
+  const overlay = document.getElementById('custom-alert-modal');
+  const messageEl = document.getElementById('custom-alert-message');
+  const okBtn = document.getElementById('custom-alert-ok-btn');
+  
+  messageEl.innerHTML = message;
+  overlay.style.display = 'flex';
+  
+  const newOkBtn = okBtn.cloneNode(true);
+  okBtn.parentNode.replaceChild(newOkBtn, okBtn);
+  
+  newOkBtn.addEventListener('click', () => {
+    overlay.style.display = 'none';
+    if (typeof callback === 'function') {
+      callback();
+    }
+  });
+};
+
+window.showConfirm = function(message, callback) {
+  const overlay = document.getElementById('custom-confirm-modal');
+  const messageEl = document.getElementById('custom-confirm-message');
+  const okBtn = document.getElementById('custom-confirm-ok-btn');
+  const cancelBtn = document.getElementById('custom-confirm-cancel-btn');
+  
+  messageEl.innerHTML = message;
+  overlay.style.display = 'flex';
+  
+  const newOkBtn = okBtn.cloneNode(true);
+  okBtn.parentNode.replaceChild(newOkBtn, okBtn);
+  
+  const newCancelBtn = cancelBtn.cloneNode(true);
+  cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+  
+  newOkBtn.addEventListener('click', () => {
+    overlay.style.display = 'none';
+    if (typeof callback === 'function') callback(true);
+  });
+  
+  newCancelBtn.addEventListener('click', () => {
+    overlay.style.display = 'none';
+    if (typeof callback === 'function') callback(false);
+  });
+};
+
+// Overwrite window.alert so default calls automatically use this styled popup
+window.alert = function(message) {
+  window.showAlert(message);
+};
+</script>
 </body>
 
 </html>

@@ -44,16 +44,15 @@
 
       <!-- VOUCHER SECTION -->
       <div class="voucher-section" id="voucherSection">
-        <div class="voucher-toggle" id="voucherToggle" onclick="toggleVoucherInput()">
+        <div class="voucher-header" id="voucherHeader">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
             <path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/>
             <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
             <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
           </svg>
           <span>Tôi có mã voucher giảm giá</span>
-          <svg class="chevron-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
-        <div class="voucher-input-wrap" id="voucherInputWrap" style="display:none;">
+        <div class="voucher-input-wrap" id="voucherInputWrap">
           <div class="voucher-input-row">
             <input type="text" id="voucherCodeInput" placeholder="Nhập mã voucher..." style="text-transform:uppercase;" maxlength="30">
             <button type="button" id="btnApplyVoucher" onclick="applyVoucher()">Áp dụng</button>
@@ -165,21 +164,16 @@
     overflow: hidden;
     background: var(--vanilla-cream, #fffdf8);
   }
-  .voucher-toggle {
+  .voucher-header {
     display: flex;
     align-items: center;
     gap: 8px;
     padding: 12px 16px;
-    cursor: pointer;
     font-size: 13px;
     color: var(--smoke);
     user-select: none;
-    transition: background 0.2s;
   }
-  .voucher-toggle:hover { background: rgba(0,0,0,0.02); }
-  .voucher-toggle span { flex: 1; text-align: left; }
-  .voucher-toggle .chevron-icon { transition: transform 0.25s; }
-  .voucher-toggle.open .chevron-icon { transform: rotate(180deg); }
+  .voucher-header span { flex: 1; text-align: left; }
   .voucher-input-wrap {
     border-top: 1px dashed var(--bone);
     padding: 16px;
@@ -261,8 +255,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (distance < 0) {
       clearInterval(timerInterval);
       timerEl.innerHTML = "Đã hết hạn";
-      alert("Đã hết thời gian thanh toán. Đơn đặt lịch sẽ bị huỷ.");
-      window.location.reload();
+      showAlert("Đã hết thời gian thanh toán. Đơn đặt lịch sẽ bị huỷ.", () => {
+        window.location.reload();
+      });
       return;
     }
 
@@ -290,11 +285,12 @@ document.addEventListener('DOMContentLoaded', () => {
       if (data.success) {
         clearInterval(timerInterval);
         clearInterval(pollInterval);
-        alert('Thanh toán thành công! Cảm ơn bạn.');
-        window.location.href = `/booking/${code}/status`;
+        showAlert('Thanh toán thành công! Cảm ơn bạn.', () => {
+          window.location.href = `/booking/${code}/status`;
+        });
       } else {
         if (manualClick) {
-          alert(data.message || 'Chưa nhận được thanh toán. Vui lòng thử lại sau.');
+          showAlert(data.message || 'Chưa nhận được thanh toán. Vui lòng thử lại sau.');
           btnCheck.disabled = false;
           btnCheck.innerHTML = '<span>Tôi đã thanh toán</span>';
         }
@@ -302,7 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (err) {
       console.error(err);
       if (manualClick) {
-        alert('Lỗi kết nối khi kiểm tra thanh toán.');
+        showAlert('Lỗi kết nối khi kiểm tra thanh toán.');
         btnCheck.disabled = false;
         btnCheck.innerHTML = '<span>Tôi đã thanh toán</span>';
       }
@@ -318,13 +314,6 @@ const DEPOSIT_AMOUNT = <%= booking.deposit_amount %>;
 let voucherApplied = false;
 let effectiveAmount = DEPOSIT_AMOUNT;
 
-function toggleVoucherInput() {
-  const wrap = document.getElementById('voucherInputWrap');
-  const toggle = document.getElementById('voucherToggle');
-  const isOpen = wrap.style.display !== 'none';
-  wrap.style.display = isOpen ? 'none' : 'block';
-  toggle.classList.toggle('open', !isOpen);
-}
 
 async function applyVoucher() {
   const input = document.getElementById('voucherCodeInput');
