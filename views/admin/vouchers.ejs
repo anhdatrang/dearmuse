@@ -1,0 +1,243 @@
+<div class="admin-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+  <h1>Quản lý Voucher</h1>
+  <button class="btn-sm btn-sm-dark" onclick="openCreateModal()" style="padding:10px 20px;">
+    + Tạo Voucher Mới
+  </button>
+</div>
+
+<% if (success && success.length > 0) { %>
+  <div style="background: #dcfce7; color: #166534; padding: 12px 16px; margin-bottom: 24px; border: 1px solid #bbf7d0; font-size: 14px; border-radius: 4px;"><%= success %></div>
+<% } %>
+<% if (error && error.length > 0) { %>
+  <div style="background: #fee2e2; color: #991b1b; padding: 12px 16px; margin-bottom: 24px; border: 1px solid #fecaca; font-size: 14px; border-radius: 4px;"><%= error %></div>
+<% } %>
+
+<div class="admin-card" style="padding:0; overflow:hidden;">
+  <% if (vouchers && vouchers.length > 0) { %>
+    <table>
+      <thead>
+        <tr>
+          <th>Voucher</th>
+          <th>Prefix</th>
+          <th>Loại</th>
+          <th>Giảm giá</th>
+          <th>Mảnh Sáng</th>
+          <th>Hiệu lực</th>
+          <th>Trạng thái</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% vouchers.forEach(v => { %>
+          <tr>
+            <td>
+              <strong style="font-weight:500; color:var(--ink);"><%= v.name %></strong>
+              <% if (v.description) { %>
+                <div style="font-size:11px; color:var(--smoke); margin-top:3px; max-width:200px; line-height:1.4;"><%= v.description %></div>
+              <% } %>
+            </td>
+            <td><code style="font-size:12px; background:var(--bone); padding:2px 6px; border-radius:3px;"><%= v.code_prefix %></code></td>
+            <td>
+              <% const typeMap = {redeem:'Đổi MS',birthday:'Sinh nhật',seasonal:'Seasonal',referral:'Referral',milestone:'Milestone',manual:'Thủ công'}; %>
+              <span class="badge" style="background:var(--parchment); color:var(--smoke); border:1px solid var(--bone); font-size:11px;">
+                <%= typeMap[v.voucher_type] || v.voucher_type %>
+              </span>
+            </td>
+            <td style="font-weight:500; color:var(--mocha);">
+              <% if (v.discount_type === 'fixed') { %>
+                −<%= Number(v.discount_value).toLocaleString('vi-VN') %>đ
+              <% } else { %>
+                −<%= v.discount_value %>%
+                <% if (v.max_discount_amount) { %>
+                  <div style="font-size:11px; color:var(--smoke);">tối đa <%= Number(v.max_discount_amount).toLocaleString('vi-VN') %>đ</div>
+                <% } %>
+              <% } %>
+            </td>
+            <td style="text-align:center;">
+              <% if (v.manh_sang_cost) { %>
+                <strong style="color:var(--logo-taupe);"><%= v.manh_sang_cost %> MS</strong>
+              <% } else { %>
+                <span style="color:var(--smoke);">—</span>
+              <% } %>
+            </td>
+            <td><%= v.valid_days %> ngày</td>
+            <td>
+              <% if (v.is_active) { %>
+                <span class="badge" style="background:#dcfce7; color:#166534; border:1px solid #bbf7d0;">Hoạt động</span>
+              <% } else { %>
+                <span class="badge" style="background:#f1f5f9; color:#64748b; border:1px solid #cbd5e1;">Đã tắt</span>
+              <% } %>
+            </td>
+            <td>
+              <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <form action="/admin/vouchers/<%= v.id %>/toggle" method="POST" style="display:inline;">
+                  <button type="submit" class="btn-sm" style="font-size:11px; padding:4px 10px;">
+                    <%= v.is_active ? 'Tắt' : 'Bật' %>
+                  </button>
+                </form>
+                <form action="/admin/vouchers/<%= v.id %>/delete" method="POST" style="display:inline;"
+                  onsubmit="return confirm('Xoá voucher này? Thao tác không thể hoàn tác.')">
+                  <button type="submit" class="btn-sm" style="font-size:11px; padding:4px 10px; color:#dc2626;">Xoá</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <div class="empty-state" style="padding:60px 0;">
+      <p style="color:var(--smoke); font-size:14px;">Chưa có voucher nào. Tạo voucher đầu tiên!</p>
+    </div>
+  <% } %>
+</div>
+
+<!-- Modal Tạo Voucher -->
+<div id="createVoucherModal" class="modal">
+  <div class="modal-content" style="max-width:560px;">
+    <span class="close" onclick="closeCreateModal()">&times;</span>
+    <h2 style="font-family:var(--font-body); font-size:15px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; color:var(--smoke); margin-bottom:24px; border-bottom:0.5px solid var(--bone); padding-bottom:12px;">
+      Tạo Voucher Mới
+    </h2>
+
+    <form action="/admin/vouchers/create" method="POST">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+        <div class="form-group-admin" style="grid-column:1/-1;">
+          <label class="form-label">Tên voucher <span style="color:#dc2626;">*</span></label>
+          <input type="text" name="name" class="form-control" required placeholder="VD: Summer Sale 2026">
+        </div>
+
+        <div class="form-group-admin">
+          <label class="form-label">Prefix mã <span style="color:#dc2626;">*</span></label>
+          <input type="text" name="code_prefix" class="form-control" required placeholder="VD: SUM26" maxlength="20"
+            style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+          <small style="font-size:11px; color:var(--smoke);">Dùng để generate code: PREFIX-XXXXXX</small>
+        </div>
+
+        <div class="form-group-admin">
+          <label class="form-label">Loại voucher <span style="color:#dc2626;">*</span></label>
+          <select name="voucher_type" class="form-control" required>
+            <option value="manual">Thủ công (Manual)</option>
+            <option value="redeem">Đổi Mảnh Sáng (Redeem)</option>
+            <option value="seasonal">Seasonal</option>
+            <option value="birthday">Sinh nhật</option>
+            <option value="referral">Referral</option>
+            <option value="milestone">Milestone</option>
+          </select>
+        </div>
+
+        <div class="form-group-admin">
+          <label class="form-label">Kiểu giảm giá <span style="color:#dc2626;">*</span></label>
+          <select name="discount_type" class="form-control" required id="discountTypeSelect" onchange="toggleDiscountFields()">
+            <option value="fixed">Giảm tiền mặt (VNĐ)</option>
+            <option value="percent">Giảm phần trăm (%)</option>
+          </select>
+        </div>
+
+        <div class="form-group-admin">
+          <label class="form-label" id="discountValueLabel">Số tiền giảm (VNĐ) <span style="color:#dc2626;">*</span></label>
+          <input type="number" name="discount_value" class="form-control" required min="0" step="1000" placeholder="50000">
+        </div>
+
+        <div class="form-group-admin" id="maxDiscountWrap">
+          <label class="form-label">Giảm tối đa (VNĐ)</label>
+          <input type="number" name="max_discount_amount" class="form-control" min="0" step="1000" placeholder="Để trống nếu không giới hạn">
+        </div>
+
+        <div class="form-group-admin">
+          <label class="form-label">Đơn tối thiểu (VNĐ)</label>
+          <input type="number" name="min_order_value" class="form-control" min="0" step="1000" placeholder="0" value="0">
+        </div>
+
+        <div class="form-group-admin">
+          <label class="form-label">Chi phí Mảnh Sáng</label>
+          <input type="number" name="manh_sang_cost" class="form-control" min="0" placeholder="Để trống nếu không cần MS">
+          <small style="font-size:11px; color:var(--smoke);">Điền nếu là voucher đổi Mảnh Sáng</small>
+        </div>
+
+        <div class="form-group-admin">
+          <label class="form-label">Hạng thẻ yêu cầu</label>
+          <select name="required_tier" class="form-control">
+            <option value="">— Không yêu cầu —</option>
+            <option value="pearl">Pearl</option>
+            <option value="rose">Rose</option>
+            <option value="gold">Gold</option>
+            <option value="privilege">Privilege</option>
+          </select>
+        </div>
+
+        <div class="form-group-admin">
+          <label class="form-label">Hiệu lực (ngày) <span style="color:#dc2626;">*</span></label>
+          <input type="number" name="valid_days" class="form-control" required min="1" max="730" value="90">
+        </div>
+
+        <div class="form-group-admin" style="grid-column:1/-1;">
+          <label class="form-label">Mô tả</label>
+          <textarea name="description" class="form-control" rows="2" placeholder="Ghi chú ngắn về voucher này..."></textarea>
+        </div>
+      </div>
+
+      <div style="text-align:right; margin-top:24px; display:flex; gap:12px; justify-content:flex-end;">
+        <button type="button" class="btn-sm" onclick="closeCreateModal()">Huỷ</button>
+        <button type="submit" class="btn-sm btn-sm-dark">Tạo Voucher</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  overflow: auto;
+  background-color: rgba(26,25,22,0.4);
+  backdrop-filter: blur(2px);
+}
+.modal-content {
+  background-color: var(--vanilla);
+  margin: 5% auto;
+  padding: 32px;
+  border: 0.5px solid var(--bone);
+  width: 90%;
+  max-width: 560px;
+  position: relative;
+  box-shadow: 0 16px 40px rgba(26,25,22,0.08);
+  border-radius: 4px;
+}
+.close {
+  color: var(--smoke);
+  position: absolute;
+  right: 20px; top: 15px;
+  font-size: 28px; font-weight: 300;
+  cursor: pointer; transition: color 0.2s;
+}
+.close:hover { color: var(--ink); }
+</style>
+
+<script>
+function openCreateModal() {
+  document.getElementById('createVoucherModal').style.display = 'block';
+}
+function closeCreateModal() {
+  document.getElementById('createVoucherModal').style.display = 'none';
+}
+window.addEventListener('click', e => {
+  if (e.target === document.getElementById('createVoucherModal')) closeCreateModal();
+});
+function toggleDiscountFields() {
+  const type = document.getElementById('discountTypeSelect').value;
+  const label = document.getElementById('discountValueLabel');
+  const maxWrap = document.getElementById('maxDiscountWrap');
+  if (type === 'percent') {
+    label.firstChild.textContent = 'Phần trăm giảm (%) ';
+    maxWrap.style.display = 'block';
+  } else {
+    label.firstChild.textContent = 'Số tiền giảm (VNĐ) ';
+    maxWrap.style.display = 'none';
+  }
+}
+toggleDiscountFields();
+</script>

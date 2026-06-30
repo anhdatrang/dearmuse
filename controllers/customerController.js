@@ -75,6 +75,23 @@ exports.downloadAlbum = async (req, res) => {
   }
 };
 
+exports.myBookings = async (req, res) => {
+  const userId = req.session.userId;
+  try {
+    const Booking = require('../models/Booking');
+    const bookings = await Booking.findByUserId(userId);
+
+    res.render('customer/bookings', {
+      title: 'Lịch sử đặt lịch - Dear Musé',
+      bookings,
+      activeTab: 'my-bookings'
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Lỗi server');
+  }
+};
+
 exports.filterFace = async (req, res) => {
   const albumId = req.params.id;
   const userId = req.session.userId;
@@ -136,6 +153,47 @@ exports.downloadCustom = async (req, res) => {
 // ==========================================
 // LOYALTY SYSTEM UI CONTROLLERS
 // ==========================================
+
+exports.createCard = async (req, res) => {
+  try {
+    const LoyaltyService = require('../services/loyaltyService');
+    const { full_name, dob } = req.body;
+    
+    if (!full_name || !dob) {
+      req.flash('error', 'Vui lòng điền đầy đủ thông tin');
+      return res.redirect('/loyalty');
+    }
+
+    // Auto-generate ID card: DM + Year + Random 6 digits (e.g. DM26492318)
+    const year = new Date().getFullYear().toString().slice(-2);
+    const randomDigits = Math.floor(100000 + Math.random() * 900000);
+    const id_card = `DM${year}${randomDigits}`;
+
+    const member = await LoyaltyService.ensureMember(req.session.userId);
+    
+    if (member.is_card_active) {
+      req.flash('error', 'Thẻ của bạn đã được kích hoạt từ trước');
+      return res.redirect('/customer/my-card');
+    }
+    
+    // Update member info and activate card
+    await db.query(`
+      UPDATE members 
+      SET full_name = ?, dob = ?, id_card = ?, is_card_active = 1
+      WHERE id = ?
+    `, [full_name, dob, id_card, member.id]);
+
+    // Give 30 points for creating card
+    await LoyaltyService.addManhSang(member.id, 30, 'register_bonus', 'Mở thẻ thành viên thành công');
+
+    req.flash('success', 'Tạo thẻ thành viên thành công! Bạn nhận được 30 Mảnh Sáng.');
+    res.redirect('/customer/my-card');
+  } catch (err) {
+    console.error(err);
+    req.flash('error', 'Lỗi khi tạo thẻ: ' + err.message);
+    res.redirect('/loyalty');
+  }
+};
 
 exports.myCard = async (req, res) => {
   try {

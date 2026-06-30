@@ -3,13 +3,15 @@ const db = require('../config/db');
 class Booking {
   static async create(data) {
     const bookingCode = `DM-${new Date().toISOString().slice(0,10).replace(/-/g,'')}-${Math.floor(1000 + Math.random() * 9000)}`;
+    const depositAmount = data.deposit_amount || 0;
+    
     const [result] = await db.execute(
-      `INSERT INTO bookings (booking_code, customer_name, customer_phone, customer_email, service_id, preferred_date, preferred_time, backup_date, location_type, location_note, message)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [bookingCode, data.customer_name, data.customer_phone, data.customer_email || null,
+      `INSERT INTO bookings (booking_code, user_id, customer_name, customer_phone, customer_email, service_id, preferred_date, preferred_time, backup_date, location_type, location_note, message, deposit_amount, status, payment_expires_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'awaiting_payment', DATE_ADD(NOW(), INTERVAL 10 MINUTE))`,
+      [bookingCode, data.user_id || null, data.customer_name, data.customer_phone, data.customer_email || null,
        data.service_id || null, data.preferred_date, data.preferred_time || null,
        data.backup_date || null, data.location_type || 'studio',
-       data.location_note || null, data.message || null]
+       data.location_note || null, data.message || null, depositAmount]
     );
     return { id: result.insertId, booking_code: bookingCode };
   }
@@ -29,6 +31,20 @@ class Booking {
       `SELECT b.*, s.name as service_name FROM bookings b LEFT JOIN services s ON b.service_id = s.id WHERE b.id = ?`, [id]
     );
     return rows[0];
+  }
+
+  static async findByCode(code) {
+    const [rows] = await db.execute(
+      `SELECT b.*, s.name as service_name FROM bookings b LEFT JOIN services s ON b.service_id = s.id WHERE b.booking_code = ?`, [code]
+    );
+    return rows[0];
+  }
+
+  static async findByUserId(userId) {
+    const [rows] = await db.execute(
+      `SELECT b.*, s.name as service_name FROM bookings b LEFT JOIN services s ON b.service_id = s.id WHERE b.user_id = ? ORDER BY b.created_at DESC`, [userId]
+    );
+    return rows;
   }
 
   static async updateStatus(id, status, adminNote) {

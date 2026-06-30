@@ -22,6 +22,10 @@ router.get('/', requireAdmin, (req, res) => res.redirect('/admin/dashboard'));
 router.get('/dashboard', requireAdmin, adminController.dashboard);
 router.get('/analytics', requireAdmin, adminController.analytics);
 
+// Settings
+router.get('/settings', requireAdmin, adminController.settings);
+router.post('/settings', requireAdmin, adminController.updateSettings);
+
 // Bookings
 router.get('/bookings', requireAdmin, adminController.bookings);
 router.get('/bookings/:id', requireAdmin, adminController.bookingDetail);
@@ -68,5 +72,17 @@ router.post('/services/create', requireAdmin, adminServiceController.uploadMiddl
 router.get('/services/:id/edit', requireAdmin, adminServiceController.editServicePage);
 router.post('/services/:id/edit', requireAdmin, adminServiceController.uploadMiddleware, adminServiceController.updateService);
 router.post('/services/:id/delete', requireAdmin, adminServiceController.deleteService);
+
+// Loyalty
+const adminLoyaltyController = require('../controllers/adminLoyaltyController');
+router.get('/loyalty', requireAdmin, adminLoyaltyController.listMembers);
+router.post('/loyalty/:id/adjust', requireAdmin, adminLoyaltyController.adjustPoints);
+router.post('/loyalty/:id/issue-voucher', requireAdmin, adminLoyaltyController.issueVoucherToMember);
+
+// Vouchers
+router.get('/vouchers', requireAdmin, adminLoyaltyController.listVouchers);
+router.post('/vouchers/create', requireAdmin, adminLoyaltyController.createVoucher);
+router.post('/vouchers/:id/toggle', requireAdmin, adminLoyaltyController.toggleVoucher);
+router.post('/vouchers/:id/delete', requireAdmin, adminLoyaltyController.deleteVoucher);
 
 module.exports = router;

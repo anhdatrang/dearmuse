@@ -1,136 +1,144 @@
 <%
-  pageCss = 'portfolio.css'; // Reusing portfolio styles for premium look
+  pageCss = 'customer-portal.css';
 %>
 
-<style>
-  /* Premium Light Mode Gallery */
-  .album-card {
-    position: relative;
-    border-radius: 4px;
-    overflow: hidden;
-    aspect-ratio: 3/4;
-    background: var(--bone);
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease;
-    display: block;
-    text-decoration: none;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-  }
-  .album-card:hover { 
-    transform: translateY(-8px); 
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1); 
-  }
-  .album-bg {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    object-fit: cover;
-    transition: transform 1.5s ease;
-  }
-  .album-card:hover .album-bg { transform: scale(1.05); }
-  .album-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.8) 100%);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 32px 24px;
-  }
-  .album-title {
-    font-family: var(--font-display);
-    font-size: clamp(20px, 2.5vw, 28px);
-    color: #fff;
-    margin-bottom: 8px;
-    font-weight: 400;
-  }
-  .album-meta {
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.8);
-    margin-bottom: 20px;
-  }
-  .status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 12px;
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-radius: 20px;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #fff;
-    width: fit-content;
-    border: 1px solid rgba(255,255,255,0.1);
-  }
-  .status-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-  }
-  .status-booked .status-dot { background: #FFC107; box-shadow: 0 0 8px rgba(255,193,7,0.5); }
-  .status-shooting .status-dot { background: #00BCD4; box-shadow: 0 0 8px rgba(0,188,212,0.5); }
-  .status-editing .status-dot { background: #E91E63; box-shadow: 0 0 8px rgba(233,30,99,0.5); }
-  .status-completed .status-dot { background: #4CAF50; box-shadow: 0 0 8px rgba(76,175,80,0.5); }
-  
-  .empty-lux {
-    text-align: center;
-    padding: 100px 20px;
-    background: var(--parchment);
-    border-radius: 8px;
-  }
-</style>
+<div class="cust-portal">
+  <%- include('../partials/customer-nav') %>
 
-<section style="padding-top: 140px; padding-bottom: 120px; min-height: 80vh;">
-  <div class="container">
-    <div style="text-align: center; margin-bottom: 80px;">
-      <span class="section-label reveal">Private Gallery</span>
-      <h1 class="section-heading reveal" style="font-size: clamp(36px, 5vw, 64px); margin-top: 12px;">Bộ Ảnh Của <%= sessionUser ? sessionUser.name : 'Bạn' %></h1>
-      <div style="margin-top: 32px; display: flex; justify-content: center; gap: 24px; align-items: center;">
-         <a href="/booking" class="btn btn-dark" style="padding: 12px 24px;"><span>Đặt lịch mới</span></a>
-         <a href="/auth/logout" style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--smoke); text-decoration: underline;">Đăng xuất</a>
+  <main class="cust-main">
+    <div class="cust-page-header">
+      <h1>Xin chào, <%= sessionUser ? sessionUser.name.split(' ').pop() : 'bạn' %> ✦</h1>
+      <p>Đây là không gian riêng của bạn tại Dear Musé — nơi lưu giữ mọi khoảnh khắc đẹp.</p>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="cust-stats">
+      <div class="cust-stat-card">
+        <div class="cust-stat-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m3 9 4-4 4 4 4-4 4 4"/><path d="M3 15h18"/></svg>
+        </div>
+        <div class="cust-stat-value"><%= albums.length %></div>
+        <div class="cust-stat-label">Bộ ảnh</div>
+      </div>
+      <div class="cust-stat-card" style="cursor:pointer;" onclick="window.location='/customer/my-bookings'">
+        <div class="cust-stat-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        </div>
+        <div class="cust-stat-value"><%= albums.length %></div>
+        <div class="cust-stat-label">Lần đặt lịch</div>
       </div>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 32px;">
+    <!-- Albums Grid -->
+    <div class="cust-panel" style="padding: 0; overflow: hidden; background: transparent; border: none;">
       <% if (albums && albums.length > 0) { %>
-        <% albums.forEach(a => { %>
-          <% 
-            let stat = (a.status || 'booked').toLowerCase();
-            let statusText = 'Đã đặt lịch';
-            if (stat === 'shooting') { statusText = 'Đang chụp'; }
-            else if (stat === 'editing') { statusText = 'Đang hậu kỳ'; }
-            else if (stat === 'completed') { statusText = 'Hoàn thành'; }
-            else { stat = 'booked'; } // default class fallback
-          %>
-          <a href="/customer/my-albums/<%= a.id %>" class="album-card reveal">
-            <% if (a.cover_thumb) { %>
-              <img src="<%= a.cover_thumb %>" class="album-bg" alt="<%= a.title %>">
-            <% } else { %>
-              <div class="album-bg" style="background: #111;"></div>
-            <% } %>
-            
-            <div class="album-overlay">
-              <h2 class="album-title"><%= a.title %></h2>
-              <div class="album-meta">
-                <%= a.shoot_date ? new Date(a.shoot_date).toLocaleDateString('vi-VN') : 'TBA' %> &nbsp;—&nbsp; <%= a.photo_count %> ảnh
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+          <% albums.forEach(a => { %>
+            <%
+              let stat = (a.status || 'booked').toLowerCase();
+              let statusText = 'Đã đặt lịch';
+              let statusClass = 'badge-amber';
+              if (stat === 'shooting') { statusText = 'Đang chụp'; statusClass = 'badge-blue'; }
+              else if (stat === 'editing') { statusText = 'Đang hậu kỳ'; statusClass = 'badge-mocha'; }
+              else if (stat === 'completed') { statusText = 'Hoàn thành'; statusClass = 'badge-green'; }
+              else { stat = 'booked'; }
+            %>
+            <a href="/customer/my-albums/<%= a.id %>" class="album-card-new">
+              <div class="album-card-img">
+                <% if (a.cover_thumb) { %>
+                  <img src="<%= a.cover_thumb %>" alt="<%= a.title %>">
+                <% } else { %>
+                  <div style="width:100%;height:100%;background:var(--bone);display:flex;align-items:center;justify-content:center;">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--smoke)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
+                  </div>
+                <% } %>
+                <div class="album-card-overlay">
+                  <span class="badge <%= statusClass %>"><%= statusText %></span>
+                </div>
               </div>
-              
-              <div class="status-badge status-<%= stat %>">
-                <span class="status-dot"></span>
-                <%= statusText %>
+              <div class="album-card-info">
+                <div class="album-card-title"><%= a.title %></div>
+                <div class="album-card-meta">
+                  <span><%= a.shoot_date ? new Date(a.shoot_date).toLocaleDateString('vi-VN') : 'TBA' %></span>
+                  <span><%= a.photo_count || 0 %> ảnh</span>
+                </div>
               </div>
-            </div>
-          </a>
-        <% }) %>
+            </a>
+          <% }) %>
+        </div>
       <% } else { %>
-        <div class="empty-lux" style="grid-column: 1 / -1;">
-          <h3 style="font-family: var(--font-display); font-size: 24px; margin-bottom: 16px; color: var(--ink);">Chưa có bộ ảnh nào</h3>
-          <p style="color: var(--smoke);">Những khoảnh khắc tuyệt đẹp của bạn sẽ xuất hiện tại đây.</p>
+        <div class="cust-empty">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
+          <h3>Chưa có bộ ảnh nào</h3>
+          <p>Những khoảnh khắc tuyệt đẹp của bạn sẽ xuất hiện tại đây sau khi chụp.</p>
+          <a href="/booking" class="btn btn-dark" style="display:inline-block; margin-top:8px;">Đặt lịch ngay</a>
         </div>
       <% } %>
     </div>
-  </div>
-</section>
+  </main>
+</div>
+
+<style>
+.album-card-new {
+  background: var(--vanilla, #FFF7E6);
+  border: 1px solid var(--bone, #EDE8DF);
+  border-radius: 16px;
+  overflow: hidden;
+  text-decoration: none;
+  display: block;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.album-card-new:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.album-card-img {
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  position: relative;
+  background: var(--bone, #EDE8DF);
+}
+
+.album-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s ease;
+}
+
+.album-card-new:hover .album-card-img img {
+  transform: scale(1.06);
+}
+
+.album-card-overlay {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+}
+
+.album-card-info {
+  padding: 18px 20px;
+}
+
+.album-card-title {
+  font-family: var(--font-display, serif);
+  font-size: 1.05rem;
+  color: var(--ink, #1A1916);
+  margin-bottom: 8px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.album-card-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--smoke, #6B6860);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+</style>

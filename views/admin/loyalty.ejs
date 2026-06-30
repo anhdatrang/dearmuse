@@ -1,0 +1,165 @@
+<div class="admin-header">
+  <h1>Quản lý Thẻ Thành Viên (Loyalty)</h1>
+</div>
+
+<% if (success && success.length > 0) { %>
+  <div style="background: #dcfce7; color: #166534; padding: 12px 16px; margin-bottom: 24px; border: 1px solid #bbf7d0; font-size: 14px; border-radius: 4px;"><%= success %></div>
+<% } %>
+<% if (error && error.length > 0) { %>
+  <div style="background: #fee2e2; color: #991b1b; padding: 12px 16px; margin-bottom: 24px; border: 1px solid #fecaca; font-size: 14px; border-radius: 4px;"><%= error %></div>
+<% } %>
+
+<div class="admin-card" style="padding: 0;">
+  <% if (members && members.length > 0) { %>
+    <table>
+      <thead>
+        <tr>
+          <th>Khách hàng</th>
+          <th>Email/SĐT</th>
+          <th>CCCD</th>
+          <th>Hạng thẻ</th>
+          <th>Tổng Mảnh Sáng</th>
+          <th>Số dư Mảnh Sáng</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% members.forEach(member => { %>
+          <tr>
+            <td>
+              <strong style="font-weight: 500; color: var(--ink);"><%= member.full_name || member.user_name %></strong>
+              <% if (member.dob) { %>
+                <div style="font-size: 12px; color: var(--smoke); margin-top: 2px;">
+                  NS: <%= new Date(member.dob).toLocaleDateString('vi-VN') %>
+                </div>
+              <% } %>
+            </td>
+            <td>
+              <div><%= member.email %></div>
+              <div style="font-size: 12px; color: var(--smoke); margin-top: 2px;"><%= member.phone || 'Chưa cập nhật' %></div>
+            </td>
+            <td style="font-family: monospace; font-size: 13px; color: var(--smoke);"><%= member.id_card || '—' %></td>
+            <td>
+              <% if (member.card_tier === 'pearl') { %>
+                <span class="badge" style="background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1;">Pearl</span>
+              <% } else if (member.card_tier === 'rose') { %>
+                <span class="badge" style="background: #fff1f2; color: #be123c; border: 1px solid #fecdd3;">Rose</span>
+              <% } else if (member.card_tier === 'gold') { %>
+                <span class="badge" style="background: #fef9c3; color: #854d0e; border: 1px solid #fef08a;">Gold</span>
+              <% } else if (member.card_tier === 'privilege') { %>
+                <span class="badge" style="background: #f3e8ff; color: #6b21a8; border: 1px solid #e9d5ff;">Privilege</span>
+              <% } else { %>
+                <span class="badge" style="background: var(--bone); color: var(--smoke);">Thành viên</span>
+              <% } %>
+            </td>
+            <td style="font-weight: 500;"><%= member.manh_sang_total.toLocaleString('vi-VN') %></td>
+            <td><strong style="font-weight: 600; color: var(--mocha);"><%= member.manh_sang_balance.toLocaleString('vi-VN') %></strong></td>
+            <td>
+              <button type="button" class="btn-sm" onclick="openAdjustModal('<%= member.id %>', '<%= member.full_name || member.user_name %>', <%= member.manh_sang_balance %>)">
+                Điều chỉnh điểm
+              </button>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <div class="empty-state">Chưa có thành viên nào mở thẻ loyalty.</div>
+  <% } %>
+</div>
+
+<!-- Modal Điều Chỉnh Điểm -->
+<div id="adjustModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeAdjustModal()">&times;</span>
+    <h2 style="font-family: var(--font-body); font-size: 15px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--smoke); margin-bottom: 24px; border-bottom: 0.5px solid var(--bone); padding-bottom: 12px;">Điều chỉnh Mảnh Sáng</h2>
+    <form id="adjustForm" method="POST" action="">
+      <div style="margin-bottom: 12px; font-size: 13px;">
+        <span style="color: var(--smoke);">Thành viên:</span> <strong id="modalMemberName" style="color: var(--ink);">—</strong>
+      </div>
+      <div style="margin-bottom: 24px; font-size: 13px;">
+        <span style="color: var(--smoke);">Số dư hiện tại:</span> <strong id="modalMemberBalance" style="color: var(--mocha);">0</strong>
+      </div>
+      
+      <div class="form-group-admin">
+        <label class="form-label">Số điểm cần thay đổi</label>
+        <input type="number" name="amount" class="form-control" required placeholder="VD: 50 (cộng) hoặc -50 (trừ)">
+        <small style="color: var(--smoke); font-size: 11px; display: block; margin-top: 4px; line-height: 1.4;">Nhập số dương để cộng điểm, nhập số âm (có dấu trừ phía trước) để trừ/thu hồi điểm.</small>
+      </div>
+      
+      <div class="form-group-admin" style="margin-top: 20px;">
+        <label class="form-label">Lý do điều chỉnh</label>
+        <textarea name="reason" class="form-control" rows="2" required placeholder="Nhập lý do thực hiện..."></textarea>
+      </div>
+      
+      <div style="text-align: right; margin-top: 28px; display: flex; gap: 12px; justify-content: flex-end;">
+        <button type="button" class="btn-sm" onclick="closeAdjustModal()">Huỷ</button>
+        <button type="submit" class="btn-sm btn-sm-dark">Xác nhận</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+/* CSS cho Modal */
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 1000; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
+  background-color: rgba(26, 25, 22, 0.4); /* Overlay mờ */
+  backdrop-filter: blur(2px);
+}
+
+.modal-content {
+  background-color: var(--vanilla);
+  margin: 12% auto; 
+  padding: 32px;
+  border: 0.5px solid var(--bone);
+  width: 90%;
+  max-width: 480px;
+  position: relative;
+  box-shadow: 0 16px 40px rgba(26, 25, 22, 0.08);
+}
+
+.close {
+  color: var(--smoke);
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  font-size: 28px;
+  font-weight: 300;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close:hover {
+  color: var(--ink);
+}
+</style>
+
+<script>
+function openAdjustModal(id, name, balance) {
+  const form = document.getElementById('adjustForm');
+  form.action = '/admin/loyalty/' + id + '/adjust';
+  document.getElementById('modalMemberName').innerText = name;
+  document.getElementById('modalMemberBalance').innerText = balance.toLocaleString('vi-VN');
+  document.getElementById('adjustModal').style.display = 'block';
+}
+
+function closeAdjustModal() {
+  document.getElementById('adjustModal').style.display = 'none';
+}
+
+// Đóng modal khi click ra ngoài
+window.onclick = function(event) {
+  const modal = document.getElementById('adjustModal');
+  if (event.target == modal) {
+    modal.style.display = 'none';
+  }
+}
+</script>

@@ -4,29 +4,51 @@
 
 <div class="booking-confirm">
   <div class="confirm-card">
-    <div class="confirm-icon">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1A1916" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
+    <% if (booking.status === 'cancelled') { %>
+      <div class="confirm-icon" style="background: #ffebe9; border-color: #ff8182;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </div>
 
-    <span class="section-label" style="display: block; text-align: center; margin-bottom: 8px;">Đặt lịch thành công</span>
-    <h1 style="font-family: var(--font-display); font-size: 32px; font-style: italic; color: var(--ink); font-weight: 400; margin-bottom: 12px;">
-      Cảm ơn, <%= booking.customer_name.split(' ').pop() %>!
-    </h1>
-    <p class="body-text" style="max-width: 380px; margin: 0 auto 8px;">
-      Chúng tôi đã nhận được yêu cầu của bạn và sẽ liên hệ xác nhận trong vòng 24 giờ.
-    </p>
+      <span class="section-label" style="display: block; text-align: center; margin-bottom: 8px;">Đã Huỷ Đặt Lịch</span>
+      <h1 style="font-family: var(--font-display); font-size: 32px; font-style: italic; color: #e74c3c; font-weight: 400; margin-bottom: 12px;">
+        Thất bại, <%= booking.customer_name.split(' ').pop() %>!
+      </h1>
+      <p class="body-text" style="max-width: 380px; margin: 0 auto 8px;">
+        Đơn đặt lịch của bạn đã bị huỷ do quá hạn thanh toán 10 phút. Vui lòng đặt lịch lại.
+      </p>
 
-    <div class="confirm-code">
-      Mã đặt lịch: <%= booking.booking_code %>
-    </div>
+      <div class="confirm-code">
+        Mã đặt lịch: <%= booking.booking_code %>
+      </div>
 
-    <p class="body-text" style="font-size: 13px; color: var(--smoke); margin-bottom: 32px;">
-      Lưu mã này lại để tiện theo dõi.
-    </p>
+      <p class="body-text" style="font-size: 13px; color: var(--smoke); margin-bottom: 32px;">
+        Nếu bạn đã thanh toán nhưng vẫn bị huỷ, vui lòng liên hệ chúng tôi để được hỗ trợ.
+      </p>
+    <% } else { %>
+      <div class="confirm-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1A1916" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+
+      <span class="section-label" style="display: block; text-align: center; margin-bottom: 8px;">Đặt lịch thành công</span>
+      <h1 style="font-family: var(--font-display); font-size: 32px; font-style: italic; color: var(--ink); font-weight: 400; margin-bottom: 12px;">
+        Cảm ơn, <%= booking.customer_name.split(' ').pop() %>!
+      </h1>
+      <p class="body-text" style="max-width: 380px; margin: 0 auto 8px;">
+        Chúng tôi đã nhận được yêu cầu và cọc của bạn. Chúng tôi sẽ liên hệ xác nhận chi tiết trong vòng 24 giờ.
+      </p>
+
+      <div class="confirm-code">
+        Mã đặt lịch: <%= booking.booking_code %>
+      </div>
+
+      <p class="body-text" style="font-size: 13px; color: var(--smoke); margin-bottom: 32px;">
+        Lưu mã này lại để tiện theo dõi.
+      </p>
+    <% } %>
 
     <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
       <a href="/" class="btn btn-outline-dark"><span>Về trang chủ</span></a>
-      <a href="/portfolio" class="btn btn-dark"><span>Xem Portfolio</span></a>
+      <a href="/portfolio" class="btn btn-accent"><span>Xem Portfolio</span></a>
     </div>
   </div>
 </div>

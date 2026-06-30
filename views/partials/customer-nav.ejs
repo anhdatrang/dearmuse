@@ -1,0 +1,53 @@
+<%# Shared Customer Navigation Sidebar %>
+<aside class="cust-sidebar">
+  <div class="cust-profile">
+    <div class="cust-avatar">
+      <%= (sessionUser && sessionUser.name) ? sessionUser.name.charAt(0).toUpperCase() : 'U' %>
+    </div>
+    <div class="cust-profile-info">
+      <div class="cust-name"><%= sessionUser ? sessionUser.name : 'Khách hàng' %></div>
+      <div class="cust-email"><%= sessionUser ? sessionUser.email : '' %></div>
+    </div>
+  </div>
+
+  <nav class="cust-nav">
+    <div class="cust-nav-group">
+      <div class="cust-nav-label">Nội dung</div>
+      <a href="/customer/my-albums" class="cust-nav-item <%= currentPath && currentPath.startsWith('/customer/my-albums') ? 'active' : '' %>">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m3 9 4-4 4 4 4-4 4 4"/><path d="M3 15h18"/></svg>
+        <span>Bộ Ảnh Của Tôi</span>
+      </a>
+      <a href="/customer/my-bookings" class="cust-nav-item <%= currentPath && currentPath.startsWith('/customer/my-bookings') ? 'active' : '' %>">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <span>Lịch Sử Đặt Lịch</span>
+      </a>
+    </div>
+
+    <div class="cust-nav-group">
+      <div class="cust-nav-label">Thẻ thành viên</div>
+      <a href="/customer/my-card" class="cust-nav-item <%= currentPath === '/customer/my-card' ? 'active' : '' %>">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M7 15h2M12 15h5"/></svg>
+        <span>Thẻ Của Tôi</span>
+      </a>
+      <a href="/customer/redeem" class="cust-nav-item <%= currentPath === '/customer/redeem' ? 'active' : '' %>">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+        <span>Đổi Quà</span>
+      </a>
+      <a href="/customer/loyalty-history" class="cust-nav-item <%= currentPath === '/customer/loyalty-history' ? 'active' : '' %>">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>Lịch Sử Điểm</span>
+      </a>
+    </div>
+
+    <div class="cust-nav-group cust-nav-bottom">
+      <a href="/booking" class="cust-nav-item cust-nav-cta">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v4M16 2v4M3 10h18M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6z"/><path d="M12 14h.01M8 14h.01M16 14h.01"/></svg>
+        <span>Đặt Lịch Mới</span>
+      </a>
+      <a href="/auth/logout" class="cust-nav-item cust-nav-logout">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <span>Đăng Xuất</span>
+      </a>
+    </div>
+  </nav>
+</aside>

@@ -21,6 +21,16 @@
           </ul>
         <% } %>
 
+        <% if (!sessionUser) { %>
+          <div style="background: var(--parchment); border-left: 3px solid var(--avocado-cream); padding: 16px 20px; margin-bottom: 32px; border-radius: 4px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <strong style="display: block; font-size: 13px; color: var(--ink); margin-bottom: 4px;">Đăng nhập để theo dõi trạng thái!</strong>
+              <span style="font-size: 13px; color: var(--smoke);">Lưu trữ lịch sử đặt lịch và dễ dàng theo dõi trạng thái thanh toán. Bạn vẫn có thể tiếp tục đặt lịch nhanh dưới tư cách Khách.</span>
+            </div>
+            <a href="/auth/login?redirect=/booking" class="btn btn-accent" style="padding: 10px 24px; font-size: 11px;">Đăng nhập ngay</a>
+          </div>
+        <% } %>
+
         <form method="POST" action="/booking" novalidate>
           <!-- Row 1: Name + Phone -->
           <div class="form-row">

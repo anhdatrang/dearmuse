@@ -295,10 +295,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (typeof GLightbox !== 'undefined') {
     // Tự động biến tất cả ảnh thành dạng click để phóng to (Lightbox)
     document.querySelectorAll('img').forEach(img => {
-      // Bỏ qua logo, icon, ảnh nền hero động, và ảnh trong card dịch vụ (vì card dịch vụ là link)
-      if(img.closest('header') || img.closest('footer') || img.closest('.svc-card') || img.closest('.hero-img-wrap')) return;
-      // Bỏ qua ảnh đã nằm trong thẻ <a> để tránh lỗi chuyển trang
-      if(img.parentElement && img.parentElement.tagName.toLowerCase() === 'a') return;
+      // Bỏ qua logo, icon, ảnh nền hero động, các card dịch vụ, cột dịch vụ podium, và ảnh nằm trong thẻ <a>
+      if(img.closest('header') || img.closest('footer') || img.closest('.svc-card') || img.closest('.hero-img-wrap') || img.closest('.svc-podium-column') || img.closest('a')) return;
       
       img.classList.add('glightbox');
       img.setAttribute('data-href', img.src || img.currentSrc);

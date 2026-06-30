@@ -65,6 +65,7 @@ async function setup() {
     CREATE TABLE IF NOT EXISTS bookings (
       id INT AUTO_INCREMENT PRIMARY KEY,
       booking_code VARCHAR(20) UNIQUE,
+      user_id INT,
       customer_name VARCHAR(255) NOT NULL,
       customer_phone VARCHAR(20) NOT NULL,
       customer_email VARCHAR(255),
@@ -75,10 +76,13 @@ async function setup() {
       location_type ENUM('studio','outdoor','both') DEFAULT 'studio',
       location_note TEXT,
       message TEXT,
-      status ENUM('pending','confirmed','completed','cancelled') DEFAULT 'pending',
+      status ENUM('pending','awaiting_payment','confirmed','completed','cancelled') DEFAULT 'awaiting_payment',
+      deposit_amount INT DEFAULT 0,
+      payment_expires_at DATETIME,
       admin_note TEXT,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (service_id) REFERENCES services(id) ON DELETE SET NULL
+      FOREIGN KEY (service_id) REFERENCES services(id) ON DELETE SET NULL,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
     )
   `);
 
@@ -139,6 +143,16 @@ async function setup() {
       location VARCHAR(100),
       duration_seconds INT DEFAULT 0,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  await conn.query(`
+    CREATE TABLE IF NOT EXISTS settings (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      setting_key VARCHAR(100) UNIQUE NOT NULL,
+      setting_value TEXT,
+      description VARCHAR(255),
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )
   `);
 
@@ -369,6 +383,7 @@ async function setup() {
     await conn.query(`ALTER TABLE bookings ADD COLUMN manh_sang_earned INT DEFAULT 0`);
     await conn.query(`ALTER TABLE bookings ADD COLUMN discount_amount DECIMAL(10,2) DEFAULT 0`);
     await conn.query(`ALTER TABLE bookings ADD COLUMN final_amount DECIMAL(10,2) DEFAULT 0`);
+    await conn.query(`ALTER TABLE bookings ADD COLUMN applied_voucher_code VARCHAR(30)`);
     console.log('✅ Đã thêm các cột Loyalty vào bảng bookings');
   } catch (e) {
     if (e.code !== 'ER_DUP_FIELDNAME') {
@@ -478,6 +493,23 @@ async function setup() {
     console.log('✅ Admin account tạo xong: admin / dearmuse2025');
   } else {
     console.log('ℹ️  Admin đã tồn tại, bỏ qua');
+  }
+
+  // Seed default settings
+  const [existingSettings] = await conn.query(`SELECT COUNT(*) as count FROM settings`);
+  if (existingSettings[0].count === 0) {
+    await conn.query(`
+      INSERT INTO settings (setting_key, setting_value, description) VALUES
+      ('bank_name', 'ACB', 'Tên ngân hàng nhận thanh toán'),
+      ('bank_account_no', '6333333633', 'Số tài khoản'),
+      ('bank_account_name', 'NGUYEN VAN HOI', 'Tên chủ tài khoản'),
+      ('api_url', 'https://api.sieuthicode.net/historyapiacbv3', 'URL API kiểm tra giao dịch'),
+      ('api_password', '', 'Mật khẩu API SieuthiCode'),
+      ('api_token', '', 'Token API SieuthiCode')
+    `);
+    console.log('✅ Cấu hình thanh toán đã được seed');
+  } else {
+    console.log('ℹ️  Cấu hình thanh toán đã tồn tại, bỏ qua');
   }
 
   await conn.end();

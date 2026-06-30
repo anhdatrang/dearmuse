@@ -1,0 +1,58 @@
+<div class="admin-header">
+  <h2>Cấu hình hệ thống</h2>
+  <p>Cập nhật thông tin ngân hàng và API thanh toán tự động</p>
+</div>
+
+<% if (success && success.length > 0) { %>
+  <div class="alert alert-success"><%= success %></div>
+<% } %>
+<% if (error && error.length > 0) { %>
+  <div class="alert alert-danger"><%= error %></div>
+<% } %>
+
+<div class="admin-card">
+  <form action="/admin/settings" method="POST">
+    <h3 style="margin-bottom: 20px;">Thông tin ngân hàng</h3>
+    
+    <div class="form-group" style="margin-bottom: 15px;">
+      <label>Tên Ngân Hàng (VD: ACB, TECHCOMBANK)</label>
+      <input type="text" name="bank_name" class="form-control" value="<%= settings.bank_name?.value || '' %>" required>
+      <small class="text-muted"><%= settings.bank_name?.description %></small>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 15px;">
+      <label>Tên Chủ Tài Khoản</label>
+      <input type="text" name="bank_account_name" class="form-control" value="<%= settings.bank_account_name?.value || '' %>" required>
+      <small class="text-muted"><%= settings.bank_account_name?.description %></small>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 30px;">
+      <label>Số Tài Khoản</label>
+      <input type="text" name="bank_account_no" class="form-control" value="<%= settings.bank_account_no?.value || '' %>" required>
+      <small class="text-muted"><%= settings.bank_account_no?.description %></small>
+    </div>
+
+    <hr style="margin-bottom: 20px; border: 0; border-top: 1px solid #eee;">
+    <h3 style="margin-bottom: 20px;">Cấu hình API SieuthiCode (Tự động duyệt cọc)</h3>
+
+    <div class="form-group" style="margin-bottom: 15px;">
+      <label>URL API</label>
+      <input type="text" name="api_url" class="form-control" value="<%= settings.api_url?.value || '' %>">
+      <small class="text-muted">Ví dụ: https://api.sieuthicode.net/historyapiacbv3 (Nếu URL có chứa {PASSWORD}/{STK}/{TOKEN} hệ thống sẽ tự thay thế tương ứng)</small>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 15px;">
+      <label>Mật Khẩu API (Password)</label>
+      <input type="password" name="api_password" class="form-control" value="<%= settings.api_password?.value || '' %>">
+      <small class="text-muted">Mật khẩu để gọi API của SieuthiCode</small>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 30px;">
+      <label>Token API</label>
+      <input type="text" name="api_token" class="form-control" value="<%= settings.api_token?.value || '' %>">
+      <small class="text-muted">Mã Token bí mật do SieuthiCode cung cấp</small>
+    </div>
+
+    <button type="submit" class="btn btn-dark">Lưu cấu hình</button>
+  </form>
+</div>

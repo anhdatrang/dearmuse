@@ -1,99 +1,99 @@
-<div class="loyalty-container">
-  <div class="loyalty-sidebar">
-    <nav class="loyalty-nav">
-      <a href="/customer/my-card" class="<%= activeTab === 'my-card' ? 'active' : '' %>">
-        <i class="fas fa-id-card"></i> Thẻ Của Tôi
-      </a>
-      <a href="/customer/redeem" class="<%= activeTab === 'redeem' ? 'active' : '' %>">
-        <i class="fas fa-gift"></i> Đổi Quà
-      </a>
-      <a href="/customer/loyalty-history" class="<%= activeTab === 'history' ? 'active' : '' %>">
-        <i class="fas fa-history"></i> Lịch Sử
-      </a>
-    </nav>
-  </div>
+<%
+  pageCss = 'customer-portal.css';
+%>
 
-  <div class="loyalty-content">
-    <div class="loyalty-header">
-      <h2>Lịch Sử Mảnh Sáng</h2>
+<div class="cust-portal">
+  <%- include('../../partials/customer-nav') %>
+
+  <main class="cust-main">
+    <div class="cust-page-header">
+      <h1>Lịch Sử Mảnh Sáng</h1>
       <p>Theo dõi mọi biến động tích lũy và sử dụng Mảnh Sáng của bạn.</p>
     </div>
 
-    <div class="history-timeline">
-      <% if (transactions.length === 0) { %>
-        <p class="empty-state">Chưa có giao dịch nào.</p>
-      <% } else { %>
-        <div class="table-responsive">
-          <table class="loyalty-table">
-            <thead>
+    <!-- Summary -->
+    <div class="cust-stats" style="margin-bottom:28px;">
+      <div class="cust-stat-card">
+        <div class="cust-stat-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div class="cust-stat-value"><%= member.manh_sang_balance.toLocaleString('vi-VN') %></div>
+        <div class="cust-stat-label">Số dư hiện tại</div>
+      </div>
+      <div class="cust-stat-card">
+        <div class="cust-stat-icon" style="background:rgba(46,125,50,0.1);color:#2e7d32;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
+        </div>
+        <div class="cust-stat-value"><%= member.manh_sang_total.toLocaleString('vi-VN') %></div>
+        <div class="cust-stat-label">Tổng tích lũy</div>
+      </div>
+      <div class="cust-stat-card">
+        <div class="cust-stat-icon" style="background:rgba(198,40,40,0.08);color:#c62828;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div class="cust-stat-value"><%= (member.manh_sang_total - member.manh_sang_balance).toLocaleString('vi-VN') %></div>
+        <div class="cust-stat-label">Đã sử dụng</div>
+      </div>
+    </div>
+
+    <!-- Transaction History -->
+    <div class="cust-panel">
+      <div class="cust-panel-header">
+        <p class="cust-panel-title">Nhật ký giao dịch</p>
+        <p class="cust-panel-sub">50 giao dịch gần nhất được hiển thị.</p>
+      </div>
+
+      <% if (transactions && transactions.length > 0) { %>
+        <table class="cust-table">
+          <thead>
+            <tr>
+              <th>Thời gian</th>
+              <th>Mô tả</th>
+              <th>Loại</th>
+              <th style="text-align:right;">Số lượng</th>
+              <th style="text-align:right;">Số dư sau</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% transactions.forEach(t => { %>
+              <%
+                let typeLabel, badgeClass;
+                if (t.amount > 0) {
+                  typeLabel = 'Tích lũy';
+                  badgeClass = 'badge-green';
+                } else if (t.type === 'voucher_redeem') {
+                  typeLabel = 'Đổi quà';
+                  badgeClass = 'badge-red';
+                } else if (t.type === 'admin_adjust') {
+                  typeLabel = 'Admin điều chỉnh';
+                  badgeClass = 'badge-amber';
+                } else {
+                  typeLabel = 'Khác';
+                  badgeClass = 'badge-gray';
+                }
+              %>
               <tr>
-                <th>Thời gian</th>
-                <th>Phân loại</th>
-                <th>Mô tả chi tiết</th>
-                <th>Số lượng</th>
-                <th>Số dư sau</th>
+                <td style="color:var(--smoke);font-size:0.8rem;white-space:nowrap;">
+                  <%= new Date(t.created_at).toLocaleString('vi-VN', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}) %>
+                </td>
+                <td style="font-weight:500;max-width:280px;"><%= t.description %></td>
+                <td><span class="badge <%= badgeClass %>"><%= typeLabel %></span></td>
+                <td style="text-align:right;font-weight:700;font-family:var(--font-display,serif);font-size:1rem;color:<%= t.amount > 0 ? '#2e7d32' : '#c62828' %>;">
+                  <%= t.amount > 0 ? '+' : '' %><%= t.amount.toLocaleString('vi-VN') %>
+                </td>
+                <td style="text-align:right;color:var(--smoke);font-size:0.875rem;"><%= t.balance_after.toLocaleString('vi-VN') %></td>
               </tr>
-            </thead>
-            <tbody>
-              <% transactions.forEach(t => { %>
-                <tr>
-                  <td><%= new Date(t.created_at).toLocaleString('vi-VN') %></td>
-                  <td>
-                    <% 
-                      let typeLabel = '';
-                      let typeClass = '';
-                      if (t.type === 'spend' || t.type === 'first_booking' || t.type.includes('bonus') || t.type.includes('reward')) {
-                        typeLabel = 'Tích lũy';
-                        typeClass = 'text-success';
-                      } else if (t.type === 'voucher_redeem') {
-                        typeLabel = 'Đổi quà';
-                        typeClass = 'text-danger';
-                      } else {
-                        typeLabel = 'Khác';
-                        typeClass = 'text-muted';
-                      }
-                    %>
-                    <span class="<%= typeClass %>"><%= typeLabel %></span>
-                  </td>
-                  <td><%= t.description %></td>
-                  <td class="<%= t.amount > 0 ? 'text-success font-weight-bold' : 'text-danger font-weight-bold' %>">
-                    <%= t.amount > 0 ? '+' : '' %><%= t.amount %>
-                  </td>
-                  <td><%= t.balance_after %></td>
-                </tr>
-              <% }) %>
-            </tbody>
-          </table>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } else { %>
+        <div class="cust-empty">
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <h3>Chưa có giao dịch nào</h3>
+          <p>Mở thẻ thành viên và bắt đầu tích lũy Mảnh Sáng ngay hôm nay.</p>
+          <a href="/loyalty" class="btn btn-dark" style="margin-top:8px; padding: 12px 28px; border-radius: 8px;">Khám phá chương trình</a>
         </div>
       <% } %>
     </div>
-  </div>
+  </main>
 </div>
-
-<!-- Styles -->
-<style>
-.loyalty-container { display: flex; max-width: 1200px; margin: 40px auto; gap: 30px; padding: 0 20px; }
-.loyalty-sidebar { width: 250px; flex-shrink: 0; }
-.loyalty-nav { display: flex; flex-direction: column; background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
-.loyalty-nav a { padding: 15px 20px; color: #555; text-decoration: none; font-weight: 500; border-left: 3px solid transparent; }
-.loyalty-nav a.active { background: #fdfaf6; color: #D4A847; border-left-color: #D4A847; }
-.loyalty-content { flex-grow: 1; }
-.loyalty-header h2 { font-size: 28px; margin-bottom: 5px; }
-.loyalty-header p { color: #777; margin-bottom: 30px; }
-
-.history-timeline {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-  overflow: hidden;
-}
-
-.loyalty-table { width: 100%; border-collapse: collapse; }
-.loyalty-table th { background: #f9f9f9; padding: 15px; text-align: left; color: #555; font-weight: 600; border-bottom: 1px solid #eee; }
-.loyalty-table td { padding: 15px; border-bottom: 1px solid #eee; color: #333; }
-.text-success { color: #28a745; }
-.text-danger { color: #dc3545; }
-.text-muted { color: #6c757d; }
-.font-weight-bold { font-weight: 700; }
-.empty-state { padding: 30px; text-align: center; color: #888; }
-</style>

@@ -68,19 +68,29 @@ exports.submit = async (req, res) => {
   }
 
   try {
-    const booking = await Booking.create(req.body);
     let service = null;
+    let deposit_amount = 500000; // Default if no service
+
     if (req.body.service_id) {
       service = await Service.findById(req.body.service_id);
+      if (service && service.price_from) {
+        deposit_amount = Math.round((service.price_from * 0.3) / 1000) * 1000; // 30%, rounded to nearest 1000
+      }
     }
-    await sendConfirmationEmail({ ...booking, ...req.body }, service);
-    await discordService.notifyBooking({ ...booking, ...req.body }, service ? service.name : 'Dịch vụ chụp ảnh');
 
-    res.render('booking-confirm', {
-      title: 'Đặt lịch thành công — Dear Musé',
-      metaDescription: 'Yêu cầu đặt lịch chụp ảnh của bạn đã được tiếp nhận thành công. Dear Musé sẽ liên hệ xác nhận chi tiết concept chụp trong vòng 24 giờ.',
-      booking: { ...booking, customer_name: req.body.customer_name },
-    });
+    req.body.deposit_amount = deposit_amount;
+    
+    if (req.session.userId) {
+      req.body.user_id = req.session.userId;
+    }
+
+    const booking = await Booking.create(req.body);
+    
+    // We do NOT send confirmation email yet, because they haven't paid.
+    // Or we send a "pending payment" email? The requirement says "chỉ khi thanh toán xong thì mới coi như là đặt lịch thành công".
+    // So we don't send emails to user or discord yet.
+    
+    res.redirect(`/booking/${booking.booking_code}/pay`);
   } catch (err) {
     console.error(err);
     const services = await Service.findAll();

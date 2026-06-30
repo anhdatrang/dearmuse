@@ -1,0 +1,74 @@
+<%
+  pageCss = 'customer-portal.css';
+%>
+
+<div class="cust-portal">
+  <%- include('../partials/customer-nav') %>
+
+  <main class="cust-main">
+    <div class="cust-page-header">
+      <h1>Lịch Sử Đặt Lịch</h1>
+      <p>Theo dõi tất cả các lần đặt lịch và trạng thái thanh toán của bạn.</p>
+    </div>
+
+    <div class="cust-panel">
+      <% if (bookings && bookings.length > 0) { %>
+        <div style="overflow-x: auto;">
+          <table class="cust-table">
+            <thead>
+              <tr>
+                <th>Mã đơn</th>
+                <th>Ngày chụp</th>
+                <th>Dịch vụ</th>
+                <th>Tiền cọc</th>
+                <th>Trạng thái</th>
+                <th style="text-align:right;">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% bookings.forEach(b => { %>
+                <%
+                  const statuses = {
+                    'pending': ['Chờ duyệt', 'badge-gray'],
+                    'awaiting_payment': ['Chờ thanh toán', 'badge-amber'],
+                    'confirmed': ['Đã xác nhận', 'badge-green'],
+                    'completed': ['Hoàn thành', 'badge-blue'],
+                    'cancelled': ['Đã huỷ', 'badge-red']
+                  };
+                  const [statusLabel, statusClass] = statuses[b.status] || [b.status, 'badge-gray'];
+                %>
+                <tr>
+                  <td>
+                    <span style="font-family:var(--font-display,serif);font-weight:600;letter-spacing:0.05em;color:var(--ink);"><%= b.booking_code %></span>
+                  </td>
+                  <td style="color:var(--smoke);font-size:0.875rem;">
+                    <%= new Date(b.preferred_date).toLocaleDateString('vi-VN', {day:'2-digit',month:'2-digit',year:'numeric'}) %>
+                  </td>
+                  <td style="font-weight:500;"><%= b.service_name || 'Khác' %></td>
+                  <td style="font-weight:600;color:var(--mocha);">
+                    <%= b.deposit_amount.toLocaleString('vi-VN') %>đ
+                  </td>
+                  <td><span class="badge <%= statusClass %>"><%= statusLabel %></span></td>
+                  <td style="text-align:right;">
+                    <% if (b.status === 'awaiting_payment') { %>
+                      <a href="/booking/<%= b.booking_code %>/pay" class="btn btn-dark" style="padding:7px 16px;border-radius:6px;font-size:0.8rem;font-weight:600;text-decoration:none;">Thanh toán</a>
+                    <% } else { %>
+                      <a href="/booking/<%= b.booking_code %>/status" style="font-size:0.85rem;color:var(--mocha);text-decoration:underline;font-weight:500;">Xem chi tiết</a>
+                    <% } %>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } else { %>
+        <div class="cust-empty">
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <h3>Chưa có lịch sử đặt lịch</h3>
+          <p>Bắt đầu hành trình của bạn với Dear Musé ngay hôm nay.</p>
+          <a href="/booking" class="btn btn-dark" style="margin-top:8px; padding: 12px 28px; border-radius: 8px;">Đặt lịch ngay</a>
+        </div>
+      <% } %>
+    </div>
+  </main>
+</div>

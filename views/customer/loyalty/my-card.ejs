@@ -1,321 +1,132 @@
-<div class="loyalty-container">
-  <div class="loyalty-sidebar">
-    <nav class="loyalty-nav">
-      <a href="/customer/my-card" class="<%= activeTab === 'my-card' ? 'active' : '' %>">
-        <i class="fas fa-id-card"></i> Thẻ Của Tôi
-      </a>
-      <a href="/customer/redeem" class="<%= activeTab === 'redeem' ? 'active' : '' %>">
-        <i class="fas fa-gift"></i> Đổi Quà
-      </a>
-      <a href="/customer/loyalty-history" class="<%= activeTab === 'history' ? 'active' : '' %>">
-        <i class="fas fa-history"></i> Lịch Sử
-      </a>
-    </nav>
-  </div>
+<%
+  pageCss = 'customer-portal.css';
+%>
+<link rel="stylesheet" href="/css/loyalty.css">
 
-  <div class="loyalty-content">
-    <div class="loyalty-header">
-      <h2>Thẻ Musé Của Tôi</h2>
-      <p>Trải nghiệm đặc quyền dành riêng cho Nàng Thơ</p>
+<div class="cust-portal">
+  <%- include('../../partials/customer-nav') %>
+
+  <main class="cust-main">
+    <div class="cust-page-header">
+      <h1>Thẻ Musé Của Tôi</h1>
+      <p>Trải nghiệm đặc quyền dành riêng cho Nàng Thơ của Dear Musé.</p>
     </div>
 
-    <!-- The Musé Card -->
-    <div class="muse-card-wrapper">
-      <div class="muse-card tier-<%= member.card_tier %>">
-        <div class="card-header">
-          <span class="card-logo">DEAR MUSÉ</span>
-          <span class="card-tier-name"><%= member.card_tier.toUpperCase() %></span>
+    <% if (!member.is_card_active) { %>
+      <!-- Card not activated yet -->
+      <div class="cust-panel" style="text-align:center; padding: 64px 32px;">
+        <div style="width:72px;height:72px;background:rgba(122,92,74,0.08);border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--mocha)" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M7 15h2M12 15h5"/></svg>
         </div>
-        <div class="card-body">
-          <div class="card-chip"></div>
-          <div class="card-number">DM - <%= String(member.user_id).padStart(6, '0') %></div>
+        <h2 style="font-family:var(--font-display,serif);font-size:1.6rem;font-weight:500;margin-bottom:12px;color:var(--ink);">Bạn chưa có thẻ thành viên</h2>
+        <p style="color:var(--smoke);max-width:420px;margin:0 auto 32px;">Mở thẻ ngay để bắt đầu tích lũy Mảnh Sáng và nhận những đặc quyền cao cấp.</p>
+        <a href="/loyalty" class="btn btn-dark" style="padding: 14px 36px; border-radius: 8px; font-weight: 600;">Khám phá & Mở Thẻ</a>
+      </div>
+    <% } else { %>
+
+    <!-- Stats Bar -->
+    <div class="cust-stats">
+      <div class="cust-stat-card">
+        <div class="cust-stat-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         </div>
-        <div class="card-footer">
-          <div class="card-holder"><%= sessionUser ? sessionUser.name : 'MEMBER' %></div>
-          <div class="card-balance"><%= member.manh_sang_balance %> Mảnh Sáng</div>
+        <div class="cust-stat-value"><%= member.manh_sang_balance.toLocaleString('vi-VN') %></div>
+        <div class="cust-stat-label">Số dư Mảnh Sáng</div>
+      </div>
+      <div class="cust-stat-card">
+        <div class="cust-stat-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </div>
+        <div class="cust-stat-value"><%= member.manh_sang_total.toLocaleString('vi-VN') %></div>
+        <div class="cust-stat-label">Tổng tích lũy</div>
+      </div>
+      <div class="cust-stat-card">
+        <div class="cust-stat-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="cust-stat-value"><%= member.referral_count || 0 %></div>
+        <div class="cust-stat-label">Đã giới thiệu</div>
+      </div>
+      <div class="cust-stat-card">
+        <div class="cust-stat-icon" style="background:rgba(180,140,20,0.1);color:#b48c14;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+        </div>
+        <div class="cust-stat-value" style="text-transform:capitalize;font-size:1.4rem;"><%= member.card_tier %></div>
+        <div class="cust-stat-label">Hạng thẻ</div>
+      </div>
+    </div>
+
+    <!-- Virtual Card -->
+    <div class="cust-panel">
+      <div class="cust-panel-header">
+        <p class="cust-panel-title">Thẻ Ảo Của Bạn</p>
+        <p class="cust-panel-sub">Đây là thẻ thành viên digital của bạn tại Dear Musé.</p>
+      </div>
+      <div style="max-width:420px;">
+        <div class="v-card tier-<%= member.card_tier %>">
+          <div class="v-card-content">
+            <div class="v-card-header">
+              <div class="v-card-brand">
+                <div class="v-card-brand-name">Dear Musé</div>
+                <div class="v-card-brand-sub">Studio · Member Card</div>
+              </div>
+              <div class="v-card-tier-badge">
+                <div class="v-card-tier-name"><%= member.card_tier %></div>
+                <div class="v-card-tier-dots"><span></span><span></span><span></span></div>
+              </div>
+            </div>
+            <div class="v-card-middle">
+              <div class="v-card-chip"></div>
+            </div>
+            <div class="v-card-footer">
+              <div class="v-card-number">
+                <%= member.id_card ? member.id_card.replace(/(.{4})/g, '$1 ').trim() : 'DM26 •••• ••••' %>
+              </div>
+              <div class="v-card-footer-row">
+                <div>
+                  <div class="v-card-holder-label">Chủ thẻ</div>
+                  <div class="v-card-name"><%= member.full_name || (sessionUser ? sessionUser.name : '') %></div>
+                </div>
+                <div class="v-card-tier-range">
+                  <div class="v-card-tier-range-label">Mảnh Sáng</div>
+                  <div class="v-card-tier-range-value"><%= member.manh_sang_total %></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Manh Sang Stats -->
-    <div class="loyalty-stats">
-      <div class="stat-box">
-        <h3>Số Dư Mảnh Sáng</h3>
-        <div class="stat-value"><%= member.manh_sang_balance %></div>
-        <p>Sẵn sàng để đổi quà</p>
+    <!-- Referral -->
+    <div class="cust-panel">
+      <div class="cust-panel-header">
+        <p class="cust-panel-title">Mã giới thiệu của bạn</p>
+        <p class="cust-panel-sub">Chia sẻ mã này để cùng nhận ưu đãi khi bạn bè đặt lịch thành công.</p>
       </div>
-      <div class="stat-box">
-        <h3>Tổng Tích Lũy</h3>
-        <div class="stat-value"><%= member.manh_sang_total %></div>
-        <p>Quyết định hạng thẻ</p>
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:12px;background:var(--parchment);border:1px dashed var(--mocha);border-radius:12px;padding:16px 22px;">
+          <span style="font-family:var(--font-display,serif);font-size:1.5rem;font-weight:600;letter-spacing:3px;color:var(--ink);" id="refCode"><%= member.referral_code %></span>
+          <button class="btn btn-dark" onclick="copyRefCode()" style="padding:8px 16px;border-radius:6px;cursor:pointer;font-size:0.8rem;font-weight:600;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">Sao chép</button>
+        </div>
+        <div style="color:var(--smoke);font-size:0.875rem;">
+          Đã giới thiệu thành công <strong style="color:var(--ink);"><%= member.referral_count || 0 %></strong> người
+        </div>
       </div>
     </div>
 
-    <!-- Referral Code -->
-    <div class="referral-section">
-      <h3>Giới Thiệu Bạn Bè</h3>
-      <p>Chia sẻ mã này với bạn bè để cả hai cùng nhận ưu đãi!</p>
-      <div class="referral-code-box">
-        <span class="ref-code" id="refCode"><%= member.referral_code %></span>
-        <button class="btn btn-outline" onclick="copyRefCode()">Sao chép</button>
-      </div>
-      <p class="ref-stats">Bạn đã giới thiệu thành công <strong><%= member.referral_count %></strong> người.</p>
-    </div>
-  </div>
+    <% } %>
+  </main>
 </div>
-
-<style>
-/* PREMIUM LOYALTY STYLING */
-.loyalty-container {
-  display: flex;
-  max-width: 1200px;
-  margin: 40px auto;
-  gap: 30px;
-  padding: 0 20px;
-}
-
-.loyalty-sidebar {
-  width: 250px;
-  flex-shrink: 0;
-}
-
-.loyalty-nav {
-  display: flex;
-  flex-direction: column;
-  background: var(--bg-card, #fff);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-}
-
-.loyalty-nav a {
-  padding: 15px 20px;
-  color: #555;
-  text-decoration: none;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  border-left: 3px solid transparent;
-}
-
-.loyalty-nav a i {
-  margin-right: 10px;
-  width: 20px;
-  text-align: center;
-}
-
-.loyalty-nav a:hover {
-  background: #f9f9f9;
-  color: #222;
-}
-
-.loyalty-nav a.active {
-  background: #fdfaf6;
-  color: #D4A847;
-  border-left-color: #D4A847;
-}
-
-.loyalty-content {
-  flex-grow: 1;
-}
-
-.loyalty-header h2 {
-  font-size: 28px;
-  color: #333;
-  margin-bottom: 5px;
-}
-
-.loyalty-header p {
-  color: #777;
-  margin-bottom: 30px;
-}
-
-/* Glassmorphism Card */
-.muse-card-wrapper {
-  perspective: 1000px;
-  margin-bottom: 40px;
-}
-
-.muse-card {
-  width: 100%;
-  max-width: 420px;
-  height: 260px;
-  border-radius: 16px;
-  padding: 25px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-  position: relative;
-  overflow: hidden;
-  color: #fff;
-  transition: transform 0.5s ease;
-}
-
-.muse-card:hover {
-  transform: translateY(-5px) rotateX(5deg) rotateY(2deg);
-}
-
-/* Tier Colors */
-.tier-pearl {
-  background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-  color: #555;
-}
-.tier-rose {
-  background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
-}
-.tier-gold {
-  background: linear-gradient(135deg, #D4A847 0%, #F5D76E 100%);
-}
-.tier-privilege {
-  background: linear-gradient(135deg, #2D1B4E 0%, #1a1030 100%);
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: 'Cinzel', serif;
-}
-
-.card-logo {
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: 2px;
-}
-
-.card-tier-name {
-  font-size: 14px;
-  letter-spacing: 1px;
-  opacity: 0.9;
-}
-
-.card-chip {
-  width: 45px;
-  height: 35px;
-  background: rgba(255,255,255,0.4);
-  border-radius: 5px;
-  margin-bottom: 20px;
-}
-.tier-pearl .card-chip { background: rgba(0,0,0,0.1); }
-
-.card-number {
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 22px;
-  letter-spacing: 4px;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.card-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-}
-
-.card-holder {
-  font-size: 16px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
-
-.card-balance {
-  font-size: 14px;
-  font-weight: 500;
-  background: rgba(0,0,0,0.2);
-  padding: 5px 12px;
-  border-radius: 20px;
-  backdrop-filter: blur(5px);
-}
-.tier-pearl .card-balance { background: rgba(0,0,0,0.05); }
-
-/* Stats */
-.loyalty-stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-bottom: 40px;
-}
-
-.stat-box {
-  background: #fff;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-  text-align: center;
-}
-
-.stat-box h3 {
-  font-size: 14px;
-  color: #777;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 10px;
-}
-
-.stat-value {
-  font-size: 36px;
-  color: #D4A847;
-  font-weight: 700;
-  margin-bottom: 5px;
-}
-
-.stat-box p {
-  font-size: 13px;
-  color: #999;
-}
-
-/* Referral */
-.referral-section {
-  background: #fff;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-}
-
-.referral-section h3 {
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-
-.referral-code-box {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin: 20px 0;
-  background: #f9f9f9;
-  padding: 15px 20px;
-  border-radius: 8px;
-  border: 1px dashed #ccc;
-  width: fit-content;
-}
-
-.ref-code {
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: #333;
-}
-
-.btn-outline {
-  background: transparent;
-  border: 1px solid #D4A847;
-  color: #D4A847;
-  padding: 6px 15px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-outline:hover {
-  background: #D4A847;
-  color: #fff;
-}
-</style>
 
 <script>
 function copyRefCode() {
-  const code = document.getElementById('refCode').innerText;
+  const code = document.getElementById('refCode')?.innerText;
+  if (!code) return;
   navigator.clipboard.writeText(code).then(() => {
-    alert('Đã sao chép mã giới thiệu!');
+    const btn = event.target;
+    btn.innerText = 'Đã sao chép!';
+    setTimeout(() => btn.innerText = 'Sao chép', 2000);
   });
 }
 </script>

@@ -25,6 +25,11 @@
         <tr><td style="color: var(--smoke);">Địa điểm</td><td><%= booking.location_note %></td></tr>
         <% } %>
         <tr><td style="color: var(--smoke);">Đặt lúc</td><td><%= new Date(booking.created_at).toLocaleString('vi-VN') %></td></tr>
+        
+        <!-- Thông tin thanh toán -->
+        <tr><td colspan="2"><hr style="border: 0; border-top: 1px solid var(--bone); margin: 10px 0;"></td></tr>
+        <tr><td style="color: var(--smoke);">Tiền Cọc (30%)</td><td><strong style="color: #d4af37;"><%= booking.deposit_amount ? booking.deposit_amount.toLocaleString('vi-VN') + 'đ' : '0đ' %></strong></td></tr>
+        <tr><td style="color: var(--smoke);">Hạn thanh toán</td><td><%= booking.payment_expires_at ? new Date(booking.payment_expires_at).toLocaleString('vi-VN') : '—' %></td></tr>
       </table>
 
       <% if (booking.message) { %>
@@ -44,7 +49,8 @@
         <div class="form-group-admin">
           <label class="form-label">Trạng thái</label>
           <select name="status" class="form-control">
-            <option value="pending" <%= booking.status === 'pending' ? 'selected' : '' %>>Chờ xác nhận</option>
+            <option value="awaiting_payment" <%= booking.status === 'awaiting_payment' ? 'selected' : '' %>>Đang chờ thanh toán</option>
+            <option value="pending" <%= booking.status === 'pending' ? 'selected' : '' %>>Chờ xác nhận (Đã thu tiền)</option>
             <option value="confirmed" <%= booking.status === 'confirmed' ? 'selected' : '' %>>Đã xác nhận</option>
             <option value="completed" <%= booking.status === 'completed' ? 'selected' : '' %>>Hoàn thành</option>
             <option value="cancelled" <%= booking.status === 'cancelled' ? 'selected' : '' %>>Đã huỷ</option>

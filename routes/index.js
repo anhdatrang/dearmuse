@@ -11,6 +11,7 @@ const chatbotController = require('../controllers/chatbotController');
 const Service = require('../models/Service');
 const conceptController = require('../controllers/conceptController');
 const cdnController = require('../controllers/cdnController');
+const paymentController = require('../controllers/paymentController');
 
 // Image CDN
 router.get('/cdn/image', cdnController.serveImage);
@@ -63,6 +64,15 @@ router.get('/about', (req, res) => {
   });
 });
 
+// Loyalty Landing Page
+router.get('/loyalty', async (req, res) => {
+  res.render('loyalty-landing', {
+    title: 'Chương Trình Khách Hàng Thân Thiết — Dear Musé',
+    metaDescription: 'Tham gia chương trình khách hàng thân thiết của Dear Musé. Tích luỹ Mảnh Sáng để đổi lấy các đặc quyền cao cấp và voucher giá trị.'
+  });
+});
+
+
 // Contact
 router.get('/contact', contactController.show);
 router.post('/contact', [
@@ -83,6 +93,14 @@ router.post('/booking', [
     .isAfter(new Date().toISOString().split('T')[0]).withMessage('Ngày phải từ ngày mai trở đi.'),
   body('customer_email').optional({ checkFalsy: true }).isEmail().withMessage('Email không hợp lệ.'),
 ], bookingController.submit);
+
+// Payment Flow
+router.get('/booking/:code/pay', paymentController.showPaymentPage);
+router.get('/booking/:code/status', paymentController.showStatusPage);
+router.post('/api/payment/check/:code', paymentController.checkPaymentAPI);
+
+// Voucher API — không cần đăng nhập, chỉ cần có code
+router.post('/api/voucher/apply', paymentController.applyVoucherAPI);
 
 // Analytics tracking API
 router.post('/api/track', async (req, res) => {

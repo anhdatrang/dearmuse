@@ -5,6 +5,7 @@
 <!-- Filter -->
 <div class="filter-bar">
   <a href="/admin/bookings" class="<%= !activeStatus ? 'active' : '' %>">Tất cả</a>
+  <a href="/admin/bookings?status=awaiting_payment" class="<%= activeStatus === 'awaiting_payment' ? 'active' : '' %>">Đang chờ thanh toán</a>
   <a href="/admin/bookings?status=pending" class="<%= activeStatus === 'pending' ? 'active' : '' %>">Chờ xác nhận</a>
   <a href="/admin/bookings?status=confirmed" class="<%= activeStatus === 'confirmed' ? 'active' : '' %>">Đã xác nhận</a>
   <a href="/admin/bookings?status=completed" class="<%= activeStatus === 'completed' ? 'active' : '' %>">Hoàn thành</a>

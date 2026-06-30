@@ -1,60 +1,67 @@
 <%
-  pageCss = 'portfolio.css'; // Use portfolio grid styling
+  pageCss = 'customer-portal.css';
 %>
 
-<section style="padding-top: 120px; padding-bottom: 60px;">
-  <div class="container">
-    
-    <div style="margin-bottom: 40px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px;">
-      <div>
-        <a href="/customer/my-albums" style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--smoke); margin-bottom: 16px; display: inline-block;">← Quay lại danh sách</a>
-        <h1 class="section-heading reveal" style="font-size: clamp(28px, 4vw, 40px); margin-bottom: 8px;"><%= album.title %></h1>
-        <p style="color: var(--smoke); font-size: 14px;">
-          <%= photos.length %> ảnh | Ngày chụp: <%= album.shoot_date ? new Date(album.shoot_date).toLocaleDateString('vi-VN') : '—' %>
-        </p>
-      </div>
+<!-- Dùng thư viện GLightbox cho ảnh popup mượt mà nếu chưa có ở layout -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js"></script>
 
-      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-        <!-- Face Filter Buttons -->
-        <div style="display: flex; gap: 8px;">
-          <label class="btn" style="border-color: var(--ink); color: var(--ink); padding: 12px 24px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+<div class="cust-portal">
+  <%- include('../partials/customer-nav') %>
+
+  <main class="cust-main">
+    <div class="cust-page-header">
+      <a href="/customer/my-albums" style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--smoke); margin-bottom: 16px; display: inline-flex; align-items: center; gap: 4px; text-decoration: none;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Quay lại danh sách
+      </a>
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px;">
+        <div>
+          <h1 style="font-size: 2rem; margin-bottom: 8px;"><%= album.title %></h1>
+          <p style="color: var(--smoke); font-size: 0.95rem; margin: 0;">
+            <%= photos.length %> ảnh &nbsp;•&nbsp; Ngày chụp: <%= album.shoot_date ? new Date(album.shoot_date).toLocaleDateString('vi-VN') : '—' %>
+          </p>
+        </div>
+
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <label class="btn btn-dark" style="padding: 10px 20px; cursor: pointer; display: flex; align-items: center; gap: 8px; border-radius: 8px;">
             <input type="file" id="faceInput" accept="image/*" style="display: none;" onchange="handleFaceFilter(this)">
-            <span id="faceFilterText">🔍 Tải ảnh lên</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+            <span id="faceFilterText">Tải ảnh lên</span>
           </label>
-          <button class="btn" style="border-color: var(--ink); color: var(--ink); padding: 12px 24px; display: flex; align-items: center; gap: 8px;" onclick="startWebcam()">
-            📸 Chụp trực tiếp
+          <button class="btn btn-dark" style="padding: 10px 20px; display: flex; align-items: center; gap: 8px; border-radius: 8px;" onclick="startWebcam()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+            Chụp khuôn mặt
           </button>
+          
+          <button id="clearFilterBtn" class="btn btn-outline-dark" style="display: none; border-color: #dc3545; color: #dc3545; padding: 10px 20px; border-radius: 8px;" onclick="clearFilter()">
+            ✖ Bỏ lọc
+          </button>
+
+          <a href="/customer/download-album/<%= album.id %>" target="_blank" onclick="handleDownload()" class="btn btn-dark submit-btn" style="padding: 10px 20px; display: flex; align-items: center; gap: 8px; border-radius: 8px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <span>Tải Toàn Bộ (Zip)</span>
+          </a>
+
           <!-- Nút hướng dẫn -->
-          <button class="btn" style="border: none; background: transparent; padding: 12px; color: var(--smoke); display: flex; align-items: center; gap: 4px;" onclick="document.getElementById('guideOverlay').style.display='flex'">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-            <span style="font-size: 13px; text-decoration: underline;">Hướng dẫn</span>
+          <button class="btn pulse-guide-btn" onclick="document.getElementById('guideOverlay').style.display='flex'" title="Hướng dẫn sử dụng AI">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            <span style="font-size: 13px; font-weight: 600;">HƯỚNG DẪN</span>
           </button>
         </div>
-        
-        <!-- Nút xóa lọc (ẩn mặc định) -->
-        <button id="clearFilterBtn" class="btn" style="display: none; border-color: #dc3545; color: #dc3545; padding: 12px 24px;" onclick="clearFilter()">
-          ✖ Bỏ lọc
-        </button>
-        
-        <!-- Điều chỉnh độ chính xác -->
-        <div id="thresholdControl" style="display: none; align-items: center; gap: 10px;">
-          <span style="font-size: 11px; color: var(--smoke); white-space: nowrap;">Chính xác:</span>
-          <input type="range" id="thresholdSlider" min="25" max="55" value="40" step="5"
-            style="width: 100px;"
-            oninput="document.getElementById('thresholdVal').innerText = (100 - this.value) + '%'; rerunFilter()">
-          <span id="thresholdVal" style="font-size: 11px; color: var(--ink); font-weight: 600; white-space: nowrap;">60%</span>
-        </div>
-        
-        <a href="/customer/download-album/<%= album.id %>" target="_blank" onclick="handleDownload()" class="btn btn-dark submit-btn" style="padding: 12px 24px;">
-          <span>Tải Toàn Bộ (Zip) ↓</span>
-        </a>
+      </div>
+      
+      <!-- Điều chỉnh độ chính xác -->
+      <div id="thresholdControl" style="display: none; align-items: center; gap: 12px; margin-top: 20px; padding: 12px 16px; background: rgba(255,255,255,0.6); border: 1px solid var(--bone); border-radius: 8px; width: fit-content;">
+        <span style="font-size: 0.85rem; color: var(--smoke); font-weight: 500;">Độ chính xác:</span>
+        <input type="range" id="thresholdSlider" min="25" max="55" value="40" step="5" style="width: 120px;" oninput="document.getElementById('thresholdVal').innerText = (100 - this.value) + '%'; rerunFilter()">
+        <span id="thresholdVal" style="font-size: 0.9rem; color: var(--ink); font-weight: 700;">60%</span>
       </div>
     </div>
 
     <!-- Add loading script -->
     <script>
       function handleDownload() {
-        // Change button text briefly to show action received
         const btn = document.querySelector('.submit-btn span');
         const oldText = btn.innerText;
         btn.innerText = "Đang chuẩn bị file...";
@@ -67,33 +74,35 @@
 
     <% if (photos && photos.length > 0) { %>
       <!-- Photo Grid -->
-      <div class="portfolio-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px;">
-        <% photos.forEach(p => { %>
-          <div class="portfolio-item reveal photo-card" data-id="<%= p.id %>" style="position: relative; overflow: hidden; border-radius: 4px; background: var(--bone);">
-            <!-- Checkbox selection -->
-            <input type="checkbox" class="photo-checkbox" value="<%= p.id %>" style="position: absolute; top: 12px; left: 12px; z-index: 10; width: 22px; height: 22px; cursor: pointer; accent-color: var(--ink);" onchange="toggleSelection()">
-            <!-- Dùng GLightbox để xem full size siêu mượt -->
-            <a href="<%= p.original_url %>" class="glightbox" data-gallery="album" data-title="<%= p.file_name %>">
-              <img src="<%= p.thumbnail_url %>" alt="<%= p.file_name %>" style="width: 100%; height: 300px; object-fit: cover; transition: transform 0.3s ease;" class="hover-zoom">
-            </a>
-            
-            <!-- Nút download lẻ -->
-            <a href="<%= p.original_url %>" download="<%= p.file_name %>" 
-               style="position: absolute; bottom: 12px; right: 12px; background: rgba(0,0,0,0.5); color: white; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; backdrop-filter: blur(4px); transition: background 0.3s;"
-               onmouseover="this.style.background='var(--ink)'" onmouseout="this.style.background='rgba(0,0,0,0.5)'">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-            </a>
-          </div>
-        <% }) %>
+      <div class="cust-panel" style="padding: 0; background: transparent; border: none;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px;">
+          <% photos.forEach(p => { %>
+            <div class="photo-card" data-id="<%= p.id %>" style="position: relative; border-radius: 12px; overflow: hidden; background: var(--bone);">
+              <input type="checkbox" class="photo-checkbox" value="<%= p.id %>" style="position: absolute; top: 12px; left: 12px; z-index: 10; width: 22px; height: 22px; cursor: pointer; accent-color: var(--avocado-cream);" onchange="toggleSelection()">
+              
+              <a href="<%= p.original_url %>" class="glightbox" data-gallery="album" data-title="<%= p.file_name %>">
+                <img src="<%= p.thumbnail_url %>" alt="<%= p.file_name %>" style="width: 100%; aspect-ratio: 3/4; object-fit: cover; transition: transform 0.4s ease;" class="hover-zoom">
+              </a>
+              
+              <a href="<%= p.original_url %>" download="<%= p.file_name %>" 
+                 style="position: absolute; bottom: 12px; right: 12px; background: rgba(26,25,22,0.6); color: white; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; backdrop-filter: blur(4px); transition: background 0.3s;"
+                 onmouseover="this.style.background='var(--ink)'" onmouseout="this.style.background='rgba(26,25,22,0.6)'">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              </a>
+            </div>
+          <% }) %>
+        </div>
       </div>
     <% } else { %>
-      <div class="empty-state" style="text-align: center; padding: 60px; background: var(--parchment);">
-        Album này chưa có ảnh.
+      <div class="cust-empty">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+        <h3>Album trống</h3>
+        <p>Studio chưa upload ảnh cho album này. Vui lòng quay lại sau.</p>
       </div>
     <% } %>
 
-  </div>
-</section>
+  </main>
+</div>
 
 <!-- Sticky Action Bar for custom download -->
 <div id="actionBar" style="position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); padding: 16px 0; border-top: 1px solid rgba(0,0,0,0.1); display: none; z-index: 1000; box-shadow: 0 -4px 20px rgba(0,0,0,0.05);">
@@ -101,7 +110,7 @@
     <span style="font-family: var(--font-display); font-size: 18px;">Đã chọn <b id="selectedCount">0</b> ảnh</span>
     <form method="POST" action="/customer/albums/<%= album.id %>/download-selected" id="customDownloadForm" target="_blank">
       <input type="hidden" name="imageIds" id="imageIdsInput">
-      <button type="submit" class="btn btn-dark" style="padding: 8px 24px;" onclick="setTimeout(()=>window.location.reload(), 2000)">Tải Hình Đã Chọn</button>
+      <button type="submit" class="btn btn-dark" style="padding: 8px 24px; border-radius: 8px;" onclick="setTimeout(()=>window.location.reload(), 2000)">Tải Hình Đã Chọn</button>
     </form>
   </div>
 </div>
@@ -114,6 +123,30 @@
 </div>
 <style>
   @keyframes spin { 100% { transform: rotate(360deg); } }
+  
+  /* Hiệu ứng nhấp nháy cho nút hướng dẫn */
+  .pulse-guide-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--mocha);
+    background: transparent;
+    color: var(--mocha);
+    animation: pulse-border 2s infinite;
+    transition: all 0.3s ease;
+  }
+  .pulse-guide-btn:hover {
+    background: var(--mocha);
+    color: #fff;
+    animation: none;
+  }
+  @keyframes pulse-border {
+    0% { box-shadow: 0 0 0 0 rgba(122, 92, 74, 0.4); }
+    70% { box-shadow: 0 0 0 8px rgba(122, 92, 74, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(122, 92, 74, 0); }
+  }
 </style>
 
 <!-- Webcam Overlay -->
@@ -121,36 +154,54 @@
   <h3 style="margin: 0 0 16px 0; font-family: 'Outfit', sans-serif;">Canh khuôn mặt của bạn vào khung hình</h3>
   <video id="webcamVideo" autoplay playsinline style="width: 100%; max-width: 400px; border-radius: 8px; transform: scaleX(-1); background: #000;"></video>
   <div style="display: flex; gap: 16px; margin-top: 24px;">
-    <button class="btn" style="background: #dc3545; color: white; border: none; padding: 12px 24px;" onclick="closeWebcam()">Hủy</button>
-    <button class="btn" style="background: #28a745; color: white; border: none; padding: 12px 24px;" onclick="captureWebcam()">📸 Chụp ngay</button>
+    <button class="btn" style="background: #dc3545; color: white; border: none; padding: 12px 24px; border-radius: 8px;" onclick="closeWebcam()">Hủy</button>
+    <button class="btn" style="background: var(--avocado-cream); color: var(--ink); border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600;" onclick="captureWebcam()">📸 Chụp ngay</button>
   </div>
 </div>
 
-<!-- Guide Overlay -->
-<div id="guideOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10001; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
-  <div style="background: white; padding: 32px; border-radius: 12px; max-width: 500px; width: 90%; color: var(--ink); position: relative;">
-    <button style="position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 20px; cursor: pointer; color: var(--smoke);" onclick="document.getElementById('guideOverlay').style.display='none'">✖</button>
+<!-- Guide Overlay Đẹp Mắt Hơn -->
+<div id="guideOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); z-index: 10001; align-items: center; justify-content: center; backdrop-filter: blur(8px);">
+  <div style="background: var(--vanilla, #FFF7E6); padding: 40px; border-radius: 24px; max-width: 550px; width: 90%; color: var(--ink); position: relative; box-shadow: 0 24px 60px rgba(0,0,0,0.2); border: 1px solid var(--bone);">
+    <button style="position: absolute; top: 20px; right: 20px; background: rgba(122,92,74,0.1); border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 16px; cursor: pointer; color: var(--mocha); display: flex; align-items: center; justify-content: center; transition: background 0.3s;" onclick="document.getElementById('guideOverlay').style.display='none'" onmouseover="this.style.background='rgba(122,92,74,0.2)'" onmouseout="this.style.background='rgba(122,92,74,0.1)'">✖</button>
     
-    <h3 style="margin-top: 0; margin-bottom: 16px; font-family: var(--font-display); font-size: 24px;">Cách tìm ảnh bằng khuôn mặt</h3>
-    
-    <div style="font-size: 14px; line-height: 1.6; color: #444;">
-      <p style="margin-bottom: 12px;"><strong>Bước 1:</strong> Bấm <b>Tải ảnh lên</b> (chọn ảnh có rõ mặt bạn) hoặc <b>Chụp trực tiếp</b> bằng camera của điện thoại/máy tính.</p>
-      
-      <p style="margin-bottom: 12px;"><strong>Bước 2:</strong> Hệ thống AI sẽ tự động phân tích khuôn mặt của bạn và tìm ra tất cả các bức ảnh có sự xuất hiện của bạn trong album.</p>
-      
-      <p style="margin-bottom: 12px;"><strong>Thanh "Độ chính xác" (%):</strong>
-        <ul style="margin-top: 4px; padding-left: 20px; margin-bottom: 12px;">
-          <li>Mặc định AI lấy độ chính xác <b>60%</b>.</li>
-          <li>Kéo thanh trượt lên <b>% cao hơn</b> (ví dụ 70-80%) nếu AI nhận nhầm người khác thành bạn (yêu cầu khuôn mặt cực kỳ giống ảnh mẫu).</li>
-          <li>Kéo thanh trượt xuống <b>% thấp hơn</b> (ví dụ 40-50%) nếu AI bỏ sót ảnh của bạn (do bạn bị che mặt, quay nghiêng, hoặc nhắm mắt).</li>
-        </ul>
-      </p>
-      
-      <p style="margin-bottom: 0;"><strong>Bước 3:</strong> Bấm <b>Tải Hình Đã Chọn</b> ở dưới cùng màn hình để gom tất cả ảnh tìm được thành 1 file ZIP tải về máy.</p>
+    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
+      <div style="width: 48px; height: 48px; background: var(--avocado-cream); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--ink);">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+      </div>
+      <h3 style="margin: 0; font-family: var(--font-display, serif); font-size: 1.8rem; font-weight: 500;">Công Nghệ Tìm Ảnh AI</h3>
     </div>
     
-    <div style="margin-top: 24px; text-align: center;">
-      <button class="btn btn-dark" style="padding: 10px 24px;" onclick="document.getElementById('guideOverlay').style.display='none'">Đã hiểu</button>
+    <div style="font-size: 0.95rem; line-height: 1.6; color: var(--smoke);">
+      <div style="display: flex; gap: 16px; margin-bottom: 20px;">
+        <div style="flex-shrink: 0; width: 32px; height: 32px; background: var(--ink); color: var(--vanilla); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700;">1</div>
+        <div>
+          <h4 style="margin: 0 0 4px 0; color: var(--ink); font-weight: 600; font-size: 1.05rem;">Cung cấp khuôn mặt mẫu</h4>
+          <p style="margin: 0;">Bấm <b>"Tải ảnh lên"</b> (chọn 1 bức ảnh rõ mặt bạn) hoặc <b>"Chụp khuôn mặt"</b> trực tiếp bằng camera trên thiết bị.</p>
+        </div>
+      </div>
+      
+      <div style="display: flex; gap: 16px; margin-bottom: 20px;">
+        <div style="flex-shrink: 0; width: 32px; height: 32px; background: var(--ink); color: var(--vanilla); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700;">2</div>
+        <div>
+          <h4 style="margin: 0 0 4px 0; color: var(--ink); font-weight: 600; font-size: 1.05rem;">AI tự động tìm kiếm</h4>
+          <p style="margin: 0;">Hệ thống sẽ quét hàng trăm bức ảnh trong tích tắc và lọc ra những bức ảnh có mặt bạn.</p>
+          <div style="background: rgba(122,92,74,0.06); border-radius: 8px; padding: 12px; margin-top: 12px; font-size: 0.85rem; border-left: 3px solid var(--mocha);">
+            💡 <b>Mẹo:</b> Dùng thanh "Độ chính xác" hiện ra sau đó để điều chỉnh kết quả. Kéo lên % cao nếu AI nhận nhầm, và kéo xuống % thấp nếu AI bỏ sót ảnh do góc nghiêng / che mặt.
+          </div>
+        </div>
+      </div>
+      
+      <div style="display: flex; gap: 16px; margin-bottom: 12px;">
+        <div style="flex-shrink: 0; width: 32px; height: 32px; background: var(--ink); color: var(--vanilla); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700;">3</div>
+        <div>
+          <h4 style="margin: 0 0 4px 0; color: var(--ink); font-weight: 600; font-size: 1.05rem;">Tải về máy</h4>
+          <p style="margin: 0;">Kiểm tra các ảnh ưng ý và bấm <b>"Tải Hình Đã Chọn"</b> ở thanh công cụ dưới cùng.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div style="margin-top: 32px; text-align: center;">
+      <button class="btn btn-dark" style="padding: 14px 32px; width: 100%; border-radius: 12px; font-weight: 600; font-size: 1rem;" onclick="document.getElementById('guideOverlay').style.display='none'">Tuyệt vời, tôi đã hiểu!</button>
     </div>
   </div>
 </div>

@@ -1,199 +1,208 @@
-<div class="loyalty-container">
-  <div class="loyalty-sidebar">
-    <nav class="loyalty-nav">
-      <a href="/customer/my-card" class="<%= activeTab === 'my-card' ? 'active' : '' %>">
-        <i class="fas fa-id-card"></i> Thẻ Của Tôi
-      </a>
-      <a href="/customer/redeem" class="<%= activeTab === 'redeem' ? 'active' : '' %>">
-        <i class="fas fa-gift"></i> Đổi Quà
-      </a>
-      <a href="/customer/loyalty-history" class="<%= activeTab === 'history' ? 'active' : '' %>">
-        <i class="fas fa-history"></i> Lịch Sử
-      </a>
-    </nav>
-  </div>
+<%
+  pageCss = 'customer-portal.css';
+%>
 
-  <div class="loyalty-content">
-    <div class="loyalty-header">
-      <h2>Voucher & Đặc Quyền</h2>
-      <p>Sử dụng Mảnh Sáng để đổi lấy các ưu đãi hấp dẫn</p>
+<div class="cust-portal">
+  <%- include('../../partials/customer-nav') %>
+
+  <main class="cust-main">
+    <div class="cust-page-header">
+      <h1>Đổi Quà & Voucher</h1>
+      <p>Dùng Mảnh Sáng để đổi lấy các ưu đãi hấp dẫn cho lần chụp tiếp theo.</p>
     </div>
 
-    <div class="balance-banner">
-      <div class="balance-info">
-        <span>Số dư Mảnh Sáng hiện tại</span>
-        <strong><%= member.manh_sang_balance %></strong>
+    <!-- Balance Banner -->
+    <div style="background:linear-gradient(135deg,var(--ink,#1A1916) 0%,#3a2e26 100%);border-radius:20px;padding:28px 36px;margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+      <div>
+        <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,0.5);margin-bottom:6px;">Số dư hiện tại</div>
+        <div style="font-family:var(--font-display,serif);font-size:2.6rem;font-weight:600;color:#e8c86a;letter-spacing:-1px;line-height:1;"><%= member.manh_sang_balance.toLocaleString('vi-VN') %></div>
+        <div style="font-size:0.8rem;color:rgba(255,255,255,0.5);margin-top:4px;letter-spacing:1px;">MẢNH SÁNG</div>
       </div>
+      <a href="/customer/loyalty-history" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);padding:10px 20px;border-radius:8px;text-decoration:none;font-size:0.85rem;font-weight:500;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Lịch sử điểm
+      </a>
     </div>
 
-    <h3 class="section-title">Đổi Voucher</h3>
-    <div class="voucher-grid">
-      <% vouchers.forEach(v => { %>
-        <div class="voucher-card">
-          <div class="v-header <%= v.code_prefix.toLowerCase() %>">
-            <h4><%= v.name %></h4>
-            <div class="v-cost"><%= v.manh_sang_cost %> MS</div>
-          </div>
-          <div class="v-body">
-            <p><%= v.discount_type === 'fixed' ? 'Giảm ' + v.discount_value.toLocaleString() + 'đ' : 'Giảm ' + v.discount_value + '%' %></p>
-            <small>Điều kiện: <%= v.min_order_value > 0 ? 'Đơn tối thiểu ' + v.min_order_value.toLocaleString() + 'đ' : 'Không có' %></small>
-          </div>
-          <div class="v-footer">
-            <button class="btn-redeem" onclick="redeemVoucher(<%= v.id %>, '<%= v.name %>', <%= v.manh_sang_cost %>)" 
-              <%= member.manh_sang_balance < v.manh_sang_cost ? 'disabled' : '' %>>
-              <%= member.manh_sang_balance < v.manh_sang_cost ? 'Không đủ điểm' : 'Đổi Ngay' %>
-            </button>
-          </div>
+    <!-- Voucher Grid -->
+    <div class="cust-panel">
+      <div class="cust-panel-header">
+        <p class="cust-panel-title">Đổi Mảnh Sáng</p>
+        <p class="cust-panel-sub">Chọn voucher phù hợp và xác nhận để nhận ngay mã ưu đãi.</p>
+      </div>
+
+      <% if (vouchers && vouchers.length > 0) { %>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;">
+          <% vouchers.forEach(v => { %>
+            <%
+              const canRedeem = member.manh_sang_balance >= v.manh_sang_cost;
+              const discountText = v.discount_type === 'fixed'
+                ? 'Giảm ' + v.discount_value.toLocaleString('vi-VN') + 'đ'
+                : 'Giảm ' + v.discount_value + '%';
+            %>
+            <div class="voucher-item <%= !canRedeem ? 'voucher-disabled' : '' %>">
+              <div class="voucher-item-top">
+                <div class="voucher-cost"><%= v.manh_sang_cost.toLocaleString() %> <span>MS</span></div>
+                <div class="voucher-discount"><%= discountText %></div>
+                <div class="voucher-name"><%= v.name %></div>
+                <% if (v.min_order_value > 0) { %>
+                  <div class="voucher-condition">Đơn tối thiểu <%= v.min_order_value.toLocaleString('vi-VN') %>đ</div>
+                <% } %>
+              </div>
+              <button class="voucher-btn"
+                onclick="redeemVoucher(<%= v.id %>, '<%= v.name %>', <%= v.manh_sang_cost %>)"
+                <%= !canRedeem ? 'disabled' : '' %>>
+                <%= !canRedeem ? 'Chưa đủ điểm' : 'Đổi Ngay →' %>
+              </button>
+            </div>
+          <% }) %>
         </div>
-      <% }) %>
-    </div>
-
-    <h3 class="section-title mt-5">Voucher Của Tôi</h3>
-    <div class="my-vouchers">
-      <% if (myVouchers.length === 0) { %>
-        <p class="empty-state">Bạn chưa có voucher nào.</p>
       <% } else { %>
-        <div class="table-responsive">
-          <table class="loyalty-table">
-            <thead>
-              <tr>
-                <th>Mã Code</th>
-                <th>Voucher</th>
-                <th>Trạng thái</th>
-                <th>Hết hạn</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% myVouchers.forEach(mv => { %>
-                <tr>
-                  <td><span class="code-badge"><%= mv.code %></span></td>
-                  <td><%= mv.name %></td>
-                  <td>
-                    <% if (mv.status === 'active') { %>
-                      <span class="status active">Khả dụng</span>
-                    <% } else if (mv.status === 'used') { %>
-                      <span class="status used">Đã dùng</span>
-                    <% } else { %>
-                      <span class="status expired">Hết hạn</span>
-                    <% } %>
-                  </td>
-                  <td><%= new Date(mv.expires_at).toLocaleDateString('vi-VN') %></td>
-                </tr>
-              <% }) %>
-            </tbody>
-          </table>
+        <div class="cust-empty">
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/></svg>
+          <h3>Chưa có voucher nào</h3>
+          <p>Hãy quay lại sau — các voucher mới sẽ sớm được thêm vào.</p>
         </div>
       <% } %>
     </div>
 
-  </div>
+    <!-- My Vouchers -->
+    <div class="cust-panel">
+      <div class="cust-panel-header">
+        <p class="cust-panel-title">Voucher Của Tôi</p>
+        <p class="cust-panel-sub">Các mã ưu đãi bạn đã đổi — dùng khi đặt lịch để được giảm giá.</p>
+      </div>
+
+      <% if (myVouchers && myVouchers.length > 0) { %>
+        <table class="cust-table">
+          <thead>
+            <tr>
+              <th>Mã Code</th>
+              <th>Tên Voucher</th>
+              <th>Trạng thái</th>
+              <th>Hết hạn</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% myVouchers.forEach(mv => { %>
+              <tr>
+                <td>
+                  <code style="font-family:monospace;background:var(--parchment);padding:4px 10px;border-radius:6px;font-weight:700;font-size:0.9rem;color:var(--ink);letter-spacing:1px;"><%= mv.code %></code>
+                </td>
+                <td style="font-weight:500;"><%= mv.name %></td>
+                <td>
+                  <% if (mv.status === 'active') { %>
+                    <span class="badge badge-green">Khả dụng</span>
+                  <% } else if (mv.status === 'used') { %>
+                    <span class="badge badge-gray">Đã dùng</span>
+                  <% } else { %>
+                    <span class="badge badge-red">Hết hạn</span>
+                  <% } %>
+                </td>
+                <td style="color:var(--smoke);font-size:0.875rem;"><%= new Date(mv.expires_at).toLocaleDateString('vi-VN') %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } else { %>
+        <div class="cust-empty" style="padding:40px 20px;">
+          <p style="color:var(--smoke);font-size:0.9rem;">Bạn chưa đổi voucher nào. Hãy dùng Mảnh Sáng bên trên!</p>
+        </div>
+      <% } %>
+    </div>
+  </main>
 </div>
 
-<!-- (Copy styles from my-card.ejs and add specific ones) -->
 <style>
-.loyalty-container { display: flex; max-width: 1200px; margin: 40px auto; gap: 30px; padding: 0 20px; }
-.loyalty-sidebar { width: 250px; flex-shrink: 0; }
-.loyalty-nav { display: flex; flex-direction: column; background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
-.loyalty-nav a { padding: 15px 20px; color: #555; text-decoration: none; font-weight: 500; border-left: 3px solid transparent; }
-.loyalty-nav a.active { background: #fdfaf6; color: #D4A847; border-left-color: #D4A847; }
-.loyalty-content { flex-grow: 1; }
-.loyalty-header h2 { font-size: 28px; margin-bottom: 5px; }
-.loyalty-header p { color: #777; margin-bottom: 30px; }
-
-.balance-banner {
-  background: linear-gradient(135deg, #111 0%, #333 100%);
-  color: #D4A847;
-  padding: 20px 30px;
-  border-radius: 12px;
-  margin-bottom: 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.balance-info span { font-size: 16px; opacity: 0.8; display: block; margin-bottom: 5px; }
-.balance-info strong { font-size: 32px; font-weight: 700; }
-
-.section-title { font-size: 20px; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-.mt-5 { margin-top: 40px; }
-
-.voucher-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-}
-
-.voucher-card {
+.voucher-item {
   background: #fff;
-  border-radius: 12px;
+  border: 1px solid var(--bone,#EDE8DF);
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-  border: 1px solid #f0f0f0;
-  transition: transform 0.3s;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s, box-shadow 0.25s;
 }
-.voucher-card:hover { transform: translateY(-5px); }
 
-.v-header {
-  padding: 20px;
-  color: #fff;
-  text-align: center;
+.voucher-item:not(.voucher-disabled):hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.08);
 }
-.v-header.glow { background: #E8A0A0; }
-.v-header.rose { background: #e08282; }
-.v-header.gold { background: #D4A847; }
-.v-header.sign { background: #2D1B4E; }
 
-.v-header h4 { font-size: 18px; margin: 0 0 10px 0; font-family: 'Cinzel', serif; }
-.v-cost { background: rgba(0,0,0,0.2); display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 14px; }
+.voucher-disabled { opacity: 0.55; }
 
-.v-body { padding: 20px; text-align: center; }
-.v-body p { font-size: 20px; font-weight: 600; color: #333; margin-bottom: 5px; }
-.v-body small { color: #888; }
+.voucher-item-top {
+  padding: 24px 22px 20px;
+  flex: 1;
+}
 
-.v-footer { padding: 15px; border-top: 1px solid #eee; }
-.btn-redeem {
+.voucher-cost {
+  font-size: 0.75rem;
+  color: var(--mocha,#7A5C4A);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.voucher-cost span { opacity: 0.7; }
+
+.voucher-discount {
+  font-family: var(--font-display,serif);
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--ink,#1A1916);
+  margin-bottom: 6px;
+}
+
+.voucher-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ink,#1A1916);
+  margin-bottom: 4px;
+}
+
+.voucher-condition {
+  font-size: 0.775rem;
+  color: var(--smoke,#6B6860);
+}
+
+.voucher-btn {
+  display: block;
   width: 100%;
-  padding: 10px;
-  background: #333;
-  color: #fff;
+  padding: 14px;
+  background: var(--ink,#1A1916);
+  color: var(--vanilla,#FFF7E6);
   border: none;
-  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s;
+  letter-spacing: 0.5px;
+  transition: background 0.2s;
 }
-.btn-redeem:hover:not([disabled]) { background: #D4A847; }
-.btn-redeem[disabled] { background: #ccc; cursor: not-allowed; }
 
-.loyalty-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
-.loyalty-table th { background: #f9f9f9; padding: 15px; text-align: left; color: #555; font-weight: 600; border-bottom: 1px solid #eee; }
-.loyalty-table td { padding: 15px; border-bottom: 1px solid #eee; color: #333; }
-.code-badge { font-family: monospace; background: #f0f0f0; padding: 4px 8px; border-radius: 4px; font-weight: 600; }
-
-.status { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; }
-.status.active { background: #e6f7eb; color: #28a745; }
-.status.used { background: #f8f9fa; color: #6c757d; }
-.status.expired { background: #ffebee; color: #dc3545; }
+.voucher-btn:hover:not([disabled]) { background: var(--mocha,#7A5C4A); }
+.voucher-btn[disabled] { background: #ccc; cursor: not-allowed; color: #888; }
 </style>
 
 <script>
 async function redeemVoucher(id, name, cost) {
-  if (!confirm(`Xác nhận đổi ${cost} Mảnh Sáng lấy ${name}?`)) return;
-  
+  if (!confirm(`Xác nhận đổi ${cost.toLocaleString()} Mảnh Sáng lấy "${name}"?`)) return;
   try {
     const res = await fetch('/api/loyalty/vouchers/redeem', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ voucher_id: id })
     });
-    
     const data = await res.json();
     if (data.success) {
-      alert('Đổi voucher thành công! Mã code của bạn là: ' + data.data.code);
+      alert('Đổi thành công! Mã của bạn: ' + data.data.code);
       location.reload();
     } else {
       alert('Lỗi: ' + data.message);
     }
-  } catch (err) {
-    alert('Đã xảy ra lỗi kết nối');
+  } catch {
+    alert('Lỗi kết nối, thử lại sau.');
   }
 }
 </script>

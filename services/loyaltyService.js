@@ -175,10 +175,30 @@ class LoyaltyService {
    * Trigger các quy tắc cộng điểm cho một booking hoàn thành
    */
   static async processCompletedBooking(bookingId) {
-    // Luồng này sẽ được gọi khi booking chuyển status sang 'completed'
-    // Cần tính: Spend points, First booking, Second visit, Birthday, Group bonus
-    // Tránh duplicate bằng cách check is_first_booking_done, second_booking_rewarded, is_birthday_month
-    // Chi tiết implement có thể được thêm sau khi liên kết hoàn toàn với controller
+    const [bookings] = await pool.query('SELECT * FROM bookings WHERE id = ?', [bookingId]);
+    if (bookings.length === 0) return;
+    const booking = bookings[0];
+    
+    if (!booking.user_id) return;
+    
+    const member = await this.ensureMember(booking.user_id);
+    if (!member || !member.is_card_active) return;
+
+    // Check if it's 1st booking
+    if (!member.is_first_booking_done) {
+      await this.addManhSang(member.id, 50, 'first_booking', `Đặt lịch lần đầu tiên #${booking.booking_code}`, bookingId, 'booking');
+      await pool.query('UPDATE members SET is_first_booking_done = 1 WHERE id = ?', [member.id]);
+    } else if (!member.second_booking_rewarded) {
+      // Check if this is the second confirmed booking
+      // (assuming this function is only called when a booking becomes confirmed)
+      const [confirmedBookings] = await pool.query('SELECT id FROM bookings WHERE user_id = ? AND status = "confirmed" AND id != ?', [booking.user_id, bookingId]);
+      if (confirmedBookings.length >= 1) {
+        await this.addManhSang(member.id, 80, 'second_visit', `Trở lại đặt lịch lần 2 #${booking.booking_code}`, bookingId, 'booking');
+        await pool.query('UPDATE members SET second_booking_rewarded = 1 WHERE id = ?', [member.id]);
+      }
+    }
+    
+    await this.checkAndUpgradeTier(member.id);
   }
 }
 

@@ -60,6 +60,10 @@ app.use('/auth', authRoutes);
 app.use('/customer', customerRoutes);
 app.use('/api/loyalty', loyaltyRoutes);
 
+// Khởi chạy Cron Jobs (Tự động duyệt thanh toán)
+const cronService = require('./services/cronService');
+cronService.initCronJobs();
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).render('404', { title: 'Không tìm thấy — Dear Musé' });

@@ -1,0 +1,542 @@
+/* LOYALTY VIRTUAL CARDS CSS */
+
+.loyalty-landing-page {
+  padding: 160px 20px 100px;
+  background: var(--parchment, #F2EDE4);
+  color: var(--ink, #1A1916);
+  min-height: 100vh;
+}
+
+.loyalty-hero {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.loyalty-hero h1 {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: 3.5rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin-bottom: 24px;
+  color: var(--ink, #1A1916);
+}
+
+.loyalty-hero p {
+  font-family: var(--font-body, 'DM Sans', sans-serif);
+  font-size: 1.1rem;
+  color: var(--smoke, #6B6860);
+  max-width: 650px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+}
+
+/* Card Container */
+.cards-showcase {
+  display: grid;
+  grid-template-columns: repeat(2, 400px);
+  gap: 32px;
+  justify-content: center;
+  margin-bottom: 100px;
+}
+
+@media (max-width: 900px) {
+  .cards-showcase {
+    grid-template-columns: 380px;
+  }
+}
+
+@media (max-width: 420px) {
+  .cards-showcase {
+    grid-template-columns: 1fr;
+    padding: 0 16px;
+  }
+}
+
+/* The Virtual Card */
+.v-card {
+  width: 100%;
+  aspect-ratio: 85.6 / 53.98; /* Standard credit card ratio */
+  border-radius: 18px;
+  padding: 28px 30px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.v-card:hover {
+  transform: translateY(-10px) scale(1.02);
+}
+
+/* Shimmer overlay */
+.v-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255,255,255,0.22) 50%,
+    transparent 60%
+  );
+  background-size: 250% 100%;
+  background-position: 200% 0;
+  transition: background-position 0.6s ease;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.v-card:hover::after {
+  background-position: -50% 0;
+}
+
+/* Card inner structure */
+.v-card-content {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+/* Top row: brand name + tier badge */
+.v-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.v-card-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.v-card-brand-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  line-height: 1.1;
+}
+
+.v-card-brand-sub {
+  font-size: 0.6rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  opacity: 1;
+}
+
+.v-card-tier-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.v-card-tier-name {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.v-card-tier-dots {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.v-card-tier-dots span {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  opacity: 0.6;
+  background: currentColor;
+}
+
+/* Chip */
+.v-card-chip {
+  width: 38px;
+  height: 29px;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #e8d9a0 0%, #c8a84b 40%, #f0e68c 60%, #b8960c 100%);
+  position: relative;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  flex-shrink: 0;
+}
+
+.v-card-chip::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  height: 55%;
+  border-radius: 2px;
+  border: 1px solid rgba(0,0,0,0.15);
+  background: linear-gradient(135deg, #d4b96a, #c8a84b);
+}
+
+/* Middle section: chip + decorative */
+.v-card-middle {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 4px 0;
+}
+
+.v-card-nfc {
+  opacity: 0.4;
+  width: 20px;
+  height: 20px;
+}
+
+/* Bottom section */
+.v-card-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.v-card-number {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.3rem;
+  letter-spacing: 4px;
+  font-weight: 500;
+  opacity: 0.95;
+}
+
+.v-card-footer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.v-card-holder-label {
+  font-size: 0.55rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 1;
+  margin-bottom: 2px;
+}
+
+.v-card-name {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.v-card-tier-range {
+  text-align: right;
+}
+
+.v-card-tier-range-label {
+  font-size: 0.55rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 1;
+  margin-bottom: 2px;
+}
+
+.v-card-tier-range-value {
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ============================
+   Tier Themes
+   ============================ */
+
+/* PEARL */
+.tier-pearl {
+  background: linear-gradient(140deg, #f8f8f8 0%, #e2e2e2 50%, #f0f0f0 100%);
+  color: #2a2a2a;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.12), 0 0 0 1px rgba(255,255,255,0.9) inset;
+}
+
+.tier-pearl::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 10% 80%, rgba(255,255,255,0.8) 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 20%, rgba(200,200,200,0.3) 0%, transparent 50%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.tier-pearl .v-card-chip {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* ROSE */
+.tier-rose {
+  background: linear-gradient(140deg, #f9ddd8 0%, #e8a0a0 50%, #f2c4be 100%);
+  color: #4a2020;
+  box-shadow: 0 25px 50px rgba(200, 100, 100, 0.2), 0 0 0 1px rgba(255,220,215,0.6) inset;
+}
+
+.tier-rose::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 15% 85%, rgba(255,240,238,0.7) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 15%, rgba(240,160,160,0.4) 0%, transparent 50%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* GOLD */
+.tier-gold {
+  background: linear-gradient(140deg, #f5e6b8 0%, #c89428 50%, #e8c865 100%);
+  color: #3a2a08;
+  box-shadow: 0 25px 50px rgba(180, 130, 20, 0.3), 0 0 0 1px rgba(255,240,180,0.5) inset;
+}
+
+.tier-gold::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 5% 90%, rgba(255,248,200,0.8) 0%, transparent 50%),
+    radial-gradient(ellipse at 95% 10%, rgba(200,150,30,0.4) 0%, transparent 55%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.tier-gold .v-card-number {
+  color: #2a1e06;
+}
+
+/* PRIVILEGE */
+.tier-privilege {
+  background: linear-gradient(140deg, #1a0a2e 0%, #0d0619 50%, #2a1050 100%);
+  color: #f0e6d3;
+  box-shadow: 0 25px 60px rgba(20, 5, 50, 0.6), 0 0 0 1px rgba(180, 140, 255, 0.1) inset;
+}
+
+.tier-privilege::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(80, 30, 120, 0.5) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(120, 60, 200, 0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(255, 200, 100, 0.03) 0%, transparent 70%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.tier-privilege .v-card-brand-name {
+  background: linear-gradient(135deg, #e8d4a0, #fff5e0, #c8b070);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.tier-privilege .v-card-chip {
+  background: linear-gradient(135deg, #ffe082 0%, #c8a84b 40%, #ffd54f 60%, #a07820 100%);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 0 12px rgba(200, 150, 50, 0.2);
+}
+
+.tier-privilege .v-card-number {
+  color: #ffe4a0;
+  letter-spacing: 5px;
+}
+
+.tier-privilege .v-card-tier-name {
+  background: linear-gradient(135deg, #ffd080, #ffe4a0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+
+
+/* Info Section */
+.loyalty-info {
+  max-width: 800px;
+  margin: 0 auto 60px;
+  background: var(--vanilla, #FFF7E6);
+  padding: 50px 60px;
+  border-radius: 24px;
+  border: 1px solid var(--bone, #EDE8DF);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+}
+
+.loyalty-info h2 {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: 2.2rem;
+  margin-bottom: 30px;
+  font-weight: 500;
+  color: var(--ink, #1A1916);
+  text-align: center;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 24px;
+}
+
+.loyalty-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-body, 'DM Sans', sans-serif);
+}
+
+.loyalty-table th {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: var(--mocha, #7A5C4A);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--bone, #EDE8DF);
+  text-align: left;
+}
+
+.loyalty-table td {
+  padding: 20px;
+  border-bottom: 1px solid rgba(237, 232, 223, 0.6); /* --bone with opacity */
+  color: var(--ink, #1A1916);
+  font-size: 1.05rem;
+  vertical-align: middle;
+}
+
+.loyalty-table tr:last-child td {
+  border-bottom: none;
+}
+
+.loyalty-table .text-right {
+  text-align: right;
+}
+
+.loyalty-table .highlight {
+  color: var(--mocha, #7A5C4A);
+  font-weight: 600;
+  font-size: 1.15rem;
+}
+
+.loyalty-note {
+  margin-top: 30px;
+  color: var(--smoke, #6B6860);
+  font-size: 0.95rem;
+  font-style: italic;
+  line-height: 1.6;
+  text-align: center;
+  border-top: 1px dashed var(--bone, #EDE8DF);
+  padding-top: 24px;
+}
+
+/* Modal form */
+.loyalty-modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(26, 25, 22, 0.6);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.loyalty-modal.active {
+  display: flex;
+}
+
+.loyalty-modal-content {
+  background: var(--parchment, #F2EDE4);
+  padding: 40px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 450px;
+  border: 1px solid var(--bone, #EDE8DF);
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.close-modal {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: var(--ink, #1A1916);
+  font-size: 1.8rem;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.close-modal:hover {
+  transform: rotate(90deg);
+}
+
+.loyalty-form-group {
+  margin-bottom: 20px;
+}
+
+.loyalty-form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--smoke, #6B6860);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.loyalty-form-group input {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--vanilla, #FFF7E6);
+  border: 1px solid var(--bone, #EDE8DF);
+  border-radius: 8px;
+  color: var(--ink, #1A1916);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.loyalty-form-group input:focus {
+  outline: none;
+  border-color: var(--mocha, #7A5C4A);
+}
+
+.btn-primary {
+  background: var(--ink, #1A1916);
+  color: var(--vanilla, #FFF7E6);
+  border: none;
+  padding: 16px 32px;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s, background-color 0.3s;
+  display: inline-block;
+  text-decoration: none;
+  font-family: var(--font-body, 'DM Sans', sans-serif);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  background: var(--mocha, #7A5C4A);
+}
+
+.btn-block {
+  width: 100%;
+  text-align: center;
+}

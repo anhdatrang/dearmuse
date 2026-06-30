@@ -21,7 +21,11 @@ router.get('/download-album/:id', customerController.downloadAlbum);
 router.post('/albums/:id/filter-face', upload.single('photo'), customerController.filterFace);
 router.post('/albums/:id/download-selected', customerController.downloadCustom);
 
+// Booking history
+router.get('/my-bookings', customerController.myBookings);
+
 // Loyalty UI Routes
+router.post('/loyalty/create', customerController.createCard);
 router.get('/my-card', customerController.myCard);
 router.get('/redeem', customerController.redeem);
 router.get('/loyalty-history', customerController.loyaltyHistory);

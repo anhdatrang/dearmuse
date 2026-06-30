@@ -184,6 +184,20 @@
   background: var(--avocado-cream) !important;
 }
 
+/* Custom Accent Button for Payment & Confirm Pages */
+.btn-accent {
+  background: var(--avocado-cream) !important;
+  color: var(--ink) !important;
+  border-color: var(--avocado-cream) !important;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+}
+
+.btn-accent:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(212, 219, 116, 0.3);
+}
+
 /* Confirm page */
 .booking-confirm {
   min-height: 70vh;

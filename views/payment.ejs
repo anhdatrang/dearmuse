@@ -1,0 +1,407 @@
+<%
+  pageCss = 'payment.css';
+  pageJs = 'payment.js';
+%>
+
+<div class="payment-page">
+  <div class="container" style="max-width: 600px; padding: 100px 0;">
+    <div class="payment-card">
+      <div class="payment-header">
+        <h2>Xác Nhận Thanh Toán</h2>
+        <p>Vui lòng thanh toán cọc để hoàn tất đặt lịch</p>
+      </div>
+      
+      <div class="payment-info">
+        <div class="info-row">
+          <span>Mã đơn:</span>
+          <strong><%= booking.booking_code %></strong>
+        </div>
+        <div class="info-row">
+          <span>Số tiền cọc (30%):</span>
+          <strong class="highlight"><%= booking.deposit_amount.toLocaleString('vi-VN') %>đ</strong>
+        </div>
+        <div class="info-row countdown-row">
+          <span>Thời gian còn lại:</span>
+          <strong id="countdownTimer" data-expires="<%= booking.payment_expires_at.toISOString() %>">10:00</strong>
+        </div>
+      </div>
+
+      <div class="qr-section">
+        <p>Quét mã QR bằng ứng dụng ngân hàng</p>
+        <div class="qr-box">
+          <img src="<%= qrUrl %>" alt="Mã thanh toán QR" />
+        </div>
+        <div class="bank-details">
+          <p>Hoặc chuyển khoản thủ công:</p>
+          <ul>
+            <li>Ngân hàng: <strong><%= settings.bank_name %></strong></li>
+            <li>Chủ tài khoản: <strong><%= settings.bank_account_name %></strong></li>
+            <li>Số tài khoản: <strong><%= settings.bank_account_no %></strong></li>
+            <li>Nội dung: <strong><%= booking.booking_code %></strong></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- VOUCHER SECTION -->
+      <div class="voucher-section" id="voucherSection">
+        <div class="voucher-toggle" id="voucherToggle" onclick="toggleVoucherInput()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/>
+            <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+            <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+          </svg>
+          <span>Tôi có mã voucher giảm giá</span>
+          <svg class="chevron-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="voucher-input-wrap" id="voucherInputWrap" style="display:none;">
+          <div class="voucher-input-row">
+            <input type="text" id="voucherCodeInput" placeholder="Nhập mã voucher..." style="text-transform:uppercase;" maxlength="30">
+            <button type="button" id="btnApplyVoucher" onclick="applyVoucher()">Áp dụng</button>
+          </div>
+          <div id="voucherResult" class="voucher-result" style="display:none;"></div>
+        </div>
+      </div>
+
+      <div class="payment-actions">
+        <button id="btnCheckPayment" class="btn btn-accent" style="width: 100%; border-radius: 100px; padding: 16px; margin-bottom: 8px;" data-code="<%= booking.booking_code %>">
+          <span>Tôi đã thanh toán</span>
+        </button>
+        <p class="help-text">Hệ thống sẽ tự động xác nhận trong vòng 1-2 phút sau khi chuyển khoản thành công. Bạn cũng có thể bấm nút để kiểm tra ngay.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  .payment-page {
+    background-color: var(--vanilla-cream);
+    min-height: 80vh;
+  }
+  .payment-card {
+    background: #fff;
+    border-radius: 4px;
+    padding: 3rem 2rem;
+    box-shadow: 0 12px 48px rgba(26, 25, 22, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    background: linear-gradient(135deg, #FFF 0%, var(--vanilla-cream) 100%);
+    text-align: center;
+  }
+  .payment-header h2 {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .payment-info {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: var(--vanilla-cream);
+    border-radius: 4px;
+    border: 0.5px solid var(--bone);
+    text-align: left;
+  }
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 14px;
+    color: var(--smoke);
+  }
+  .info-row:last-child { margin-bottom: 0; }
+  .highlight {
+    color: var(--logo-taupe);
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+  .countdown-row strong {
+    color: #e74c3c;
+    font-variant-numeric: tabular-nums;
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+  .qr-box {
+    margin: 1.5rem auto;
+    max-width: 300px;
+    padding: 1.5rem;
+    border: 1px dashed var(--logo-taupe);
+    border-radius: 8px;
+    background: #fff;
+  }
+  .qr-box img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+  .bank-details {
+    text-align: left;
+    background: var(--parchment);
+    padding: 1.5rem;
+    border-radius: 4px;
+    margin-bottom: 2rem;
+    font-size: 13px;
+    color: var(--ink);
+  }
+  .bank-details ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0;
+  }
+  .bank-details li {
+    margin-bottom: 0.3rem;
+  }
+  .help-text {
+    font-size: 0.85rem;
+    color: var(--smoke);
+    margin-top: 1rem;
+  }
+
+  /* Voucher Section */
+  .voucher-section {
+    margin-bottom: 1.5rem;
+    border: 1px dashed var(--bone);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--vanilla-cream, #fffdf8);
+  }
+  .voucher-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--smoke);
+    user-select: none;
+    transition: background 0.2s;
+  }
+  .voucher-toggle:hover { background: rgba(0,0,0,0.02); }
+  .voucher-toggle span { flex: 1; text-align: left; }
+  .voucher-toggle .chevron-icon { transition: transform 0.25s; }
+  .voucher-toggle.open .chevron-icon { transform: rotate(180deg); }
+  .voucher-input-wrap {
+    border-top: 1px dashed var(--bone);
+    padding: 16px;
+  }
+  .voucher-input-row {
+    display: flex;
+    gap: 8px;
+  }
+  .voucher-input-row input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid var(--bone);
+    border-radius: 6px;
+    font-family: var(--font-body, sans-serif);
+    font-size: 13px;
+    color: var(--ink);
+    background: #fff;
+    outline: none;
+    letter-spacing: 0.08em;
+    transition: border-color 0.2s;
+  }
+  .voucher-input-row input:focus { border-color: var(--logo-taupe, #8b7355); }
+  .voucher-input-row button {
+    padding: 10px 18px;
+    background: var(--ink);
+    color: var(--vanilla-cream, #fffdf8);
+    border: none;
+    border-radius: 6px;
+    font-family: var(--font-body, sans-serif);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+  }
+  .voucher-input-row button:hover { opacity: 0.8; }
+  .voucher-input-row button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .voucher-result {
+    margin-top: 12px;
+    padding: 12px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .voucher-result.success {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    color: #166534;
+  }
+  .voucher-result.error {
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+    color: #991b1b;
+  }
+  .voucher-discount-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    padding: 4px 0;
+  }
+  .voucher-discount-row .amount { font-weight: 600; color: #166534; }
+  .voucher-discount-row .final { font-weight: 600; color: var(--logo-taupe, #8b7355); font-size: 1.05rem; }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const timerEl = document.getElementById('countdownTimer');
+  const expiresAt = new Date(timerEl.dataset.expires).getTime();
+  const btnCheck = document.getElementById('btnCheckPayment');
+  const code = btnCheck.dataset.code;
+
+  // Countdown logic
+  const timerInterval = setInterval(() => {
+    const now = new Date().getTime();
+    const distance = expiresAt - now;
+
+    if (distance < 0) {
+      clearInterval(timerInterval);
+      timerEl.innerHTML = "Đã hết hạn";
+      alert("Đã hết thời gian thanh toán. Đơn đặt lịch sẽ bị huỷ.");
+      window.location.reload();
+      return;
+    }
+
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+    timerEl.innerHTML = minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
+  }, 1000);
+
+  // Auto polling check every 30 seconds
+  const pollInterval = setInterval(() => {
+    checkPayment(false);
+  }, 30000);
+
+  btnCheck.addEventListener('click', () => {
+    btnCheck.disabled = true;
+    btnCheck.innerHTML = '<span>Đang kiểm tra...</span>';
+    checkPayment(true);
+  });
+
+  async function checkPayment(manualClick) {
+    try {
+      const res = await fetch(`/api/payment/check/${code}`, { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        clearInterval(timerInterval);
+        clearInterval(pollInterval);
+        alert('Thanh toán thành công! Cảm ơn bạn.');
+        window.location.href = `/booking/${code}/status`;
+      } else {
+        if (manualClick) {
+          alert(data.message || 'Chưa nhận được thanh toán. Vui lòng thử lại sau.');
+          btnCheck.disabled = false;
+          btnCheck.innerHTML = '<span>Tôi đã thanh toán</span>';
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      if (manualClick) {
+        alert('Lỗi kết nối khi kiểm tra thanh toán.');
+        btnCheck.disabled = false;
+        btnCheck.innerHTML = '<span>Tôi đã thanh toán</span>';
+      }
+    }
+  }
+});
+</script>
+
+<script>
+// ─── Voucher Logic ───────────────────────────────────────────
+const BOOKING_CODE = '<%= booking.booking_code %>';
+const DEPOSIT_AMOUNT = <%= booking.deposit_amount %>;
+let voucherApplied = false;
+let effectiveAmount = DEPOSIT_AMOUNT;
+
+function toggleVoucherInput() {
+  const wrap = document.getElementById('voucherInputWrap');
+  const toggle = document.getElementById('voucherToggle');
+  const isOpen = wrap.style.display !== 'none';
+  wrap.style.display = isOpen ? 'none' : 'block';
+  toggle.classList.toggle('open', !isOpen);
+}
+
+async function applyVoucher() {
+  const input = document.getElementById('voucherCodeInput');
+  const btn = document.getElementById('btnApplyVoucher');
+  const resultEl = document.getElementById('voucherResult');
+  const code = input.value.trim().toUpperCase();
+
+  if (!code) {
+    showVoucherResult('error', 'Vui lòng nhập mã voucher.');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Đang kiểm tra...';
+
+  try {
+    const res = await fetch('/api/voucher/apply', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        code,
+        booking_code: BOOKING_CODE,
+        total_amount: DEPOSIT_AMOUNT
+      })
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      voucherApplied = true;
+      const d = data.data;
+      const discountFmt = Number(d.discountAmount).toLocaleString('vi-VN');
+      const finalFmt = Number(d.finalAmount).toLocaleString('vi-VN');
+      effectiveAmount = d.finalAmount;
+
+      showVoucherResult('success', `
+        <strong>✓ ${d.voucherName}</strong><br>
+        <div class="voucher-discount-row">
+          <span>Giảm giá:</span>
+          <span class="amount">−${discountFmt}đ</span>
+        </div>
+        <div class="voucher-discount-row">
+          <span>Số tiền cần thanh toán:</span>
+          <span class="final">${finalFmt}đ</span>
+        </div>
+      `);
+
+      // Cập nhật UI số tiền hiển thị
+      const depositEl = document.querySelector('.info-row .highlight');
+      if (depositEl) {
+        depositEl.innerHTML = `<del style="font-size:0.85em;color:var(--smoke);">${DEPOSIT_AMOUNT.toLocaleString('vi-VN')}đ</del> <span style="color:#166534;">${finalFmt}đ</span>`;
+      }
+
+      btn.textContent = 'Đã áp dụng ✓';
+      input.disabled = true;
+      btn.disabled = true;
+    } else {
+      showVoucherResult('error', data.message || 'Mã voucher không hợp lệ.');
+      btn.disabled = false;
+      btn.textContent = 'Áp dụng';
+    }
+  } catch (err) {
+    console.error(err);
+    showVoucherResult('error', 'Lỗi kết nối. Vui lòng thử lại.');
+    btn.disabled = false;
+    btn.textContent = 'Áp dụng';
+  }
+}
+
+function showVoucherResult(type, html) {
+  const el = document.getElementById('voucherResult');
+  el.className = `voucher-result ${type}`;
+  el.innerHTML = html;
+  el.style.display = 'block';
+}
+
+// Enter key shortcut
+document.getElementById('voucherCodeInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') applyVoucher();
+});
+</script>

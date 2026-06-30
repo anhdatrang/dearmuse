@@ -111,6 +111,42 @@ exports.analytics = async (req, res) => {
   }
 };
 
+// ─── Settings ──────────────────────────────────────────
+exports.settings = async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT setting_key, setting_value, description FROM settings');
+    const settings = {};
+    rows.forEach(r => settings[r.setting_key] = { value: r.setting_value, description: r.description });
+
+    res.render('admin/settings', {
+      title: 'Cấu hình hệ thống — Dear Musé Admin',
+      layout: 'layouts/admin',
+      settings,
+      adminUsername: req.session.adminUsername,
+      success: req.flash('success'),
+      error: req.flash('error'),
+    });
+  } catch (err) {
+    console.error(err);
+    res.redirect('/admin/dashboard');
+  }
+};
+
+exports.updateSettings = async (req, res) => {
+  try {
+    const data = req.body;
+    for (const key in data) {
+      await db.query('UPDATE settings SET setting_value = ? WHERE setting_key = ?', [data[key], key]);
+    }
+    req.flash('success', 'Cập nhật cấu hình thành công!');
+    res.redirect('/admin/settings');
+  } catch (err) {
+    console.error(err);
+    req.flash('error', 'Lỗi cập nhật cấu hình.');
+    res.redirect('/admin/settings');
+  }
+};
+
 // ─── Bookings ──────────────────────────────────────────
 exports.bookings = async (req, res) => {
   try {
@@ -147,7 +183,16 @@ exports.bookingDetail = async (req, res) => {
 exports.updateBooking = async (req, res) => {
   try {
     const { status, admin_note } = req.body;
+    const oldBooking = await Booking.findById(req.params.id);
+    
     await Booking.updateStatus(req.params.id, status, admin_note);
+    
+    // LOYALTY: Trigger logic khi admin confirm booking
+    if (status === 'confirmed' && oldBooking.status !== 'confirmed') {
+      const LoyaltyService = require('../services/loyaltyService');
+      await LoyaltyService.processCompletedBooking(req.params.id);
+    }
+    
     req.flash('success', 'Cập nhật thành công!');
     res.redirect(`/admin/bookings/${req.params.id}`);
   } catch (err) {
