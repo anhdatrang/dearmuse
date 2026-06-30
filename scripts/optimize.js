@@ -34,10 +34,10 @@ async function optimizeImage(filePath, ext) {
   try {
     const tempPath = filePath + '.tmp';
     
-    // Read metadata to check width
-    const metadata = await sharp(filePath).metadata();
+    // Read metadata to check width, use failOn: 'none' to bypass minor JPEG corruption errors
+    const metadata = await sharp(filePath, { failOn: 'none' }).metadata();
     
-    let pipeline = sharp(filePath);
+    let pipeline = sharp(filePath, { failOn: 'none' });
     
     // Resize if too wide
     if (metadata.width > MAX_WIDTH) {
