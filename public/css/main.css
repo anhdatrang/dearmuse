@@ -88,7 +88,7 @@ button {
 #loading-screen {
   position: fixed;
   inset: 0;
-  background: var(--ink);
+  background: var(--avocado-cream, #D4DB74);
   z-index: 9000;
   display: flex;
   align-items: center;
@@ -103,7 +103,7 @@ button {
   font-size: clamp(40px, 6vw, 72px);
   font-style: italic;
   font-weight: 400;
-  color: var(--vanilla-cream);
+  color: var(--ink, #1A1916);
   letter-spacing: 0.02em;
   opacity: 0;
   animation: loadReveal 1s var(--ease-out-expo) 0.3s forwards;
@@ -112,7 +112,7 @@ button {
 #loading-screen .loading-bar-wrap {
   width: 120px;
   height: 1px;
-  background: rgba(255, 247, 230, 0.15);
+  background: rgba(26, 25, 22, 0.15);
   overflow: hidden;
   opacity: 0;
   animation: loadReveal 0.4s ease 0.8s forwards;
@@ -120,7 +120,7 @@ button {
 
 #loading-screen .loading-bar {
   height: 100%;
-  background: var(--logo-taupe);
+  background: var(--ink, #1A1916);
   animation: loadBar 0.9s var(--ease-out-expo) 0.9s forwards;
   transform: scaleX(0);
   transform-origin: left;

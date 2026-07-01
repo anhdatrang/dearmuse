@@ -267,10 +267,10 @@ document.addEventListener('DOMContentLoaded', () => {
     timerEl.innerHTML = minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
   }, 1000);
 
-  // Auto polling check every 30 seconds
+  // Auto polling check every 3 seconds for instant response
   const pollInterval = setInterval(() => {
     checkPayment(false);
-  }, 30000);
+  }, 3000);
 
   btnCheck.addEventListener('click', () => {
     btnCheck.disabled = true;

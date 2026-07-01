@@ -84,8 +84,17 @@ exports.checkPaymentAPI = async (req, res) => {
     const bookingCode = req.params.code;
     const booking = await Booking.findByCode(bookingCode);
     
-    if (!booking || booking.status !== 'awaiting_payment') {
+    if (!booking) {
       return res.json({ success: false, message: 'Đơn không hợp lệ' });
+    }
+
+    // Nếu cron job đã cập nhật trạng thái trước đó, trả về thành công ngay lập tức để frontend chuyển trang
+    if (booking.status === 'pending' || booking.status === 'completed') {
+      return res.json({ success: true, message: 'Thanh toán thành công' });
+    }
+
+    if (booking.status !== 'awaiting_payment') {
+      return res.json({ success: false, message: 'Trạng thái đơn hàng không hợp lệ' });
     }
 
     const settings = await getSettings();

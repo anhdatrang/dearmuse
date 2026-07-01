@@ -83,5 +83,5 @@ exports.initCronJobs = () => {
     } catch (err) {
       console.error('Cron job error:', err.message);
     }
-  }, 30 * 1000);
+  }, 5 * 1000);
 };
