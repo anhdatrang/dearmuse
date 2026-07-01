@@ -444,6 +444,32 @@
   </div>
 
   <style>
+  @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
+
+  .loyalty-hero p {
+    font-family: 'Quicksand', 'DM Sans', sans-serif;
+    font-weight: 500;
+    color: #000000;
+    font-size: 1.15rem;
+    line-height: 1.7;
+  }
+
+  .loyalty-info h2 {
+    font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+    white-space: nowrap;
+  }
+  @media (max-width: 768px) {
+    .loyalty-info {
+      padding: 35px 24px;
+    }
+  }
+  @media (max-width: 600px) {
+    .loyalty-info h2 {
+      white-space: normal;
+      font-size: 1.45rem;
+    }
+  }
+
   /* ──────────────── VOUCHER REDEMPTION SECTION ──────────────── */
   .voucher-redeem-section {
     margin-top: 80px;
@@ -471,8 +497,10 @@
     margin-bottom: 12px;
   }
   .voucher-redeem-header p {
-    font-size: 14px;
-    color: var(--smoke, #6B6860);
+    font-family: 'Quicksand', 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    color: #000000;
     max-width: 520px;
     margin: 0 auto;
     line-height: 1.7;
@@ -529,10 +557,10 @@
   .vc-icon svg { width: 24px; height: 24px; }
   .vc-tier-label {
     font-family: var(--font-display, serif);
-    font-size: 1rem;
-    font-weight: 400;
-    color: var(--ink, #1A1916);
-    letter-spacing: 0.02em;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
   }
   .vc-cost {
     display: flex;
@@ -571,18 +599,21 @@
   /* Glow card */
   .vc-glow { background: linear-gradient(135deg, #e0f2fe, #bae6fd); }
   .vc-glow .vc-icon { background: #e0f2fe; color: #0369a1; }
+  .vc-glow .vc-tier-label { color: #0369a1; }
   .vc-glow .vc-cost-num { color: #0369a1; }
   .vc-glow .vc-divider { background: #bae6fd; }
 
   /* Rose card */
   .vc-rose { background: linear-gradient(135deg, #fce7f3, #fbcfe8); }
   .vc-rose .vc-icon { background: #fce7f3; color: #be185d; }
+  .vc-rose .vc-tier-label { color: #be185d; }
   .vc-rose .vc-cost-num { color: #be185d; }
   .vc-rose .vc-divider { background: #fbcfe8; }
 
   /* Gold card */
   .vc-gold { background: linear-gradient(135deg, #fef9c3, #fde68a); }
   .vc-gold .vc-icon { background: #fef9c3; color: #b45309; }
+  .vc-gold .vc-tier-label { color: #b45309; }
   .vc-gold .vc-cost-num { color: #b45309; }
   .vc-gold .vc-divider { background: #fde68a; }
 
@@ -595,7 +626,7 @@
     background: linear-gradient(145deg, #fffdfa 0%, #f7f3eb 100%);
   }
   .vc-signature .vc-icon { background: rgba(122, 92, 74, 0.08); color: var(--mocha, #7A5C4A); }
-  .vc-signature .vc-tier-label { color: var(--ink, #1A1916); font-weight: 500; }
+  .vc-signature .vc-tier-label { color: var(--mocha, #7A5C4A); font-weight: 700; }
   .vc-signature .vc-cost-num { color: var(--mocha, #7A5C4A); }
   .vc-signature .vc-cost-unit { color: var(--smoke, #6B6860); }
   .vc-signature .vc-divider { background: rgba(122, 92, 74, 0.15); }
@@ -779,14 +810,20 @@
     opacity: 0.8;
   }
   .voucher-redeem-note {
+    font-family: 'Quicksand', 'DM Sans', sans-serif;
+    font-weight: 500;
     text-align: center;
-    font-size: 13px;
-    color: var(--smoke, #6B6860);
+    font-size: 14px;
+    color: #000000;
     max-width: 560px;
     margin: 40px auto 0;
     line-height: 1.7;
     border-top: 0.5px solid var(--bone, #EDE8DF);
     padding-top: 24px;
+  }
+  .voucher-redeem-note strong {
+    color: #000000;
+    font-weight: 700;
   }
 
   /* ──────────────── OCCASIONS & REFERRAL TABLES ──────────────── */
@@ -829,10 +866,26 @@
     line-height: 1.6;
     color: var(--ink, #1A1916);
   }
+  .elegant-table td {
+    font-family: 'Quicksand', 'DM Sans', sans-serif;
+    font-weight: 500;
+    color: #000000;
+  }
+  .loyalty-table td {
+    font-family: 'Quicksand', 'DM Sans', sans-serif;
+    font-weight: 500;
+    color: #000000;
+  }
   .elegant-table th {
     font-family: var(--font-display, serif);
-    font-weight: 500;
-    font-size: 15px;
+    font-weight: 600;
+    font-size: 14px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border: 1.5px solid var(--mocha, #7A5C4A);
+    color: var(--mocha, #7A5C4A);
+    background-color: rgba(122, 92, 74, 0.05);
   }
   .elegant-table td:first-child {
     width: 45%;
