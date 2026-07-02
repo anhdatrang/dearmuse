@@ -2,7 +2,7 @@
 
 .loyalty-landing-page {
   padding: 160px 20px 100px;
-  background: var(--parchment, #F2EDE4);
+  background: var(--vanilla-cream, #FFF7E6);
   color: var(--ink, #1A1916);
   min-height: 100vh;
 }
@@ -25,9 +25,10 @@
   font-family: var(--font-body, 'DM Sans', sans-serif);
   font-size: 1.1rem;
   color: var(--smoke, #6B6860);
-  max-width: 650px;
+  max-width: 720px;
   margin: 0 auto 40px;
   line-height: 1.6;
+  text-wrap: balance;
 }
 
 /* Card Container */

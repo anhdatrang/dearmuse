@@ -13,7 +13,7 @@ main:has(.cust-portal) {
   display: flex;
   min-height: calc(100vh - 80px);
   margin-top: 80px;
-  background: var(--parchment, #F2EDE4);
+  background: var(--vanilla-cream, #FFF7E6);
   font-family: var(--font-body, 'DM Sans', sans-serif);
   border-top: 1px solid var(--bone, #EDE8DF);
 }
@@ -26,7 +26,7 @@ main:has(.cust-portal) {
   top: 80px;
   height: calc(100vh - 80px);
   overflow-y: auto;
-  background: var(--vanilla, #FFF7E6);
+  background: var(--parchment, #F2EDE4);
   border-right: 1px solid var(--bone, #EDE8DF);
   display: flex;
   flex-direction: column;
@@ -216,7 +216,7 @@ main:has(.cust-portal) {
 }
 
 .cust-stat-card {
-  background: var(--vanilla, #FFF7E6);
+  background: var(--parchment, #F2EDE4);
   border: 1px solid var(--bone, #EDE8DF);
   border-radius: 16px;
   padding: 22px 24px;
@@ -258,7 +258,7 @@ main:has(.cust-portal) {
 
 /* ─── Panels ─── */
 .cust-panel {
-  background: var(--vanilla, #FFF7E6);
+  background: var(--parchment, #F2EDE4);
   border: 1px solid var(--bone, #EDE8DF);
   border-radius: 20px;
   padding: 30px 32px;
