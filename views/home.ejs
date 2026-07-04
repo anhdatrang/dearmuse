@@ -1,4 +1,4 @@
-<% pageCss='home.css' ; pageJs='home.js' ; %>
+<% pageCss='home.css?v=4' ; pageJs='home.js' ; %>
 
   <!-- ═══════════════════════════════════════════
      HERO — Fullscreen Cinematic Slideshow
@@ -9,14 +9,11 @@
 
     <!-- Animated Gallery Background -->
     <div class="hero-gallery-bg">
-      <%
-        // Split heroImages into 5 columns
-        const colCount = 5;
-        const columns = Array.from({length: colCount}, () => []);
+      <% /* Split heroImages into 5 columns */ const colCount=5; const columns=Array.from({length: colCount}, ()=> []);
         heroImages.forEach((img, index) => {
-          columns[index % colCount].push(img);
+        columns[index % colCount].push(img);
         });
-      %>
+        %>
         <% columns.forEach((col, cIdx)=> { %>
           <div class="hero-col hero-col-<%= cIdx + 1 %>">
             <div class="hero-col-track">
@@ -36,7 +33,7 @@
 
     <!-- Centered Text Content -->
     <div class="hero-content-center">
-      <p class="hero-eyebrow" style="color: #D4DB74;">Est. 2026 &nbsp;·&nbsp; Dear Musé</p>
+      <p class="hero-eyebrow" style="color: var(--blush-petal, #F8C8D2);">Est. 2026 &nbsp;·&nbsp; Dear Musé</p>
       <h1 class="hero-title">
         <span class="hero-title-line">Lưu giữ</span>
         <span class="hero-title-line italic" style="color: #D4DB74;">khoảnh khắc</span>
@@ -56,7 +53,7 @@
     <!-- Badge -->
     <div class="hero-badge">
       <span class="hero-badge-dot"></span>
-      Studio nhiếp ảnh nghệ thuật — Hà Nội
+      Studio nhiếp ảnh nghệ thuật Hà Nội
     </div>
   </section>
 
@@ -74,7 +71,7 @@
         <span class="ticker-sep">◆</span>
         <span class="ticker-item">Portrait · Sự kiện · Thương hiệu</span>
         <span class="ticker-sep">◆</span>
-        <span class="ticker-item">Hà Nội — 2026</span>
+        <span class="ticker-item">Hà Nội 2026</span>
         <span class="ticker-sep">◆</span>
         <% } %>
     </div>
@@ -88,14 +85,14 @@
       <!-- Left: Collage visual -->
       <div class="intro-visual collage-visual reveal-left">
         <div class="collage-layer collage-bg">
-          <img src="/cdn/image?w=600&src=%2Fsource%2FC%C3%81%20NH%C3%82N%2F%C3%81O%20D%C3%80I%2FIMG_6382.webp"
+          <img src="/cdn/image?src=%2Fsource%2FC%C3%81%20NH%C3%82N%2F%C3%81O%20D%C3%80I%2FIMG_6368.webp"
             alt="Dear Musé - Áo dài" loading="lazy" decoding="async">
         </div>
         <div class="collage-layer collage-fg">
-          <img src="/cdn/image?w=600&src=%2Fsource%2FN%C3%A0ng%20th%C6%A1%2FN%C3%A0ng%20th%C6%A1%20001.webp"
-            alt="Dear Musé — Portrait nghệ thuật" loading="lazy" decoding="async">
+          <img src="/source/C%C3%81%20NH%C3%82N/CONCEPT/SU209534.webp" alt="Dear Musé — Portrait nghệ thuật"
+            loading="lazy" decoding="async">
           <div class="intro-img-label">
-            <span>Nàng Thơ & Áo Dài</span>
+            <span>Concept & Áo Dài</span>
             <span class="intro-img-num">Bộ sưu tập kép</span>
           </div>
         </div>
@@ -105,13 +102,13 @@
       <div class="intro-text reveal-right">
         <span class="section-tag">Triết lý · Philosophy</span>
         <blockquote class="intro-quote">
-          "Ảnh đẹp nhất<br>không phải ảnh hoàn hảo —<br>
+          "Ảnh đẹp nhất<br>không phải ảnh hoàn hảo<br>
           mà là ảnh <em>thật nhất</em>."
         </blockquote>
         <div class="intro-rule"></div>
         <p class="intro-body">
           Tại Dear Musé, mỗi buổi chụp là một cuộc đối thoại nhẹ nhàng. Chúng tôi tạo ra không gian để cảm xúc thật của
-          bạn tự xuất hiện — rồi ghi lại khoảnh khắc đó bằng ánh sáng tự nhiên và góc nhìn nghệ thuật.
+          bạn tự xuất hiện rồi ghi lại khoảnh khắc đó bằng ánh sáng tự nhiên và góc nhìn nghệ thuật.
         </p>
         <a href="/about" class="link-arrow">
           Câu chuyện của chúng tôi
@@ -141,22 +138,30 @@
     </div>
 
     <div class="gallery-mosaic container">
-      <% featuredImages.forEach((img, i)=> { %>
-        <div class="gallery-item gallery-item--<%= (i % 5 === 0) ? 'tall' : (i % 5 === 2) ? 'wide' : 'normal' %> reveal"
-          data-delay="<%= (i % 3) + 1 %>">
-          <img src="<%= img.src %>" alt="<%= img.alt %>" loading="lazy" decoding="async">
-          <div class="gallery-item-overlay">
-            <div class="gallery-item-meta">
-              <span class="gallery-cat">
-                <%= img.category %>
-              </span>
-              <span class="gallery-num">
-                <%= String(i+1).padStart(2,'0') %>
-              </span>
-            </div>
+      <% const gColCount=3; const gColumns=Array.from({length: gColCount}, ()=> []);
+        featuredImages.forEach((img, index) => {
+        gColumns[index % gColCount].push({img, originalIndex: index});
+        });
+        %>
+        <% gColumns.forEach((col, cIdx)=> { %>
+          <div class="gallery-col">
+            <% col.forEach(({img, originalIndex})=> { %>
+              <div class="gallery-item reveal" data-delay="<%= (originalIndex % 3) + 1 %>">
+                <img src="<%= img.src %>" alt="<%= img.alt %>" loading="lazy" decoding="async">
+                <div class="gallery-item-overlay">
+                  <div class="gallery-item-meta">
+                    <span class="gallery-cat">
+                      <%= img.category %>
+                    </span>
+                    <span class="gallery-num">
+                      <%= String(originalIndex+1).padStart(2,'0') %>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <% }) %>
           </div>
-        </div>
-        <% }) %>
+          <% }) %>
     </div>
   </section>
 
@@ -185,10 +190,10 @@
           </div>
         </div>
         <div class="number-item reveal" data-delay="3">
-          <span class="number-big">5<sup>+</sup></span>
+          <span class="number-big">10k<sup>+</sup></span>
           <div class="number-body">
-            <strong>Năm kinh nghiệm</strong>
-            <p>Ánh sáng tự nhiên, bố cục kể chuyện và cảm xúc chân thật</p>
+            <strong>Giờ chụp ảnh</strong>
+            <p>Dày dặn kinh nghiệm chụp ảnh, xử lý ánh sáng và bắt trọn cảm xúc</p>
           </div>
         </div>
         <div class="number-item reveal" data-delay="4">
@@ -213,7 +218,7 @@
           <h2 class="services-heading">Chúng tôi<br><em>làm được gì?</em></h2>
         </div>
         <div class="services-intro-text">
-          <p>Từ buổi chụp chân dung cá nhân đến sự kiện lớn — mỗi dịch vụ mang một cách tiếp cận riêng, một cảm xúc
+          <p>Từ buổi chụp chân dung cá nhân đến sự kiện lớn, mỗi dịch vụ mang một cách tiếp cận riêng, một cảm xúc
             riêng.</p>
           <a href="/services" class="link-arrow">Xem tất cả gói chụp <svg width="14" height="14" viewBox="0 0 24 24"
               fill="none" stroke="currentColor" stroke-width="1.5">
@@ -224,29 +229,27 @@
 
       <div class="services-marquee-wrapper">
         <div class="services-marquee-track">
-          <% const customServices=[ { num: '01' , name: 'Concept Sáng Tạo' ,
+          <% const customServices=[ { num: '01' , name: 'Concept' ,
             desc: 'Thiết kế concept riêng biệt, phá cách và mang đậm dấu ấn cá nhân.' , price: '2.500.000' ,
-            slug: 'concept-sang-tao' , img: '/cdn/image?w=600&src=' +
-            encodeURIComponent('/source/N%C3%A0ng%20th%C6%A1/H%C6%B0%E1%BB%9Bng%20d%C6%B0%C6%A1ng%20001_.webp') }, {
-            num: '02' , name: 'Áo Dài' ,
+            slug: 'portrait-concept' , img: '/cdn/image?w=600&src=' +
+            encodeURIComponent('/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207942(1).webp') }, { num: '02' , name: 'Áo Dài' ,
             desc: 'Lưu giữ nét đẹp truyền thống, thanh lịch và đằm thắm của người phụ nữ Việt.' , price: '1.800.000' ,
-            slug: 'ao-dai' , img: '/cdn/image?w=600&src=' +
-            encodeURIComponent('/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6382.webp') }, { num: '03' ,
-            name: 'Chân Dung Cá Nhân' , desc: 'Bắt trọn vẻ đẹp nguyên bản và cảm xúc tự nhiên nhất của chính bạn.' ,
-            price: '1.500.000' , slug: 'chan-dung-ca-nhan' , img: '/cdn/image?w=600&src=' +
-            encodeURIComponent('/source/N%C3%A0ng%20th%C6%A1/N%C3%A0ng%20th%C6%A1%20002.webp') }, { num: '04' ,
-            name: 'Kỷ Yếu Cá Nhân' , desc: 'Ghi lại cột mốc thanh xuân rực rỡ và những kỷ niệm đáng nhớ.' ,
-            price: '1.800.000' , slug: 'ky-yeu-ca-nhan' , img: '/cdn/image?w=600&src=' +
-            encodeURIComponent('/source/N%C3%A0ng%20th%C6%A1/Xanh%20Xanh%20002.webp') }, { num: '05' ,
-            name: 'Beauty Portrait' , desc: 'Tôn vinh đường nét khuôn mặt với ánh sáng setup chuẩn studio.' ,
-            price: '2.000.000' , slug: 'beauty-portrait' , img: '/cdn/image?w=600&src=' +
-            encodeURIComponent('/source/N%C3%A0ng%20th%C6%A1/Qu%E1%BA%A3%20chanh%20001.webp') }, { num: '06' ,
-            name: 'Sự Kiện Doanh Nghiệp' ,
+            slug: 'portrait-ao-dai' , img: '/cdn/image?w=600&src=' +
+            encodeURIComponent('/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6368.webp') }, { num: '03' ,
+            name: 'Chân Dung' , desc: 'Bắt trọn vẻ đẹp nguyên bản và cảm xúc tự nhiên nhất của chính bạn.' ,
+            price: '1.500.000' , slug: 'portrait-profile' , img: '/cdn/image?w=600&src=' +
+            encodeURIComponent('/source/C%C3%81%20NH%C3%82N/PROFILE/IMG_4928.webp') }, { num: '04' , name: 'Kỷ Yếu' ,
+            desc: 'Ghi lại cột mốc thanh xuân rực rỡ và những kỷ niệm đáng nhớ.' , price: '1.800.000' ,
+            slug: 'portrait-ky-yeu' , img: '/cdn/image?w=600&src=' + encodeURIComponent('/source/CÁ NHÂN/KỶ YẾU/IMG6799.jpg') }, { num: '05' , name: 'Sản phẩm' ,
+            desc: 'Tôn vinh đường nét khuôn mặt với ánh sáng setup chuẩn studio.' , price: '2.000.000' ,
+            slug: 'concept-khac' , img: '/cdn/image?w=600&src=' +
+            encodeURIComponent('/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_5582.webp') }, {
+            num: '06' , name: 'Sự Kiện' ,
             desc: 'Ghi lại những khoảnh khắc chuyên nghiệp, đẳng cấp của sự kiện doanh nghiệp.' , price: '3.000.000' ,
-            slug: 'su-kien' , img: '/cdn/image?w=600&src=' +
-            encodeURIComponent('/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/IMG_4319.webp') } ]; %>
+            slug: 'event-premium' , img: '/cdn/image?w=600&src=' +
+            encodeURIComponent('/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/IMG_8785.webp') } ]; %>
             <% [...customServices, ...customServices].forEach((s, i)=> { %>
-              <a href="/booking?service=<%= s.slug %>" class="svc-card">
+              <a href="/services/<%= s.slug %>" class="svc-card">
                 <div class="svc-card-bg">
                   <img src="<%= s.img %>" alt="<%= s.name %>" loading="lazy" decoding="async">
                 </div>
@@ -288,8 +291,8 @@
     <div class="container">
       <div class="reviews-header">
         <span class="section-tag">Đánh giá · Reviews</span>
-        <h2 class="reviews-heading">Khách hàng nói<br>về <em>Dear Musé</em></h2>
-        <p class="reviews-sub">Mỗi lần bấm máy là một câu chuyện — đây là những gì khách hàng chia sẻ sau mỗi buổi chụp.
+        <h2 class="reviews-heading">Khách hàng nói về<br> <em>Dear Musé</em></h2>
+        <p class="reviews-sub">Mỗi lần bấm máy là một câu chuyện, đây là những gì khách hàng chia sẻ sau mỗi buổi chụp.
         </p>
       </div>
 
@@ -434,14 +437,14 @@
       <!-- Overall rating bar -->
       <div class="reviews-summary reveal">
         <div class="reviews-rating">
-          <span class="reviews-score">5.0</span>
+          <span class="reviews-score">4.6</span>
           <div>
             <div class="reviews-stars-big">★★★★★</div>
             <p>Dựa trên 127 đánh giá thực tế</p>
           </div>
         </div>
         <div class="reviews-platforms">
-          <span>Được đánh giá 5⭐ trên</span>
+          <span>Được đánh giá 4.6⭐ trên</span>
           <span class="platform-tag">Google Reviews</span>
           <span class="platform-tag">Facebook</span>
           <span class="platform-tag">Instagram</span>
@@ -461,16 +464,16 @@
             <img src="<%= aboutImage %>" alt="Dear Musé Studio" loading="lazy" decoding="async">
             <div class="about-snap-tag">
               <span>Dear Musé</span>
-              <span>Est. 2023</span>
+              <span>Est. 2026</span>
             </div>
           </div>
         </div>
         <div class="about-snap-text reveal-right">
           <span class="section-tag">Về chúng tôi</span>
           <h2 class="about-snap-heading">Người đứng sau<br><em>ống kính</em></h2>
-          <p>Dear Musé không chỉ là một studio — đây là nơi những khoảnh khắc được chọn lọc, được tạo hình bằng ánh sáng
+          <p>Dear Musé không chỉ là một studio đây là nơi những khoảnh khắc được chọn lọc, được tạo hình bằng ánh sáng
             tự nhiên và cảm xúc chân thật.</p>
-          <p>Chúng tôi tin rằng ảnh đẹp nhất không phải là ảnh kỹ thuật hoàn hảo — mà là ảnh ghi lại được cảm xúc thật,
+          <p>Chúng tôi tin rằng ảnh đẹp nhất không phải là ảnh kỹ thuật hoàn hảo mà là ảnh ghi lại được cảm xúc thật,
             khoảnh khắc bạn cười tự nhiên khi chẳng biết mình đang được chụp.</p>
           <div class="about-snap-stats">
             <div class="snap-stat">
@@ -482,8 +485,8 @@
               <label>Bộ ảnh</label>
             </div>
             <div class="snap-stat">
-              <span>5+</span>
-              <label>Năm kinh nghiệm</label>
+              <span>10K</span>
+              <label>Giờ chụp ảnh</label>
             </div>
           </div>
           <a href="/about" class="link-arrow">Đọc câu chuyện của chúng tôi <svg width="14" height="14"
@@ -503,7 +506,7 @@
     <div class="container cta-inner">
       <div class="cta-text reveal">
         <span class="section-tag">Bắt đầu nào</span>
-        <h2 class="cta-heading">"Sẵn sàng tạo nên<br>khoảnh khắc<br><em>của riêng bạn?"</em></h2>
+        <h2 class="cta-heading">Sẵn sàng tạo nên<br>khoảnh khắc<br><em>của riêng bạn</em></h2>
         <p>Phản hồi trong vòng 24h · Tư vấn concept miễn phí</p>
         <div class="cta-actions">
           <a href="/booking" class="btn-cta-primary"><span>Đặt lịch ngay</span></a>
@@ -512,8 +515,8 @@
       </div>
       <div class="cta-visual reveal-right">
         <div class="cta-img-frame">
-          <img src="/cdn/image?w=600&src=%2Fsource%2FN%C3%A0ng%20th%C6%A1%2FXanh%20xanh%20005.webp"
-            alt="Đặt lịch Dear Musé" loading="lazy" decoding="async">
+          <img src="/cdn/image?src=%2Fsource%2FC%C3%81%20NH%C3%82N%2FCONCEPT%2FSU209664.webp" alt="Đặt lịch Dear Musé"
+            loading="lazy" decoding="async">
         </div>
         <div class="cta-img-accent"></div>
       </div>

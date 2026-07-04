@@ -1,0 +1,114 @@
+<div class="admin-header">
+  <h1>Yêu cầu sửa ảnh của Khách Hàng</h1>
+</div>
+
+<!-- Bộ lọc trạng thái -->
+<div class="filter-bar">
+  <a href="#" class="filter-btn active" data-status="all">Tất cả</a>
+  <a href="#" class="filter-btn" data-status="submitted">Chờ chỉnh sửa</a>
+  <a href="#" class="filter-btn" data-status="completed">Đã hoàn thành</a>
+</div>
+
+<div class="admin-card" style="padding: 0;">
+  <% if (requests && requests.length > 0) { %>
+    <table id="requestsTable">
+      <thead>
+        <tr>
+          <th>Khách hàng</th>
+          <th>Bộ ảnh / Album</th>
+          <th>Số lượng ảnh</th>
+          <th>Thời gian yêu cầu</th>
+          <th>Trạng thái</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% requests.forEach(r => { %>
+          <tr class="request-row" data-status="<%= r.edit_status %>">
+            <td>
+              <div style="font-weight: 500;"><%= r.customer_name %></div>
+              <div style="font-size: 11px; color: var(--smoke); margin-top: 2px;">
+                <%= r.customer_email %> <%= r.customer_phone ? '· ' + r.customer_phone : '' %>
+              </div>
+            </td>
+            <td>
+              <div style="font-weight: 500;"><%= r.album_title %></div>
+              <div style="font-size: 11px; color: var(--smoke); margin-top: 2px;">
+                Ngày chụp: <%= r.shoot_date ? new Date(r.shoot_date).toLocaleDateString('vi-VN') : '—' %>
+              </div>
+            </td>
+            <td>
+              <span class="badge" style="background: var(--bone); color: var(--ink);"><%= r.request_count %> ảnh</span>
+            </td>
+            <td>
+              <%= r.submitted_at ? new Date(r.submitted_at).toLocaleString('vi-VN') : '—' %>
+            </td>
+            <td>
+              <% if (r.edit_status === 'submitted') { %>
+                <span class="badge badge-pending">Chờ chỉnh sửa</span>
+              <% } else if (r.edit_status === 'completed') { %>
+                <span class="badge badge-confirmed">Đã chỉnh sửa</span>
+              <% } else { %>
+                <span class="badge" style="background: #e2e8f0; color: #475569;"><%= r.edit_status %></span>
+              <% } %>
+            </td>
+            <td>
+              <a href="/admin/albums/<%= r.album_id %>/photos" class="btn-sm btn-sm-dark" style="text-decoration: none;">
+                Xử lý ảnh
+              </a>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <div class="empty-state">Chưa có yêu cầu chỉnh sửa ảnh nào từ khách hàng.</div>
+  <% } %>
+</div>
+
+<script>
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      // Update active class
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      
+      const status = this.getAttribute('data-status');
+      const rows = document.querySelectorAll('.request-row');
+      let visibleCount = 0;
+
+      rows.forEach(row => {
+        const rowStatus = row.getAttribute('data-status');
+        if (status === 'all' || rowStatus === status) {
+          row.style.display = '';
+          visibleCount++;
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      // Show empty state if no rows visible
+      const emptyState = document.querySelector('.empty-state');
+      const table = document.querySelector('table');
+      if (visibleCount === 0) {
+        if (table) table.style.display = 'none';
+        if (!emptyState) {
+          const card = document.querySelector('.admin-card');
+          const div = document.createElement('div');
+          div.className = 'empty-state temp-empty';
+          div.innerText = 'Không tìm thấy yêu cầu nào phù hợp.';
+          card.appendChild(div);
+        } else {
+          emptyState.style.display = 'block';
+        }
+      } else {
+        if (table) table.style.display = '';
+        const tempEmpty = document.querySelector('.temp-empty');
+        if (tempEmpty) tempEmpty.remove();
+        if (emptyState) emptyState.style.display = 'none';
+      }
+    });
+  });
+</script>

@@ -178,6 +178,15 @@ async function setup() {
     }
   }
 
+  try {
+    await conn.query(`ALTER TABLE blog_posts ADD COLUMN content_blocks JSON NULL AFTER content`);
+    console.log('✅ Đã thêm cột content_blocks vào bảng blog_posts');
+  } catch (e) {
+    if (e.code !== 'ER_DUP_FIELDNAME') {
+      console.warn('⚠️ Cảnh báo thêm cột content_blocks:', e.message);
+    }
+  }
+
   // Thêm cột duration_seconds cho bảng analytics_events
   try {
     await conn.query(`ALTER TABLE analytics_events ADD COLUMN duration_seconds INT DEFAULT 0`);
@@ -215,6 +224,7 @@ async function setup() {
       description TEXT,
       cover_image VARCHAR(500),
       status ENUM('booked', 'shooting', 'editing', 'completed') DEFAULT 'booked',
+      edit_status ENUM('not_submitted', 'submitted', 'completed') DEFAULT 'not_submitted',
       shoot_date DATE,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
@@ -245,6 +255,31 @@ async function setup() {
   `);
 
   await conn.query(`
+    CREATE TABLE IF NOT EXISTS photo_edit_requests (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      album_id INT NOT NULL,
+      image_id INT NOT NULL,
+      customer_note TEXT,
+      edited_url VARCHAR(500) DEFAULT NULL,
+      edited_thumbnail_url VARCHAR(500) DEFAULT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      FOREIGN KEY (album_id) REFERENCES customer_albums(id) ON DELETE CASCADE,
+      FOREIGN KEY (image_id) REFERENCES album_images(id) ON DELETE CASCADE
+    )
+  `);
+
+  // Migration for existing database:
+  try {
+    await conn.query(`ALTER TABLE customer_albums ADD COLUMN edit_status ENUM('not_submitted', 'submitted', 'completed') DEFAULT 'not_submitted'`);
+    console.log('✅ Đã thêm cột edit_status vào bảng customer_albums');
+  } catch (e) {
+    if (e.code !== 'ER_DUP_FIELDNAME') {
+      console.warn('⚠️ Cảnh báo thêm cột edit_status:', e.message);
+    }
+  }
+
+  await conn.query(`
     CREATE TABLE IF NOT EXISTS otps (
       id INT AUTO_INCREMENT PRIMARY KEY,
       email VARCHAR(255) NOT NULL,
@@ -273,6 +308,10 @@ async function setup() {
     CREATE TABLE IF NOT EXISTS members (
       id INT AUTO_INCREMENT PRIMARY KEY,
       user_id INT NOT NULL UNIQUE,
+      full_name VARCHAR(255),
+      dob DATE,
+      id_card VARCHAR(50),
+      is_card_active TINYINT(1) DEFAULT 0,
       manh_sang_total INT NOT NULL DEFAULT 0,
       manh_sang_balance INT NOT NULL DEFAULT 0,
       card_tier ENUM('pearl', 'rose', 'gold', 'privilege') NOT NULL DEFAULT 'pearl',
@@ -289,6 +328,21 @@ async function setup() {
       FOREIGN KEY (referred_by) REFERENCES members(id) ON DELETE SET NULL
     )
   `);
+
+  try {
+    await conn.query(`
+      ALTER TABLE members 
+      ADD COLUMN full_name VARCHAR(255),
+      ADD COLUMN dob DATE,
+      ADD COLUMN id_card VARCHAR(50),
+      ADD COLUMN is_card_active TINYINT(1) DEFAULT 0
+    `);
+    console.log('✅ Đã thêm các cột profile vào bảng members');
+  } catch (e) {
+    if (e.code !== 'ER_DUP_FIELDNAME') {
+      console.warn('⚠️ Cảnh báo thêm cột profile vào members:', e.message);
+    }
+  }
 
   await conn.query(`
     CREATE TABLE IF NOT EXISTS manh_sang_transactions (
@@ -376,6 +430,25 @@ async function setup() {
   `);
 
   // Alter bookings table
+  try {
+    await conn.query(`ALTER TABLE bookings ADD COLUMN user_id INT`);
+    await conn.query(`ALTER TABLE bookings ADD CONSTRAINT fk_bookings_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL`);
+  } catch (e) {
+    if (e.code !== 'ER_DUP_FIELDNAME' && !e.message.includes('Duplicate key name')) {
+      console.warn('⚠️ Cảnh báo thêm cột user_id vào bookings:', e.message);
+    }
+  }
+
+  try {
+    await conn.query(`ALTER TABLE bookings MODIFY COLUMN status ENUM('pending','awaiting_payment','confirmed','completed','cancelled') DEFAULT 'awaiting_payment'`);
+    await conn.query(`ALTER TABLE bookings ADD COLUMN deposit_amount INT DEFAULT 0`);
+    await conn.query(`ALTER TABLE bookings ADD COLUMN payment_expires_at DATETIME`);
+  } catch (e) {
+    if (e.code !== 'ER_DUP_FIELDNAME') {
+      console.warn('⚠️ Cảnh báo thêm cột payment vào bookings:', e.message);
+    }
+  }
+
   try {
     await conn.query(`ALTER TABLE bookings ADD COLUMN group_size INT DEFAULT 1`);
     await conn.query(`ALTER TABLE bookings ADD COLUMN is_birthday_month TINYINT(1) DEFAULT 0`);

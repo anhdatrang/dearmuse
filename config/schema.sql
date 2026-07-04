@@ -126,6 +126,7 @@ CREATE TABLE IF NOT EXISTS customer_albums (
   description TEXT,
   cover_image VARCHAR(500),
   status ENUM('booked', 'shooting', 'editing', 'completed') DEFAULT 'booked',
+  edit_status ENUM('not_submitted', 'submitted', 'completed') DEFAULT 'not_submitted',
   shoot_date DATE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
@@ -140,6 +141,19 @@ CREATE TABLE IF NOT EXISTS album_images (
   file_size INT,
   uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (album_id) REFERENCES customer_albums(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS photo_edit_requests (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  album_id INT NOT NULL,
+  image_id INT NOT NULL,
+  customer_note TEXT,
+  edited_url VARCHAR(500) DEFAULT NULL,
+  edited_thumbnail_url VARCHAR(500) DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (album_id) REFERENCES customer_albums(id) ON DELETE CASCADE,
+  FOREIGN KEY (image_id) REFERENCES album_images(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS face_descriptors (

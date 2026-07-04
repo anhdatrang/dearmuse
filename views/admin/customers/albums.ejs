@@ -49,6 +49,11 @@
             <h3 style="margin-bottom: 4px;"><%= a.title %></h3>
             <div style="font-size: 13px; color: var(--smoke);">
               <%= a.shoot_date ? new Date(a.shoot_date).toLocaleDateString('vi-VN') : '—' %> | <%= a.photo_count %> ảnh
+              <% if (a.edit_status === 'submitted') { %>
+                &nbsp;•&nbsp; <span class="badge badge-pending">Khách yêu cầu sửa</span>
+              <% } else if (a.edit_status === 'completed') { %>
+                &nbsp;•&nbsp; <span class="badge badge-confirmed">Đã chỉnh sửa xong</span>
+              <% } %>
             </div>
           </div>
           <!-- Quản lý trạng thái & Xóa -->

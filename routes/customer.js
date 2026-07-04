@@ -10,6 +10,9 @@ const requireCustomer = (req, res, next) => {
   next();
 };
 
+router.get('/api/notifications', customerController.getNotifications);
+router.post('/api/notifications/read', customerController.markNotificationsAsRead);
+
 router.use(requireCustomer);
 
 const multer = require('multer');
@@ -20,6 +23,8 @@ router.get('/my-albums/:id', customerController.albumDetail);
 router.get('/download-album/:id', customerController.downloadAlbum);
 router.post('/albums/:id/filter-face', upload.single('photo'), customerController.filterFace);
 router.post('/albums/:id/download-selected', customerController.downloadCustom);
+router.post('/albums/:id/submit-edit-request', customerController.submitEditRequest);
+router.get('/albums/:id/download-edited', customerController.downloadEditedPhotos);
 
 // Booking history
 router.get('/my-bookings', customerController.myBookings);

@@ -316,6 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Chatbot Logic ---
     const chatbotWindow = document.getElementById('chatbot-window');
     const chatbotCloseBtn = document.getElementById('chatbot-close-btn');
+    const chatbotZoomBtn = document.getElementById('chatbot-zoom-btn');
     const chatbotBtn = document.getElementById('mascot-btn-chatbot');
     const chatbotMessages = document.getElementById('chatbot-messages');
     const chatbotForm = document.getElementById('chatbot-form');
@@ -342,12 +343,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
       chatbotCloseBtn.addEventListener('click', () => {
         chatbotWindow.classList.remove('open');
+        chatbotWindow.classList.remove('zoomed');
+        chatbotWindow.style.width = '';
+        chatbotWindow.style.height = '';
       });
 
       // Close when clicking outside chatbot window (except mascot-widget)
       document.addEventListener('click', (e) => {
         if (!chatbotWindow.contains(e.target) && !mascotWidget.contains(e.target)) {
           chatbotWindow.classList.remove('open');
+          chatbotWindow.classList.remove('zoomed');
+          chatbotWindow.style.width = '';
+          chatbotWindow.style.height = '';
         }
       });
 

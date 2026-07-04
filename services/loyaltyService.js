@@ -116,6 +116,13 @@ class LoyaltyService {
         [memberId, amount, newBalance, type, description, referenceId, referenceType]
       );
       
+      // Thêm thông báo cá nhân
+      const amountStr = amount > 0 ? `+${amount}` : `${amount}`;
+      await db.query(
+        'INSERT INTO user_notifications (user_id, title, content) VALUES (?, ?, ?)',
+        [member.user_id, 'Biến động Mảnh Sáng', `Tài khoản của bạn vừa thay đổi ${amountStr} Mảnh Sáng. (Lý do: ${description})`]
+      );
+      
       if (!isExternalConn) await db.commit();
       
       return { newBalance, newTotal };
@@ -153,6 +160,12 @@ class LoyaltyService {
         await db.query(
           'INSERT INTO tier_upgrade_log (member_id, from_tier, to_tier, manh_sang_at_change, reason) VALUES (?, ?, ?, ?, ?)',
           [memberId, member.card_tier, newTier, member.manh_sang_total, 'auto_upgrade']
+        );
+
+        // Gửi thông báo chúc mừng thăng hạng
+        await db.query(
+          'INSERT INTO user_notifications (user_id, title, content) VALUES (?, ?, ?)',
+          [member.user_id, 'Thăng hạng thành viên', `Chúc mừng bạn đã được nâng cấp lên hạng thẻ ${newTier.toUpperCase()}!`]
         );
         
         if (!isExternalConn) await db.commit();

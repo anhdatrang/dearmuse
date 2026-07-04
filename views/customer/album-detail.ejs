@@ -2,7 +2,7 @@
   pageCss = 'customer-portal.css';
 %>
 
-<!-- Dùng thư viện GLightbox cho ảnh popup mượt mà nếu chưa có ở layout -->
+<!-- Dùng thư viện GLightbox cho ảnh popup mượt mà -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
 <script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js"></script>
 
@@ -10,7 +10,8 @@
   <%- include('../partials/customer-nav') %>
 
   <main class="cust-main">
-    <div class="cust-page-header">
+    <!-- Header của Album -->
+    <div class="cust-page-header" style="margin-bottom: 24px;">
       <a href="/customer/my-albums" style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--smoke); margin-bottom: 16px; display: inline-flex; align-items: center; gap: 4px; text-decoration: none;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
         Quay lại danh sách
@@ -19,62 +20,73 @@
         <div>
           <h1 style="font-size: 2rem; margin-bottom: 8px;"><%= album.title %></h1>
           <p style="color: var(--smoke); font-size: 0.95rem; margin: 0;">
-            <%= photos.length %> ảnh &nbsp;•&nbsp; Ngày chụp: <%= album.shoot_date ? new Date(album.shoot_date).toLocaleDateString('vi-VN') : '—' %>
+            <%= photos.length %> ảnh gốc &nbsp;•&nbsp; Ngày chụp: <%= album.shoot_date ? new Date(album.shoot_date).toLocaleDateString('vi-VN') : '—' %>
           </p>
         </div>
-
-        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-          <label class="btn btn-dark" style="padding: 10px 20px; cursor: pointer; display: flex; align-items: center; gap: 8px; border-radius: 8px;">
-            <input type="file" id="faceInput" accept="image/*" style="display: none;" onchange="handleFaceFilter(this)">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-            <span id="faceFilterText">Tải ảnh lên</span>
-          </label>
-          <button class="btn btn-dark" style="padding: 10px 20px; display: flex; align-items: center; gap: 8px; border-radius: 8px;" onclick="startWebcam()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-            Chụp khuôn mặt
-          </button>
-          
-          <button id="clearFilterBtn" class="btn btn-outline-dark" style="display: none; border-color: #dc3545; color: #dc3545; padding: 10px 20px; border-radius: 8px;" onclick="clearFilter()">
-            ✖ Bỏ lọc
-          </button>
-
-          <a href="/customer/download-album/<%= album.id %>" target="_blank" onclick="handleDownload()" class="btn btn-dark submit-btn" style="padding: 10px 20px; display: flex; align-items: center; gap: 8px; border-radius: 8px;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-            <span>Tải Toàn Bộ (Zip)</span>
-          </a>
-
-          <!-- Nút hướng dẫn -->
-          <button class="btn pulse-guide-btn" onclick="document.getElementById('guideOverlay').style.display='flex'" title="Hướng dẫn sử dụng AI">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-            <span style="font-size: 13px; font-weight: 600;">HƯỚNG DẪN</span>
-          </button>
-        </div>
       </div>
-      
-      <!-- Điều chỉnh độ chính xác -->
-      <div id="thresholdControl" style="display: none; align-items: center; gap: 12px; margin-top: 20px; padding: 12px 16px; background: rgba(255,255,255,0.6); border: 1px solid var(--bone); border-radius: 8px; width: fit-content;">
+    </div>
+
+    <!-- Navigation các Tab -->
+    <div class="album-tabs-nav" style="display: flex; border-bottom: 1px solid var(--bone); margin-bottom: 28px; gap: 24px; overflow-x: auto; padding-bottom: 4px;">
+      <button class="tab-btn active" id="tab-btn-original" onclick="switchTab('original')" style="background: none; border: none; font-size: 1rem; font-weight: 500; padding: 12px 4px; cursor: pointer; color: var(--smoke); border-bottom: 2px solid transparent; transition: all 0.2s;">
+        📁 Kho Ảnh Gốc (<%= photos.length %>)
+      </button>
+      <button class="tab-btn" id="tab-btn-select-edits" onclick="switchTab('select-edits')" style="background: none; border: none; font-size: 1rem; font-weight: 500; padding: 12px 4px; cursor: pointer; color: var(--smoke); border-bottom: 2px solid transparent; transition: all 0.2s;">
+        ✨ Chọn Ảnh Chỉnh Sửa 
+        <% if (album.edit_status === 'submitted') { %>
+          <span style="font-size: 11px; padding: 2px 6px; background: #fef9c3; color: #92400e; border-radius: 4px; margin-left: 4px;">Chờ chỉnh sửa</span>
+        <% } else if (album.edit_status === 'completed') { %>
+          <span style="font-size: 11px; padding: 2px 6px; background: #dcfce7; color: #166534; border-radius: 4px; margin-left: 4px;">Đã trả ảnh</span>
+        <% } else { %>
+          <span style="font-size: 11px; padding: 2px 6px; background: var(--bone); color: var(--smoke); border-radius: 4px; margin-left: 4px;">0/<%= maxEditPhotos %></span>
+        <% } %>
+      </button>
+      <button class="tab-btn" id="tab-btn-edited" onclick="switchTab('edited')" style="background: none; border: none; font-size: 1rem; font-weight: 500; padding: 12px 4px; cursor: pointer; color: var(--smoke); border-bottom: 2px solid transparent; transition: all 0.2s;">
+        🎁 Ảnh Đã Chỉnh Sửa
+        <% if (album.edit_status === 'completed') { %>
+          <span style="font-size: 10px; padding: 2px 6px; background: #e0e7ff; color: #3730a3; border-radius: 10px; margin-left: 4px; font-weight: 700;"><%= editRequests.length %></span>
+        <% } %>
+      </button>
+    </div>
+
+    <!-- ================= TAB 1: KHO ẢNH GỐC ================= -->
+    <div class="tab-content" id="tab-content-original">
+      <!-- Công cụ của Ảnh gốc (AI Filter, Webcam, Download) -->
+      <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px;">
+        <label class="btn btn-dark" style="padding: 10px 20px; cursor: pointer; display: flex; align-items: center; gap: 8px; border-radius: 8px;">
+          <input type="file" id="faceInput" accept="image/*" style="display: none;" onchange="handleFaceFilter(this)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+          <span id="faceFilterText">Tải ảnh lên (AI)</span>
+        </label>
+        <button class="btn btn-dark" style="padding: 10px 20px; display: flex; align-items: center; gap: 8px; border-radius: 8px;" onclick="startWebcam()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+          Chụp khuôn mặt
+        </button>
+        
+        <button id="clearFilterBtn" class="btn btn-outline-dark" style="display: none; border-color: #dc3545; color: #dc3545; padding: 10px 20px; border-radius: 8px;" onclick="clearFilter()">
+          ✖ Bỏ lọc
+        </button>
+
+        <a href="/customer/download-album/<%= album.id %>" target="_blank" onclick="handleDownload()" class="btn btn-dark submit-btn" style="padding: 10px 20px; display: flex; align-items: center; gap: 8px; border-radius: 8px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          <span>Tải Toàn Bộ (Zip)</span>
+        </a>
+
+        <button class="btn pulse-guide-btn" onclick="document.getElementById('guideOverlay').style.display='flex'" title="Hướng dẫn sử dụng AI">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+          <span style="font-size: 13px; font-weight: 600;">HƯỚNG DẪN</span>
+        </button>
+      </div>
+
+      <!-- Độ chính xác AI slider -->
+      <div id="thresholdControl" style="display: none; align-items: center; gap: 12px; margin-bottom: 24px; padding: 12px 16px; background: rgba(255,255,255,0.6); border: 1px solid var(--bone); border-radius: 8px; width: fit-content;">
         <span style="font-size: 0.85rem; color: var(--smoke); font-weight: 500;">Độ chính xác:</span>
         <input type="range" id="thresholdSlider" min="25" max="55" value="40" step="5" style="width: 120px;" oninput="document.getElementById('thresholdVal').innerText = (100 - this.value) + '%'; rerunFilter()">
         <span id="thresholdVal" style="font-size: 0.9rem; color: var(--ink); font-weight: 700;">60%</span>
       </div>
-    </div>
 
-    <!-- Add loading script -->
-    <script>
-      function handleDownload() {
-        const btn = document.querySelector('.submit-btn span');
-        const oldText = btn.innerText;
-        btn.innerText = "Đang chuẩn bị file...";
-        setTimeout(() => {
-          btn.innerText = oldText;
-          window.location.reload();
-        }, 2000);
-      }
-    </script>
-
-    <% if (photos && photos.length > 0) { %>
-      <!-- Photo Grid -->
-      <div class="cust-panel" style="padding: 0; background: transparent; border: none;">
+      <!-- Photo Grid Gốc -->
+      <% if (photos && photos.length > 0) { %>
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px;">
           <% photos.forEach(p => { %>
             <div class="photo-card" data-id="<%= p.id %>" style="position: relative; border-radius: 12px; overflow: hidden; background: var(--bone);">
@@ -92,22 +104,136 @@
             </div>
           <% }) %>
         </div>
-      </div>
-    <% } else { %>
-      <div class="cust-empty">
-        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-        <h3>Album trống</h3>
-        <p>Studio chưa upload ảnh cho album này. Vui lòng quay lại sau.</p>
-      </div>
-    <% } %>
+      <% } else { %>
+        <div class="cust-empty">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+          <h3>Album trống</h3>
+          <p>Studio chưa upload ảnh cho album này. Vui lòng quay lại sau.</p>
+        </div>
+      <% } %>
+    </div>
 
+    <!-- ================= TAB 2: CHỌN ẢNH CHỈNH SỬA ================= -->
+    <div class="tab-content" id="tab-content-select-edits" style="display: none;">
+      <% if (album.edit_status === 'not_submitted') { %>
+        <!-- Hướng dẫn lựa chọn -->
+        <div class="alert alert-info" style="background: #eef2f6; border-left: 4px solid #3b82f6; padding: 16px; border-radius: 8px; margin-bottom: 28px; line-height: 1.5;">
+          💡 <b>Hướng dẫn chọn ảnh sửa:</b> Bạn hãy tích chọn tối đa <b><%= maxEditPhotos %> bức ảnh</b> bạn ưng ý nhất để gửi cho Studio chỉnh sửa. Với mỗi ảnh được chọn, vui lòng viết ghi chú yêu cầu cụ thể (ví dụ: <i>chỉnh eo, mịn da, tẩy mụn...</i>) để chúng tôi xử lý tốt nhất.
+        </div>
+
+        <!-- Lưới ảnh lựa chọn -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px;">
+          <% photos.forEach(p => { %>
+            <div class="edit-select-card" id="edit-card-<%= p.id %>" style="position: relative; border-radius: 12px; overflow: hidden; background: var(--bone); border: 2px solid transparent; transition: all 0.3s; display: flex; flex-direction: column; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
+              <!-- Checkbox overlay -->
+              <div style="position: relative; aspect-ratio: 3/4; overflow: hidden;">
+                <input type="checkbox" class="edit-photo-checkbox" value="<%= p.id %>" data-thumb="<%= p.thumbnail_url %>" style="position: absolute; top: 12px; left: 12px; z-index: 10; width: 24px; height: 24px; cursor: pointer; accent-color: var(--mocha);" onchange="handleEditSelection(this)">
+                
+                <span class="selection-badge" id="badge-<%= p.id %>" style="position: absolute; top: 12px; right: 12px; background: var(--mocha); color: white; width: 26px; height: 26px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; z-index: 10; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">#</span>
+
+                <img src="<%= p.thumbnail_url %>" alt="<%= p.file_name %>" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+              
+              <!-- Khung ghi chú (ẩn cho đến khi được chọn) -->
+              <div class="note-container" id="note-container-<%= p.id %>" style="padding: 12px; background: white; border-top: 1px solid var(--bone); display: none;">
+                <label style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--smoke); font-weight: bold; display: block; margin-bottom: 6px;">Yêu cầu chỉnh sửa:</label>
+                <textarea class="edit-note-textarea" id="note-<%= p.id %>" placeholder="Ví dụ: bóp eo, mịn da..." style="width: 100%; border: 1px solid var(--bone); border-radius: 6px; padding: 6px; font-size: 13px; font-family: var(--font-body); resize: none;" rows="2"></textarea>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <!-- Trạng thái đã gửi yêu cầu chỉnh sửa -->
+        <div style="text-align: center; max-width: 600px; margin: 40px auto; padding: 40px; background: white; border: 1px solid var(--bone); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
+          <div style="width: 64px; height: 64px; background: #fef9c3; color: #92400e; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 32px; margin-bottom: 20px;">⏳</div>
+          <h2 style="font-family: var(--font-display); font-weight: normal; margin-bottom: 8px;">Đã gửi yêu cầu chỉnh sửa</h2>
+          <p style="color: var(--smoke); font-size: 0.95rem; margin-bottom: 24px; line-height: 1.5;">
+            Cảm ơn bạn! Studio đã nhận được danh sách <%= maxEditPhotos %> ảnh của bạn và đang tiến hành chỉnh sửa tỉ mỉ từng chi tiết. Bạn sẽ nhận được thông báo ngay khi ảnh hoàn thành.
+          </p>
+          <div style="border-top: 1px solid var(--bone); padding-top: 20px; text-align: left;">
+            <h4 style="margin-bottom: 12px; text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; color: var(--smoke);">Ảnh bạn đã chọn:</h4>
+            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px;">
+              <% editRequests.forEach(req => { %>
+                <div style="position: relative; aspect-ratio: 3/4; border-radius: 6px; overflow: hidden;" title="Ghi chú: <%= req.customer_note || 'Không có ghi chú' %>">
+                  <img src="<%= req.orig_thumb %>" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+              <% }) %>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- ================= TAB 3: ẢNH ĐÃ CHỈNH SỬA ================= -->
+    <div class="tab-content" id="tab-content-edited" style="display: none;">
+      <% if (album.edit_status === 'not_submitted') { %>
+        <div class="cust-empty" style="padding: 60px 20px;">
+          <div style="font-size: 40px; margin-bottom: 16px;">✨</div>
+          <h3>Chưa có ảnh chỉnh sửa</h3>
+          <p style="max-width: 400px; margin: 0 auto 20px;">Bạn chưa gửi yêu cầu chỉnh sửa ảnh. Vui lòng chuyển qua Tab <b>"Chọn Ảnh Chỉnh Sửa"</b> để chọn tối đa <%= maxEditPhotos %> ảnh gửi cho chúng tôi.</p>
+          <button class="btn btn-dark" onclick="switchTab('select-edits')" style="padding: 10px 24px; border-radius: 8px;">Chọn ảnh sửa ngay</button>
+        </div>
+      <% } else if (album.edit_status === 'submitted') { %>
+        <div class="cust-empty" style="padding: 60px 20px;">
+          <div style="width: 50px; height: 50px; border: 4px solid var(--bone); border-top-color: var(--mocha); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+          <h3>Đang trong quá trình chỉnh sửa...</h3>
+          <p style="max-width: 400px; margin: 0 auto;">Đội ngũ kỹ thuật viên của Dear Musé đang hậu kỳ, cân chỉnh màu sắc và xử lý ánh sáng cho bộ ảnh của bạn. Vui lòng quay lại sau.</p>
+        </div>
+      <% } else if (album.edit_status === 'completed') { %>
+        <!-- Action Bar cho Ảnh đã sửa -->
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; background: white; padding: 20px; border-radius: 12px; border: 1px solid var(--bone);">
+          <div>
+            <h3 style="margin: 0 0 4px 0; font-family: var(--font-display); font-weight: normal; font-size: 1.3rem;">Bộ ảnh đã hoàn tất!</h3>
+            <p style="margin: 0; font-size: 0.9rem; color: var(--smoke);">Toàn bộ <%= maxEditPhotos %> bức ảnh đã được chỉnh sửa nước màu nghệ thuật hoàn mỹ nhất.</p>
+          </div>
+          <a href="/customer/albums/<%= album.id %>/download-edited" target="_blank" class="btn btn-dark" style="padding: 10px 24px; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            Tải Ảnh Đã Sửa (Zip)
+          </a>
+        </div>
+
+        <!-- Lưới ảnh đã sửa -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px;">
+          <% editRequests.forEach(req => { %>
+            <% if (req.edited_url) { %>
+              <div class="photo-card" style="position: relative; border-radius: 12px; overflow: hidden; background: var(--bone); box-shadow: 0 4px 12px rgba(0,0,0,0.04);">
+                <a href="<%= req.edited_url %>" class="glightbox" data-gallery="edited-album" data-title="<%= req.file_name %>">
+                  <img src="<%= req.edited_thumbnail_url %>" alt="Ảnh đã sửa" style="width: 100%; aspect-ratio: 3/4; object-fit: cover; transition: transform 0.4s ease;" class="hover-zoom">
+                </a>
+                
+                <!-- Nhãn đánh dấu ảnh đã sửa -->
+                <span style="position: absolute; top: 12px; left: 12px; background: #e0e7ff; color: #3730a3; font-size: 9px; font-weight: 700; padding: 4px 8px; border-radius: 4px; z-index: 5; letter-spacing: 0.05em; text-transform: uppercase;">Edited</span>
+
+                <a href="<%= req.edited_url %>" download="<%= req.file_name ? req.file_name.replace(/\.[^/.]+$/, "") + "_edited" : "edited" %>" 
+                   style="position: absolute; bottom: 12px; right: 12px; background: rgba(26,25,22,0.6); color: white; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; backdrop-filter: blur(4px); transition: background 0.3s;"
+                   onmouseover="this.style.background='var(--ink)'" onmouseout="this.style.background='rgba(26,25,22,0.6)'">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                </a>
+              </div>
+            <% } %>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
   </main>
 </div>
 
-<!-- Sticky Action Bar for custom download -->
+<!-- Sticky Action Bar cho việc gửi yêu cầu (Chỉ hiển thị ở Tab 2 khi chọn ảnh) -->
+<div id="editActionBar" style="position: fixed; bottom: 0; left: 0; right: 0; background: rgba(26, 25, 22, 0.95); backdrop-filter: blur(15px); padding: 16px 0; display: none; z-index: 1000; box-shadow: 0 -4px 30px rgba(0,0,0,0.3); color: white;">
+  <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 90%; max-width: 1200px; margin: 0 auto;">
+    <span style="font-family: var(--font-body); font-size: 15px;">
+       ✨ Đã chọn <strong id="editSelectedCount" style="font-size: 18px; color: var(--avocado);">0</strong> / <%= maxEditPhotos %> ảnh
+    </span>
+    <button type="button" class="btn" onclick="submitPhotosToStudio()" style="padding: 10px 28px; border-radius: 8px; background: var(--avocado); color: var(--ink); border: none; font-weight: bold; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#c6ce5d'" onmouseout="this.style.background='var(--avocado)'">
+      Gửi Yêu Cầu Chỉnh Sửa
+    </button>
+  </div>
+</div>
+
+<!-- Sticky Action Bar cho việc tải ảnh đã chọn ở Tab 1 -->
 <div id="actionBar" style="position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); padding: 16px 0; border-top: 1px solid rgba(0,0,0,0.1); display: none; z-index: 1000; box-shadow: 0 -4px 20px rgba(0,0,0,0.05);">
-  <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-    <span style="font-family: var(--font-display); font-size: 18px;">Đã chọn <b id="selectedCount">0</b> ảnh</span>
+  <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 90%; max-width: 1200px; margin: 0 auto;">
+    <span style="font-family: var(--font-display); font-size: 18px;">Đã chọn <b id="selectedCount">0</b> ảnh gốc</span>
     <form method="POST" action="/customer/albums/<%= album.id %>/download-selected" id="customDownloadForm" target="_blank">
       <input type="hidden" name="imageIds" id="imageIdsInput">
       <button type="submit" class="btn btn-dark" style="padding: 8px 24px; border-radius: 8px;" onclick="setTimeout(()=>window.location.reload(), 2000)">Tải Hình Đã Chọn</button>
@@ -115,39 +241,12 @@
   </div>
 </div>
 
-<!-- Loading Overlay cho khách -->
+<!-- Phân tích khuôn mặt AI Overlay -->
 <div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; flex-direction: column; align-items: center; justify-content: center; color: white;">
   <div style="width: 50px; height: 50px; border: 4px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;"></div>
   <h3 style="margin: 0; font-family: 'Outfit', sans-serif;">Đang phân tích khuôn mặt...</h3>
   <p style="color: #ccc; margin-top: 10px;">Vui lòng đợi trong giây lát</p>
 </div>
-<style>
-  @keyframes spin { 100% { transform: rotate(360deg); } }
-  
-  /* Hiệu ứng nhấp nháy cho nút hướng dẫn */
-  .pulse-guide-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 10px 16px;
-    border-radius: 8px;
-    border: 1px solid #e593a8;
-    background: transparent;
-    color: #d05372;
-    animation: pulse-border 2s infinite;
-    transition: all 0.3s ease;
-  }
-  .pulse-guide-btn:hover {
-    background: #e593a8;
-    color: #fff;
-    animation: none;
-  }
-  @keyframes pulse-border {
-    0% { box-shadow: 0 0 0 0 rgba(229, 147, 168, 0.4); }
-    70% { box-shadow: 0 0 0 8px rgba(229, 147, 168, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(229, 147, 168, 0); }
-  }
-</style>
 
 <!-- Webcam Overlay -->
 <div id="webcamOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; flex-direction: column; align-items: center; justify-content: center; color: white;">
@@ -159,7 +258,7 @@
   </div>
 </div>
 
-<!-- Guide Overlay Đẹp Mắt Hơn -->
+<!-- Guide Overlay -->
 <div id="guideOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); z-index: 10001; align-items: center; justify-content: center; backdrop-filter: blur(8px);">
   <div style="background: var(--vanilla, #FFF7E6); padding: 40px; border-radius: 24px; max-width: 550px; width: 90%; color: var(--ink); position: relative; box-shadow: 0 24px 60px rgba(0,0,0,0.2); border: 1px solid var(--bone);">
     <button style="position: absolute; top: 20px; right: 20px; background: rgba(122,92,74,0.1); border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 16px; cursor: pointer; color: var(--mocha); display: flex; align-items: center; justify-content: center; transition: background 0.3s;" onclick="document.getElementById('guideOverlay').style.display='none'" onmouseover="this.style.background='rgba(122,92,74,0.2)'" onmouseout="this.style.background='rgba(122,92,74,0.1)'">✖</button>
@@ -184,18 +283,10 @@
         <div style="flex-shrink: 0; width: 32px; height: 32px; background: var(--ink); color: var(--vanilla); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700;">2</div>
         <div>
           <h4 style="margin: 0 0 4px 0; color: var(--ink); font-weight: 600; font-size: 1.05rem;">AI tự động tìm kiếm</h4>
-          <p style="margin: 0;">Hệ thống sẽ quét hàng trăm bức ảnh trong tích tắc và lọc ra những bức ảnh có mặt bạn.</p>
+          <p style="margin: 0;">Hệ thống sẽ quét ảnh trong tích tắc và lọc ra những bức ảnh có mặt bạn.</p>
           <div style="background: rgba(122,92,74,0.06); border-radius: 8px; padding: 12px; margin-top: 12px; font-size: 0.85rem; border-left: 3px solid var(--mocha);">
-            💡 <b>Mẹo:</b> Dùng thanh "Độ chính xác" hiện ra sau đó để điều chỉnh kết quả. Kéo lên % cao nếu AI nhận nhầm, và kéo xuống % thấp nếu AI bỏ sót ảnh do góc nghiêng / che mặt.
+            💡 <b>Mẹo:</b> Dùng thanh "Độ chính xác" để điều chỉnh kết quả. Kéo lên % cao nếu AI nhận nhầm, và kéo xuống % thấp nếu AI bỏ sót ảnh.
           </div>
-        </div>
-      </div>
-      
-      <div style="display: flex; gap: 16px; margin-bottom: 12px;">
-        <div style="flex-shrink: 0; width: 32px; height: 32px; background: var(--ink); color: var(--vanilla); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700;">3</div>
-        <div>
-          <h4 style="margin: 0 0 4px 0; color: var(--ink); font-weight: 600; font-size: 1.05rem;">Tải về máy</h4>
-          <p style="margin: 0;">Kiểm tra các ảnh ưng ý và bấm <b>"Tải Hình Đã Chọn"</b> ở thanh công cụ dưới cùng.</p>
         </div>
       </div>
     </div>
@@ -206,10 +297,47 @@
   </div>
 </div>
 
+<!-- SCRIPTS ĐIỀU KHIỂN CHUNG -->
 <script>
-  let _lastAllScores = {}; // cache {imageId: distance} for re-run
+  let _lastAllScores = {};
   let _stream = null;
+  let activeTabName = 'original';
 
+  // 1. Quản lý chuyển đổi các Tab
+  function switchTab(tabName) {
+    activeTabName = tabName;
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
+    
+    document.getElementById('tab-btn-' + tabName).classList.add('active');
+    document.getElementById('tab-content-' + tabName).style.display = 'block';
+
+    // Style active tab
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.style.color = 'var(--smoke)';
+      btn.style.borderBottomColor = 'transparent';
+    });
+    const activeBtn = document.getElementById('tab-btn-' + tabName);
+    activeBtn.style.color = 'var(--ink)';
+    activeBtn.style.borderBottomColor = 'var(--mocha)';
+    
+    // Quản lý hiển thị các Action Bar cố định
+    const originalActionBar = document.getElementById('actionBar');
+    const editActionBar = document.getElementById('editActionBar');
+    
+    if (tabName === 'original') {
+      toggleSelection(); // hiện action bar tải ảnh gốc nếu có tích chọn
+      editActionBar.style.display = 'none';
+    } else if (tabName === 'select-edits') {
+      originalActionBar.style.display = 'none';
+      updateEditActionBarVisibility(); // hiện action bar gửi yêu cầu sửa ảnh nếu có tích
+    } else {
+      originalActionBar.style.display = 'none';
+      editActionBar.style.display = 'none';
+    }
+  }
+
+  // 2. Chụp khuôn mặt AI & Lọc ảnh gốc (Giữ nguyên tính năng cũ)
   async function startWebcam() {
     try {
       _stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
@@ -232,14 +360,12 @@
   function captureWebcam() {
     const video = document.getElementById('webcamVideo');
     const canvas = document.createElement('canvas');
-    // Mặc định scale down để nhẹ ảnh
     const MAX = 640;
     const scale = Math.min(MAX / video.videoWidth, MAX / video.videoHeight, 1);
     canvas.width = Math.round(video.videoWidth * scale);
     canvas.height = Math.round(video.videoHeight * scale);
     const ctx = canvas.getContext('2d');
     
-    // Lật ngược lại canvas vì video đang bị lật (mirror)
     ctx.translate(canvas.width, 0);
     ctx.scale(-1, 1);
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
@@ -252,9 +378,6 @@
 
   async function handleFaceFilter(input) {
     if (!input.files || !input.files[0]) return;
-    document.getElementById('loadingOverlay').style.display = 'flex';
-
-    // === Nén ảnh selfie xuống 640px ngay trên trình duyệt ===
     const file = input.files[0];
     let blob = file;
     try {
@@ -263,23 +386,15 @@
       const scale = Math.min(MAX / bmp.width, MAX / bmp.height, 1);
       const w = Math.round(bmp.width * scale);
       const h = Math.round(bmp.height * scale);
-      const offscreen = new OffscreenCanvas ? new OffscreenCanvas(w, h) : document.createElement('canvas');
-      offscreen.width = w; offscreen.height = h;
-      const ctx = offscreen.getContext('2d');
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext('2d');
       ctx.drawImage(bmp, 0, 0, w, h);
-      blob = await new Promise(res => {
-        if (offscreen.convertToBlob) {
-          offscreen.convertToBlob({ type: 'image/jpeg', quality: 0.85 }).then(res);
-        } else {
-          offscreen.toBlob(res, 'image/jpeg', 0.85);
-        }
-      });
+      blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', 0.85));
       bmp.close && bmp.close();
     } catch (e) {
-      console.warn('Client compression skipped:', e);
-      blob = file; // fallback: gửi file gốc
+      blob = file;
     }
-    // ===================================================
     sendToFaceFilterAPI(blob);
   }
 
@@ -294,24 +409,19 @@
         body: formData
       });
       const data = await res.json();
-      
       document.getElementById('loadingOverlay').style.display = 'none';
 
       if (data.success) {
         _lastAllScores = data.allScores || {};
-        // Hiện thanh điều chỉnh và nút bỏ lọc
         document.getElementById('thresholdControl').style.display = 'flex';
         document.getElementById('clearFilterBtn').style.display = 'block';
         applyFilter(data.matchedIds, data.matchedIds.length);
-        document.getElementById('faceFilterText').innerText = `✅ Đã tìm thấy ${data.matchedIds.length} ảnh`;
       } else {
         alert(data.message || "Không tìm thấy khuôn mặt nào.");
-        document.getElementById('faceFilterText').innerText = "🔍 Tải ảnh lên";
       }
     } catch (e) {
       document.getElementById('loadingOverlay').style.display = 'none';
-      alert("Lỗi khi xử lý ảnh. Thử lại sau.");
-      document.getElementById('faceFilterText').innerText = "🔍 Tải ảnh lên";
+      alert("Lỗi kết nối máy chủ.");
     }
   }
 
@@ -327,8 +437,7 @@
         cb.checked = false;
       }
     });
-    const btnText = document.getElementById('faceFilterText');
-    btnText.innerText = `✅ Tìm thấy ${count} ảnh`;
+    document.getElementById('faceFilterText').innerText = `✅ Đã tìm thấy ${count} ảnh`;
     toggleSelection();
   }
 
@@ -343,13 +452,11 @@
   }
 
   function clearFilter() {
-    // Ẩn UI filter
     document.getElementById('thresholdControl').style.display = 'none';
     document.getElementById('clearFilterBtn').style.display = 'none';
-    document.getElementById('faceFilterText').innerText = "🔍 Tải ảnh lên";
-    document.getElementById('faceInput').value = ''; // reset input
+    document.getElementById('faceFilterText').innerText = "🔍 Tải ảnh lên (AI)";
+    document.getElementById('faceInput').value = '';
     
-    // Hiện lại tất cả ảnh
     document.querySelectorAll('.photo-card').forEach(card => {
       card.style.display = 'block';
       card.querySelector('.photo-checkbox').checked = false;
@@ -358,6 +465,7 @@
   }
 
   function toggleSelection() {
+    if (activeTabName !== 'original') return;
     const checkboxes = document.querySelectorAll('.photo-checkbox:checked');
     const count = checkboxes.length;
     const actionBar = document.getElementById('actionBar');
@@ -373,8 +481,163 @@
       actionBar.style.display = 'none';
     }
   }
+
+  // 3. Quản lý việc Chọn 10 Ảnh Chỉnh Sửa ở Tab 2
+  let selectedEditPhotos = []; // Mảng chứa các đối tượng { imageId, note }
+
+  function handleEditSelection(checkbox) {
+    const imageId = checkbox.value;
+    const isChecked = checkbox.checked;
+    const card = document.getElementById('edit-card-' + imageId);
+    const badge = document.getElementById('badge-' + imageId);
+    const noteContainer = document.getElementById('note-container-' + imageId);
+
+    if (isChecked) {
+      // Giới hạn ảnh
+      if (selectedEditPhotos.length >= <%= maxEditPhotos %>) {
+        alert("Bạn chỉ được phép chọn tối đa <%= maxEditPhotos %> ảnh để chỉnh sửa.");
+        checkbox.checked = false;
+        return;
+      }
+      
+      // Thêm vào mảng
+      selectedEditPhotos.push({
+        imageId: imageId,
+        note: ''
+      });
+
+      // Hiển thị UI ghi chú & đường viền chọn
+      card.style.borderColor = 'var(--mocha)';
+      noteContainer.style.display = 'block';
+      badge.style.display = 'inline-flex';
+    } else {
+      // Xoá khỏi mảng
+      selectedEditPhotos = selectedEditPhotos.filter(item => item.imageId !== imageId);
+
+      // Ẩn UI ghi chú & đường viền chọn
+      card.style.borderColor = 'transparent';
+      noteContainer.style.display = 'none';
+      badge.style.display = 'none';
+    }
+
+    // Cập nhật lại số thứ tự huy hiệu (Badge Index #1, #2...)
+    updateSelectionBadges();
+    updateEditActionBarVisibility();
+  }
+
+  function updateSelectionBadges() {
+    selectedEditPhotos.forEach((item, index) => {
+      const badge = document.getElementById('badge-' + item.imageId);
+      if (badge) badge.innerText = '#' + (index + 1);
+    });
+  }
+
+  function updateEditActionBarVisibility() {
+    const editActionBar = document.getElementById('editActionBar');
+    const selectedCountSpan = document.getElementById('editSelectedCount');
+    const count = selectedEditPhotos.length;
+
+    if (count > 0 && activeTabName === 'select-edits') {
+      editActionBar.style.display = 'block';
+      selectedCountSpan.innerText = count;
+    } else {
+      editActionBar.style.display = 'none';
+    }
+  }
+
+  // 4. Gửi yêu cầu chỉnh sửa lên Server
+  async function submitPhotosToStudio() {
+    if (selectedEditPhotos.length === 0) {
+      alert("Vui lòng chọn ít nhất 1 ảnh.");
+      return;
+    }
+
+    if (selectedEditPhotos.length > <%= maxEditPhotos %>) {
+      alert("Bạn chỉ được chọn tối đa <%= maxEditPhotos %> ảnh.");
+      return;
+    }
+
+    if (!confirm(`Bạn có chắc chắn muốn gửi yêu cầu chỉnh sửa cho ${selectedEditPhotos.length} ảnh này không? Bạn sẽ không thể thay đổi danh sách sau khi gửi.`)) {
+      return;
+    }
+
+    // Đọc note hiện tại từ các textarea
+    selectedEditPhotos.forEach(item => {
+      const textarea = document.getElementById('note-' + item.imageId);
+      if (textarea) {
+        item.note = textarea.value.trim();
+      }
+    });
+
+    try {
+      const response = await fetch('/customer/albums/<%= album.id %>/submit-edit-request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          selections: selectedEditPhotos
+        })
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        alert(data.message);
+        window.location.reload();
+      } else {
+        alert(data.message || "Gửi thất bại, vui lòng kiểm tra lại.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Lỗi hệ thống khi gửi yêu cầu.");
+    }
+  }
+
+  function handleDownload() {
+    const btn = document.querySelector('.submit-btn span');
+    const oldText = btn.innerText;
+    btn.innerText = "Đang chuẩn bị file...";
+    setTimeout(() => {
+      btn.innerText = oldText;
+    }, 2000);
+  }
 </script>
 
 <style>
-.hover-zoom:hover { transform: scale(1.05); }
+  @keyframes spin { 100% { transform: rotate(360deg); } }
+  
+  .pulse-guide-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid #e593a8;
+    background: transparent;
+    color: #d05372;
+    animation: pulse-border 2s infinite;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  .pulse-guide-btn:hover {
+    background: #e593a8;
+    color: #fff;
+    animation: none;
+  }
+  @keyframes pulse-border {
+    0% { box-shadow: 0 0 0 0 rgba(229, 147, 168, 0.4); }
+    70% { box-shadow: 0 0 0 8px rgba(229, 147, 168, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(229, 147, 168, 0); }
+  }
+  .hover-zoom:hover { transform: scale(1.04); }
+  
+  /* Lớp phủ Lightbox tùy biến màu */
+  .glightbox-container {
+    --glightbox-background: rgba(26, 25, 22, 0.98);
+  }
+  
+  /* Thiết kế Tab Link */
+  .tab-btn:hover {
+    color: var(--ink) !important;
+  }
 </style>

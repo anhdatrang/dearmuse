@@ -1,0 +1,73 @@
+<div class="admin-header" style="margin-bottom: 24px;">
+  <h1>Quản lý thông báo & Ưu đãi</h1>
+</div>
+
+<% if (error && error.length > 0) { %>
+  <div style="padding: 12px; background: #f8d7da; color: #721c24; margin-bottom: 24px; border-radius: 4px;">
+    <%= error %>
+  </div>
+<% } %>
+<% if (success && success.length > 0) { %>
+  <div style="padding: 12px; background: #d4edda; color: #155724; margin-bottom: 24px; border-radius: 4px;">
+    <%= success %>
+  </div>
+<% } %>
+
+<!-- Tạo thông báo mới -->
+<div class="admin-card" style="margin-bottom: 32px; padding: 24px;">
+  <h3 style="margin-top: 0; font-family: var(--font-display); font-weight: normal; margin-bottom: 16px; color: var(--mocha);">
+    📢 Phát hành thông báo / Ưu đãi mới
+  </h3>
+  <form method="POST" action="/admin/notifications" style="display: flex; flex-direction: column; gap: 16px;">
+    <div>
+      <label style="display: block; font-size: 13px; font-weight: bold; color: var(--smoke); margin-bottom: 6px;">Tiêu đề thông báo:</label>
+      <input type="text" name="title" placeholder="Ví dụ: Ưu đãi 20% cho album concept mùa hè..." required style="width: 100%; padding: 10px; border: 1px solid var(--bone); border-radius: 6px; font-family: var(--font-body);">
+    </div>
+    <div>
+      <label style="display: block; font-size: 13px; font-weight: bold; color: var(--smoke); margin-bottom: 6px;">Nội dung chi tiết:</label>
+      <textarea name="content" placeholder="Nhập nội dung khuyến mãi, ưu đãi, mã giảm giá hoặc tin tức sự kiện..." required style="width: 100%; padding: 10px; border: 1px solid var(--bone); border-radius: 6px; font-family: var(--font-body); resize: vertical;" rows="4"></textarea>
+    </div>
+    <div>
+      <button type="submit" class="btn" style="background: var(--mocha); color: white; border: none; padding: 10px 24px; border-radius: 6px; cursor: pointer; font-weight: bold;">
+        Phát hành thông báo
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- Danh sách thông báo đã gửi -->
+<div class="admin-card" style="padding: 0;">
+  <h3 style="margin: 0; padding: 20px 24px; border-bottom: 1px solid var(--bone); font-family: var(--font-display); font-weight: normal; color: var(--mocha);">
+    📋 Lịch sử thông báo đã gửi
+  </h3>
+  <% if (announcements && announcements.length > 0) { %>
+    <table style="width: 100%; border-collapse: collapse;">
+      <thead>
+        <tr style="border-bottom: 1px solid var(--bone); text-align: left;">
+          <th style="padding: 16px 24px;">Tiêu đề</th>
+          <th style="padding: 16px 24px;">Nội dung</th>
+          <th style="padding: 16px 24px;">Thời gian phát hành</th>
+          <th style="padding: 16px 24px; text-align: center;">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% announcements.forEach(ann => { %>
+          <tr style="border-bottom: 1px solid var(--bone);">
+            <td style="padding: 16px 24px; font-weight: 500; max-width: 250px;"><%= ann.title %></td>
+            <td style="padding: 16px 24px; color: var(--smoke); font-size: 13.5px; max-width: 400px; word-wrap: break-word;"><%= ann.content %></td>
+            <td style="padding: 16px 24px; font-size: 13px; color: var(--smoke);"><%= new Date(ann.created_at).toLocaleString('vi-VN') %></td>
+            <td style="padding: 16px 24px; text-align: center;">
+              <form method="POST" action="/admin/notifications/<%= ann.id %>/delete" onsubmit="return confirm('Bạn có chắc chắn muốn xóa thông báo này? Khách hàng sẽ không thể thấy thông báo này nữa.');" style="display: inline;">
+                <button type="submit" class="btn-sm" style="background: #dc3545; color: white; border: none; cursor: pointer; padding: 6px 12px; border-radius: 4px;">
+                  Xóa
+                </button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <div class="empty-state" style="padding: 40px; text-align: center; color: var(--smoke);">Chưa có thông báo nào được phát hành.</div>
+  <% } %>
+</div>

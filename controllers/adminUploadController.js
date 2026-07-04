@@ -35,6 +35,7 @@ const upload = multer({
 });
 
 exports.uploadMiddleware = upload.array('photos', 500);
+exports.uploadSingleMiddleware = upload.single('editedPhoto');
 
 exports.uploadPhotos = async (req, res) => {
   const albumId = req.params.id;
@@ -98,11 +99,19 @@ exports.managePhotos = async (req, res) => {
 
     const [photos] = await db.query('SELECT * FROM album_images WHERE album_id = ? ORDER BY uploaded_at DESC', [albumId]);
 
+    const [editRequests] = await db.query(`
+      SELECT per.*, ai.original_url as orig_url, ai.thumbnail_url as orig_thumb, ai.file_name
+      FROM photo_edit_requests per
+      JOIN album_images ai ON per.image_id = ai.id
+      WHERE per.album_id = ?
+    `, [albumId]);
+
     res.render('admin/customers/album-photos', {
       title: `Quản lý ảnh: ${albums[0].title}`,
       layout: 'layouts/admin',
       album: albums[0],
-      photos
+      photos,
+      editRequests
     });
   } catch (err) {
     console.error(err);
@@ -166,5 +175,204 @@ exports.reprocessFaces = async (req, res) => {
     console.error(err);
     req.flash('error', 'Lỗi xử lý lại AI');
     res.redirect(`/admin/albums/${albumId}/photos`);
+  }
+};
+
+exports.downloadRequestedPhotos = async (req, res) => {
+  const albumId = req.params.id;
+  try {
+    const [albums] = await db.query('SELECT * FROM customer_albums WHERE id = ?', [albumId]);
+    if (albums.length === 0) return res.status(404).send('Không tìm thấy Album');
+
+    const [requests] = await db.query(`
+      SELECT per.*, ai.original_url, ai.file_name
+      FROM photo_edit_requests per
+      JOIN album_images ai ON per.image_id = ai.id
+      WHERE per.album_id = ?
+    `, [albumId]);
+
+    if (requests.length === 0) {
+      return res.status(404).send('Album này không có ảnh yêu cầu chỉnh sửa nào.');
+    }
+
+    const { ZipArchive } = require('archiver');
+    const archive = new ZipArchive({ zlib: { level: 0 }, store: true });
+
+    const zipName = `${albums[0].title.replace(/\s+/g, '_')}_YeuCauSua.zip`;
+    res.attachment(zipName);
+    archive.pipe(res);
+
+    const fsSync = require('fs');
+    for (const r of requests) {
+      const filePath = path.join(__dirname, '../public', r.original_url);
+      if (fsSync.existsSync(filePath)) {
+        archive.file(filePath, { name: r.file_name || path.basename(filePath) });
+      }
+    }
+
+    await archive.finalize();
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Lỗi server khi tải ảnh yêu cầu');
+  }
+};
+
+exports.uploadEditedPhotosBatch = async (req, res) => {
+  const albumId = req.params.id;
+  try {
+    const [albums] = await db.query('SELECT user_id FROM customer_albums WHERE id = ?', [albumId]);
+    if (albums.length === 0) {
+      req.flash('error', 'Không tìm thấy Album');
+      return res.redirect('back');
+    }
+
+    if (!req.files || req.files.length === 0) {
+      req.flash('error', 'Vui lòng chọn các ảnh đã chỉnh sửa để tải lên.');
+      return res.redirect('back');
+    }
+
+    const [requests] = await db.query(`
+      SELECT per.id as request_id, ai.file_name, ai.id as image_id
+      FROM photo_edit_requests per
+      JOIN album_images ai ON per.image_id = ai.id
+      WHERE per.album_id = ?
+    `, [albumId]);
+
+    if (requests.length === 0) {
+      req.flash('error', 'Album này không có yêu cầu chỉnh sửa nào từ khách hàng.');
+      return res.redirect('back');
+    }
+
+    // Helper functions for matching filenames
+    const getBase = (fn) => path.basename(fn, path.extname(fn)).toLowerCase();
+    const cleanBase = (base) => base.replace(/(_edited|_edit|-edited|-edit|_v\d+|-v\d+)/gi, '').trim();
+
+    // Track matched request IDs
+    const matchedRequestIds = new Set();
+
+    for (const file of req.files) {
+      const fileBase = getBase(file.originalname);
+      const fileClean = cleanBase(fileBase);
+
+      // 1. Try exact cleaned name match
+      let matched = requests.find(r => {
+        if (matchedRequestIds.has(r.request_id)) return false;
+        const rBase = getBase(r.file_name || '');
+        const rClean = cleanBase(rBase);
+        return rClean === fileClean;
+      });
+
+      // 2. Try substring match
+      if (!matched) {
+        matched = requests.find(r => {
+          if (matchedRequestIds.has(r.request_id)) return false;
+          const rBase = getBase(r.file_name || '');
+          const rClean = cleanBase(rBase);
+          return fileClean.includes(rClean) || rClean.includes(fileClean);
+        });
+      }
+
+      // 3. Fallback to first unmatched request
+      if (!matched) {
+        matched = requests.find(r => !matchedRequestIds.has(r.request_id));
+      }
+
+      if (matched) {
+        matchedRequestIds.add(matched.request_id);
+
+        const originalPath = file.path;
+        const filename = file.filename;
+        const thumbPath = path.join(thumbDir, filename);
+
+        // Generate thumbnail
+        await sharp(originalPath)
+          .resize({ width: 600 })
+          .jpeg({ quality: 70 })
+          .toFile(thumbPath);
+
+        const editedUrl = `/uploads/albums/${filename}`;
+        const editedThumbnailUrl = `/uploads/albums/thumbs/${filename}`;
+
+        await db.query(`
+          UPDATE photo_edit_requests
+          SET edited_url = ?, edited_thumbnail_url = ?
+          WHERE id = ?
+        `, [editedUrl, editedThumbnailUrl, matched.request_id]);
+      }
+    }
+
+    req.flash('success', `Đã tải lên và tự động phân bổ thành công các ảnh chỉnh sửa.`);
+    res.redirect(`/admin/albums/${albumId}/photos`);
+  } catch (err) {
+    console.error(err);
+    req.flash('error', 'Lỗi server khi tải lên hàng loạt ảnh đã sửa.');
+    res.redirect('back');
+  }
+};
+
+exports.uploadSingleEditedPhoto = async (req, res) => {
+  const { id, requestId } = req.params;
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: 'Không có file tải lên.' });
+    }
+
+    const originalPath = req.file.path;
+    const filename = req.file.filename;
+    const thumbPath = path.join(thumbDir, filename);
+
+    // Create thumbnail
+    await sharp(originalPath)
+      .resize({ width: 600 })
+      .jpeg({ quality: 70 })
+      .toFile(thumbPath);
+
+    const editedUrl = `/uploads/albums/${filename}`;
+    const editedThumbnailUrl = `/uploads/albums/thumbs/${filename}`;
+
+    await db.query(`
+      UPDATE photo_edit_requests
+      SET edited_url = ?, edited_thumbnail_url = ?
+      WHERE id = ? AND album_id = ?
+    `, [editedUrl, editedThumbnailUrl, requestId, id]);
+
+    res.json({
+      success: true,
+      message: 'Thay thế ảnh chỉnh sửa thành công.',
+      editedUrl,
+      editedThumbnailUrl
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Lỗi server khi thay thế ảnh.' });
+  }
+};
+
+exports.completeEditRequest = async (req, res) => {
+  const albumId = req.params.id;
+  try {
+    const [albums] = await db.query('SELECT user_id, title FROM customer_albums WHERE id = ?', [albumId]);
+    if (albums.length === 0) return res.status(404).send('Không tìm thấy Album');
+
+    const [pendingPhotos] = await db.query('SELECT id FROM photo_edit_requests WHERE album_id = ? AND edited_url IS NULL', [albumId]);
+    if (pendingPhotos.length > 0) {
+      req.flash('error', `Vui lòng tải lên ảnh đã sửa cho toàn bộ ảnh yêu cầu trước khi bấm hoàn tất. (Còn ${pendingPhotos.length} ảnh chưa tải)`);
+      return res.redirect('back');
+    }
+
+    await db.query(`UPDATE customer_albums SET edit_status = 'completed', status = 'completed' WHERE id = ?`, [albumId]);
+
+    // Gửi thông báo cá nhân cho khách hàng
+    await db.query(`
+      INSERT INTO user_notifications (user_id, title, content)
+      VALUES (?, ?, ?)
+    `, [albums[0].user_id, 'Ảnh đã chỉnh sửa hoàn tất', `Bộ ảnh chỉnh sửa cho Album "${albums[0].title}" đã hoàn tất! Hãy kiểm tra và tải về ngay.`]);
+
+    req.flash('success', 'Đã hoàn tất chỉnh sửa và gửi ảnh cho khách hàng!');
+    res.redirect(`/admin/albums/${albumId}/photos`);
+  } catch (err) {
+    console.error(err);
+    req.flash('error', 'Lỗi khi hoàn tất chỉnh sửa');
+    res.redirect('back');
   }
 };

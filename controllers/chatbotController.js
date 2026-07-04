@@ -58,6 +58,11 @@ exports.chat = async (req, res) => {
         role: msg.sender === 'user' ? 'user' : 'model',
         parts: [{ text: msg.text }]
       }));
+      
+      // Google Generative AI requires history to start with a 'user' message
+      while (formattedHistory.length > 0 && formattedHistory[0].role === 'model') {
+        formattedHistory.shift();
+      }
     }
 
     // 5. Bắt đầu phiên chat và gửi câu hỏi

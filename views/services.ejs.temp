@@ -1,0 +1,312 @@
+<% pageCss='services.css?v=3' ; %>
+
+  <!-- Services Page -->
+  <section class="svc-split-section">
+    <div class="container">
+      <div class="text-center" style="margin-bottom: 80px;">
+        <span class="section-label reveal" style="justify-content: center;">Dịch vụ</span>
+        <h1 class="section-heading reveal" style="font-size: clamp(40px, 6vw, 64px);">Những gì chúng tôi làm</h1>
+      </div>
+
+      <!-- Cinematic Podium Layout -->
+      <div class="svc-podium-container has-active reveal" data-delay="1">
+        <% const categories=[ { id: 'doanh-nghiep' , name: 'Doanh Nghiệp' , subtitle: 'Nâng tầm giá trị thương hiệu' ,
+          class: 'category-left' , num: '01' ,
+          image: '/cdn/image?src=%2Fsource%2FDOANH%20NGHI%E1%BB%86P%2FPREMIUM%2FIMG_4319.webp' , services: [ {
+          name: 'Event Basic' ,
+          desc: 'Ghi lại các sự kiện quy mô vừa và nhỏ với chất lượng phóng sự chân thực và tinh tế.' ,
+          price: 'Từ 3.000.000đ' , slug: 'event-basic' , details: ['1 nhiếp ảnh gia chính', 'Chụp phóng sự tự nhiên'
+          , 'Trả toàn bộ file ảnh gốc' , 'Retouch 30 ảnh tuyển chọn' ] }, { name: 'Event Premium' ,
+          desc: 'Gói chụp sự kiện cao cấp phục vụ thương mại, truyền thông và quảng bá thương hiệu.' ,
+          price: 'Từ 6.000.000đ' , slug: 'event-premium' , details: ['2 nhiếp ảnh gia chuyên
+          nghiệp', 'Thiết bị chiếu sáng di động chuyên dụng' , 'Retouch 60 ảnh nghệ thuật' , 'Bàn giao nhanh trong 48h'
+          ] } ] }, { id: 'ca-nhan' , name: 'Cá Nhân' , subtitle: 'Lưu giữ câu chuyện bản sắc' , class: 'category-center'
+          , num: '02' , image: '/cdn/image?src=%2Fsource%2FC%C3%81%20NH%C3%82N%2FCONCEPT%2FSU207836(1).webp' , services:
+          [ { name: 'Áo dài' ,
+          desc: 'Chụp ảnh Áo dài truyền thống tôn vinh nét duyên dáng, cổ điển và thanh lịch Việt Nam.' ,
+          price: 'Từ 1.800.000đ' , slug: 'portrait-ao-dai' , details: ['Chụp ảnh ngoài trời nghệ
+          thuật', 'Hỗ trợ Áo dài trắng cổ điển' , 'Retouch nghệ thuật 15 ảnh' , 'Trả toàn bộ file gốc sau buổi chụp' ]
+          }, { name: 'Concept' ,
+          desc: 'Thiết kế concept nghệ thuật độc bản, bay bổng, đậm chất thơ và lăng kính điện ảnh.' ,
+          price: 'Từ 2.500.000đ' , slug: 'portrait-concept' , details: ['Lên ý tưởng & moodboard
+          riêng', '90 phút chụp chuyên sâu' , 'Hỗ trợ trang phục thơ mộng' , 'Retouch nghệ thuật 15 ảnh' ] }, {
+          name: 'Profile' ,
+          desc: 'Chân dung cá nhân chuyên nghiệp, tinh giản phục vụ công việc và xây dựng thương hiệu.' ,
+          price: 'Từ 1.500.000đ' , slug: 'portrait-profile' , details: ['Chụp tại Studio phông nền
+          trơn', 'Tư vấn hướng dẫn tạo dáng thần thái' , 'Retouch chân dung 8 ảnh sắc nét'
+          , 'Trả toàn bộ file gốc ngay sau chụp' ] }, { name: 'Kỷ Yếu' ,
+          desc: 'Ghi lại cột mốc thanh xuân rực rỡ và những kỷ niệm đáng nhớ.' , price: 'Từ 1.800.000đ' ,
+          slug: 'portrait-ky-yeu' , details: ['Chụp ngoại cảnh hoặc studio', 'Hỗ trợ trang phục kỷ yếu'
+          , 'Trả toàn bộ file gốc' , 'Retouch 15 ảnh đặc sắc' ] } ] }, { id: 'mo-rong' , name: 'Mở Rộng' ,
+          subtitle: 'Trải nghiệm nghệ thuật tinh hoa' , class: 'category-right' , num: '03' ,
+          image: '/cdn/image?src=%2Fsource%2FM%E1%BB%9E%20R%E1%BB%98NG%2FS%E1%BA%A2N%20PH%E1%BA%A8M%2Fmeowmeo-109670-2.webp'
+          , services: [ { name: 'Chạm' ,
+          desc: 'Bộ ảnh tối giản (Minimalism) chú trọng vào ánh sáng tự nhiên và những cái chạm cảm xúc tinh khôi.' ,
+          price: 'Liên hệ tư vấn' , slug: 'concept-cham' , details: ['Bối cảnh studio đương đại tối
+          giản', 'Ánh sáng nghệ thuật đặc tả cảm xúc' , 'Retouch 12 tác phẩm chọn lọc'
+          , 'Tặng kèm 1 ảnh in khung gỗ cao cấp' ] }, { name: 'Khắc' ,
+          desc: 'Phong cách chân dung đen trắng (Fine Art B&W) khắc họa sâu sắc từng đường nét cá tính.' ,
+          price: 'Liên hệ tư vấn' , slug: 'concept-khac' , details: ['Chụp đặc tả chân dung cận
+          cảnh', 'Kỹ thuật ánh sáng tương phản cao' , 'Retouch 10 ảnh nghệ thuật' , 'In ấn 1 tấm khổ lớn nghệ thuật' ]
+          }, { name: 'Ấn' ,
+          desc: 'Concept nghệ thuật phá cách kết hợp trình chiếu projector hoặc sắp đặt sắp đặt độc bản.' ,
+          price: 'Liên hệ tư vấn' , slug: 'concept-an' , details: ['Sử dụng máy chiếu projector nghệ
+          thuật', 'Bối cảnh sắp đặt riêng biệt' , 'Nhiếp ảnh gia lead thực hiện' , 'Retouch 15 tác phẩm độc bản' ] } ] }
+          ]; %>
+
+          <% categories.forEach(cat=> { %>
+            <div class="svc-podium-column <%= cat.class %> <%= cat.id === 'ca-nhan' ? 'active' : '' %>"
+              data-category="<%= cat.id %>">
+              <div class="svc-pillar-image-wrap">
+                <img src="<%= cat.image %>" alt="<%= cat.name %>" loading="eager">
+              </div>
+              <h2 class="svc-pillar-title">
+                <%= cat.name %>
+              </h2>
+              <button class="svc-pillar-arrow-btn" aria-label="Xem dịch vụ <%= cat.name %>">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </button>
+            </div>
+            <% }) %>
+      </div>
+
+      <!-- Services Details View -->
+      <div class="svc-details-container reveal" data-delay="2">
+        <% categories.forEach(cat=> { %>
+          <div class="svc-panel <%= cat.id === 'ca-nhan' ? 'active' : '' %>" id="svc-panel-<%= cat.id %>">
+            <% cat.services.forEach(s=> { %>
+              <div class="svc-detail-card">
+                <div class="svc-card-header">
+                  <h3 class="svc-card-title">
+                    <%= s.name %>
+                  </h3>
+                  <p class="svc-card-desc">
+                    <%= s.desc %>
+                  </p>
+                </div>
+
+                <ul class="svc-card-features">
+                  <% s.details.forEach(detail=> { %>
+                    <li>
+                      <%= detail %>
+                    </li>
+                    <% }) %>
+                </ul>
+
+                <div class="svc-card-footer" style="justify-content: center;">
+                  <a href="/services/<%= s.slug %>" class="btn btn-outline-dark"
+                    style="border-radius: 30px; font-size: 11px; padding: 10px 20px;"><span>Xem thêm</span></a>
+                </div>
+              </div>
+              <% }) %>
+          </div>
+          <% }) %>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section">
+    <div class="container">
+      <div style="max-width: 800px; margin: 0 auto;">
+        <div class="text-center" style="margin-bottom: 64px;">
+          <span class="section-label reveal" style="justify-content: center; color: var(--avocado-cream);">FAQ</span>
+          <h2 class="section-heading reveal" style="color: var(--vanilla-cream);">Câu hỏi thường gặp</h2>
+        </div>
+
+        <div class="faq-list">
+          <% const faqs=[ { q: 'Buổi chụp diễn ra như thế nào?' ,
+            a: 'Trước buổi chụp, chúng tôi sẽ trao đổi sâu về concept, trang phục và địa điểm để đảm bảo đúng tinh thần bạn mong muốn. Trong khi chụp, ekip sẽ hướng dẫn pose dáng và tạo không khí thoải mái nhất để bạn là chính mình trước ống kính.'
+            }, { q: 'Sau bao lâu tôi nhận được hình ảnh?' ,
+            a: 'Ảnh gốc sẽ được gửi ngay sau buổi chụp để bạn chọn lựa. Ảnh đã chỉnh sửa kỹ lưỡng (retouch) sẽ được gửi lại trong vòng 5–7 ngày làm việc. Đối với các dự án lớn, thời gian có thể kéo dài 10–14 ngày.'
+            }, { q: 'Studio có hỗ trợ trang điểm và trang phục không?' ,
+            a: 'Tùy vào gói dịch vụ, chúng tôi có các chuyên gia trang điểm đối tác và kho trang phục cao cấp có sẵn. Bạn có thể chọn gói bao gồm toàn bộ (All-in) để chúng tôi lo từ A đến Z.'
+            }, { q: 'Chính sách hủy hoặc dời lịch chụp?' ,
+            a: 'Bạn vui lòng thông báo dời/hủy lịch ít nhất 48 giờ trước ngày chụp. Cọc sẽ được bảo lưu trong vòng 3 tháng để bạn sắp xếp lại thời gian phù hợp.'
+            }, ]; %>
+
+            <% faqs.forEach((faq, i)=> { %>
+              <div class="faq-item reveal" data-delay="<%= i + 1 %>">
+                <button class="faq-q" aria-expanded="false">
+                  <%= faq.q %>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                      stroke-linecap="round" class="faq-icon">
+                      <line x1="12" y1="5" x2="12" y2="19"></line>
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+                <div class="faq-a">
+                  <p>
+                    <%= faq.a %>
+                  </p>
+                </div>
+              </div>
+              <% }) %>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Thank You Section -->
+  <section class="svc-thankyou" id="svc-thankyou">
+    <div class="svc-thankyou-inner">
+
+      <!-- Quote with line-reveal animation -->
+      <div class="svc-quote-wrap" id="svc-quote-wrap">
+        <span class="svc-quote-line" id="svc-quote-line"></span>
+        <blockquote class="svc-quote-text" id="svc-quote-text">
+          "Mỗi khung hình kể một câu chuyện của riêng bạn."
+        </blockquote>
+      </div>
+
+      <!-- Thank you message -->
+      <div class="svc-thankyou-msg reveal">
+        <p>Cảm ơn bạn đã dành thời gian</p>
+        <p>tìm hiểu về <em>Dear Musé</em></p>
+      </div>
+
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // --- Podium Category Selector Interaction ---
+      const columns = document.querySelectorAll('.svc-podium-column');
+      const panels = document.querySelectorAll('.svc-panel');
+      const container = document.querySelector('.svc-podium-container');
+
+      if (columns.length > 0 && panels.length > 0) {
+        columns.forEach(column => {
+          column.addEventListener('click', () => {
+            const targetId = column.getAttribute('data-category');
+
+            // Update active class on columns
+            columns.forEach(c => c.classList.remove('active'));
+            column.classList.add('active');
+
+            // Ensure container has active helper class
+            if (container) {
+              container.classList.add('has-active');
+            }
+
+            // Toggle details panel active state with smooth fade
+            panels.forEach(panel => {
+              if (panel.id === `svc-panel-${targetId}`) {
+                panel.classList.add('active');
+              } else {
+                panel.classList.remove('active');
+              }
+            });
+
+            // Scroll smoothly to details panel container if not already fully visible on click
+            const detailsContainer = document.querySelector('.svc-details-container');
+            if (detailsContainer && window.innerWidth <= 768) {
+              detailsContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+          });
+        });
+      }
+
+      // FAQ Accordion
+      document.querySelectorAll('.faq-q').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = btn.closest('.faq-item');
+          const isOpen = item.classList.contains('open');
+
+          document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('open'));
+
+          if (!isOpen) item.classList.add('open');
+          btn.setAttribute('aria-expanded', !isOpen);
+        });
+      });
+
+      // ─── Quote Reveal Animation ───────────────────────────
+      const quoteWrap = document.getElementById('svc-quote-wrap');
+      const quoteLine = document.getElementById('svc-quote-line');
+      const quoteText = document.getElementById('svc-quote-text');
+
+      if (quoteWrap && quoteLine && quoteText) {
+        let animated = false;
+
+        const runQuoteAnimation = () => {
+          if (animated) return;
+          animated = true;
+
+          // Phase 1: Gold line sweeps from left across the full width (0.7s)
+          const fullWidth = quoteWrap.offsetWidth;
+          quoteLine.style.transition = 'width 0.7s cubic-bezier(0.76, 0, 0.24, 1)';
+          quoteLine.style.width = fullWidth + 'px';
+
+          // Phase 2: At ~60% of line animation, start revealing the text
+          setTimeout(() => {
+            quoteWrap.classList.add('revealed');
+          }, 420);
+
+          // Phase 3: After text is fully revealed, fade out the line
+          setTimeout(() => {
+            quoteLine.style.transition = 'opacity 0.5s ease';
+            quoteLine.style.opacity = '0';
+          }, 1400);
+        };
+
+        // Use IntersectionObserver to trigger when section enters viewport
+        const quoteObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              // Small delay so it feels intentional
+              setTimeout(runQuoteAnimation, 200);
+              quoteObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.4 });
+
+        quoteObserver.observe(quoteWrap);
+      }
+    });
+  </script>
+
+  <!-- FAQ Schema cho Google Search Rich Results -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Buổi chụp diễn ra như thế nào?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Trước buổi chụp, chúng tôi sẽ trao đổi sâu về concept, trang phục và địa điểm để đảm bảo đúng tinh thần bạn mong muốn. Trong khi chụp, ekip sẽ hướng dẫn pose dáng và tạo không khí thoải mái nhất để bạn là chính mình trước ống kính."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Sau bao lâu tôi nhận được hình ảnh?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ảnh gốc sẽ được gửi ngay sau buổi chụp để bạn chọn lựa. Ảnh đã chỉnh sửa kỹ lưỡng (retouch) sẽ được gửi lại trong vòng 5–7 ngày làm việc. Đối với các dự án lớn, thời gian có thể kéo dài 10–14 ngày."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Studio có hỗ trợ trang điểm và trang phục không?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Tùy vào gói dịch vụ, chúng tôi có các chuyên gia trang điểm đối tác và kho trang phục cao cấp có sẵn. Bạn có thể chọn gói bao gồm toàn bộ (All-in) để chúng tôi lo từ A đến Z."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Chính sách hủy hoặc dời lịch chụp?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Bạn vui lòng thông báo dời/hủy lịch ít nhất 48 giờ trước ngày chụp. Cọc sẽ được bảo lưu trong vòng 3 tháng để bạn sắp xếp lại thời gian phù hợp."
+      }
+    }
+  ]
+}
+</script>

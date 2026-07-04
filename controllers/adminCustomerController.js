@@ -95,3 +95,73 @@ exports.deleteAlbum = async (req, res) => {
     res.redirect('/admin/customers');
   }
 };
+
+exports.listPhotoEditRequests = async (req, res) => {
+  try {
+    const [requests] = await db.query(`
+      SELECT ca.id as album_id, ca.title as album_title, ca.shoot_date, ca.edit_status,
+             u.id as user_id, u.name as customer_name, u.phone as customer_phone, u.email as customer_email,
+             (SELECT COUNT(*) FROM photo_edit_requests per WHERE per.album_id = ca.id) as request_count,
+             (SELECT MIN(created_at) FROM photo_edit_requests per WHERE per.album_id = ca.id) as submitted_at
+      FROM customer_albums ca
+      JOIN users u ON ca.user_id = u.id
+      WHERE ca.edit_status != 'not_submitted'
+      ORDER BY submitted_at DESC
+    `);
+
+    res.render('admin/customers/edit-requests', {
+      title: 'Yêu cầu sửa ảnh của Khách Hàng',
+      layout: 'layouts/admin',
+      requests
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Lỗi server');
+  }
+};
+
+exports.listAnnouncements = async (req, res) => {
+  try {
+    const [announcements] = await db.query('SELECT * FROM announcements ORDER BY created_at DESC');
+    res.render('admin/notifications', {
+      title: 'Quản lý thông báo & Ưu đãi',
+      layout: 'layouts/admin',
+      announcements,
+      success: req.flash('success'),
+      error: req.flash('error')
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Lỗi server');
+  }
+};
+
+exports.createAnnouncement = async (req, res) => {
+  const { title, content } = req.body;
+  if (!title || !content) {
+    req.flash('error', 'Vui lòng điền đầy đủ tiêu đề và nội dung.');
+    return res.redirect('back');
+  }
+  try {
+    await db.query('INSERT INTO announcements (title, content) VALUES (?, ?)', [title, content]);
+    req.flash('success', 'Đã phát hành thông báo ưu đãi thành công!');
+    res.redirect('/admin/notifications');
+  } catch (err) {
+    console.error(err);
+    req.flash('error', 'Lỗi khi tạo thông báo.');
+    res.redirect('back');
+  }
+};
+
+exports.deleteAnnouncement = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await db.query('DELETE FROM announcements WHERE id = ?', [id]);
+    req.flash('success', 'Đã xóa thông báo thành công.');
+    res.redirect('/admin/notifications');
+  } catch (err) {
+    console.error(err);
+    req.flash('error', 'Lỗi khi xóa thông báo.');
+    res.redirect('back');
+  }
+};

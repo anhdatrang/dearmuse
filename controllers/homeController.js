@@ -30,52 +30,68 @@ const allSourceImages = {
 
 // Hero images (best shots for fullscreen - 24 images from all 3 collections)
 const heroImages = [
-  // Cá Nhân
+  // CONCEPT (12 images)
+  '/source/C%C3%81%20NH%C3%82N/CONCEPT/IMG_8967.webp',
+  '/source/C%C3%81%20NH%C3%82N/CONCEPT/IMG_8968.webp',
+  '/source/C%C3%81%20NH%C3%82N/CONCEPT/Qu%E1%BA%A3%20chanh%20001.webp',
+  '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207836(1).webp',
+  '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207938(1).webp',
+  '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207942(1).webp',
+  '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207959(1).webp',
+  '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207965(1).webp',
+  '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207973(1).webp',
+  '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207976(1).webp',
+  '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207993(1).webp',
+  '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU209534.webp',
+
+  // Nàng thơ (4 images)
+  '/source/N%C3%A0ng%20th%C6%A1/H%C6%B0%E1%BB%9Bng%20d%C6%B0%C6%A1ng%20001_.webp',
+  '/source/N%C3%A0ng%20th%C6%A1/N%C3%A0ng%20th%C6%A1%20001.webp',
+  '/source/N%C3%A0ng%20th%C6%A1/Xanh%20Xanh%20002.webp',
+  '/source/N%C3%A0ng%20th%C6%A1/Xanh%20xanh%20005.webp',
+
+  // Áo dài (4 images)
   '/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6366.webp',
   '/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6368.webp',
   '/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6371.webp',
-  '/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6382.webp',
-  '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207836(1).webp',
-  '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207938(1).webp',
-  '/source/N%C3%A0ng%20th%C6%A1/N%C3%A0ng%20th%C6%A1%20001.webp',
-  '/source/N%C3%A0ng%20th%C6%A1/N%C3%A0ng%20th%C6%A1%20002.webp',
-  '/source/N%C3%A0ng%20th%C6%A1/Xanh%20Xanh%20002.webp',
+  '/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6379.webp',
+
+  // Profile (4 images)
   '/source/C%C3%81%20NH%C3%82N/PROFILE/IMG_4925.webp',
-  // Doanh Nghiệp
-  '/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/IMG_4319.webp',
-  '/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/IMG_8774.webp',
-  '/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/IMG_8785.webp',
-  '/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/IMG_9947.webp',
-  '/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/IMG_4271.webp',
-  '/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/IMG_4303.webp',
-  '/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/IMG_4316.webp',
-  '/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/IMG_8778.webp',
-  // Mở Rộng
-  '/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_4613.webp',
-  '/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_4615.webp',
-  '/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_4691.webp',
-  '/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_4693.webp',
-  '/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_4695.webp',
-  '/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_5582.webp',
+  '/source/C%C3%81%20NH%C3%82N/PROFILE/IMG_4928.webp',
+  '/source/C%C3%81%20NH%C3%82N/PROFILE/IMG_4929.webp',
+  '/source/C%C3%81%20NH%C3%82N/PROFILE/IMG_4930.webp',
 ];
 
-// Featured gallery: 15 images, mix categories
+// Featured gallery: 24 images, user-specified order
 const featuredImages = [
-  allSourceImages['Cá Nhân'][0],
-  allSourceImages['Doanh Nghiệp'][0],
-  allSourceImages['Mở Rộng'][0],
-  allSourceImages['Cá Nhân'][2],
-  allSourceImages['Doanh Nghiệp'][1],
-  allSourceImages['Mở Rộng'][1],
-  allSourceImages['Cá Nhân'][3],
-  allSourceImages['Doanh Nghiệp'][2],
-  allSourceImages['Mở Rộng'][2],
-  allSourceImages['Cá Nhân'][1],
-  allSourceImages['Doanh Nghiệp'][3],
-  allSourceImages['Mở Rộng'][3],
-  allSourceImages['Cá Nhân'][4],
-  allSourceImages['Doanh Nghiệp'][4],
-  allSourceImages['Cá Nhân'][5],
+  // Cá nhân (15 ảnh)
+  { src: '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207836(1).webp', category: 'Cá Nhân', alt: 'Cá nhân' },
+  { src: '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207959(1).webp', category: 'Cá Nhân', alt: 'Cá nhân' },
+  { src: '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207976(1).webp', category: 'Cá Nhân', alt: 'Cá nhân' },
+  { src: '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU209678.webp', category: 'Cá Nhân', alt: 'Cá nhân' },
+  { src: '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU209664.webp', category: 'Cá Nhân', alt: 'Cá nhân' },
+  { src: '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU209554.webp', category: 'Cá Nhân', alt: 'Cá nhân' },
+  { src: '/source/C%C3%81%20NH%C3%82N/PROFILE/IMG_4925.webp', category: 'Cá Nhân', alt: 'Cá nhân' },
+  { src: '/source/C%C3%81%20NH%C3%82N/PROFILE/IMG_4933.webp', category: 'Cá Nhân', alt: 'Cá nhân' },
+  { src: '/source/C%C3%81%20NH%C3%82N/PROFILE/IMG_4928.webp', category: 'Cá Nhân', alt: 'Cá nhân' },
+  { src: '/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6368.webp', category: 'Cá Nhân', alt: 'Cá nhân' },
+  { src: '/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6420.webp', category: 'Cá Nhân', alt: 'Cá nhân' },
+  { src: '/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6383.webp', category: 'Cá Nhân', alt: 'Cá nhân' },
+  { src: '/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7162.webp', category: 'Cá Nhân', alt: 'Cá nhân' },
+  { src: '/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7154.webp', category: 'Cá Nhân', alt: 'Cá nhân' },
+  { src: '/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7151.webp', category: 'Cá Nhân', alt: 'Cá nhân' },
+  // Doanh nghiệp (6 ảnh)
+  { src: '/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/IMG_4362.webp', category: 'Doanh Nghiệp', alt: 'Doanh nghiệp' },
+  { src: '/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/IMG_4316.webp', category: 'Doanh Nghiệp', alt: 'Doanh nghiệp' },
+  { src: '/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/MEO07935.webp', category: 'Doanh Nghiệp', alt: 'Doanh nghiệp' },
+  { src: '/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/IMG4567.jpg', category: 'Doanh Nghiệp', alt: 'Doanh nghiệp' },
+  { src: '/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/IMG1234.jpg', category: 'Doanh Nghiệp', alt: 'Doanh nghiệp' },
+  { src: '/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/IMG2345.jpg', category: 'Doanh Nghiệp', alt: 'Doanh nghiệp' },
+  // Mở rộng (3 ảnh)
+  { src: '/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/meowmeo-109677.webp', category: 'Mở Rộng', alt: 'Mở rộng' },
+  { src: '/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG9999.jpg', category: 'Mở Rộng', alt: 'Mở rộng' },
+  { src: '/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/meowmeo-109697.webp', category: 'Mở Rộng', alt: 'Mở rộng' },
 ];
 
 const aboutImage = '/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207836(1).webp';

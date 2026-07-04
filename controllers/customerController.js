@@ -33,10 +33,27 @@ exports.albumDetail = async (req, res) => {
 
     const [photos] = await db.query('SELECT * FROM album_images WHERE album_id = ? ORDER BY uploaded_at ASC', [albumId]);
 
+    const [editRequests] = await db.query(`
+      SELECT per.*, ai.original_url as orig_url, ai.thumbnail_url as orig_thumb, ai.file_name
+      FROM photo_edit_requests per
+      JOIN album_images ai ON per.image_id = ai.id
+      WHERE per.album_id = ?
+    `, [albumId]);
+
+    const [members] = await db.query('SELECT card_tier FROM members WHERE user_id = ?', [userId]);
+    const tier = members.length > 0 ? members[0].card_tier : 'pearl';
+
+    let maxEditPhotos = 10;
+    if (tier === 'rose') maxEditPhotos = 13;
+    else if (tier === 'gold') maxEditPhotos = 18;
+    else if (tier === 'privilege') maxEditPhotos = 25;
+
     res.render('customer/album-detail', {
       title: `${albums[0].title} - Dear Musé`,
       album: albums[0],
-      photos
+      photos,
+      editRequests,
+      maxEditPhotos
     });
   } catch (err) {
     console.error(err);
@@ -257,5 +274,169 @@ exports.loyaltyHistory = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).send('Lỗi server');
+  }
+};
+
+
+exports.submitEditRequest = async (req, res) => {
+  const userId = req.session.userId;
+  const albumId = req.params.id;
+  const { selections } = req.body; // Array of { imageId, note }
+
+  if (!selections || !Array.isArray(selections) || selections.length === 0) {
+    return res.status(400).json({ success: false, message: 'Vui lòng chọn ít nhất 1 ảnh để gửi yêu cầu.' });
+  }
+
+  const conn = await db.getConnection();
+  try {
+    await conn.beginTransaction();
+
+    const [members] = await conn.query('SELECT card_tier FROM members WHERE user_id = ?', [userId]);
+    const tier = members.length > 0 ? members[0].card_tier : 'pearl';
+
+    let maxEditPhotos = 10;
+    if (tier === 'rose') maxEditPhotos = 13;
+    else if (tier === 'gold') maxEditPhotos = 18;
+    else if (tier === 'privilege') maxEditPhotos = 25;
+
+    if (selections.length > maxEditPhotos) {
+      await conn.rollback();
+      return res.status(400).json({ success: false, message: `Hạng thẻ của bạn chỉ được phép chọn tối đa ${maxEditPhotos} ảnh.` });
+    }
+
+    // Check ownership & status
+    const [albums] = await conn.query('SELECT * FROM customer_albums WHERE id = ? AND user_id = ?', [albumId, userId]);
+    if (albums.length === 0) {
+      await conn.rollback();
+      return res.status(403).json({ success: false, message: 'Không có quyền truy cập album này.' });
+    }
+
+    const album = albums[0];
+    if (album.edit_status !== 'not_submitted') {
+      await conn.rollback();
+      return res.status(400).json({ success: false, message: 'Yêu cầu chỉnh sửa của album này đã được gửi trước đó.' });
+    }
+
+    // Insert requests
+    for (const item of selections) {
+      const [images] = await conn.query('SELECT id FROM album_images WHERE id = ? AND album_id = ?', [item.imageId, albumId]);
+      if (images.length === 0) {
+        await conn.rollback();
+        return res.status(400).json({ success: false, message: 'Ảnh chọn không thuộc album này.' });
+      }
+
+      await conn.query(`
+        INSERT INTO photo_edit_requests (album_id, image_id, customer_note)
+        VALUES (?, ?, ?)
+      `, [albumId, item.imageId, item.note || '']);
+    }
+
+    // Update album status
+    await conn.query(`UPDATE customer_albums SET edit_status = 'submitted' WHERE id = ?`, [albumId]);
+
+    // Thêm thông báo cá nhân
+    await conn.query(`
+      INSERT INTO user_notifications (user_id, title, content)
+      VALUES (?, ?, ?)
+    `, [userId, 'Yêu cầu sửa ảnh đã gửi', `Bạn đã gửi yêu cầu chỉnh sửa ${selections.length} ảnh cho Album "${album.title}".`]);
+
+    await conn.commit();
+    res.json({ success: true, message: 'Gửi yêu cầu chỉnh sửa thành công!' });
+  } catch (err) {
+    await conn.rollback();
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Lỗi server khi lưu yêu cầu.' });
+  } finally {
+    conn.release();
+  }
+};
+
+exports.downloadEditedPhotos = async (req, res) => {
+  const userId = req.session.userId;
+  const albumId = req.params.id;
+
+  try {
+    const [albums] = await db.query('SELECT * FROM customer_albums WHERE id = ? AND user_id = ?', [albumId, userId]);
+    if (albums.length === 0) return res.status(403).send('Không có quyền truy cập');
+
+    const [editedPhotos] = await db.query(`
+      SELECT per.*, ai.file_name
+      FROM photo_edit_requests per
+      JOIN album_images ai ON per.image_id = ai.id
+      WHERE per.album_id = ? AND per.edited_url IS NOT NULL
+    `, [albumId]);
+
+    if (editedPhotos.length === 0) {
+      return res.status(404).send('Không tìm thấy ảnh đã chỉnh sửa nào.');
+    }
+
+    const archive = new ZipArchive({ zlib: { level: 0 }, store: true });
+    res.attachment(`${albums[0].title.replace(/\s+/g, '_')}_Edited_DearMuse.zip`);
+    archive.pipe(res);
+
+    for (const photo of editedPhotos) {
+      const filePath = path.join(__dirname, '../public', photo.edited_url);
+      if (fs.existsSync(filePath)) {
+        const ext = path.extname(filePath);
+        const origBase = photo.file_name ? path.basename(photo.file_name, path.extname(photo.file_name)) : 'edited';
+        archive.file(filePath, { name: `${origBase}_edited${ext}` });
+      }
+    }
+
+    await archive.finalize();
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Lỗi server');
+  }
+};
+
+exports.getNotifications = async (req, res) => {
+  const userId = req.session.userId;
+  try {
+    const [announcements] = await db.query('SELECT * FROM announcements ORDER BY created_at DESC LIMIT 20');
+    const formattedAnnouncements = announcements.map(a => ({
+      id: `ann-${a.id}`,
+      title: a.title,
+      content: a.content,
+      created_at: a.created_at,
+      type: 'announcement'
+    }));
+
+    let personalNotifications = [];
+    if (userId) {
+      const [personal] = await db.query('SELECT * FROM user_notifications WHERE user_id = ? ORDER BY created_at DESC LIMIT 20', [userId]);
+      personalNotifications = personal.map(p => ({
+        id: `user-${p.id}`,
+        title: p.title,
+        content: p.content,
+        created_at: p.created_at,
+        type: 'personal',
+        is_read: p.is_read
+      }));
+    }
+
+    const allNotifications = [...formattedAnnouncements, ...personalNotifications].sort(
+      (a, b) => new Date(b.created_at) - new Date(a.created_at)
+    );
+
+    res.json({
+      success: true,
+      notifications: allNotifications
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Lỗi server' });
+  }
+};
+
+exports.markNotificationsAsRead = async (req, res) => {
+  const userId = req.session.userId;
+  if (!userId) return res.json({ success: true });
+  try {
+    await db.query('UPDATE user_notifications SET is_read = 1 WHERE user_id = ? AND is_read = 0', [userId]);
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Lỗi server' });
   }
 };

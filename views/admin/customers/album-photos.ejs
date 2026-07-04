@@ -1,13 +1,17 @@
-<div class="admin-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+<div class="admin-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 24px;">
   <div>
     <h1>Quản lý ảnh: <%= album.title %></h1>
     <a href="/admin/customers/<%= album.user_id %>/albums" class="btn-sm">← Quay lại danh sách album</a>
   </div>
-  <form method="POST" action="/admin/albums/<%= album.id %>/reprocess-faces" onsubmit="return confirm('Hệ thống sẽ xử lý lại AI nhận diện khuôn mặt cho toàn bộ ảnh trong album này. Quá trình chạy nền và có thể mất vài phút tuỳ số lượng ảnh.\n\nTiếp tục?');">
-    <button type="submit" class="btn-sm" style="background: #6f42c1; color: white; border: none; cursor: pointer; padding: 8px 16px;">
-      🤖 Xử lý AI khuôn mặt
-    </button>
-  </form>
+  <div style="display: flex; gap: 12px;">
+    <% if (album.edit_status === 'submitted') { %>
+      <form method="POST" action="/admin/albums/<%= album.id %>/complete-edit-request">
+        <button type="submit" class="btn-sm btn-sm-dark" style="background: #2a7a5c; color: white; border: none; cursor: pointer; padding: 8px 16px;">
+          ✓ Hoàn tất & Gửi cho Khách hàng
+        </button>
+      </form>
+    <% } %>
+  </div>
 </div>
 
 <% if (error && error.length > 0) { %>
@@ -21,19 +25,120 @@
   </div>
 <% } %>
 
+<!-- ================= YÊU CẦU CHỈNH SỬA CỦA KHÁCH ================= -->
+<% if (album.edit_status !== 'not_submitted') { %>
+  <div class="admin-card" style="border-left: 5px solid var(--mocha); background: #fdfcfa; margin-bottom: 32px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--bone); padding-bottom: 12px;">
+      <h3 style="margin: 0; font-family: var(--font-display); font-size: 1.4rem; font-weight: normal; color: var(--mocha);">
+        ✨ Ảnh khách hàng chọn sửa (10 ảnh)
+      </h3>
+      <div>
+        Trạng thái: 
+        <% if (album.edit_status === 'submitted') { %>
+          <span class="badge badge-pending">Chờ chỉnh sửa</span>
+        <% } else if (album.edit_status === 'completed') { %>
+          <span class="badge badge-confirmed">Đã chỉnh sửa xong</span>
+        <% } %>
+      </div>
+    </div>
+
+    <!-- Thanh thao tác nhanh hàng loạt cho Admin -->
+    <% if (album.edit_status === 'submitted') { %>
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; background: rgba(122,92,74,0.05); padding: 20px; border-radius: 10px; margin-bottom: 24px; border: 1px dashed var(--mocha);">
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <span style="font-size: 13.5px; color: var(--smoke); font-weight: 500;">1. Tải ảnh gốc khách chọn để chỉnh sửa:</span>
+          <a href="/admin/albums/<%= album.id %>/download-requested" target="_blank" class="btn-sm" style="background: var(--mocha); color: white; display: inline-flex; align-items: center; gap: 6px; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-weight: 500;">
+            📥 Tải ảnh gốc yêu cầu (Zip)
+          </a>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <span style="font-size: 13.5px; color: var(--smoke); font-weight: 500;">2. Tải lên toàn bộ ảnh đã chỉnh sửa:</span>
+          <form method="POST" action="/admin/albums/<%= album.id %>/upload-edited-batch" enctype="multipart/form-data" style="display: flex; align-items: center;" onsubmit="showUploadOverlayEdited()">
+            <label class="btn-sm btn-sm-dark" style="padding: 8px 16px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-weight: 500;">
+              📤 Tải lên hàng loạt ảnh sửa
+              <input type="file" name="photos" multiple accept="image/*" required style="display: none;" onchange="this.form.submit()">
+            </label>
+          </form>
+        </div>
+      </div>
+    <% } %>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+      <% editRequests.forEach(req => { %>
+        <div style="background: white; border: 1px solid var(--bone); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
+          
+          <!-- So sánh Ảnh Gốc và Ảnh Đã Sửa -->
+          <div style="display: flex; gap: 12px; margin-bottom: 12px;">
+            <!-- Ảnh gốc -->
+            <div style="flex: 1; text-align: center;">
+              <span style="font-size: 10px; color: var(--smoke); display: block; margin-bottom: 4px; font-weight: bold; text-transform: uppercase;">Ảnh gốc</span>
+              <a href="<%= req.orig_url %>" target="_blank">
+                <img src="<%= req.orig_thumb %>" style="width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 6px; border: 1px solid #eee;">
+              </a>
+            </div>
+            
+            <!-- Ảnh đã sửa -->
+            <div style="flex: 1; text-align: center;">
+              <span style="font-size: 10px; color: var(--mocha); display: block; margin-bottom: 4px; font-weight: bold; text-transform: uppercase;">Ảnh đã sửa</span>
+              <% if (req.edited_url) { %>
+                <a href="<%= req.edited_url %>" target="_blank">
+                  <img src="<%= req.edited_thumbnail_url %>" style="width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 6px; border: 1px solid #eee;">
+                </a>
+              <% } else { %>
+                <div style="width: 100%; aspect-ratio: 3/4; border-radius: 6px; border: 1px dashed var(--bone); background: #fafafa; display: flex; align-items: center; justify-content: center; color: var(--smoke); font-size: 12px;">
+                  Chưa có ảnh
+                </div>
+              <% } %>
+            </div>
+          </div>
+
+          <!-- Ghi chú của khách hàng -->
+          <div style="background: rgba(122,92,74,0.04); border-radius: 6px; padding: 8px 12px; margin-bottom: 12px; font-size: 13px; min-height: 52px; border-left: 2px solid var(--mocha);">
+            <strong style="font-size: 11px; color: var(--smoke); display: block; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">Ghi chú của khách:</strong>
+            <%= req.customer_note || '(Không có ghi chú)' %>
+          </div>
+
+          <!-- Trạng thái ảnh đã sửa -->
+          <div style="text-align: center; border-top: 1px solid var(--parchment); padding-top: 8px; margin-top: 4px;">
+            <div style="font-size: 12px; font-weight: bold; color: <%= req.edited_url ? '#2a7a5c' : '#c0852a' %>;">
+              <%= req.edited_url ? '✓ Đã nhận ảnh sửa' : '⏳ Đang chờ ảnh sửa' %>
+            </div>
+            <div style="font-size: 11px; color: var(--smoke); margin-top: 2px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" title="<%= req.file_name %>">
+              File gốc: <%= req.file_name %>
+            </div>
+
+            <!-- Nút Thay thế / Tải lên thủ công riêng lẻ cho ảnh này -->
+            <div style="margin-top: 10px;">
+              <label class="btn-sm" style="display: block; text-align: center; cursor: pointer; background: var(--bone); color: var(--ink); border: 1px solid var(--bone); padding: 6px; border-radius: 4px; font-weight: 500; font-size: 11px; margin: 0 auto; max-width: 180px;">
+                <%= req.edited_url ? '🔄 Thay thế ảnh này' : '📤 Tải lên ảnh này' %>
+                <input type="file" accept="image/*" style="display: none;" onchange="uploadSingleEdited(this, '<%= req.id %>')">
+              </label>
+              <div id="single-status-<%= req.id %>" style="font-size: 11px; text-align: center; margin-top: 4px; display: none; font-weight: bold;"></div>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+<% } %>
+
+<!-- ================= KHO ẢNH GỐC CỦA ALBUM ================= -->
 <div class="admin-card">
+  <h3 style="margin: 0 0 20px 0; font-family: var(--font-display); font-size: 1.4rem; font-weight: normal;">
+    📁 Kho ảnh gốc của Album
+  </h3>
   <% if (photos && photos.length > 0) { %>
-    <p style="margin-bottom: 16px; color: var(--smoke);">Tổng cộng: <%= photos.length %> ảnh</p>
+    <p style="margin-bottom: 16px; color: var(--smoke); font-size: 14px;">Tổng cộng: <%= photos.length %> ảnh</p>
     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px;">
       <% photos.forEach(p => { %>
-        <div style="position: relative; border-radius: 4px; overflow: hidden; background: #f5f5f5; border: 1px solid #ddd;">
+        <div style="position: relative; border-radius: 8px; overflow: hidden; background: #f5f5f5; border: 1px solid #ddd; display: flex; flex-direction: column; justify-content: space-between;">
           <a href="<%= p.original_url %>" target="_blank">
-            <img src="<%= p.thumbnail_url %>" style="width: 100%; height: 150px; object-fit: cover; display: block;">
+            <img src="<%= p.thumbnail_url %>" style="width: 100%; height: 130px; object-fit: cover; display: block;">
           </a>
-          <div style="padding: 8px; text-align: center; background: white;">
-            <span style="font-size: 11px; color: #666; display: block; margin-bottom: 8px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"><%= p.file_name %></span>
+          <div style="padding: 8px; text-align: center; background: white; border-top: 1px solid #eee;">
+            <span style="font-size: 11px; color: #666; display: block; margin-bottom: 8px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" title="<%= p.file_name %>"><%= p.file_name %></span>
             <form method="POST" action="/admin/albums/<%= album.id %>/photos/<%= p.id %>/delete" onsubmit="return confirm('Xóa ảnh này?');">
-              <button type="submit" class="btn-sm" style="background: #dc3545; color: white; border: none; width: 100%; padding: 4px; cursor: pointer; font-size: 11px;">Xóa Ảnh</button>
+              <button type="submit" class="btn-sm" style="background: #dc3545; color: white; border: none; width: 100%; padding: 4px; cursor: pointer; font-size: 11px; border-radius: 4px;">Xóa Ảnh</button>
             </form>
           </div>
         </div>
@@ -45,3 +150,55 @@
     </div>
   <% } %>
 </div>
+
+<!-- Upload Overlay cho Admin (Ảnh sửa hàng loạt) -->
+<div id="adminUploadOverlayEdited" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; flex-direction: column; align-items: center; justify-content: center; color: white;">
+  <div style="width: 50px; height: 50px; border: 4px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;"></div>
+  <h3 style="margin: 0; font-family: 'Outfit', sans-serif;">Đang tải lên và xử lý ảnh chỉnh sửa hàng loạt...</h3>
+  <p style="color: #ccc; margin-top: 10px;">Quá trình tự động so khớp có thể mất vài phút. Vui lòng KHÔNG đóng trình duyệt.</p>
+</div>
+
+<script>
+  function showUploadOverlayEdited() {
+    document.getElementById('adminUploadOverlayEdited').style.display = 'flex';
+  }
+
+  async function uploadSingleEdited(input, requestId) {
+    if (!input.files || !input.files[0]) return;
+    const file = input.files[0];
+    const formData = new FormData();
+    formData.append('editedPhoto', file);
+
+    const statusDiv = document.getElementById('single-status-' + requestId);
+    statusDiv.style.display = 'block';
+    statusDiv.innerText = 'Đang tải lên...';
+    statusDiv.style.color = 'var(--smoke)';
+
+    try {
+      const res = await fetch(`/admin/albums/<%= album.id %>/upload-edited/` + requestId, {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+      if (data.success) {
+        statusDiv.innerText = '✓ Thành công';
+        statusDiv.style.color = '#2a7a5c';
+        
+        // Reload page to refresh thumbnails and layout cleanly
+        setTimeout(() => {
+          window.location.reload();
+        }, 800);
+      } else {
+        statusDiv.innerText = '✗ Lỗi: ' + data.message;
+        statusDiv.style.color = '#dc3545';
+      }
+    } catch (err) {
+      statusDiv.innerText = '✗ Lỗi kết nối';
+      statusDiv.style.color = '#dc3545';
+    }
+  }
+</script>
+
+<style>
+  @keyframes spin { 100% { transform: rotate(360deg); } }
+</style>

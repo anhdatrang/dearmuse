@@ -119,6 +119,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center top;
   display: block;
   transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s ease;
   opacity: 0.88;
@@ -151,6 +152,7 @@
    NÚT MŨI TÊN TRÒN ĐEN
    ────────────────────────────────────────────────── */
 .svc-pillar-arrow-btn {
+  flex-shrink: 0;
   position: absolute;
   bottom: 24px;
   left: 50%;
@@ -669,3 +671,4 @@
   .svc-quote-text { font-size: clamp(22px, 6vw, 36px); }
   .faq-q { font-size: 18px; padding: 28px 0; }
 }
+\n\n.svc-card-img-wrap { width: 100%; aspect-ratio: 4/3; overflow: hidden; border-radius: 12px; margin-bottom: 20px; }\n.svc-card-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }\n.svc-detail-card:hover .svc-card-img-wrap img { transform: scale(1.05); }\n

@@ -4,60 +4,60 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <% 
-    const defaultTitle = 'Dear Musé — Studio Nhiếp Ảnh Nghệ Thuật tại Hà Nội';
-    const defaultDesc = 'Dear Musé là studio nhiếp ảnh nghệ thuật chuyên nghiệp tại Hà Nội. Chuyên chụp ảnh chân dung nghệ thuật (Portrait), chụp ảnh sự kiện (Event), chụp ảnh thương hiệu & kỷ yếu cá nhân. Lưu giữ khoảnh khắc bằng ánh sáng tự nhiên và góc nhìn điện ảnh.';
-    const finalTitle = typeof title !== 'undefined' ? title : defaultTitle;
-    const finalDesc = typeof metaDescription !== 'undefined' ? metaDescription : defaultDesc;
-    const shareImage = typeof ogImage !== 'undefined' ? (ogImage.startsWith('http') ? ogImage : baseUrl + ogImage) : baseUrl + '/logo/logo.png';
-  %>
 
-  <title><%= finalTitle %></title>
-  <meta name="description" content="<%= finalDesc %>">
+  <% const defaultTitle='Dear Musé — Studio Nhiếp Ảnh Nghệ Thuật tại Hà Nội' ; const
+    defaultDesc='Dear Musé là studio nhiếp ảnh nghệ thuật chuyên nghiệp tại Hà Nội. Chuyên chụp ảnh chân dung nghệ thuật (Portrait), chụp ảnh sự kiện (Event), chụp ảnh thương hiệu & kỷ yếu cá nhân. Lưu giữ khoảnh khắc bằng ánh sáng tự nhiên và góc nhìn điện ảnh.'
+    ; const finalTitle=typeof title !=='undefined' ? title : defaultTitle; const finalDesc=typeof metaDescription
+    !=='undefined' ? metaDescription : defaultDesc; const shareImage=typeof ogImage !=='undefined' ?
+    (ogImage.startsWith('http') ? ogImage : baseUrl + ogImage) : baseUrl + '/logo/logo.png' ; %>
 
-  <!-- SEO Canonical Link -->
-  <link rel="canonical" href="<%= baseUrl %><%= currentPath %>">
+    <title>
+      <%= finalTitle %>
+    </title>
+    <meta name="description" content="<%= finalDesc %>">
 
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="<%= typeof ogType !== 'undefined' ? ogType : 'website' %>">
-  <meta property="og:title" content="<%= finalTitle %>">
-  <meta property="og:description" content="<%= finalDesc %>">
-  <meta property="og:image" content="<%= shareImage %>">
-  <meta property="og:url" content="<%= baseUrl %><%= currentPath %>">
-  <meta property="og:site_name" content="Dear Musé">
-  <meta property="og:locale" content="vi_VN">
+    <!-- SEO Canonical Link -->
+    <link rel="canonical" href="<%= baseUrl %><%= currentPath %>">
 
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="<%= finalTitle %>">
-  <meta name="twitter:description" content="<%= finalDesc %>">
-  <meta name="twitter:image" content="<%= shareImage %>">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="<%= typeof ogType !== 'undefined' ? ogType : 'website' %>">
+    <meta property="og:title" content="<%= finalTitle %>">
+    <meta property="og:description" content="<%= finalDesc %>">
+    <meta property="og:image" content="<%= shareImage %>">
+    <meta property="og:url" content="<%= baseUrl %><%= currentPath %>">
+    <meta property="og:site_name" content="Dear Musé">
+    <meta property="og:locale" content="vi_VN">
 
-  <!-- Favicon -->
-  <link rel="icon" href="/logo/logo.ico" type="image/x-icon">
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<%= finalTitle %>">
+    <meta name="twitter:description" content="<%= finalDesc %>">
+    <meta name="twitter:image" content="<%= shareImage %>">
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Montserrat:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" href="/logo/logo.ico" type="image/x-icon">
 
-  <!-- GLightbox -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Nunito:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet">
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="/css/main.css?v=36">
-  <link rel="stylesheet" href="/css/effects.css?v=40">
-  <% if (typeof pageCss !=='undefined' ) { %>
-    <link class="page-css" rel="stylesheet" href="/css/<%= pageCss %>?v=137">
-    <% } %>
+    <!-- GLightbox -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
 
-  <!-- Dữ liệu cấu trúc JSON-LD -->
-  <% if (currentPath === '/') { %>
-    <!-- Local Business Schema cho Trang chủ -->
-    <script type="application/ld+json">
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/main.css?v=37">
+    <link rel="stylesheet" href="/css/effects.css?v=44">
+    <% if (typeof pageCss !=='undefined' ) { %>
+      <link class="page-css" rel="stylesheet" href="/css/<%= pageCss %>?v=1006">
+      <% } %>
+
+        <!-- Dữ liệu cấu trúc JSON-LD -->
+        <% if (currentPath==='/' ) { %>
+          <!-- Local Business Schema cho Trang chủ -->
+          <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "PhotographyStore",
@@ -79,31 +79,26 @@
       ]
     }
     </script>
-  <% } %>
+          <% } %>
 
-  <% if (currentPath !== '/') { 
-    const paths = currentPath.split('/').filter(Boolean);
-    const breadcrumbs = [
-      { name: 'Trang chủ', url: baseUrl + '/' }
-    ];
-    let accumulatedPath = '';
-    paths.forEach((p, idx) => {
-      accumulatedPath += '/' + p;
-      let label = p;
-      if (p === 'portfolio') label = 'Portfolio';
-      else if (p === 'services') label = 'Dịch vụ';
-      else if (p === 'pricing') label = 'Bảng giá';
-      else if (p === 'about') label = 'Về chúng tôi';
-      else if (p === 'contact') label = 'Liên hệ';
-      else if (p === 'booking') label = 'Đặt lịch';
-      else {
-        label = p.charAt(0).toUpperCase() + p.slice(1);
-      }
-      breadcrumbs.push({ name: label, url: baseUrl + accumulatedPath });
-    });
-  %>
-    <!-- Breadcrumb Schema cho các trang con -->
-    <script type="application/ld+json">
+            <% if (currentPath !=='/' ) { const paths=currentPath.split('/').filter(Boolean); const breadcrumbs=[ {
+              name: 'Trang chủ' , url: baseUrl + '/' } ]; let accumulatedPath='' ; paths.forEach((p, idx)=> {
+              accumulatedPath += '/' + p;
+              let label = p;
+              if (p === 'portfolio') label = 'Portfolio';
+              else if (p === 'services') label = 'Dịch vụ';
+              else if (p === 'pricing') label = 'Bảng giá';
+              else if (p === 'about') label = 'Về chúng tôi';
+              else if (p === 'contact') label = 'Liên hệ';
+              else if (p === 'booking') label = 'Đặt lịch';
+              else {
+              label = p.charAt(0).toUpperCase() + p.slice(1);
+              }
+              breadcrumbs.push({ name: label, url: baseUrl + accumulatedPath });
+              });
+              %>
+              <!-- Breadcrumb Schema cho các trang con -->
+              <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
@@ -119,7 +114,7 @@
       ]
     }
     </script>
-  <% } %>
+              <% } %>
 </head>
 
 <body class="page-entering">
@@ -178,7 +173,22 @@
                         <span>Đang hoạt động</span>
                       </div>
                     </div>
-                    <button class="chatbot-close-btn" id="chatbot-close-btn" aria-label="Đóng Chatbot">✕</button>
+                    <div class="chatbot-header-actions" style="display: flex; align-items: center; gap: 10px;">
+                      <button type="button" class="chatbot-zoom-btn" id="chatbot-zoom-btn" aria-label="Phóng to/Thu nhỏ"
+                        onclick="var cw=document.getElementById('chatbot-window');cw.style.width='';cw.style.height='';cw.classList.toggle('zoomed');var cm=document.getElementById('chatbot-messages');if(cm)setTimeout(function(){cm.scrollTop=cm.scrollHeight;},300);">
+                        <svg class="zoom-in-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                        </svg>
+                        <svg class="zoom-out-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                          style="display: none;">
+                          <path d="M4 14h6v6M20 10h-6V4M14 10l7-7M10 14l-7 7" />
+                        </svg>
+                      </button>
+                      <button type="button" class="chatbot-close-btn" id="chatbot-close-btn"
+                        aria-label="Đóng Chatbot">✕</button>
+                    </div>
                   </div>
                   <div class="chatbot-messages" id="chatbot-messages">
                     <div class="chatbot-msg bot">
@@ -187,10 +197,10 @@
                     </div>
                   </div>
                   <div class="chatbot-suggestions" id="chatbot-suggestions">
-                    <button class="chatbot-suggest-btn" data-action="pricing">Bảng giá chụp</button>
-                    <button class="chatbot-suggest-btn" data-action="concept">Tư vấn Concept</button>
-                    <button class="chatbot-suggest-btn" data-action="booking">Đặt lịch chụp</button>
-                    <button class="chatbot-suggest-btn" data-action="contact">Liên hệ trực tiếp</button>
+                    <button class="chatbot-suggest-btn" data-action="pricing">Bảng giá</button>
+                    <button class="chatbot-suggest-btn" data-action="concept">Tư vấn</button>
+                    <button class="chatbot-suggest-btn" data-action="booking">Đặt lịch</button>
+                    <button class="chatbot-suggest-btn" data-action="contact">Liên hệ</button>
                   </div>
                   <form class="chatbot-input-area" id="chatbot-form">
                     <input type="text" id="chatbot-input" placeholder="Nhập tin nhắn..." autocomplete="off">
@@ -285,7 +295,7 @@
 
                 <!-- Main JS -->
                 <script src="/js/main.js?v=22" defer></script>
-                <script src="/js/effects.js?v=35" defer></script>
+                <script src="/js/effects.js?v=37" defer></script>
                 <% if (typeof pageJs !=='undefined' ) { %>
                   <script src="/js/<%= pageJs %>" defer></script>
                   <% } %>
@@ -308,188 +318,202 @@
                     </script>
 
 
-<!-- Custom Elegant Modal Alert -->
-<div id="custom-alert-modal" class="custom-alert-overlay" style="display: none;">
-  <div class="custom-alert-card">
-    <div class="custom-alert-header">DEAR MUSÉ</div>
-    <div class="custom-alert-message" id="custom-alert-message"></div>
-    <div class="custom-alert-footer">
-      <button class="custom-alert-btn" id="custom-alert-ok-btn">Đồng ý</button>
-    </div>
-  </div>
-</div>
+                    <!-- Custom Elegant Modal Alert -->
+                    <div id="custom-alert-modal" class="custom-alert-overlay" style="display: none;">
+                      <div class="custom-alert-card">
+                        <div class="custom-alert-header">DEAR MUSÉ</div>
+                        <div class="custom-alert-message" id="custom-alert-message"></div>
+                        <div class="custom-alert-footer">
+                          <button class="custom-alert-btn" id="custom-alert-ok-btn">Đồng ý</button>
+                        </div>
+                      </div>
+                    </div>
 
-<!-- Custom Elegant Modal Confirm -->
-<div id="custom-confirm-modal" class="custom-alert-overlay" style="display: none;">
-  <div class="custom-alert-card">
-    <div class="custom-alert-header">DEAR MUSÉ</div>
-    <div class="custom-alert-message" id="custom-confirm-message"></div>
-    <div class="custom-alert-footer" style="display: flex; gap: 12px; justify-content: center; width: 100%;">
-      <button class="custom-alert-btn secondary" id="custom-confirm-cancel-btn" style="flex: 1;">Hủy</button>
-      <button class="custom-alert-btn" id="custom-confirm-ok-btn" style="flex: 1;">Đồng ý</button>
-    </div>
-  </div>
-</div>
+                    <!-- Custom Elegant Modal Confirm -->
+                    <div id="custom-confirm-modal" class="custom-alert-overlay" style="display: none;">
+                      <div class="custom-alert-card">
+                        <div class="custom-alert-header">DEAR MUSÉ</div>
+                        <div class="custom-alert-message" id="custom-confirm-message"></div>
+                        <div class="custom-alert-footer"
+                          style="display: flex; gap: 12px; justify-content: center; width: 100%;">
+                          <button class="custom-alert-btn secondary" id="custom-confirm-cancel-btn"
+                            style="flex: 1;">Hủy</button>
+                          <button class="custom-alert-btn" id="custom-confirm-ok-btn" style="flex: 1;">Đồng ý</button>
+                        </div>
+                      </div>
+                    </div>
 
-<style>
-.custom-alert-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(26, 25, 22, 0.45);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  z-index: 999999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: fadeInModal 0.25s ease forwards;
-}
+                    <style>
+                      .custom-alert-overlay {
+                        position: fixed;
+                        inset: 0;
+                        background: rgba(26, 25, 22, 0.45);
+                        backdrop-filter: blur(8px);
+                        -webkit-backdrop-filter: blur(8px);
+                        z-index: 999999;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        animation: fadeInModal 0.25s ease forwards;
+                      }
 
-.custom-alert-card {
-  background: var(--vanilla-cream, #fffdf8);
-  border: 1px solid var(--bone, #ede8df);
-  border-radius: 12px;
-  width: 90%;
-  max-width: 400px;
-  padding: 32px 28px;
-  box-shadow: 0 20px 50px rgba(26, 25, 22, 0.12);
-  transform: translateY(20px);
-  animation: slideUpModal 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-sizing: border-box;
-}
+                      .custom-alert-card {
+                        background: var(--vanilla-cream, #fffdf8);
+                        border: 1px solid var(--bone, #ede8df);
+                        border-radius: 12px;
+                        width: 90%;
+                        max-width: 400px;
+                        padding: 32px 28px;
+                        box-shadow: 0 20px 50px rgba(26, 25, 22, 0.12);
+                        transform: translateY(20px);
+                        animation: slideUpModal 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        box-sizing: border-box;
+                      }
 
-.custom-alert-header {
-  font-family: var(--font-display, "Playfair Display", serif);
-  font-size: 18px;
-  font-weight: 600;
-  letter-spacing: 0.15em;
-  color: var(--ink, #1a1916);
-  text-align: center;
-  margin-bottom: 16px;
-  border-bottom: 0.5px solid var(--bone, #ede8df);
-  padding-bottom: 12px;
-  width: 100%;
-}
+                      .custom-alert-header {
+                        font-family: var(--font-display, "Playfair Display", serif);
+                        font-size: 18px;
+                        font-weight: 600;
+                        letter-spacing: 0.15em;
+                        color: var(--ink, #1a1916);
+                        text-align: center;
+                        margin-bottom: 16px;
+                        border-bottom: 0.5px solid var(--bone, #ede8df);
+                        padding-bottom: 12px;
+                        width: 100%;
+                      }
 
-.custom-alert-message {
-  font-family: var(--font-body, "Montserrat", sans-serif);
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--smoke, #555);
-  text-align: center;
-  margin-bottom: 24px;
-  width: 100%;
-  word-break: break-word;
-}
+                      .custom-alert-message {
+                        font-family: var(--font-body, "Montserrat", sans-serif);
+                        font-size: 14px;
+                        line-height: 1.6;
+                        color: var(--smoke, #555);
+                        text-align: center;
+                        margin-bottom: 24px;
+                        width: 100%;
+                        word-break: break-word;
+                      }
 
-.custom-alert-footer {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
+                      .custom-alert-footer {
+                        display: flex;
+                        justify-content: center;
+                        width: 100%;
+                      }
 
-.custom-alert-btn {
-  font-family: var(--font-body, "Montserrat", sans-serif);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  background: var(--ink, #1a1916);
-  color: #fff;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  min-width: 120px;
-  text-align: center;
-  box-sizing: border-box;
-}
+                      .custom-alert-btn {
+                        font-family: var(--font-body, "Montserrat", sans-serif);
+                        font-size: 12px;
+                        font-weight: 500;
+                        letter-spacing: 0.1em;
+                        text-transform: uppercase;
+                        background: var(--ink, #1a1916);
+                        color: #fff;
+                        border: none;
+                        padding: 12px 24px;
+                        border-radius: 50px;
+                        cursor: pointer;
+                        transition: all 0.2s ease;
+                        min-width: 120px;
+                        text-align: center;
+                        box-sizing: border-box;
+                      }
 
-.custom-alert-btn:hover {
-  background: var(--mocha, #7a5c4a);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(122, 92, 74, 0.2);
-}
+                      .custom-alert-btn:hover {
+                        background: var(--mocha, #7a5c4a);
+                        transform: translateY(-1px);
+                        box-shadow: 0 4px 12px rgba(122, 92, 74, 0.2);
+                      }
 
-.custom-alert-btn.secondary {
-  background: transparent;
-  color: var(--smoke, #555);
-  border: 1px solid var(--bone, #ede8df);
-}
+                      .custom-alert-btn.secondary {
+                        background: transparent;
+                        color: var(--smoke, #555);
+                        border: 1px solid var(--bone, #ede8df);
+                      }
 
-.custom-alert-btn.secondary:hover {
-  background: rgba(0,0,0,0.03);
-  color: var(--ink, #1a1916);
-  box-shadow: none;
-  transform: none;
-}
+                      .custom-alert-btn.secondary:hover {
+                        background: rgba(0, 0, 0, 0.03);
+                        color: var(--ink, #1a1916);
+                        box-shadow: none;
+                        transform: none;
+                      }
 
-@keyframes fadeInModal {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
+                      @keyframes fadeInModal {
+                        from {
+                          opacity: 0;
+                        }
 
-@keyframes slideUpModal {
-  from { transform: translateY(30px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-</style>
+                        to {
+                          opacity: 1;
+                        }
+                      }
 
-<script>
-window.showAlert = function(message, callback) {
-  const overlay = document.getElementById('custom-alert-modal');
-  const messageEl = document.getElementById('custom-alert-message');
-  const okBtn = document.getElementById('custom-alert-ok-btn');
-  
-  messageEl.innerHTML = message;
-  overlay.style.display = 'flex';
-  
-  const newOkBtn = okBtn.cloneNode(true);
-  okBtn.parentNode.replaceChild(newOkBtn, okBtn);
-  
-  newOkBtn.addEventListener('click', () => {
-    overlay.style.display = 'none';
-    if (typeof callback === 'function') {
-      callback();
-    }
-  });
-};
+                      @keyframes slideUpModal {
+                        from {
+                          transform: translateY(30px);
+                          opacity: 0;
+                        }
 
-window.showConfirm = function(message, callback) {
-  const overlay = document.getElementById('custom-confirm-modal');
-  const messageEl = document.getElementById('custom-confirm-message');
-  const okBtn = document.getElementById('custom-confirm-ok-btn');
-  const cancelBtn = document.getElementById('custom-confirm-cancel-btn');
-  
-  messageEl.innerHTML = message;
-  overlay.style.display = 'flex';
-  
-  const newOkBtn = okBtn.cloneNode(true);
-  okBtn.parentNode.replaceChild(newOkBtn, okBtn);
-  
-  const newCancelBtn = cancelBtn.cloneNode(true);
-  cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
-  
-  newOkBtn.addEventListener('click', () => {
-    overlay.style.display = 'none';
-    if (typeof callback === 'function') callback(true);
-  });
-  
-  newCancelBtn.addEventListener('click', () => {
-    overlay.style.display = 'none';
-    if (typeof callback === 'function') callback(false);
-  });
-};
+                        to {
+                          transform: translateY(0);
+                          opacity: 1;
+                        }
+                      }
+                    </style>
 
-// Overwrite window.alert so default calls automatically use this styled popup
-window.alert = function(message) {
-  window.showAlert(message);
-};
-</script>
+                    <script>
+                      window.showAlert = function (message, callback) {
+                        const overlay = document.getElementById('custom-alert-modal');
+                        const messageEl = document.getElementById('custom-alert-message');
+                        const okBtn = document.getElementById('custom-alert-ok-btn');
+
+                        messageEl.innerHTML = message;
+                        overlay.style.display = 'flex';
+
+                        const newOkBtn = okBtn.cloneNode(true);
+                        okBtn.parentNode.replaceChild(newOkBtn, okBtn);
+
+                        newOkBtn.addEventListener('click', () => {
+                          overlay.style.display = 'none';
+                          if (typeof callback === 'function') {
+                            callback();
+                          }
+                        });
+                      };
+
+                      window.showConfirm = function (message, callback) {
+                        const overlay = document.getElementById('custom-confirm-modal');
+                        const messageEl = document.getElementById('custom-confirm-message');
+                        const okBtn = document.getElementById('custom-confirm-ok-btn');
+                        const cancelBtn = document.getElementById('custom-confirm-cancel-btn');
+
+                        messageEl.innerHTML = message;
+                        overlay.style.display = 'flex';
+
+                        const newOkBtn = okBtn.cloneNode(true);
+                        okBtn.parentNode.replaceChild(newOkBtn, okBtn);
+
+                        const newCancelBtn = cancelBtn.cloneNode(true);
+                        cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+
+                        newOkBtn.addEventListener('click', () => {
+                          overlay.style.display = 'none';
+                          if (typeof callback === 'function') callback(true);
+                        });
+
+                        newCancelBtn.addEventListener('click', () => {
+                          overlay.style.display = 'none';
+                          if (typeof callback === 'function') callback(false);
+                        });
+                      };
+
+                      // Overwrite window.alert so default calls automatically use this styled popup
+                      window.alert = function (message) {
+                        window.showAlert(message);
+                      };
+                    </script>
 </body>
 
 </html>

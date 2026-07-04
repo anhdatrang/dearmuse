@@ -58,6 +58,11 @@ router.post('/albums/:id/upload', requireAdmin, adminUploadController.uploadMidd
 router.get('/albums/:id/photos', requireAdmin, adminUploadController.managePhotos);
 router.post('/albums/:id/photos/:photoId/delete', requireAdmin, adminUploadController.deletePhoto);
 router.post('/albums/:id/reprocess-faces', requireAdmin, adminUploadController.reprocessFaces);
+router.get('/photo-edit-requests', requireAdmin, adminCustomerController.listPhotoEditRequests);
+router.get('/albums/:id/download-requested', requireAdmin, adminUploadController.downloadRequestedPhotos);
+router.post('/albums/:id/upload-edited-batch', requireAdmin, adminUploadController.uploadMiddleware, adminUploadController.uploadEditedPhotosBatch);
+router.post('/albums/:id/upload-edited/:requestId', requireAdmin, adminUploadController.uploadSingleMiddleware, adminUploadController.uploadSingleEditedPhoto);
+router.post('/albums/:id/complete-edit-request', requireAdmin, adminUploadController.completeEditRequest);
 
 // Email Marketing
 router.get('/email-marketing', requireAdmin, emailController.marketingPage);
@@ -83,6 +88,9 @@ router.post('/loyalty/:id/issue-voucher', requireAdmin, adminLoyaltyController.i
 router.get('/vouchers', requireAdmin, adminLoyaltyController.listVouchers);
 router.post('/vouchers/create', requireAdmin, adminLoyaltyController.createVoucher);
 router.post('/vouchers/:id/toggle', requireAdmin, adminLoyaltyController.toggleVoucher);
-router.post('/vouchers/:id/delete', requireAdmin, adminLoyaltyController.deleteVoucher);
+// Announcements/Notifications
+router.get('/notifications', requireAdmin, adminCustomerController.listAnnouncements);
+router.post('/notifications', requireAdmin, adminCustomerController.createAnnouncement);
+router.post('/notifications/:id/delete', requireAdmin, adminCustomerController.deleteAnnouncement);
 
 module.exports = router;
