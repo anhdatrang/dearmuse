@@ -2,6 +2,7 @@
    FEEDBACK PAGE — "The Muse's Scrapbook" (Nhật Ký Tản Mạn)
    Dear Musé — Artistic, Unstructured, Poetic
    ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap');
 
 .feedback-page {
   min-height: 100vh;
@@ -20,6 +21,32 @@
   pointer-events: none;
   background: radial-gradient(circle at 50% 50%, rgba(239, 233, 217, 0) 0%, rgba(239, 233, 217, 0.4) 100%);
   z-index: 5;
+}
+
+/* ── Botanical Art (Hoa lá vẽ nghệ thuật) ── */
+.botanical-margin {
+  position: absolute;
+  top: 150px;
+  width: 200px;
+  height: 800px;
+  z-index: 2; /* Nằm dưới giấy */
+  pointer-events: none;
+  opacity: 0.85;
+}
+.margin-left { left: 0; }
+.margin-right { right: 0; }
+
+.string-botanical {
+  position: absolute;
+  width: 0; height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 4; /* Nằm trên dây thừng */
+  pointer-events: none;
+}
+.string-botanical svg {
+  position: absolute;
 }
 
 /* ══════════════════════════════════════════
@@ -275,7 +302,19 @@
 .card-stars { font-size: 14px; letter-spacing: 2px; }
 .card-stars .filled { color: #d6a863; }
 .card-stars .empty { color: rgba(122, 92, 74, 0.2); }
-.card-content { font-family: var(--font-display); font-size: 15px; line-height: 1.8; color: #333; font-style: italic; margin-bottom: 24px; position: relative; z-index: 2; }
+.card-content { 
+  font-family: 'Lora', serif; 
+  font-size: 16px; 
+  font-weight: 400;
+  font-style: italic;
+  line-height: 30px; 
+  color: #333; 
+  margin-bottom: 24px; 
+  position: relative; 
+  z-index: 2; 
+  background-image: repeating-linear-gradient(transparent, transparent 29px, rgba(122, 92, 74, 0.15) 29px, rgba(122, 92, 74, 0.15) 30px);
+  background-attachment: local;
+}
 .card-footer { font-family: var(--font-body); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--smoke); display: flex; justify-content: space-between; border-top: 1px solid rgba(122, 92, 74, 0.15); padding-top: 16px; position: relative; z-index: 2; }
 
 
@@ -381,6 +420,10 @@
 .btn-login:hover { background-color: var(--ink); }
 
 /* ── Responsive ── */
+@media (max-width: 1400px) {
+  .botanical-margin { display: none; }
+}
+
 @media (max-width: 1200px) {
   .scrapbook-item-wrapper { transform: scale(0.9); }
 }
