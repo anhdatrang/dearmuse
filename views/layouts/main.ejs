@@ -48,7 +48,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
 
     <!-- CSS -->
-    <link rel="stylesheet" href="/css/main.css?v=37">
+    <link rel="stylesheet" href="/css/main.css?v=38">
     <link rel="stylesheet" href="/css/effects.css?v=44">
     <% if (typeof pageCss !=='undefined' ) { %>
       <link class="page-css" rel="stylesheet" href="/css/<%= pageCss %>?v=1006">
@@ -91,6 +91,7 @@
               else if (p === 'about') label = 'Về chúng tôi';
               else if (p === 'contact') label = 'Liên hệ';
               else if (p === 'booking') label = 'Đặt lịch';
+              else if (p === 'blog') label = 'Tin tức';
               else {
               label = p.charAt(0).toUpperCase() + p.slice(1);
               }

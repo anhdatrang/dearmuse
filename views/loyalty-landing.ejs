@@ -100,7 +100,7 @@
               <thead>
                 <tr>
                   <th>Hoạt động của doanh nghiệp</th>
-                  <th class="text-right">Số Mảnh Sáng nhận được</th>
+                  <th class="text-right" style="white-space: nowrap;">Số Mảnh Sáng nhận được</th>
                 </tr>
               </thead>
               <tbody>
@@ -151,7 +151,7 @@
           <div class="voucher-redeem-header">
             <span class="section-eyebrow">Đặc quyền doanh nghiệp</span>
             <h2>Quy Đổi Voucher Theo Mảnh Sáng</h2>
-            <p>Sử dụng Mảnh Sáng tích luỹ để đổi lấy các dịch vụ hỗ trợ nâng tầm hình ảnh thương hiệu.</p>
+            <p>Sử dụng Mảnh Sáng tích luỹ để đổi lấy các dịch vụ hỗ trợ nâng tầm hình&nbsp;ảnh thương&nbsp;hiệu.</p>
           </div>
 
           <div class="biz-voucher-grid">
@@ -159,7 +159,7 @@
             <!-- FRAME COLUMN -->
             <div class="biz-voucher-col biz-col-frame">
               <div class="biz-col-header">
-                <div class="biz-col-badge biz-badge-frame">Musé Frame</div>
+                <div class="biz-col-badge biz-badge-frame">MUSÉ FRAME</div>
                 <div class="biz-col-range">0 – <%= (tierLimits.tier_limit_frame_lumiere - 1).toLocaleString('vi-VN') %>
                     Mảnh Sáng</div>
               </div>
@@ -190,7 +190,7 @@
             <!-- LUMIÈRE COLUMN -->
             <div class="biz-voucher-col biz-col-lumiere">
               <div class="biz-col-header">
-                <div class="biz-col-badge biz-badge-lumiere">Musé Lumière</div>
+                <div class="biz-col-badge biz-badge-lumiere">MUSÉ LUMIÈRE</div>
                 <div class="biz-col-range">
                   <%= tierLimits.tier_limit_frame_lumiere.toLocaleString('vi-VN') %>+ Mảnh Sáng
                 </div>
@@ -263,6 +263,7 @@
               font-size: 1.05rem;
               font-weight: 600;
               letter-spacing: 0.04em;
+              text-transform: uppercase;
             }
 
             .biz-badge-frame {
@@ -345,7 +346,7 @@
         <div class="occasions-section" style="margin-top: 60px;">
           <div class="occasions-header" style="text-align: center; margin-bottom: 30px;">
             <span class="section-eyebrow">Dành Cho Doanh Nghiệp</span>
-            <h3 style="font-family: var(--font-display, serif); font-size: 2rem; font-weight: 400; color: var(--ink);">
+            <h3 style="font-family: var(--font-display, serif); font-size: 2rem; font-weight: bold; color: var(--ink);">
               Hệ Thống Voucher Đặc Quyền</h3>
           </div>
 
@@ -353,9 +354,9 @@
             <table class="elegant-table" style="width: 100%; border-collapse: collapse;">
               <thead>
                 <tr style="border-bottom: 1px solid var(--bone);">
-                  <th style="padding: 16px; text-align: left; color: var(--mocha);">Voucher</th>
-                  <th style="padding: 16px; text-align: left; color: var(--mocha);">Musé Frame</th>
-                  <th style="padding: 16px; text-align: left; color: var(--mocha);">Musé Lumière</th>
+                  <th style="padding: 16px; text-align: center; font-weight: bold; color: var(--mocha);">Voucher</th>
+                  <th style="padding: 16px; text-align: center; font-weight: bold; color: var(--mocha);">Musé Frame</th>
+                  <th style="padding: 16px; text-align: center; font-weight: bold; color: var(--mocha);">Musé Lumière</th>
                 </tr>
               </thead>
               <tbody>
@@ -554,7 +555,7 @@
                 <thead>
                   <tr>
                     <th>Hoạt động của khách hàng</th>
-                    <th class="text-right">Số Mảnh Sáng nhận được</th>
+                    <th class="text-right" style="white-space: nowrap;">Số Mảnh Sáng nhận được</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -939,7 +940,7 @@
           .voucher-redeem-header h2 {
             font-family: var(--font-display, serif);
             font-size: clamp(1.6rem, 3vw, 2.2rem);
-            font-weight: 400;
+            font-weight: bold;
             color: var(--ink, #1A1916);
             margin-bottom: 12px;
           }
@@ -949,9 +950,10 @@
             font-weight: 500;
             font-size: 15px;
             color: #000000;
-            max-width: 520px;
+            max-width: none;
             margin: 0 auto;
             line-height: 1.7;
+            text-wrap: balance;
           }
 
           /* 4-card grid */
@@ -1480,7 +1482,7 @@
           .referral-header h3 {
             font-family: var(--font-display, serif);
             font-size: clamp(1.5rem, 2vw, 1.8rem);
-            font-weight: 400;
+            font-weight: bold;
             color: var(--ink, #1A1916);
             margin-bottom: 8px;
             text-transform: uppercase;
@@ -1490,7 +1492,7 @@
           .elegant-table-wrap {
             max-width: 800px;
             margin: 0 auto;
-            background: #fff;
+            background: transparent;
             border: 1px solid var(--ink, #1A1916);
             padding: 2px;
           }
@@ -1498,7 +1500,7 @@
           .elegant-table {
             width: 100%;
             border-collapse: collapse;
-            background: #fff;
+            background: transparent;
           }
 
           .elegant-table th,
@@ -1524,8 +1526,8 @@
           }
 
           .elegant-table th {
-            font-family: var(--font-display, serif);
-            font-weight: 600;
+            font-family: 'Quicksand', 'DM Sans', sans-serif;
+            font-weight: bold;
             font-size: 14px;
             text-align: center;
             text-transform: uppercase;

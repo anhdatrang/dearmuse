@@ -1,201 +1,1178 @@
-<!-- About Page -->
+<%- /* About Page */ '' %>
 
-<!-- Hero -->
-<section class="page-hero" style="height: 60vh;">
-  <img src="/cdn/image?w=1600&src=<%= encodeURIComponent('/source/Nàng thơ/Nàng thơ 001.webp') %>" alt="Về Dear Musé" class="page-hero-img"
-    fetchpriority="high">
-  <div class="page-hero-overlay"></div>
-  <div class="container page-hero-content">
-    <span class="page-label">Studio nhiếp ảnh nghệ thuật</span>
-    <h1>Dear Musé</h1>
-  </div>
-</section>
+  <!-- ═══════════════════════════════════════════
+     ABOUT — DEAR MUSÉ STUDIO
+     Phong cách: Editorial Fine-Art, Beige World
+     ═══════════════════════════════════════════ -->
 
-<!-- Story -->
-<section style="padding: var(--section-gap) 0; background: var(--vanilla-cream);">
-  <div class="container">
-    <div style="max-width: 720px; margin: 0 auto; text-align: center;">
-      <span class="section-label reveal" style="justify-content: center;">Câu chuyện</span>
-      <h2 class="section-heading reveal" style="margin-bottom: 32px;">Hành trình gửi thư tới <em
-          style="font-style: italic; color: var(--logo-taupe);">Nàng Thơ</em></h2>
-      <p class="body-text reveal" style="margin-bottom: 20px;">
-        Cái tên Dear Musé bắt nguồn từ một ý niệm lãng mạn — một bức thư gửi đến nàng thơ. Nơi nghệ thuật nhiếp ảnh nghệ
-        thuật và những rung động chân thật giao nhau, nơi <span class="text-highlight">ánh sáng kể câu chuyện</span> mà
-        lời nói không thể diễn tả được.
-      </p>
-      <p class="body-text reveal" style="margin-bottom: 20px;">
-        Chúng tôi bắt đầu hành trình của mình từ niềm tin đơn giản: ảnh đẹp nhất không phải là ảnh hoàn hảo về kỹ thuật,
-        mà là ảnh thật nhất. Khoảnh khắc bạn cười tự nhiên khi nói chuyện cùng bạn bè, hay cái nhìn xa xăm chứa đầy tâm
-        sự riêng tư.
-      </p>
-      <p class="body-text reveal">
-        Mỗi buổi chụp tại Dear Musé luôn là một cuộc đối thoại nhẹ nhàng. Chúng tôi không chụp ảnh theo khuôn mẫu có
-        sẵn, mà cùng bạn sáng tạo nên một tác phẩm nghệ thuật mang đậm dấu ấn cá nhân.
-      </p>
+  <!-- ─── HERO: Shorter fine-art header ─── -->
+  <section class="ab-hero">
+    <img src="/cdn/image?w=1800&src=<%= encodeURIComponent('/source/Nàng thơ/Nàng thơ 001.webp') %>"
+      alt="Dear Musé — Về chúng tôi" class="ab-hero__img" fetchpriority="high">
+    <div class="ab-hero__veil"></div>
+    <div class="ab-hero__body">
+      <p class="ab-hero__eyebrow">Studio nhiếp ảnh nghệ thuật</p>
+      <h1 class="ab-hero__title">Dear Musé</h1>
+      <div class="ab-hero__rule"></div>
+      <p class="ab-hero__slogan">"Gửi cho nàng phiên bản rực rỡ nhất của chính mình."</p>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Philosophy -->
-<section
-  style="background: var(--parchment); padding: var(--section-gap) 0; border-top: 0.5px solid var(--bone); border-bottom: 0.5px solid var(--bone);">
-  <div class="container">
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;">
-      <div class="reveal-left">
-        <span class="section-label">Triết lý</span>
-        <h2 class="section-heading" style="margin-bottom: 24px;">Cách chúng tôi nhìn</h2>
-        <div style="display: flex; flex-direction: column; gap: 28px;">
-          <div>
-            <h3
-              style="font-family: var(--font-body); font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--logo-mocha); margin-bottom: 8px;">
-              ✦ Ánh sáng tự nhiên</h3>
-            <p class="body-text">Chúng tôi ưu tiên ánh sáng tự nhiên và bối cảnh chân thực. Không lạm dụng đèn studio
-              công nghiệp rực rỡ, mà đón nhận những tia nắng chiều nhẹ, bóng râm tán cây, hay ánh đèn đêm lung linh.</p>
-          </div>
-          <div>
-            <h3
-              style="font-family: var(--font-body); font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--logo-mocha); margin-bottom: 8px;">
-              ✦ Cảm xúc chân thật</h3>
-            <p class="body-text">Dear Musé từ chối những dáng pose sượng trân gượng ép. Chúng tôi xây dựng một không
-              gian thoải mái, trò chuyện tâm tình để cảm xúc tự nhiên của bạn tự lên tiếng.</p>
-          </div>
-          <div>
-            <h3
-              style="font-family: var(--font-body); font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--logo-mocha); margin-bottom: 8px;">
-              ✦ Độc bản nghệ thuật</h3>
-            <p class="body-text">Mỗi khách hàng là một bản thể độc nhất. Bố cục, màu sắc và góc máy luôn được biến đổi
-              linh hoạt để tôn vinh trọn vẹn nét cá tính và câu chuyện riêng biệt của bạn.</p>
-          </div>
+  <!-- ─── MEANING: Tên gọi & Sứ mệnh ─── -->
+  <section class="ab-meaning">
+    <div class="ab-meaning__inner container">
+      <div class="ab-meaning__label-col">
+        <span class="ab-eyebrow ab-eyebrow--vert">Ý nghĩa · Sứ mệnh</span>
+      </div>
+      <div class="ab-meaning__text-col">
+        <h2 class="ab-display">Hành trình gửi thư tới <em>Nàng Thơ</em></h2>
+        <div class="ab-meaning__body">
+          <p>
+            Cái tên <strong>Dear Musé</strong> là sự kết hợp tinh tế giữa <strong>"Dear"</strong>
+            — trân quý, thân thương — và <strong>"Musé"</strong>, lấy cảm hứng từ Muse — nàng thơ.
+            Cái tên thể hiện mong muốn lưu giữ những khoảnh khắc đáng quý và tôn vinh vẻ đẹp
+            riêng của mỗi khách hàng, biến từng bức ảnh thành một tác phẩm mang đậm dấu ấn
+            cảm xúc và nghệ thuật.
+          </p>
+          <p>
+            Với niềm đam mê nhiếp ảnh cùng phong cách sáng tạo mang dấu ấn riêng, chúng em
+            không chỉ ghi lại hình ảnh mà còn truyền tải trọn vẹn cảm xúc, cá tính và những
+            kỷ niệm đáng nhớ qua từng khung hình — để khách hàng tự tin tỏa sáng và trở thành
+            nàng thơ lộng lẫy trong câu chuyện cổ tích của chính mình.
+          </p>
         </div>
       </div>
-
-      <div class="reveal-right">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <img src="/cdn/image?w=800&src=<%= encodeURIComponent('/source/Nàng thơ/Xanh Xanh 002.webp') %>" alt="Studio" loading="lazy"
-            style="width: 100%; aspect-ratio: 3/4; object-fit: cover; margin-top: 32px; border-radius: 16px; box-shadow: 0 10px 30px rgba(26,25,22,0.08);">
-          <img src="/cdn/image?w=800&src=<%= encodeURIComponent('/source/DOANH NGHIỆP/PREMIUM/IMG_4316.webp') %>" alt="Event" loading="lazy"
-            style="width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 16px; box-shadow: 0 10px 30px rgba(26,25,22,0.08);">
+      <div class="ab-meaning__img-col">
+        <div class="ab-meaning__img-frame">
+          <img src="/cdn/image?w=700&src=<%= encodeURIComponent('/source/Nàng thơ/Xanh Xanh 002.webp') %>"
+            alt="Khoảnh khắc nghệ thuật" loading="lazy">
+          <div class="ab-meaning__img-caption">Dear Musé · Studio</div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Team Section -->
-<section
-  style="padding: var(--section-gap) 0; background: var(--parchment); border-top: 0.5px solid var(--bone); border-bottom: 0.5px solid var(--bone);">
-  <div class="container">
-
-    <!-- Cinematic Split Intro -->
-    <div class="team-intro-split reveal"
-      style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 64px; align-items: center; margin-bottom: 100px;">
-      <div class="team-intro-img-wrap"
-        style="position: relative; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px rgba(26,25,22,0.06); aspect-ratio: 4/3;">
-        <img src="/logo/z7982025331049_77c483d93fce38d688c53ed4fd5d8e0f.webp" alt="Dear Musé Team"
-          style="width: 100%; height: 100%; object-fit: cover;">
-        <div
-          style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(26,25,22,0.3) 0%, transparent 100%);">
+  <!-- ─── BRAND STORY ─── -->
+  <section class="ab-story">
+    <div class="ab-story__accent-line"></div>
+    <div class="container ab-story__inner">
+      <div class="ab-story__header reveal">
+        <span class="ab-eyebrow">Brand Story</span>
+        <h2 class="ab-display">Câu chuyện <em>thương hiệu</em></h2>
+      </div>
+      <div class="ab-story__grid">
+        <div class="ab-story__img-wrap reveal-left">
+          <img src="/logo/z7982025331049_77c483d93fce38d688c53ed4fd5d8e0f.webp" alt="Dear Musé Team" loading="lazy">
+          <div class="ab-story__img-overlay"></div>
+          <div class="ab-story__img-badge">Since 2026</div>
+        </div>
+        <div class="ab-story__content reveal-right">
+          <blockquote class="ab-story__quote">
+            "Là một người con gái, tôi luôn tin rằng ai cũng có những khoảnh khắc đẹp đẽ của riêng mình. Nhưng không
+            phải lúc nào chúng ta cũng nhìn thấy điều đó."
+          </blockquote>
+          <p>
+            Có những ngày đứng trước gương và chỉ thấy những khuyết điểm. Có những lúc
+            nhìn lại những bức ảnh cũ và nhận ra mình đã từng đẹp hơn mình nghĩ.
+          </p>
+          <p>
+            Và từ đó, <strong>Dear Musé Studio</strong> được tạo nên từ mong muốn rất
+            giản đơn: giúp mỗi cô gái nhìn thấy vẻ đẹp của chính mình qua những khung
+            hình. Không phải vẻ đẹp của những tiêu chuẩn hoàn hảo, mà là vẻ đẹp trong
+            ánh mắt khi cười, trong sự dịu dàng khi lặng im, trong những cảm xúc chân
+            thật thuộc về riêng họ.
+          </p>
+          <p>
+            Mỗi buổi chụp là lưu giữ một câu chuyện. Câu chuyện về tuổi trẻ, những ngày
+            bình yên, sự trưởng thành — và những ký ức mà nhiều năm sau, họ vẫn muốn
+            mỉm cười vì đã từng có một phiên bản đẹp đẽ như thế.
+          </p>
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="team-intro-content">
-        <span class="section-label" style="margin-bottom: 16px;">Về chúng tôi</span>
-        <h2 class="section-heading"
-          style="font-size: clamp(32px, 4.5vw, 48px); line-height: 1.15; margin-bottom: 32px;">Đội ngũ Dear Musé</h2>
-
-        <h3
-          style="font-family: var(--font-display); font-size: 20px; font-style: italic; font-weight: 400; color: var(--logo-mocha); margin-bottom: 24px; line-height: 1.5; border-left: 2px solid var(--avocado-cream); padding-left: 20px;">
-          "Dear Musé không bắt đầu từ một bản kế hoạch kinh doanh. Nó bắt đầu từ một lời hứa với ánh sáng và những rung
-          động chân thật."
-        </h3>
-
-        <p class="body-text" style="margin-bottom: 20px; font-size: 15px; line-height: 1.8;">
-          Niềm tin ấy không thuộc về một cá nhân duy nhất, mà được nâng niu bởi những tâm hồn đồng điệu. Mỗi thành viên
-          tại Dear Musé, từ nhiếp ảnh gia bấm máy đón bình minh, chuyên viên trang điểm chăm chút từng sợi tóc, cho đến
-          người ngồi lặng lẽ trước màn hình hậu kỳ — tất cả đều chia sẻ chung một khát khao: giúp bạn bước qua cánh cửa
-          studio nhìn thấy và yêu lấy vẻ đẹp nguyên bản của chính mình.
-        </p>
-
-        <p class="body-text" style="margin-bottom: 20px; font-size: 15px; line-height: 1.8;">
-          Chúng tôi từ chối những khuôn mẫu rập khuôn. Không có những dáng pose gượng ép khiến bạn mỏi mệt, không có
-          những lớp phấn dày che đi những cảm xúc sống động, và càng không có sự can thiệp hậu kỳ làm mờ đi những đường
-          nét riêng biệt làm nên con người bạn. Cách tiếp cận của Dear Musé nhẹ nhàng hơn, tôn trọng hơn, và trân quý
-          từng nét tự nhiên của bạn.
-        </p>
-
-        <p class="body-text" style="font-size: 15px; line-height: 1.8; font-weight: 400; color: var(--ink);">
-          Cùng với triết lý <strong>tôn vinh vẻ đẹp thật, không tạo ra vẻ đẹp giả</strong> vẫn là kim chỉ nam cho mọi
-          buổi chụp – và là lời hứa mà cả đội ngũ 6 người chúng tôi cùng gìn giữ để viết nên những bức thư tình gửi đến
-          các Nàng Thơ.
+  <!-- ─── BRAND VALUES ─── -->
+  <section class="ab-values">
+    <div class="container">
+      <div class="ab-values__head reveal">
+        <span class="ab-eyebrow">Giá trị thương hiệu</span>
+        <h2 class="ab-display">Sự chân thật · Cảm xúc <em>& Sự đồng hành</em></h2>
+        <p class="ab-values__lead">
+          "Một bộ ảnh đẹp không chỉ đến từ kỹ thuật chụp, mà còn đến từ cảm giác thoải mái và tự tin của khách hàng
+          trong suốt hành trình thực hiện."
         </p>
       </div>
+
+      <div class="ab-values__grid">
+        <div class="ab-value-item reveal">
+          <div class="ab-value-item__num">01</div>
+          <div class="ab-value-item__body">
+            <h3>Trải nghiệm thoải mái</h3>
+            <p>Mang đến trải nghiệm chụp ảnh nhẹ nhàng, không áp lực — để mỗi cảm xúc được tự nhiên và chân thật nhất.
+            </p>
+          </div>
+        </div>
+        <div class="ab-value-item reveal">
+          <div class="ab-value-item__num">02</div>
+          <div class="ab-value-item__body">
+            <h3>Tôn vinh vẻ đẹp tự nhiên</h3>
+            <p>Tôn vinh vẻ đẹp tự nhiên và cá tính riêng biệt của từng khách hàng — không áp đặt, không rập khuôn.</p>
+          </div>
+        </div>
+        <div class="ab-value-item reveal">
+          <div class="ab-value-item__num">03</div>
+          <div class="ab-value-item__body">
+            <h3>Concept cá nhân hóa</h3>
+            <p>Xây dựng concept dựa trên câu chuyện và cảm xúc riêng của từng người — không có hai bộ ảnh nào giống
+              nhau.</p>
+          </div>
+        </div>
+        <div class="ab-value-item reveal">
+          <div class="ab-value-item__num">04</div>
+          <div class="ab-value-item__body">
+            <h3>Chất lượng chỉn chu</h3>
+            <p>Đảm bảo chất lượng hình ảnh sắc nét và chỉn chu trong từng khung hình — từ ánh sáng, bố cục đến hậu kỳ.
+            </p>
+          </div>
+        </div>
+        <div class="ab-value-item reveal">
+          <div class="ab-value-item__num">05</div>
+          <div class="ab-value-item__body">
+            <h3>Đồng hành lâu dài</h3>
+            <p>Duy trì sự quan tâm sau buổi chụp qua thiệp cảm ơn, ưu đãi tri ân và chương trình khách hàng thân thiết.
+            </p>
+          </div>
+        </div>
+        <div class="ab-value-item ab-value-item--accent reveal">
+          <p class="ab-value-item__closing">
+            Không chỉ tạo ra những bức ảnh đẹp — Dear Musé mong muốn tạo nên những <em>kỷ niệm đẹp.</em>
+          </p>
+        </div>
+      </div>
     </div>
+  </section>
 
-  </div>
-</section>
-
-<!-- Behind the scenes gallery -->
-<section style="padding: var(--section-gap) 0; background: var(--vanilla-cream);">
-  <div class="container">
-    <div class="text-center" style="margin-bottom: 48px;">
-      <span class="section-label reveal" style="justify-content: center;">Hậu trường</span>
-      <h2 class="section-heading reveal">Ghi lại đằng sau khung hình</h2>
+  <!-- ─── USP / POSITIONING ─── -->
+  <section class="ab-usp">
+    <div class="container ab-usp__inner reveal">
+      <div class="ab-usp__tag">
+        <span class="ab-eyebrow">Định vị thương hiệu</span>
+      </div>
+      <div class="ab-usp__content">
+        <h2 class="ab-display">Điểm khác biệt <em>của Dear Musé</em></h2>
+        <p>
+          Dear Musé không chạy theo xu hướng thị trường, không tập trung vào makeup cầu kỳ hay
+          concept thời trang. Chúng tôi tập trung vào điều duy nhất quan trọng nhất:
+          <strong>giúp khách hàng nhìn thấy phiên bản đẹp nhất của chính mình.</strong>
+        </p>
+        <div class="ab-usp__callout">
+          <div class="ab-usp__callout-icon">✦</div>
+          <div>
+            <strong>Độc bản · Unique Selling Point</strong>
+            <p>
+              Dear Musé không chỉ chụp ảnh — chúng tôi giúp khách hàng kể lại câu chuyện
+              của mình bằng hình ảnh. Mỗi bộ ảnh là một hành trình khám phá vẻ đẹp riêng,
+              nơi khách hàng được là chính mình và được nhìn thấy những điều đẹp đẽ mà
+              đôi khi họ đã vô tình bỏ quên.
+            </p>
+          </div>
+        </div>
+        <figure class="ab-usp__mindshare">
+          <blockquote>
+            "Khi muốn có một bộ ảnh nhẹ nhàng, cảm xúc và mang dấu ấn cá nhân,<br>
+            tôi nghĩ đến Dear Musé Studio."
+          </blockquote>
+          <figcaption>— Trong tâm trí khách hàng</figcaption>
+        </figure>
+      </div>
     </div>
-    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
-      <img src="/cdn/image?w=600&src=<%= encodeURIComponent('/source/Nàng thơ/Quả chanh 001.webp') %>" alt="Hậu trường chụp ảnh" loading="lazy"
-        class="reveal"
-        style="width: 100%; aspect-ratio: 4/5; object-fit: cover; border-radius: 16px; box-shadow: 0 5px 20px rgba(26,25,22,0.05);">
-      <img src="/cdn/image?w=600&src=<%= encodeURIComponent('/source/DOANH NGHIỆP/PREMIUM/IMG_8774.webp') %>" alt="Hậu trường sự kiện" loading="lazy" class="reveal"
-        style="width: 100%; aspect-ratio: 4/5; object-fit: cover; border-radius: 16px; box-shadow: 0 5px 20px rgba(26,25,22,0.05);">
-      <img src="/cdn/image?w=600&src=<%= encodeURIComponent('/source/Nàng thơ/Hướng dương 003.webp') %>" alt="BTS" loading="lazy"
-        class="reveal"
-        style="width: 100%; aspect-ratio: 4/5; object-fit: cover; border-radius: 16px; box-shadow: 0 5px 20px rgba(26,25,22,0.05);">
+  </section>
+
+  <!-- ─── RECOGNITION: 3 pillars ─── -->
+  <section class="ab-recognition">
+    <div class="container">
+      <div class="ab-recognition__head reveal">
+        <span class="ab-eyebrow ab-eyebrow--center">Nhận diện thương hiệu</span>
+        <h2 class="ab-display ab-display--center">Chúng tôi được ghi nhớ <em>bởi điều gì?</em></h2>
+        <p class="ab-recognition__sub">
+          "Không chỉ nhớ đến những bức ảnh đẹp — mà còn nhớ đến cảm giác được trân trọng và lắng nghe trong suốt hành
+          trình."
+        </p>
+      </div>
+
+      <div class="ab-pillars">
+        <article class="ab-pillar reveal">
+          <header class="ab-pillar__head">
+            <span class="ab-pillar__icon">🎨</span>
+            <h3>Phong cách hình ảnh</h3>
+          </header>
+          <ul class="ab-pillar__list">
+            <li>Tông màu sáng, trong trẻo, nhẹ nhàng</li>
+            <li>Khai thác cảm xúc tự nhiên thay vì tạo dáng gượng ép</li>
+            <li>Hình ảnh mang tính kể chuyện và giàu cảm xúc</li>
+          </ul>
+        </article>
+
+        <article class="ab-pillar ab-pillar--mid reveal">
+          <header class="ab-pillar__head">
+            <span class="ab-pillar__icon">✨</span>
+            <h3>Trải nghiệm khách hàng</h3>
+          </header>
+          <ul class="ab-pillar__list">
+            <li>Tư vấn concept cá nhân hóa sâu sắc</li>
+            <li>Hướng dẫn tạo dáng tận tình và tự nhiên</li>
+            <li>Không gian làm việc thân thiện, thoải mái</li>
+          </ul>
+        </article>
+
+        <article class="ab-pillar reveal">
+          <header class="ab-pillar__head">
+            <span class="ab-pillar__icon">💌</span>
+            <h3>Dịch vụ hậu mãi</h3>
+          </header>
+          <ul class="ab-pillar__list">
+            <li>Thiệp cảm ơn chân thành sau buổi chụp</li>
+            <li>Ưu đãi đặc quyền dành cho khách hàng quay lại</li>
+            <li>Quà tặng & chương trình khách hàng thân thiết</li>
+          </ul>
+        </article>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- CTA -->
-<section
-  style="background: var(--vanilla-cream); padding: 90px 0; text-align: center; border-top: 1px solid rgba(26,25,22,0.05);">
-  <div class="container">
-    <h2 class="reveal"
-      style="font-family: var(--font-display); font-size: clamp(28px, 4vw, 44px); font-style: italic; color: var(--ink); margin-bottom: 12px;">
-      Muốn ghi lại câu chuyện của chính bạn?
-    </h2>
-    <p class="body-text reveal" style="color: rgba(26,25,22,0.7); margin-bottom: 36px;">Chúng tôi luôn sẵn sàng lắng
-      nghe và đồng hành cùng cảm xúc của bạn.</p>
-    <a href="/booking" class="btn btn-dark about-cta-btn reveal"><span>Đặt lịch tư vấn ngay</span></a>
-  </div>
-</section>
+  <!-- ─── GALLERY: Hậu trường ─── -->
+  <section class="ab-gallery">
+    <div class="container">
+      <div class="ab-gallery__head">
+        <span class="ab-eyebrow ab-eyebrow--center reveal">Hậu trường</span>
+        <h2 class="ab-display ab-display--center reveal">Đằng sau <em>khung hình</em></h2>
+      </div>
+      <div class="ab-gallery__grid">
+        <div class="ab-gallery__item reveal">
+          <img src="/cdn/image?w=700&src=<%= encodeURIComponent('/source/Nàng thơ/Quả chanh 001.webp') %>"
+            alt="Hậu trường chụp ảnh - Quả chanh" loading="lazy">
+        </div>
+        <div class="ab-gallery__item reveal">
+          <img src="/cdn/image?w=700&src=<%= encodeURIComponent('/source/Nàng thơ/Nàng thơ 002.webp') %>"
+            alt="Hậu trường chụp ảnh - Nàng thơ" loading="lazy">
+        </div>
+        <div class="ab-gallery__item reveal">
+          <img src="/cdn/image?w=700&src=<%= encodeURIComponent('/source/Nàng thơ/Hướng dương 003.webp') %>"
+            alt="Hậu trường chụp ảnh - Hướng dương" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
 
-<style>
-  .btn.about-cta-btn {
-    border-radius: 100px !important;
-    transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-  }
+  <!-- ─── CTA ─── -->
+  <section class="ab-cta">
+    <div class="ab-cta__inner container reveal">
+      <p class="ab-eyebrow ab-eyebrow--center">Bạn đã sẵn sàng chưa?</p>
+      <h2 class="ab-cta__title">Muốn ghi lại câu chuyện <em>của chính bạn?</em></h2>
+      <p class="ab-cta__sub">Chúng tôi luôn sẵn sàng lắng nghe và đồng hành cùng cảm xúc của bạn.</p>
+      <a href="/booking" class="ab-cta__btn" id="about-cta-book">
+        <span>Đặt lịch tư vấn ngay</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+  </section>
 
-  .btn.about-cta-btn:hover {
-    background: var(--avocado-cream) !important;
-    color: var(--ink) !important;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(212, 219, 116, 0.2);
-  }
+  <!-- ─── ABOUT PAGE STYLES ─── -->
+  <style>
+    /* ══════════════════════════════════════════════
+   ABOUT — Design System (Beige World Edition)
+   All backgrounds: vanilla-cream / parchment / bone
+   No grays used anywhere.
+   ══════════════════════════════════════════════ */
 
-  .btn.about-cta-btn::before {
-    background: var(--avocado-cream) !important;
-  }
-
-
-  @media (max-width: 767px) {
-    [style*="grid-template-columns: 1fr 1fr"]:not(.form-row) {
-      grid-template-columns: 1fr !important;
-      gap: 40px !important;
+    /* ── Shared utilities ── */
+    .ab-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-body);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--logo-mocha);
+      /* Đổi sang màu Mocha đậm cho dễ đọc */
+      white-space: nowrap;
+      /* Đảm bảo hiển thị trên 1 hàng không bị rớt dòng */
     }
 
-    [style*="grid-template-columns: repeat(3, 1fr)"],
-    .team-grid {
-      grid-template-columns: 1fr !important;
-      gap: 48px !important;
+    .ab-eyebrow::before,
+    .ab-eyebrow::after {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 0.5px;
+      background: var(--logo-mocha);
+      /* Màu gạch ngang đậm màu hơn */
+      opacity: 0.95;
+      /* Rõ ràng hơn */
     }
-  }
-</style>
+
+    .ab-eyebrow--center {
+      display: flex;
+      justify-content: center;
+    }
+
+    .ab-eyebrow--vert {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      transform: rotate(180deg);
+      gap: 14px;
+    }
+
+    .ab-eyebrow--vert::before,
+    .ab-eyebrow--vert::after {
+      width: 0.5px;
+      height: 28px;
+      background: var(--logo-mocha);
+    }
+
+    .ab-display {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--ink);
+      margin: 16px 0 32px;
+    }
+
+    .ab-display em {
+      font-style: italic;
+      color: var(--logo-mocha);
+      /* Đổi sang màu Mocha đậm rõ ràng hơn */
+    }
+
+    .ab-display--center {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ── HERO ── */
+    .ab-hero {
+      position: relative;
+      height: 60vh;
+      min-height: 450px;
+      overflow: hidden;
+      background: var(--vanilla-cream);
+      /* Đổi sang màu be sáng */
+    }
+
+    .ab-hero__img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+      transform: scale(1.03);
+      transition: transform 8s ease;
+    }
+
+    .ab-hero:hover .ab-hero__img {
+      transform: scale(1);
+    }
+
+    .ab-hero__veil {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(170deg,
+          rgba(26, 25, 22, 0.55) 0%,
+          rgba(26, 25, 22, 0.20) 50%,
+          rgba(26, 25, 22, 0.65) 100%);
+    }
+
+    .ab-hero__body {
+      position: absolute;
+      bottom: 8vh;
+      left: 0;
+      right: 0;
+      padding: 0 clamp(24px, 8vw, 120px);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .ab-hero__eyebrow {
+      font-family: var(--font-body);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255, 247, 230, 0.75);
+    }
+
+    .ab-hero__title {
+      font-family: var(--font-display);
+      font-size: clamp(52px, 10vw, 120px);
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1;
+      color: var(--vanilla-cream);
+      letter-spacing: -0.01em;
+    }
+
+    .ab-hero__rule {
+      width: 48px;
+      height: 1px;
+      background: rgba(255, 247, 230, 0.5);
+      margin: 4px 0;
+    }
+
+    .ab-hero__slogan {
+      font-family: var(--font-display);
+      font-size: clamp(14px, 1.6vw, 20px);
+      font-style: italic;
+      color: rgba(255, 247, 230, 0.9);
+      letter-spacing: 0.03em;
+      max-width: 500px;
+      line-height: 1.5;
+    }
+
+    .ab-hero__scroll {
+      position: absolute;
+      bottom: 40px;
+      right: clamp(24px, 5vw, 80px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ab-hero__scroll span {
+      font-family: var(--font-body);
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255, 247, 230, 0.55);
+      writing-mode: vertical-rl;
+    }
+
+    .ab-hero__scroll-line {
+      width: 1px;
+      height: 48px;
+      background: rgba(255, 247, 230, 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ab-hero__scroll-line::after {
+      content: '';
+      position: absolute;
+      top: -100%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 247, 230, 0.8);
+      animation: scrollDrop 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollDrop {
+      0% {
+        top: -100%;
+      }
+
+      100% {
+        top: 200%;
+      }
+    }
+
+    /* ── MEANING ── */
+    .ab-meaning {
+      background: var(--vanilla-cream);
+      padding: clamp(80px, 12vw, 160px) 0;
+    }
+
+    .ab-meaning__inner {
+      display: grid;
+      grid-template-columns: 80px 1fr 380px;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .ab-meaning__label-col {
+      padding-top: 24px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .ab-meaning__text-col {
+      max-width: 560px;
+    }
+
+    .ab-meaning__body p {
+      font-family: var(--font-body);
+      font-size: 15px;
+      /* Đồng nhất 15px với trang Home */
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--ink);
+      margin-bottom: 20px;
+      opacity: 0.95;
+    }
+
+    .ab-meaning__body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .ab-meaning__body strong {
+      font-weight: 600;
+      color: var(--logo-mocha);
+    }
+
+    .ab-meaning__img-col {}
+
+    .ab-meaning__img-frame {
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .ab-meaning__img-frame img {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.8s var(--ease-silk);
+    }
+
+    .ab-meaning__img-frame:hover img {
+      transform: scale(1.03);
+    }
+
+    .ab-meaning__img-caption {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-style: italic;
+      letter-spacing: 0.1em;
+      color: rgba(255, 247, 230, 0.8);
+    }
+
+    /* ── BRAND STORY ── */
+    .ab-story {
+      background: var(--vanilla-cream);
+      /* Đổi sang màu be sáng */
+      padding: clamp(80px, 12vw, 160px) 0;
+      position: relative;
+    }
+
+    .ab-story__accent-line {
+      position: absolute;
+      top: 0;
+      left: clamp(24px, 8vw, 120px);
+      right: clamp(24px, 8vw, 120px);
+      height: 0.5px;
+      background: var(--bone);
+    }
+
+    .ab-story__inner {}
+
+    .ab-story__header {
+      margin-bottom: 72px;
+    }
+
+    .ab-story__grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .ab-story__img-wrap {
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .ab-story__img-wrap img {
+      width: 100%;
+      aspect-ratio: 4/5;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.9s var(--ease-silk);
+    }
+
+    .ab-story__img-wrap:hover img {
+      transform: scale(1.04);
+    }
+
+    .ab-story__img-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(26, 25, 22, 0.25) 0%, transparent 60%);
+    }
+
+    .ab-story__img-badge {
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+      background: var(--vanilla-cream);
+      color: var(--logo-mocha);
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-style: italic;
+      padding: 8px 16px;
+      border-radius: 2px;
+      letter-spacing: 0.05em;
+    }
+
+    .ab-story__content {
+      padding-top: 8px;
+    }
+
+    .ab-story__quote {
+      font-family: var(--font-display);
+      font-size: clamp(17px, 2vw, 22px);
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--logo-mocha);
+      border-left: 2px solid var(--logo-taupe);
+      padding-left: 24px;
+      margin: 0 0 32px;
+    }
+
+    .ab-story__content p {
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--ink);
+      opacity: 0.95;
+      margin-bottom: 18px;
+    }
+
+    .ab-story__content p:last-child {
+      margin-bottom: 0;
+    }
+
+    .ab-story__content strong {
+      font-weight: 600;
+      color: var(--logo-mocha);
+    }
+
+    /* ── BRAND VALUES ── */
+    .ab-values {
+      background: var(--vanilla-cream);
+      padding: clamp(80px, 12vw, 160px) 0;
+      border-top: 0.5px solid var(--bone);
+    }
+
+    .ab-values__head {
+      max-width: 680px;
+      margin-bottom: 72px;
+    }
+
+    .ab-values__lead {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-style: italic;
+      color: var(--logo-mocha);
+      line-height: 1.6;
+      margin-top: -8px;
+      opacity: 0.9;
+    }
+
+    .ab-values__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border-top: 0.5px solid var(--bone);
+    }
+
+    .ab-value-item {
+      padding: 40px 36px;
+      border-right: 0.5px solid var(--bone);
+      border-bottom: 0.5px solid var(--bone);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: background 0.3s ease;
+    }
+
+    .ab-value-item:last-child,
+    .ab-value-item:nth-child(3) {
+      border-right: none;
+    }
+
+    .ab-value-item:hover {
+      background: #FFFDF9;
+      /* Đổi sang màu sáng kem nhẹ khi hover */
+    }
+
+    .ab-value-item__num {
+      font-family: var(--font-display);
+      font-size: 48px;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--bone);
+      line-height: 1;
+      transition: color 0.3s ease;
+    }
+
+    .ab-value-item:hover .ab-value-item__num {
+      color: var(--logo-taupe);
+    }
+
+    .ab-value-item__body h3 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .ab-value-item__body p {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--ink);
+      opacity: 0.85;
+      margin: 0;
+    }
+
+    .ab-value-item--accent {
+      background: var(--vanilla-cream);
+      /* Đồng nhất sang màu be sáng */
+      border-right: none;
+      justify-content: center;
+    }
+
+    .ab-value-item__closing {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-style: italic;
+      line-height: 1.55;
+      color: var(--logo-mocha);
+      margin: 0;
+    }
+
+    .ab-value-item__closing em {
+      color: var(--logo-taupe);
+      font-style: italic;
+    }
+
+    /* ── USP / POSITIONING ── */
+    .ab-usp {
+      background: var(--vanilla-cream);
+      /* Đổi sang màu be sáng */
+      padding: clamp(80px, 12vw, 160px) 0;
+      position: relative;
+      overflow: hidden;
+      border-top: 0.5px solid var(--bone);
+    }
+
+    .ab-usp__inner {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 80px;
+      align-items: start;
+      position: relative;
+      z-index: 1;
+    }
+
+    .ab-usp__tag {
+      padding-top: 10px;
+    }
+
+    .ab-usp__content {}
+
+    .ab-usp__content p {
+      font-family: var(--font-body);
+      font-size: 15px;
+      /* Đồng nhất 15px với trang Home */
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--ink);
+      opacity: 0.95;
+      margin-bottom: 32px;
+    }
+
+    .ab-usp__content strong {
+      font-weight: 600;
+      color: var(--logo-mocha);
+    }
+
+    .ab-usp__callout {
+      background: var(--vanilla-cream);
+      border: 0.5px solid var(--bone);
+      border-radius: 4px;
+      padding: 28px 32px;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      margin-bottom: 40px;
+    }
+
+    .ab-usp__callout-icon {
+      font-size: 20px;
+      color: var(--logo-taupe);
+      flex-shrink: 0;
+      line-height: 1.4;
+    }
+
+    .ab-usp__callout strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 500;
+      font-style: italic;
+      color: var(--logo-mocha);
+      margin-bottom: 8px;
+    }
+
+    .ab-usp__callout p {
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--ink);
+      opacity: 0.9;
+      margin: 0;
+    }
+
+    .ab-usp__mindshare {
+      margin: 0;
+      padding: 32px 0 0;
+      border-top: 0.5px solid var(--bone);
+    }
+
+    .ab-usp__mindshare blockquote {
+      font-family: var(--font-display);
+      font-size: clamp(16px, 1.8vw, 20px);
+      font-style: italic;
+      line-height: 1.55;
+      color: var(--logo-mocha);
+      margin: 0 0 12px;
+    }
+
+    .ab-usp__mindshare figcaption {
+      font-family: var(--font-body);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--logo-taupe);
+      opacity: 0.8;
+    }
+
+    /* ── RECOGNITION ── */
+    .ab-recognition {
+      background: var(--vanilla-cream);
+      padding: clamp(80px, 12vw, 160px) 0;
+      border-top: 0.5px solid var(--bone);
+    }
+
+    .ab-recognition__head {
+      text-align: center;
+      max-width: 1000px;
+      margin: 0 auto 72px;
+    }
+
+    .ab-recognition__sub {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-style: italic;
+      color: var(--logo-mocha);
+      line-height: 1.6;
+      opacity: 0.85;
+      margin-top: 12px;
+    }
+
+    .ab-pillars {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--bone);
+      border: 0.5px solid var(--bone);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .ab-pillar {
+      background: var(--vanilla-cream);
+      /* Đồng nhất sang màu be sáng */
+      padding: 48px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      transition: background 0.3s ease;
+    }
+
+    .ab-pillar--mid {
+      background: var(--vanilla-cream);
+    }
+
+    .ab-pillar:hover {
+      background: #FFFDF9;
+      /* Đổi sang màu sáng kem */
+    }
+
+    .ab-pillar__head {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .ab-pillar__icon {
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .ab-pillar__head h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--logo-mocha);
+      line-height: 1.25;
+    }
+
+    .ab-pillar__list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .ab-pillar__list li {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.65;
+      color: var(--ink);
+      opacity: 0.9;
+      padding-left: 18px;
+      position: relative;
+    }
+
+    .ab-pillar__list li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--logo-taupe);
+      font-size: 12px;
+    }
+
+    /* ── GALLERY ── */
+    .ab-gallery {
+      background: var(--vanilla-cream);
+      /* Đổi sang màu be sáng */
+      padding: clamp(80px, 12vw, 160px) 0;
+      border-top: 0.5px solid var(--bone);
+    }
+
+    .ab-gallery__head {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .ab-gallery__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .ab-gallery__item {
+      overflow: hidden;
+      border-radius: 4px;
+      aspect-ratio: 3/4;
+    }
+
+    .ab-gallery__item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.8s var(--ease-silk);
+    }
+
+    .ab-gallery__item:hover img {
+      transform: scale(1.04);
+    }
+
+    /* ── CTA ── */
+    .ab-cta {
+      background: var(--vanilla-cream);
+      padding: clamp(100px, 14vw, 180px) 0;
+      border-top: 0.5px solid var(--bone);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ab-cta::before {
+      content: '✦';
+      position: absolute;
+      top: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 18px;
+      color: var(--logo-taupe);
+      opacity: 0.5;
+    }
+
+    .ab-cta__inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .ab-cta__title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--ink);
+      margin: 8px 0;
+    }
+
+    .ab-cta__title em {
+      font-style: italic;
+      color: var(--logo-taupe);
+    }
+
+    .ab-cta__sub {
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--ink);
+      opacity: 0.85;
+      max-width: none; /* Bỏ giới hạn chiều rộng để chữ nằm trên 1 dòng */
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .ab-cta__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--ink);
+      color: var(--vanilla-cream);
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 16px 40px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    .ab-cta__btn:hover {
+      background: var(--logo-mocha);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(122, 92, 74, 0.25);
+    }
+
+    .ab-cta__btn svg {
+      transition: transform 0.3s ease;
+    }
+
+    .ab-cta__btn:hover svg {
+      transform: translateX(4px);
+    }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 1024px) {
+      .ab-meaning__inner {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .ab-meaning__label-col {
+        display: none;
+      }
+
+      .ab-usp__inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .ab-usp__tag {
+        padding-top: 0;
+      }
+
+      .ab-values__grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .ab-value-item:nth-child(2) {
+        border-right: none;
+      }
+
+      .ab-value-item:nth-child(3) {
+        border-right: 0.5px solid var(--bone);
+      }
+
+      .ab-value-item--accent {
+        grid-column: span 2;
+        border-right: none;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .ab-hero {
+        height: 50vh;
+        min-height: 350px;
+      }
+
+      .ab-hero__body {
+        bottom: 6vh;
+      }
+
+      .ab-story__grid,
+      .ab-meaning__inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .ab-values__grid {
+        grid-template-columns: 1fr;
+      }
+
+      .ab-value-item {
+        border-right: none !important;
+      }
+
+      .ab-value-item--accent {
+        grid-column: auto;
+      }
+
+      .ab-pillars {
+        grid-template-columns: 1fr;
+      }
+
+      .ab-gallery__grid {
+        grid-template-columns: 1fr;
+        gap: 24px !important;
+      }
+
+      .ab-gallery__item {
+        aspect-ratio: 3/4;
+      }
+
+      .ab-usp__bg-text {
+        display: none;
+      }
+
+      .ab-usp__inner {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>

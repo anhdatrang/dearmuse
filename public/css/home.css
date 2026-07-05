@@ -481,7 +481,7 @@
   bottom: -15px;
   right: -20px;
   z-index: 3;
-  background: var(--ink);
+  background: var(--logo-mocha);
   color: rgba(255, 247, 230, 0.7);
   padding: 12px 20px;
   display: flex;
@@ -1303,7 +1303,7 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  background: var(--ink);
+  background: var(--logo-mocha);
   padding: 12px 20px;
   display: flex;
   flex-direction: column;
@@ -1455,7 +1455,7 @@
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  background: var(--ink);
+  background: var(--logo-mocha);
   color: var(--vanilla-cream);
   padding: 16px 36px;
   text-decoration: none;
@@ -1469,7 +1469,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: var(--logo-mocha);
+  background: var(--ink);
   opacity: 1;
   transform: scaleX(0);
   transform-origin: right;
