@@ -659,6 +659,116 @@ async function setup() {
     console.warn('⚠️ Cảnh báo seed mốc tích điểm:', e.message);
   }
 
+  // FEEDBACK TABLE
+  await conn.query(`
+    CREATE TABLE IF NOT EXISTS feedbacks (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      user_id INT,
+      customer_type ENUM('individual', 'business') DEFAULT 'individual',
+      display_name VARCHAR(100),
+      service_id INT,
+      service_label VARCHAR(100),
+      rating TINYINT NOT NULL DEFAULT 5,
+      content TEXT NOT NULL,
+      is_approved TINYINT(1) DEFAULT 0,
+      is_featured TINYINT(1) DEFAULT 0,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
+      FOREIGN KEY (service_id) REFERENCES services(id) ON DELETE SET NULL
+    )
+  `);
+  console.log('✅ Bảng feedbacks đã sẵn sàng');
+
+  // Seed Feedbacks
+  const [existingFeedbacks] = await conn.query(`SELECT COUNT(*) as count FROM feedbacks`);
+  if (existingFeedbacks[0].count === 0) {
+    await conn.query(`
+      INSERT INTO feedbacks (customer_type, display_name, service_label, rating, content, is_approved, is_featured, created_at) VALUES
+      ('individual', 'Ng. T. H.', 'Portrait Cá Nhân', 5,
+       'Mình không ngờ một buổi chụp lại có thể khiến mình rơi nước mắt vì hạnh phúc. Nhiếp ảnh gia không chỉ chụp ảnh — họ kể câu chuyện của mình theo cách mình chưa từng thấy. Những tấm ảnh đó, mình sẽ giữ mãi.',
+       1, 1, '2026-05-12 10:00:00'),
+
+      ('individual', 'T. M. K.', 'Sinh Nhật & Tốt Nghiệp', 5,
+       'Bộ ảnh tốt nghiệp của mình hoàn toàn vượt mọi kỳ vọng. Ánh sáng, góc chụp, cả không khí — tất cả đều như trong mơ. Cảm ơn Dear Musé đã biến một ngày quan trọng thành ký ức không thể phai.',
+       1, 1, '2026-05-20 14:00:00'),
+
+      ('business', 'Cty B***', 'Thương Hiệu & Sản Phẩm', 5,
+       'Chúng tôi đã hợp tác với nhiều studio khác nhau, nhưng Dear Musé mang lại một sự khác biệt thực sự. Bộ ảnh thương hiệu mới của chúng tôi nhận được rất nhiều phản hồi tích cực từ đối tác và khách hàng.',
+       1, 1, '2026-04-15 09:00:00'),
+
+      ('individual', 'L. T. A.', 'Portrait Cá Nhân', 5,
+       'Lần đầu tiên trong đời mình thấy mình đẹp đến vậy trong ảnh. Team rất chuyên nghiệp, tạo cho mình sự thoải mái hoàn toàn. Kết quả không chỉ là ảnh — đó là sự tự tin.',
+       1, 0, '2026-05-01 11:00:00'),
+
+      ('individual', 'Ph. H. Y.', 'Sinh Nhật & Tốt Nghiệp', 5,
+       'Sinh nhật 25 tuổi của mình trở nên ý nghĩa hơn bao giờ hết nhờ buổi chụp này. Mỗi tấm ảnh là một khoảnh khắc được đóng khung bởi ánh sáng và tình yêu. Không thể không yêu Dear Musé.',
+       1, 0, '2026-04-28 15:00:00'),
+
+      ('business', 'C*** Media', 'Sự Kiện', 5,
+       'Sự kiện ra mắt sản phẩm của chúng tôi được ghi lại hoàn hảo. Mọi khoảnh khắc, mọi cảm xúc đều được nắm bắt tinh tế. Dear Musé xứng đáng là đối tác truyền thông tin cậy lâu dài.',
+       1, 0, '2026-05-05 10:30:00'),
+
+      ('individual', 'V. K. N.', 'Portrait Cá Nhân', 4,
+       'Concept được tư vấn rất kỹ và phù hợp với tính cách của mình. Ảnh ra đẹp và tự nhiên. Sẽ quay lại cho bộ ảnh tiếp theo chắc chắn rồi!',
+       1, 0, '2026-04-10 13:00:00'),
+
+      ('individual', 'Đ. T. T.', 'Sinh Nhật & Tốt Nghiệp', 5,
+       'Bộ ảnh outdoor hoàng hôn của mình — không có từ nào khác ngoài tuyệt vời. Nhiếp ảnh gia chụp nhanh, chụp nhiều, chọn lọc tinh tế. Ảnh nhận về là những khoảnh khắc vàng.',
+       1, 0, '2026-03-25 16:00:00'),
+
+      ('business', 'T*** Brand', 'Thương Hiệu & Sản Phẩm', 5,
+       'Lookbook thương hiệu sau khi hợp tác với Dear Musé đã giúp chúng tôi tăng tỉ lệ chuyển đổi đáng kể. Hình ảnh chuyên nghiệp, storytelling thông qua ánh sáng — đó là điều chúng tôi cần.',
+       1, 0, '2026-03-10 08:00:00'),
+
+      ('individual', 'H. M. L.', 'Portrait Cá Nhân', 5,
+       'Mình là người rất tự ti khi chụp ảnh, nhưng đội ngũ Dear Musé đã khiến mình hoàn toàn thoải mái và tự nhiên. Ảnh ra xem mà mình không nhận ra chính mình — đẹp quá đến mức đó.',
+       1, 0, '2026-05-18 10:00:00'),
+
+      ('individual', 'Ng. H. B.', 'Sự Kiện', 4,
+       'Buổi chụp kỷ yếu lớp mình được Dear Musé ghi lại rất cảm xúc. Không khí, nụ cười, cả những giọt nước mắt chia tay — tất cả đều hiện diện trong ảnh. Xứng đáng 5 sao!',
+       1, 0, '2026-04-05 09:00:00'),
+
+      ('business', 'R*** Studio', 'Sự Kiện', 5,
+       'Chúng tôi thuê Dear Musé chụp workshop thiết kế của mình. Kết quả vượt xa mong đợi — mỗi tấm ảnh toát lên năng lượng sáng tạo và chuyên nghiệp. Đối tác tuyệt vời!',
+       1, 0, '2026-02-20 14:00:00'),
+
+      ('individual', 'B. T. Ph.', 'Portrait Cá Nhân', 5,
+       'Dear Musé không chỉ chụp ảnh — họ tạo ra nghệ thuật. Từ việc tư vấn trang phục đến lựa chọn ánh sáng, mọi thứ đều được cân nhắc kỹ lưỡng. Bộ ảnh của mình là một tác phẩm.',
+       1, 0, '2026-05-08 11:30:00'),
+
+      ('individual', 'X. P. D.', 'Sinh Nhật & Tốt Nghiệp', 5,
+       'Tốt nghiệp đại học — một cột mốc quan trọng mà mình muốn lưu giữ theo cách đặc biệt nhất. Và Dear Musé đã làm điều đó. Mỗi tấm ảnh như một trang nhật ký của tuổi trẻ.',
+       1, 0, '2026-04-22 15:00:00'),
+
+      ('business', 'Cty L***', 'Thương Hiệu & Sản Phẩm', 4,
+       'Hình ảnh sản phẩm mới của công ty chúng tôi trở nên thu hút và chuyên nghiệp hơn hẳn. Dear Musé hiểu được ngôn ngữ thương hiệu và chuyển hóa nó thành những khung hình đẹp mắt.',
+       1, 0, '2026-03-15 10:00:00'),
+
+      ('individual', 'T. H. L.', 'Portrait Cá Nhân', 5,
+       'Lần đầu chụp concept nghệ thuật và mình hoàn toàn bị chinh phục. Không gian studio ấm cúng, team thân thiện, ảnh ra đẹp đến không tưởng. Đây sẽ mãi là bộ ảnh yêu thích của mình.',
+       1, 0, '2026-05-25 13:00:00'),
+
+      ('individual', 'M. Q. A.', 'Sự Kiện', 5,
+       'Tiệc sinh nhật mẹ mình được ghi lại đầy đủ và cảm động. Những nụ cười, những cái ôm, những giọt nước mắt hạnh phúc — Dear Musé không bỏ sót khoảnh khắc nào. Cảm ơn nhiều lắm!',
+       1, 0, '2026-04-30 17:00:00'),
+
+      ('business', 'A*** Agency', 'Sự Kiện', 5,
+       'Chúng tôi đã và sẽ tiếp tục chọn Dear Musé cho các sự kiện của agency. Chất lượng ổn định, phong cách nhất quán, và luôn giao ảnh đúng hẹn. Đó là những gì chúng tôi cần nhất.',
+       1, 0, '2026-02-10 09:00:00'),
+
+      ('individual', 'Ng. T. B.', 'Portrait Cá Nhân', 5,
+       'Mình đặt lịch để có bộ ảnh làm hồ sơ nghề nghiệp, nhưng kết quả nhận được còn hơn cả những gì mình hy vọng. Ảnh vừa chuyên nghiệp vừa đậm chất cá nhân. Dear Musé thực sự hiểu khách hàng.',
+       1, 0, '2026-05-02 10:00:00'),
+
+      ('individual', 'C. K. V.', 'Sinh Nhật & Tốt Nghiệp', 5,
+       'Bộ ảnh sinh nhật 30 tuổi của mình — một khoảnh khắc mình sẽ nhớ mãi. Mỗi tấm ảnh như thì thầm: "Em đã làm được, em xứng đáng với điều này." Cảm ơn Dear Musé rất nhiều.',
+       1, 0, '2026-05-30 12:00:00')
+    `);
+    console.log('✅ Seed 20 feedbacks mẫu xong');
+  } else {
+    console.log('ℹ️  Feedbacks đã có dữ liệu, bỏ qua seed');
+  }
+
   await conn.end();
   console.log('\n🎉 Setup hoàn tất! Chạy: npm start\n');
   console.log('📋 Admin panel: http://localhost:3000/admin/login');

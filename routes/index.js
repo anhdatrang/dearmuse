@@ -13,6 +13,7 @@ const Service = require('../models/Service');
 const conceptController = require('../controllers/conceptController');
 const cdnController = require('../controllers/cdnController');
 const paymentController = require('../controllers/paymentController');
+const feedbackController = require('../controllers/feedbackController');
 
 // Image CDN
 router.get('/cdn/image', cdnController.serveImage);
@@ -176,6 +177,10 @@ router.post('/api/track', async (req, res) => {
     console.error('Analytics tracking error:', err);
   }
 });
+
+// Feedback
+router.get('/feedback', feedbackController.index);
+router.post('/feedback', feedbackController.submit);
 
 // Chatbot API
 router.post('/api/chatbot', chatbotController.chat);

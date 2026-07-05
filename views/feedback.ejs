@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <meta name="description" content="<%= metaDescription %>">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/feedback.css">
+</head>
+<body>
+
+  <%- include('partials/nav') %>
+
+  <div class="feedback-page">
+
+    <!-- Lớp sương mù mờ ảo tĩnh lặng phía trên -->
+    <div class="fog-overlay"></div>
+
+    <!-- 🌟 Hero Section -->
+    <section class="feedback-hero">
+      <span class="hero-stamp">Dear Musé</span>
+      <h1 class="feedback-hero-title">Nơi Chia Sẻ Cảm Xúc</h1>
+      <p class="feedback-hero-desc">
+        Những trang viết tay, ảnh kẹp vội, và cả những đóa hoa ép trên trang giấy. 
+        Mọi cảm xúc của bạn đều được chúng tôi trân quý cất giữ trong không gian này.
+      </p>
+    </section>
+
+    <!-- 📝 Alerts -->
+    <% if (successMsg) { %>
+      <div class="feedback-alert">
+        ✨ Cảm ơn bạn! Lá thư của bạn đã được dán vào sổ.
+      </div>
+    <% } %>
+
+    <!-- 🖼️ Scrapbook Canvas -->
+    <section class="scrapbook-canvas">
+      
+      <!-- Bụi sương lấp lánh (Glowing Dust) -->
+      <% 
+        for(let i = 0; i < 20; i++) { 
+          const top = Math.floor(Math.random() * 100);
+          const left = Math.floor(Math.random() * 100);
+          const dur = (Math.random() * 10 + 10).toFixed(1); // 10s - 20s
+          const xShift = Math.floor(Math.random() * 150) - 75; // -75px to 75px
+          const op = (Math.random() * 0.5 + 0.3).toFixed(2); // 0.3 to 0.8
+      %>
+        <div class="glowing-dust" style="top: <%= top %>%; left: <%= left %>%; --dust-dur: <%= dur %>s; --dust-x: <%= xShift %>px; --dust-op: <%= op %>;"></div>
+      <% } %>
+
+      <% 
+        const styles = ['note-polaroid', 'note-torn', 'note-postcard'];
+        
+        // Hàm sinh clip-path răng cưa xé giấy ngẫu nhiên độc bản cho mỗi lá thư
+        function getUniqueTornClipPath(styleClass) {
+          const maxJaggedness = styleClass === 'note-polaroid' ? 0.8 : 3.5;
+          const points = [];
+          for (let x = 0; x <= 100; x += 10) {
+            const y = (Math.random() * maxJaggedness).toFixed(1);
+            points.push(`${x}% ${y}%`);
+          }
+          for (let y = 10; y <= 90; y += 10) {
+            const x = (100 - Math.random() * maxJaggedness).toFixed(1);
+            points.push(`${x}% ${y}%`);
+          }
+          for (let x = 100; x >= 0; x -= 10) {
+            const y = (100 - Math.random() * maxJaggedness).toFixed(1);
+            points.push(`${x}% ${y}%`);
+          }
+          for (let y = 90; y >= 10; y -= 10) {
+            const x = (Math.random() * maxJaggedness).toFixed(1);
+            points.push(`${x}% ${y}%`);
+          }
+          return `clip-path: polygon(${points.join(', ')});`;
+        }
+
+        // Chia feedbacks thành các hàng, mỗi hàng tối đa 3 note trên desktop
+        const chunkSize = 3;
+        const feedbackRows = [];
+        for (let i = 0; i < feedbacks.length; i += chunkSize) {
+          feedbackRows.push(feedbacks.slice(i, i + chunkSize));
+        }
+
+        feedbackRows.forEach((rowCards, rowIndex) => {
+          const isEvenRow = rowIndex % 2 === 0;
+          // Đường dây thừng uốn lượn nhẹ nhàng, đi ngang qua mép trên của các note
+          const pathD = isEvenRow 
+            ? "M 0 30 Q 250 50, 500 30 T 1000 30" 
+            : "M 0 30 Q 250 10, 500 30 T 1000 30";
+      %>
+        <div class="scrapbook-row">
+          <!-- Sợi dây thừng chạy dọc theo hàng này -->
+          <div class="scrapbook-string-wrapper">
+            <svg class="scrapbook-string-svg" viewBox="0 0 1000 60" preserveAspectRatio="none">
+              <path d="<%= pathD %>" fill="none" stroke="#a4816c" stroke-width="4" stroke-linecap="round" />
+              <path d="<%= pathD %>" fill="none" stroke="#bd9b84" stroke-width="4" stroke-linecap="round" stroke-dasharray="10 10" />
+            </svg>
+            <div class="string-tape tape-left"></div>
+            <div class="string-tape tape-right"></div>
+          </div>
+
+          <% 
+            rowCards.forEach((f, index) => { 
+              const globalIndex = rowIndex * chunkSize + index;
+              const styleClass = styles[globalIndex % styles.length];
+              const clipPathStyle = getUniqueTornClipPath(styleClass);
+              
+              const rotation = Math.floor(Math.random() * 8) - 4; // Giảm góc xoay để ngay ngắn hơn trên dây
+              
+              // Tính toán margin-top dựa trên độ cong của dây tại vị trí tương đối
+              let curveY = 30; // middle
+              if (index === 0) curveY = isEvenRow ? 39 : 21; // left (16.6%)
+              if (index === 1) curveY = 30; // center (50%)
+              if (index === 2) curveY = isEvenRow ? 21 : 39; // right (83.3%)
+              
+              // Để băng dính (tâm ở 3px) khớp với dây (20 + curveY)
+              const mt = curveY - 38; 
+              
+              const mb = Math.floor(Math.random() * 20) + 15;
+              
+              // Xê dịch lớn hơn giữa các hàng (hàng chẵn lệch trái, hàng lẻ lệch phải) để phá vỡ cấu trúc cột dọc thẳng hàng
+              const staggerOffset = isEvenRow ? -35 : 35; 
+              const shiftX = Math.floor(Math.random() * 30) - 15 + staggerOffset; 
+              const shiftY = 0; // Cố định chiều cao để giữ dính dây
+              
+              // Tape có một độ xoay ngẫu nhiên nhỏ (gần với phương ngang của dây)
+              const tapeRotation = Math.floor(Math.random() * 10) - 5;
+              const floatDelay = (Math.random() * 5).toFixed(1);
+          %>
+            
+            <div class="scrapbook-item-wrapper" 
+                 style="margin-top: <%= mt %>px; margin-bottom: <%= mb %>px; z-index: <%= Math.floor(Math.random() * 30) + 10 %>; --float-delay: -<%= floatDelay %>s; --shift-x: <%= shiftX %>px; --shift-y: <%= shiftY %>px;">
+              
+              <% if (styleClass === 'note-polaroid' || styleClass === 'note-postcard' || styleClass === 'note-torn') { %>
+                <div class="tape" style="transform: translateX(-50%) rotate(<%= tapeRotation %>deg);"></div>
+              <% } %>
+              
+              <div class="<%= styleClass %> <%= f.is_featured ? 'is-featured' : '' %>" style="--rot: <%= rotation %>deg; transform: rotate(<%= rotation %>deg); <%= clipPathStyle %>">
+    
+                <div class="card-header">
+                  <h3 class="card-name"><%= f.maskedName %></h3>
+                  <div class="card-stars">
+                    <% f.starsArr.forEach(isFilled => { %>
+                      <span class="<%= isFilled ? 'filled' : 'empty' %>">★</span>
+                    <% }) %>
+                  </div>
+                </div>
+                
+                <div class="card-content">
+                  <%= f.content %>
+                </div>
+                
+                <div class="card-footer">
+                  <span><%= f.service_label || 'Dịch vụ' %></span>
+                  <span><%= f.monthYear %></span>
+                </div>
+                
+              </div>
+              
+            </div>
+            
+          <% }) %>
+        </div>
+      <% }) %>
+    </section>
+
+    <!-- ✍️ Submit Form Section (The Blank Page) -->
+    <section class="feedback-form-section">
+      <div class="form-container">
+        
+        <% if (sessionUser) { %>
+          <form class="editorial-form" action="/feedback" method="POST">
+
+            <div class="form-header">
+              <h2>Viết Thư Gửi Musé</h2>
+              <p>Trang giấy còn trống này dành cho những dòng cảm nhận của riêng bạn...</p>
+            </div>
+
+            <div class="form-group" style="margin-top: 30px;">
+              <label>Mức độ hài lòng</label>
+              <div class="star-rating-input">
+                <input type="radio" id="star5" name="rating" value="5" checked>
+                <label for="star5">★</label>
+                <input type="radio" id="star4" name="rating" value="4">
+                <label for="star4">★</label>
+                <input type="radio" id="star3" name="rating" value="3">
+                <label for="star3">★</label>
+                <input type="radio" id="star2" name="rating" value="2">
+                <label for="star2">★</label>
+                <input type="radio" id="star1" name="rating" value="1">
+                <label for="star1">★</label>
+              </div>
+            </div>
+
+            <div class="form-row" style="display: flex; gap: 30px; flex-wrap: wrap;">
+              <div class="form-group" style="flex: 1; min-width: 200px;">
+                <label>Bạn là...</label>
+                <select name="customer_type">
+                  <option value="individual" <%= sessionUser.user_type === 'individual' ? 'selected' : '' %>>Khách hàng cá nhân</option>
+                  <option value="business" <%= sessionUser.user_type === 'business' ? 'selected' : '' %>>Đại diện doanh nghiệp</option>
+                </select>
+              </div>
+              <div class="form-group" style="flex: 1; min-width: 200px;">
+                <label>Trải nghiệm dịch vụ</label>
+                <select name="service_label">
+                  <% services.forEach(s => { %>
+                    <option value="<%= s.name %>"><%= s.name %></option>
+                  <% }) %>
+                  <option value="Khác">Khác</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Câu chuyện của bạn</label>
+              <textarea name="content" placeholder="Kể cho Dear Musé nghe về những khoảnh khắc đẹp nhất..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit">Dán Vào Sổ Nhật Ký</button>
+            
+            <p style="text-align: center; font-size: 12px; color: var(--smoke); margin-top: 20px; font-style: italic;">
+              * Tên của bạn sẽ được viết tắt (VD: Nguyễn Thị A → Ng. T. A.) để giữ sự riêng tư trọn vẹn.
+            </p>
+          </form>
+        <% } else { %>
+          <div class="login-prompt">
+            <p>Hãy lưu tên mình vào cuốn sổ này nhé.</p>
+            <a href="/auth/login?redirect=/feedback" class="btn-login">Đăng Nhập Để Viết Thư</a>
+          </div>
+        <% } %>
+
+      </div>
+    </section>
+
+  </div>
+
+  <%- include('partials/footer') %>
+  <%- include('partials/mobile-menu') %>
+  
+  <script src="/js/main.js"></script>
+  <script>
+    /* BỎ JS PARALLAX ĐỂ CHỐNG GIẬT LAG. HIỆU ỨNG THỞ (FLOATING) ĐƯỢC XỬ LÝ BẰNG CSS THUẦN! */
+
+    /* Show errors từ URL */
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('error')) {
+      const errorMsg = urlParams.get('error');
+      let msgText = 'Đã có lỗi xảy ra. Vui lòng thử lại sau.';
+      if (errorMsg === 'empty') msgText = 'Vui lòng nhập nội dung.';
+      if (errorMsg === 'rating') msgText = 'Vui lòng đánh giá số sao.';
+      
+      const alert = document.createElement('div');
+      alert.className = 'feedback-alert alert-error';
+      alert.innerText = '⚠️ ' + msgText;
+      document.body.appendChild(alert);
+      
+      window.history.replaceState({}, document.title, "/feedback");
+    }
+  </script>
+</body>
+</html>

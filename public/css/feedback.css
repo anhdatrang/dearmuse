@@ -1,0 +1,409 @@
+/* ============================================================
+   FEEDBACK PAGE — "The Muse's Scrapbook" (Nhật Ký Tản Mạn)
+   Dear Musé — Artistic, Unstructured, Poetic
+   ============================================================ */
+
+.feedback-page {
+  min-height: 100vh;
+  background-color: #EFE9D9; 
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+  color: var(--ink);
+  font-family: var(--font-body);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Lớp sương mù tĩnh lặng (Fog Overlay) */
+.fog-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, rgba(239, 233, 217, 0) 0%, rgba(239, 233, 217, 0.4) 100%);
+  z-index: 5;
+}
+
+/* ══════════════════════════════════════════
+   HERO SECTION
+   ══════════════════════════════════════════ */
+.feedback-hero {
+  padding-top: 200px; 
+  padding-bottom: 60px;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  padding-inline: 20px;
+  position: relative;
+  z-index: 10;
+}
+
+.hero-stamp {
+  font-family: 'Dancing Script', cursive;
+  font-size: 28px;
+  color: #a4816c;
+  margin-bottom: 10px;
+  opacity: 0.9;
+  transform: rotate(-5deg);
+  display: inline-block;
+}
+
+.feedback-hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 8vw, 80px);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--logo-mocha);
+  line-height: 1;
+  margin-bottom: 30px;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+}
+
+.feedback-hero-desc {
+  font-size: 16px;
+  line-height: 1.9;
+  color: #5c5950;
+  max-width: 500px;
+  margin: 0 auto;
+  font-style: italic;
+}
+
+/* ══════════════════════════════════════════
+   THE SCRAPBOOK CANVAS (Scattered Layout)
+   ══════════════════════════════════════════ */
+.scrapbook-canvas {
+  padding: 80px 2vw 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+/* Dòng chứa note phản hồi */
+.scrapbook-row {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  align-items: start;
+  padding-top: 55px; /* Để chừa chỗ cho sợi dây thừng và băng dính */
+  padding-bottom: 90px;
+}
+
+/* ── Scrapbook Hemp Strings (Dây thừng uốn lượn 3D) ── */
+.scrapbook-string-wrapper {
+  position: absolute;
+  top: 20px; /* Hạ thấp dây thừng một chút để đi ngang qua đầu note */
+  left: 2%;
+  right: 2%;
+  height: 60px; /* Chiều cao bao quát độ cong uốn lượn */
+  z-index: 3; /* Phía sau các mẩu note (z-index 10) */
+  pointer-events: none;
+}
+
+.scrapbook-string-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.18));
+}
+
+/* Băng dính dán cố định 2 đầu dây (Màu trắng mờ đục sắc nét, nổi bật) */
+.string-tape {
+  position: absolute;
+  top: 50%;
+  width: 50px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.85); /* Màu trắng đục mờ dễ nhìn, nổi bật trên nền kem */
+  backdrop-filter: blur(2px);
+  border-left: 1px dashed rgba(0, 0, 0, 0.12);
+  border-right: 1px dashed rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1), inset 0 0 3px rgba(255, 255, 255, 0.8);
+  z-index: 5;
+}
+
+.tape-left {
+  left: -15px;
+  transform: translateY(-50%) rotate(-15deg);
+}
+
+.tape-right {
+  right: -15px;
+  transform: translateY(-50%) rotate(15deg);
+}
+
+/* Base item wrapper */
+.scrapbook-item-wrapper {
+  position: relative;
+  width: auto;
+  z-index: 10;
+  transition: z-index 0s 0.2s, filter 0.3s ease;
+  animation: swingCard 6s ease-in-out var(--float-delay) infinite alternate;
+  will-change: transform;
+  /* Tâm xoay đặt tại vị trí dây thừng (khoảng 3px tính từ đỉnh giấy) */
+  transform-origin: center 3px;
+  /* Bóng đổ mặc định cho tất cả các mẩu giấy */
+  filter: drop-shadow(0 6px 15px rgba(122, 92, 74, 0.15));
+}
+
+/* Hover: Float up slightly to indicate hover */
+.scrapbook-item-wrapper:hover {
+  z-index: 100;
+  transition: z-index 0s;
+  filter: drop-shadow(0 15px 30px rgba(122, 92, 74, 0.25));
+  animation-play-state: paused;
+}
+
+/* ── Vintage Decorations (Coffee stains, wax seals) ── */
+.vintage-deco {
+  position: absolute;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.8;
+  mix-blend-mode: multiply;
+}
+
+/* Vết ố cà phê bằng CSS/SVG (vòng tròn viền mờ) */
+.coffee-stain-1, .coffee-stain-2 {
+  width: 150px; height: 150px;
+  border-radius: 50%;
+  border: 4px solid rgba(139, 90, 43, 0.1);
+  box-shadow: inset 0 0 10px rgba(139, 90, 43, 0.05);
+  background: radial-gradient(circle, transparent 70%, rgba(139, 90, 43, 0.05) 100%);
+  filter: blur(1px);
+}
+.coffee-stain-2 { width: 100px; height: 100px; border-width: 2px; }
+
+
+/* Nét vẽ tay nguệch ngoạc */
+.doodle-arrow::before {
+  content: '〰️'; font-size: 40px; color: rgba(122, 92, 74, 0.3); font-family: 'Courier New', monospace;
+}
+.doodle-heart::before {
+  content: '♡'; font-size: 60px; color: rgba(122, 92, 74, 0.3); font-family: 'Dancing Script', cursive;
+}
+
+/* ── Real Photorealistic Dried Flowers ── */
+.real-flower-deco {
+  position: absolute; 
+  pointer-events: none; 
+  /* Chìm xuống dưới các mẩu giấy note (có z-index: 10) */
+  z-index: 5;
+  max-width: 280px;
+  mix-blend-mode: multiply;
+  /* Loại bỏ opacity để tránh lỗi hiển thị khung viền của trình duyệt, tăng nhẹ contrast/brightness để triệt tiêu nền xám */
+  filter: contrast(1.3) brightness(1.08) drop-shadow(5px 10px 10px rgba(0,0,0,0.06));
+}
+
+/* ── Hiệu ứng Bụi Sương Lấp Lánh (Glowing Dust) ── */
+.glowing-dust {
+  position: absolute;
+  width: 3px; height: 3px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 8px 3px rgba(255, 255, 255, 0.6), 0 0 12px 6px rgba(214, 168, 99, 0.4);
+  animation: dustFloat var(--dust-dur) infinite linear;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0;
+}
+@keyframes dustFloat {
+  0% { transform: translateY(0) translateX(0) scale(0.5); opacity: 0; }
+  20% { opacity: var(--dust-op); transform: scale(1.2); }
+  80% { opacity: var(--dust-op); transform: scale(0.8); }
+  100% { transform: translateY(-200px) translateX(var(--dust-x)) scale(0.5); opacity: 0; }
+}
+
+/* ── Different Styles of Notes ── */
+
+/* 1. The Polaroid Style */
+.note-polaroid {
+  background: #FCF8EE;
+  padding: 20px 20px 45px;
+  width: 320px;
+  transform-origin: center top;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1), 0 2px 5px rgba(0,0,0,0.05);
+}
+.scrapbook-item-wrapper:hover .note-polaroid { transform: scale(1.05) rotate(0deg) !important; }
+
+/* Tape for Polaroid / Postcard */
+.tape {
+  position: absolute;
+  top: -16px; left: 50%; width: 110px; height: 38px; /* Kích thước vừa vặn, dán đè sát nét */
+  background-color: rgba(255, 255, 255, 0.95); /* Trắng đục rõ nét */
+  border-left: 2px dashed rgba(0, 0, 0, 0.1); 
+  border-right: 2px dashed rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0 0 5px rgba(0,0,0,0.03); /* Bóng đổ cực mỏng để tạo cảm giác dán chặt, không bị lơ lửng */
+  background-image: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0) 100%);
+  transform: translateX(-50%) rotate(calc(var(--rot) * -1)); z-index: 20;
+}
+
+/* 2. The Torn Paper Style (Vintage Note) */
+.note-torn {
+  background: #FCF8EE;
+  padding: 40px 30px;
+  width: 340px;
+  transform-origin: center top;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  clip-path: polygon(
+    0% 2%, 5% 0%, 10% 2%, 15% 0%, 20% 3%, 25% 1%, 30% 2%, 35% 0%, 40% 3%, 45% 1%, 50% 2%, 55% 0%, 60% 3%, 65% 1%, 70% 2%, 75% 0%, 80% 3%, 85% 1%, 90% 2%, 95% 0%, 100% 2%,
+    100% 98%, 95% 100%, 90% 98%, 85% 100%, 80% 97%, 75% 99%, 70% 98%, 65% 100%, 60% 97%, 55% 99%, 50% 98%, 45% 100%, 40% 97%, 35% 99%, 30% 98%, 25% 100%, 20% 97%, 15% 99%, 10% 98%, 5% 100%, 0% 98%
+  );
+}
+.scrapbook-item-wrapper:hover .note-torn { transform: scale(1.03) rotate(0deg) !important; }
+
+/* 3. The Minimalist Postcard */
+.note-postcard {
+  background-color: #FCF8EE;
+  padding: 45px 35px;
+  width: 360px;
+  border: 1px solid rgba(122, 92, 74, 0.2);
+  box-shadow: 2px 6px 20px rgba(0,0,0,0.06);
+  transform-origin: center top;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  background-image: repeating-linear-gradient(transparent, transparent 29px, rgba(122, 92, 74, 0.05) 29px, rgba(122, 92, 74, 0.05) 30px);
+}
+.scrapbook-item-wrapper:hover .note-postcard { transform: scale(1.03) rotate(0deg) !important; }
+
+
+
+/* ── Card Inner Elements ── */
+.card-header { margin-bottom: 20px; position: relative; z-index: 2; }
+.card-name { font-family: 'Dancing Script', cursive; font-size: 28px; color: var(--logo-mocha); margin-bottom: 4px; }
+.card-stars { font-size: 14px; letter-spacing: 2px; }
+.card-stars .filled { color: #d6a863; }
+.card-stars .empty { color: rgba(122, 92, 74, 0.2); }
+.card-content { font-family: var(--font-display); font-size: 15px; line-height: 1.8; color: #333; font-style: italic; margin-bottom: 24px; position: relative; z-index: 2; }
+.card-footer { font-family: var(--font-body); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--smoke); display: flex; justify-content: space-between; border-top: 1px solid rgba(122, 92, 74, 0.15); padding-top: 16px; position: relative; z-index: 2; }
+
+
+.deco-tape-corner {
+  position: absolute; 
+  top: -14px; right: -14px; width: 75px; height: 30px; /* Nhỏ hơn chút, dán sát mép giấy và dây */
+  background-color: rgba(255, 255, 255, 0.95); 
+  border-left: 2px dashed rgba(0, 0, 0, 0.1);
+  border-right: 2px dashed rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0 0 5px rgba(0,0,0,0.03); 
+  transform: rotate(45deg); z-index: 20;
+}
+
+/* ── Swing Animation (Lắc lư nhẹ theo trục băng dính) ── */
+.scrapbook-item-wrapper {
+  animation: swingCard 6s ease-in-out var(--float-delay) infinite alternate;
+  will-change: transform;
+}
+
+@keyframes swingCard {
+  0% { transform: translate(var(--shift-x, 0), 0) rotate(-2deg); }
+  100% { transform: translate(var(--shift-x, 0), 0) rotate(2deg); }
+}
+
+.scrapbook-item-wrapper:hover {
+  animation-play-state: paused;
+}
+
+/* ══════════════════════════════════════════
+   MODAL LIGHTBOX (Click để đọc thư)
+   ══════════════════════════════════════════ */
+.feedback-modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(239, 233, 217, 0.85); backdrop-filter: blur(5px);
+  z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+  display: flex; justify-content: center; align-items: center;
+}
+.feedback-modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+.feedback-modal-close {
+  position: absolute; top: 30px; right: 40px; background: none; border: none; font-size: 30px; color: var(--logo-mocha); cursor: pointer; transition: transform 0.3s;
+}
+.feedback-modal-close:hover { transform: rotate(90deg); }
+
+.feedback-modal-content {
+  max-width: 90vw; max-height: 90vh; overflow-y: auto; padding: 40px; /* Padding để không cắt shadow */
+}
+/* Nội dung bên trong modal sẽ bị loại bỏ box-shadow cũ và thêm box-shadow to hơn */
+.feedback-modal-content > div {
+  box-shadow: 0 30px 60px rgba(0,0,0,0.15) !important;
+}
+
+
+/* ══════════════════════════════════════════
+   SUBMIT FORM SECTION (The Blank Paper)
+   ══════════════════════════════════════════ */
+.feedback-form-section { padding: 60px 20px 160px; position: relative; z-index: 10; }
+.form-container { max-width: 600px; margin: 0 auto; }
+
+/* The form looks like a clean sheet of letter paper */
+.editorial-form {
+  background: #FCF8EE; padding: 60px 50px; box-shadow: 0 15px 40px rgba(0,0,0,0.08); position: relative;
+  clip-path: polygon(
+    0% 0%, 100% 0%, 100% 98%, 98% 100%, 96% 98%, 94% 100%, 92% 98%, 90% 100%, 88% 98%, 86% 100%, 84% 98%, 82% 100%, 80% 98%, 78% 100%, 76% 98%, 74% 100%, 72% 98%, 70% 100%, 68% 98%, 66% 100%, 64% 98%, 62% 100%, 60% 98%, 58% 100%, 56% 98%, 54% 100%, 52% 98%, 50% 100%, 48% 98%, 46% 100%, 44% 98%, 42% 100%, 40% 98%, 38% 100%, 36% 98%, 34% 100%, 32% 98%, 30% 100%, 28% 98%, 26% 100%, 24% 98%, 22% 100%, 20% 98%, 18% 100%, 16% 98%, 14% 100%, 12% 98%, 10% 100%, 8% 98%, 6% 100%, 4% 98%, 2% 100%, 0% 98%
+  );
+}
+
+.editorial-form-wrapper { filter: drop-shadow(0 10px 25px rgba(122, 92, 74, 0.15)); }
+
+.editorial-form::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(transparent, transparent 35px, rgba(122, 92, 74, 0.08) 35px, rgba(122, 92, 74, 0.08) 36px); pointer-events: none; z-index: 0;
+}
+.editorial-form > * { position: relative; z-index: 1; }
+
+.form-header { text-align: center; margin-bottom: 40px; }
+.form-header h2 { font-family: 'Dancing Script', cursive; font-size: 46px; color: var(--logo-mocha); margin-bottom: 10px; }
+.form-header p { font-family: var(--font-display); font-style: italic; color: var(--smoke); }
+
+.form-group { margin-bottom: 28px; }
+.form-group label { display: block; font-family: var(--font-display); font-size: 15px; font-style: italic; color: var(--logo-mocha); margin-bottom: 8px; font-weight: 600; }
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%; padding: 10px 0; background: transparent; border: none; border-bottom: 1px dashed rgba(122, 92, 74, 0.4);
+  font-family: var(--font-body); font-size: 16px; color: var(--ink); outline: none; transition: border-color 0.3s ease; border-radius: 0;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-bottom-color: var(--logo-mocha); }
+.form-group textarea { resize: vertical; min-height: 100px; line-height: 36px; }
+
+.star-rating-input { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: 8px; }
+.star-rating-input input { display: none; }
+.star-rating-input label { font-size: 36px; color: rgba(122, 92, 74, 0.2); cursor: pointer; transition: color 0.2s, transform 0.2s; line-height: 1; }
+.star-rating-input label:hover, .star-rating-input label:hover ~ label, .star-rating-input input:checked ~ label { color: #d6a863; transform: scale(1.1); }
+
+.btn-submit {
+  display: block; width: 100%; padding: 18px; background-color: var(--logo-mocha); color: #ffffff; border: none;
+  font-family: var(--font-body); font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; margin-top: 40px; box-shadow: 0 4px 10px rgba(122,92,74,0.3);
+}
+.btn-submit:hover { background-color: var(--ink); }
+
+.login-prompt { background: #FCF8EE; padding: 60px 40px; text-align: center; border: 1px dashed rgba(122,92,74,0.3); }
+.login-prompt p { font-family: 'Dancing Script', cursive; font-size: 32px; color: var(--logo-mocha); margin-bottom: 24px; }
+.btn-login { display: inline-block; padding: 14px 36px; background-color: var(--logo-mocha); color: #ffffff; text-decoration: none; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; }
+.btn-login:hover { background-color: var(--ink); }
+
+/* ── Responsive ── */
+@media (max-width: 1200px) {
+  .scrapbook-item-wrapper { transform: scale(0.9); }
+}
+
+@media (max-width: 992px) {
+  .scrapbook-item-wrapper { transform: scale(0.75); }
+}
+
+@media (max-width: 768px) {
+  .feedback-hero { padding-top: 140px; }
+  .scrapbook-canvas { padding: 20px 5vw 100px; gap: 30px; }
+  .scrapbook-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .scrapbook-string-wrapper {
+    display: none; /* Giấu dây thừng trên mobile để tránh chèn ép chữ */
+  }
+  .scrapbook-item-wrapper { transform: scale(1); margin-top: 20px !important; margin-bottom: 20px !important; }
+  .note-polaroid, .note-torn, .note-postcard { width: 100%; max-width: 360px; }
+  .editorial-form { padding: 40px 20px; }
+  .vintage-deco, .deco-flower { display: none; } /* Giấu họa tiết lớn trên mobile */
+}
