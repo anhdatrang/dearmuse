@@ -141,9 +141,9 @@
 
 .story-paragraph {
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 300;
-  color: var(--smoke);
+  color: #000;
   line-height: 1.85;
 }
 
@@ -331,7 +331,7 @@
   border-collapse: collapse;
 }
 
-.addons-table th, 
+.addons-table th,
 .addons-table td {
   padding: 20px 32px;
   text-align: left;
@@ -440,9 +440,11 @@
   .concept-story-grid {
     gap: 40px;
   }
+
   .story-left {
     padding-right: 40px;
   }
+
   .concept-photo-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
@@ -453,27 +455,33 @@
   .concept-detail-section {
     padding: 100px 0 var(--section-gap);
   }
+
   .concept-story-grid {
     grid-template-columns: 1fr;
     gap: 32px;
   }
+
   .story-left {
     border-right: none;
     border-bottom: 1px solid var(--bone);
     padding-right: 0;
     padding-bottom: 32px;
   }
+
   .concept-photo-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
   }
+
   .cta-card {
     padding: 48px 24px;
   }
+
   .cta-actions {
     flex-direction: column;
     gap: 16px;
   }
+
   .btn-dark-filled,
   .cta-actions .btn-outline-dark {
     width: 100%;
@@ -485,10 +493,12 @@
   .concept-photo-grid {
     grid-template-columns: 1fr;
   }
+
   .package-detail-card {
     padding: 32px 24px;
   }
-  .addons-table th, 
+
+  .addons-table th,
   .addons-table td {
     padding: 16px 20px;
   }

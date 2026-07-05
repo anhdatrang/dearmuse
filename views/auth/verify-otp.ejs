@@ -12,6 +12,26 @@
     </div>
 
     <div class="contact-form-section">
+      <!-- Error & Success Notifications at the top of the card -->
+      <% if (typeof error !== 'undefined' && error.length > 0) { %>
+        <div class="error-list" style="margin-bottom: 24px;">
+          <ul style="margin: 0; padding: 0; list-style: none;">
+            <li><%= error[0] %></li>
+          </ul>
+        </div>
+      <% } %>
+      <% if (typeof success !== 'undefined' && success.length > 0) { %>
+        <div class="flash-success" style="border-radius: 8px; margin-bottom: 24px; padding: 12px 16px; font-size: 13.5px;">
+          <%= success[0] %>
+        </div>
+      <% } %>
+      
+      <!-- Client-side validation error box (hidden by default) -->
+      <div class="error-list" id="client-error-box" style="display: none; margin-bottom: 24px;">
+        <ul id="client-error-messages" style="margin: 0; padding: 0; list-style: none;">
+        </ul>
+      </div>
+
       <form method="POST" action="/auth/verify-otp" novalidate>
         <div class="form-group">
           <label for="email">Email</label>
@@ -34,6 +54,48 @@
         </p>
       </div>
     </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const otpInput = document.getElementById('otp');
+        const errorBox = document.getElementById('client-error-box');
+        const errorList = document.getElementById('client-error-messages');
+        
+        if (otpInput) {
+          otpInput.addEventListener('input', function() {
+            this.style.borderColor = '';
+            errorBox.style.display = 'none';
+          });
+        }
+
+        form.addEventListener('submit', function(e) {
+          let errors = [];
+          otpInput.style.borderColor = '';
+          
+          const otpValue = otpInput.value.trim();
+          if (!otpValue) {
+            errors.push('Vui lòng nhập mã OTP.');
+            otpInput.style.borderColor = '#ef4444';
+          } else if (otpValue.length !== 6 || !/^\d+$/.test(otpValue)) {
+            errors.push('Mã OTP phải gồm 6 chữ số.');
+            otpInput.style.borderColor = '#ef4444';
+          }
+          
+          if (errors.length > 0) {
+            e.preventDefault();
+            errorList.innerHTML = '';
+            errors.forEach(msg => {
+              const li = document.createElement('li');
+              li.textContent = msg;
+              errorList.appendChild(li);
+            });
+            errorBox.style.display = 'block';
+            errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        });
+      });
+    </script>
 
   </div>
 </section>

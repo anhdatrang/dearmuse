@@ -1,1173 +1,1590 @@
 <%- contentFor('body') %>
-  <link rel="stylesheet" href="/css/loyalty.css?v=14">
+  <link rel="stylesheet" href="/css/loyalty.css?v=15">
 
-  <div class="loyalty-landing-page">
-    <div class="container">
-      <div class="loyalty-hero">
-        <h1>The Musé Cards</h1>
-        <p>Chương trình Khách Hàng Thân Thiết độc quyền của Dear&nbsp;Musé. Tích luỹ Mảnh&nbsp;Sáng sau mỗi lần trải
-          nghiệm để nâng&nbsp;hạng&nbsp;thẻ và nhận những đặc&nbsp;quyền cá&nbsp;nhân&nbsp;hóa cao&nbsp;cấp&nbsp;nhất.
-        </p>
+  <% if (sessionUser && sessionUser.type==='business' ) { %>
+    <div class="loyalty-landing-page business-theme">
+      <div class="container">
+        <div class="loyalty-hero">
+          <h1>The Musé Business Cards</h1>
+          <p>Chương trình Khách Hàng Thân Thiết độc quyền dành cho Doanh&nbsp;Nghiệp. Tích luỹ Mảnh&nbsp;Sáng sau mỗi
+            lần trải nghiệm để nâng&nbsp;hạng&nbsp;thẻ và nhận những đặc&nbsp;quyền doanh&nbsp;nghiệp
+            cao&nbsp;cấp&nbsp;nhất.</p>
 
-        <% if (!sessionUser) { %>
-          <button class="btn-primary" onclick="window.location.href='/auth/login?redirect=/loyalty'">Đăng Nhập Để Mở
-            Thẻ</button>
-          <% } else { %>
-            <button class="btn-primary" id="btn-open-card">Tạo Thẻ Thành Viên Ngay</button>
-            <% } %>
-      </div>
+          <% if (!sessionUser) { %>
+            <button class="btn-primary" onclick="window.location.href='/auth/login?redirect=/loyalty'">Đăng Nhập Để Mở
+              Thẻ</button>
+            <% } else { %>
+              <button class="btn-primary" id="btn-open-card">Tạo Thẻ Thành Viên Ngay</button>
+              <% } %>
+        </div>
 
-      <!-- Cards Showcase -->
-      <div class="cards-showcase">
-
-        <!-- PEARL -->
-        <div class="v-card tier-pearl">
-          <div class="v-card-content">
-            <div class="v-card-header">
-              <div class="v-card-brand">
-                <div class="v-card-brand-name">Dear Musé</div>
-                <div class="v-card-brand-sub">Studio · Member Card</div>
-              </div>
-              <div class="v-card-tier-badge">
-                <div class="v-card-tier-name">Pearl</div>
-                <div class="v-card-tier-dots"><span></span><span></span><span></span></div>
-              </div>
-            </div>
-            <div class="v-card-middle">
-              <div class="v-card-chip"></div>
-            </div>
-            <div class="v-card-footer">
-              <div class="v-card-number">DM26 •••• •••• 1001</div>
-              <div class="v-card-footer-row">
-                <div>
-                  <div class="v-card-holder-label">Chủ thẻ</div>
-                  <div class="v-card-name">Member Name</div>
+        <!-- Cards Showcase for Business -->
+        <div class="cards-showcase" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+          <!-- FRAME -->
+          <div class="v-card tier-frame">
+            <div class="v-card-content">
+              <div class="v-card-header">
+                <div class="v-card-brand">
+                  <div class="v-card-brand-name">Dear Musé</div>
+                  <div class="v-card-brand-sub">Business · Member Card</div>
                 </div>
-                <div class="v-card-tier-range">
-                  <div class="v-card-tier-range-label">Mảnh Sáng</div>
-                  <div class="v-card-tier-range-value">0 – 299</div>
+                <div class="v-card-tier-badge">
+                  <div class="v-card-tier-name">Frame</div>
+                  <div class="v-card-tier-dots"><span></span><span></span><span></span></div>
+                </div>
+              </div>
+              <div class="v-card-middle">
+                <div class="v-card-chip"></div>
+              </div>
+              <div class="v-card-footer">
+                <div class="v-card-number">DM26 •••• •••• 1001</div>
+                <div class="v-card-footer-row">
+                  <div>
+                    <div class="v-card-holder-label">Doanh nghiệp</div>
+                    <div class="v-card-name">
+                      <%= sessionUser.name %>
+                    </div>
+                  </div>
+                  <div class="v-card-tier-range">
+                    <div class="v-card-tier-range-label">Mảnh Sáng</div>
+                    <div class="v-card-tier-range-value">0 – <%= (tierLimits.tier_limit_frame_lumiere -
+                        1).toLocaleString('vi-VN') %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- LUMIERE -->
+          <div class="v-card tier-lumiere">
+            <div class="v-card-content">
+              <div class="v-card-header">
+                <div class="v-card-brand">
+                  <div class="v-card-brand-name">Dear Musé</div>
+                  <div class="v-card-brand-sub">Business · Member Card</div>
+                </div>
+                <div class="v-card-tier-badge">
+                  <div class="v-card-tier-name">Lumière</div>
+                  <div class="v-card-tier-dots"><span></span><span></span><span></span></div>
+                </div>
+              </div>
+              <div class="v-card-middle">
+                <div class="v-card-chip"></div>
+              </div>
+              <div class="v-card-footer">
+                <div class="v-card-number">DM26 •••• •••• 2002</div>
+                <div class="v-card-footer-row">
+                  <div>
+                    <div class="v-card-holder-label">Doanh nghiệp</div>
+                    <div class="v-card-name">
+                      <%= sessionUser.name %>
+                    </div>
+                  </div>
+                  <div class="v-card-tier-range">
+                    <div class="v-card-tier-range-label">Mảnh Sáng</div>
+                    <div class="v-card-tier-range-value">
+                      <%= tierLimits.tier_limit_frame_lumiere.toLocaleString('vi-VN') %>+
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- ROSE -->
-        <div class="v-card tier-rose">
-          <div class="v-card-content">
-            <div class="v-card-header">
-              <div class="v-card-brand">
-                <div class="v-card-brand-name">Dear Musé</div>
-                <div class="v-card-brand-sub">Studio · Member Card</div>
-              </div>
-              <div class="v-card-tier-badge">
-                <div class="v-card-tier-name">Rose</div>
-                <div class="v-card-tier-dots"><span></span><span></span><span></span></div>
-              </div>
-            </div>
-            <div class="v-card-middle">
-              <div class="v-card-chip"></div>
-            </div>
-            <div class="v-card-footer">
-              <div class="v-card-number">DM26 •••• •••• 2002</div>
-              <div class="v-card-footer-row">
-                <div>
-                  <div class="v-card-holder-label">Chủ thẻ</div>
-                  <div class="v-card-name">Member Name</div>
-                </div>
-                <div class="v-card-tier-range">
-                  <div class="v-card-tier-range-label">Mảnh Sáng</div>
-                  <div class="v-card-tier-range-value">300 – 799</div>
-                </div>
-              </div>
-            </div>
+        <div class="loyalty-info">
+          <h2>Cơ chế hoạt động đơn vị tích luỹ Mảnh Sáng</h2>
+          <div class="table-responsive">
+            <table class="loyalty-table">
+              <thead>
+                <tr>
+                  <th>Hoạt động của doanh nghiệp</th>
+                  <th class="text-right">Số Mảnh Sáng nhận được</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Mỗi 10.000 VNĐ chi tiêu</td>
+                  <td class="text-right highlight">+1 Mảnh Sáng</td>
+                </tr>
+                <tr>
+                  <td>Đặt dự án đầu tiên</td>
+                  <td class="text-right highlight">+100 Mảnh Sáng</td>
+                </tr>
+                <tr>
+                  <td>Chốt brief và đặt lịch trước ít nhất 7 ngày</td>
+                  <td class="text-right highlight">+50 Mảnh Sáng</td>
+                </tr>
+                <tr>
+                  <td>Feedback sau dự án</td>
+                  <td class="text-right highlight">+50 Mảnh Sáng</td>
+                </tr>
+                <tr>
+                  <td>Cho phép Dear Musé sử dụng hình ảnh làm case study/portfolio</td>
+                  <td class="text-right highlight">+150 Mảnh Sáng</td>
+                </tr>
+                <tr>
+                  <td>Ký gói hợp tác từ 2 dự án trở lên</td>
+                  <td class="text-right highlight">+200 Mảnh Sáng</td>
+                </tr>
+                <tr>
+                  <td>Gia hạn theo tháng/quý</td>
+                  <td class="text-right highlight">+200 Mảnh Sáng</td>
+                </tr>
+                <tr>
+                  <td>Giới thiệu doanh nghiệp khác booking thành công</td>
+                  <td class="text-right highlight">+300 Mảnh Sáng</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-        </div>
-
-        <!-- GOLD -->
-        <div class="v-card tier-gold">
-          <div class="v-card-content">
-            <div class="v-card-header">
-              <div class="v-card-brand">
-                <div class="v-card-brand-name">Dear Musé</div>
-                <div class="v-card-brand-sub">Studio · Member Card</div>
-              </div>
-              <div class="v-card-tier-badge">
-                <div class="v-card-tier-name">Gold</div>
-                <div class="v-card-tier-dots"><span></span><span></span><span></span></div>
-              </div>
-            </div>
-            <div class="v-card-middle">
-              <div class="v-card-chip"></div>
-            </div>
-            <div class="v-card-footer">
-              <div class="v-card-number">DM26 •••• •••• 3003</div>
-              <div class="v-card-footer-row">
-                <div>
-                  <div class="v-card-holder-label">Chủ thẻ</div>
-                  <div class="v-card-name">Member Name</div>
-                </div>
-                <div class="v-card-tier-range">
-                  <div class="v-card-tier-range-label">Mảnh Sáng</div>
-                  <div class="v-card-tier-range-value">800 – 1.499</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- PRIVILEGE -->
-        <div class="v-card tier-privilege">
-          <div class="v-card-content">
-            <div class="v-card-header">
-              <div class="v-card-brand">
-                <div class="v-card-brand-name">Dear Musé</div>
-                <div class="v-card-brand-sub">Studio · Member Card</div>
-              </div>
-              <div class="v-card-tier-badge">
-                <div class="v-card-tier-name">Privilege</div>
-                <div class="v-card-tier-dots"><span></span><span></span><span></span></div>
-              </div>
-            </div>
-            <div class="v-card-middle">
-              <div class="v-card-chip"></div>
-            </div>
-            <div class="v-card-footer">
-              <div class="v-card-number">DM26 •••• •••• 4004</div>
-              <div class="v-card-footer-row">
-                <div>
-                  <div class="v-card-holder-label">Chủ thẻ</div>
-                  <div class="v-card-name">Member Name</div>
-                </div>
-                <div class="v-card-tier-range">
-                  <div class="v-card-tier-range-label">Mảnh Sáng</div>
-                  <div class="v-card-tier-range-value">1.500+</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="loyalty-info">
-        <h2>Cơ chế hoạt động đơn vị tích luỹ Mảnh Sáng</h2>
-
-        <div class="table-responsive">
-          <table class="loyalty-table">
-            <thead>
-              <tr>
-                <th>Hoạt động của khách hàng</th>
-                <th class="text-right">Số Mảnh Sáng nhận được</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Mở thẻ thành viên thành công</td>
-                <td class="text-right highlight">+30 Mảnh Sáng</td>
-              </tr>
-              <tr>
-                <td>Mỗi 10.000 VNĐ chi tiêu tại Dear Musé</td>
-                <td class="text-right highlight">+1 Mảnh Sáng</td>
-              </tr>
-              <tr>
-                <td>Đặt lịch chụp lần đầu</td>
-                <td class="text-right highlight">+50 Mảnh Sáng</td>
-              </tr>
-              <tr>
-                <td>Quay lại chụp lần thứ 2 trở đi</td>
-                <td class="text-right highlight">+80 Mảnh Sáng / Lần</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <p class="loyalty-note">
-          * Điểm Mảnh Sáng có thể dùng để đổi các Voucher giảm giá trực tiếp cho lần chụp tiếp theo.<br>
-          * Lưu ý: Trong trường hợp khách hàng hủy lịch / bỏ cọc, Dear Musé có quyền thu hồi lại số Mảnh Sáng tương ứng.
-        </p>
-      </div>
-
-      <!-- ═══ VOUCHER REDEMPTION SECTION ═══ -->
-      <div class="voucher-redeem-section">
-        <div class="voucher-redeem-header">
-          <span class="section-eyebrow">Đặc quyền thành viên</span>
-          <h2>Quy Đổi Voucher Theo Mảnh Sáng</h2>
-          <p>Sử dụng Mảnh Sáng tích luỹ để đổi lấy các voucher giảm giá giá trị. Quy đổi từng phần — không cần tích đủ.
+          <p class="loyalty-note">
+            * Điểm Mảnh Sáng có thể dùng để đổi các Voucher đặc quyền cho doanh nghiệp.<br>
+            * Tích lũy thông qua các dự án chụp ảnh sản phẩm, lookbook hoặc sự kiện để nâng cấp moodboard, ưu tiên lịch
+            chụp, v.v.
           </p>
         </div>
 
-        <!-- 4 card cơ bản -->
-        <div class="voucher-cards-grid">
-
-          <!-- Glow -->
-          <div class="vc-card vc-glow">
-            <div class="vc-card-inner">
-              <div class="vc-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
-                  <circle cx="12" cy="12" r="5" />
-                  <line x1="12" y1="1" x2="12" y2="3" />
-                  <line x1="12" y1="21" x2="12" y2="23" />
-                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                  <line x1="1" y1="12" x2="3" y2="12" />
-                  <line x1="21" y1="12" x2="23" y2="12" />
-                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-                </svg>
-              </div>
-              <div class="vc-tier-label">Glow Voucher</div>
-              <div class="vc-cost"><span class="vc-cost-num">80</span><span class="vc-cost-unit">Mảnh Sáng</span></div>
-              <div class="vc-divider"></div>
-              <div class="vc-value">Giảm <strong>50.000đ</strong></div>
-              <div class="vc-desc">Cho bất kỳ gói chụp nào</div>
-            </div>
+        <!-- ═══ VOUCHER REDEMPTION SECTION FOR BUSINESS ═══ -->
+        <div class="voucher-redeem-section">
+          <div class="voucher-redeem-header">
+            <span class="section-eyebrow">Đặc quyền doanh nghiệp</span>
+            <h2>Quy Đổi Voucher Theo Mảnh Sáng</h2>
+            <p>Sử dụng Mảnh Sáng tích luỹ để đổi lấy các dịch vụ hỗ trợ nâng tầm hình ảnh thương hiệu.</p>
           </div>
 
-          <!-- Rose -->
-          <div class="vc-card vc-rose">
-            <div class="vc-card-inner">
-              <div class="vc-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
-                  <path d="M12 22s-8-5-8-11a8 8 0 0 1 16 0c0 6-8 11-8 11z" />
-                </svg>
+          <div class="biz-voucher-grid">
+
+            <!-- FRAME COLUMN -->
+            <div class="biz-voucher-col biz-col-frame">
+              <div class="biz-col-header">
+                <div class="biz-col-badge biz-badge-frame">Musé Frame</div>
+                <div class="biz-col-range">0 – <%= (tierLimits.tier_limit_frame_lumiere - 1).toLocaleString('vi-VN') %>
+                    Mảnh Sáng</div>
               </div>
-              <div class="vc-tier-label">Rose Voucher</div>
-              <div class="vc-cost"><span class="vc-cost-num">200</span><span class="vc-cost-unit">Mảnh Sáng</span></div>
-              <div class="vc-divider"></div>
-              <div class="vc-value">Giảm <strong>100.000đ</strong></div>
-              <div class="vc-desc">Cho bất kỳ gói chụp nào</div>
+              <div class="biz-voucher-list">
+                <div class="biz-voucher-item">
+                  <div class="biz-pts">200</div>
+                  <div class="biz-pts-sep">✦</div>
+                  <div class="biz-benefit">Giảm 100.000 VNĐ cho dự án tiếp theo</div>
+                </div>
+                <div class="biz-voucher-item">
+                  <div class="biz-pts">300</div>
+                  <div class="biz-pts-sep">✦</div>
+                  <div class="biz-benefit">Tặng 3 ảnh crop social media</div>
+                </div>
+                <div class="biz-voucher-item">
+                  <div class="biz-pts">500</div>
+                  <div class="biz-pts-sep">✦</div>
+                  <div class="biz-benefit">Tặng 5 ảnh chỉnh màu bổ sung</div>
+                </div>
+                <div class="biz-voucher-item">
+                  <div class="biz-pts">900</div>
+                  <div class="biz-pts-sep">✦</div>
+                  <div class="biz-benefit">Nâng cấp moodboard cơ bản cho campaign</div>
+                </div>
+              </div>
             </div>
+
+            <!-- LUMIÈRE COLUMN -->
+            <div class="biz-voucher-col biz-col-lumiere">
+              <div class="biz-col-header">
+                <div class="biz-col-badge biz-badge-lumiere">Musé Lumière</div>
+                <div class="biz-col-range">
+                  <%= tierLimits.tier_limit_frame_lumiere.toLocaleString('vi-VN') %>+ Mảnh Sáng
+                </div>
+              </div>
+              <div class="biz-voucher-list">
+                <div class="biz-voucher-item">
+                  <div class="biz-pts">500</div>
+                  <div class="biz-pts-sep">✦</div>
+                  <div class="biz-benefit">Giảm 300.000 VNĐ cho dự án sau khi nâng hạng</div>
+                </div>
+                <div class="biz-voucher-item">
+                  <div class="biz-pts">700</div>
+                  <div class="biz-pts-sep">✦</div>
+                  <div class="biz-benefit">Tặng social crop pack 10 ảnh</div>
+                </div>
+                <div class="biz-voucher-item">
+                  <div class="biz-pts">1.000</div>
+                  <div class="biz-pts-sep">✦</div>
+                  <div class="biz-benefit">Tặng moodboard + shotlist cho chiến dịch</div>
+                </div>
+                <div class="biz-voucher-item">
+                  <div class="biz-pts">1.500</div>
+                  <div class="biz-pts-sep">✦</div>
+                  <div class="biz-benefit">Ưu tiên preview ảnh trong 24h</div>
+                </div>
+              </div>
+            </div>
+
           </div>
 
-          <!-- Gold -->
-          <div class="vc-card vc-gold">
-            <div class="vc-card-inner">
-              <div class="vc-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
-                  <polygon
-                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                </svg>
-              </div>
-              <div class="vc-tier-label">Gold Voucher</div>
-              <div class="vc-cost"><span class="vc-cost-num">400</span><span class="vc-cost-unit">Mảnh Sáng</span></div>
-              <div class="vc-divider"></div>
-              <div class="vc-value">Giảm <strong>200.000đ</strong></div>
-              <div class="vc-desc">Cho bất kỳ gói chụp nào</div>
-            </div>
-          </div>
+          <style>
+            .biz-voucher-grid {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 24px;
+              margin-bottom: 40px;
+            }
 
-          <!-- Signature teaser card -->
-          <div class="vc-card vc-signature vc-signature-teaser">
-            <div class="vc-signature-shimmer"></div>
-            <div class="vc-card-inner">
-              <div class="vc-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
-                  <path
-                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.35L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                  <circle cx="12" cy="12" r="3" stroke-width="1" />
-                </svg>
-              </div>
-              <div class="vc-tier-label">Signature Voucher</div>
-              <div class="vc-cost vc-cost-range"><span class="vc-cost-num">500 – 1.500</span><span
-                  class="vc-cost-unit">Mảnh Sáng</span></div>
-              <div class="vc-divider"></div>
-              <div class="vc-value">Giảm sâu &amp; nâng cấp</div>
-              <div class="vc-desc">Trải nghiệm cá nhân hoá cao cấp</div>
-              <button class="vc-expand-btn" onclick="toggleSignatureDetail()">
-                Xem chi tiết
-                <svg class="vc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="6 9 12 15 18 9" />
-                </svg>
-              </button>
-            </div>
-          </div>
+            @media (max-width: 700px) {
+              .biz-voucher-grid {
+                grid-template-columns: 1fr;
+              }
+            }
 
+            .biz-voucher-col {
+              border-radius: 20px;
+              overflow: hidden;
+              border: 1px solid var(--bone, #EDE8DF);
+              box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+            }
+
+            .biz-col-header {
+              padding: 20px 24px 18px;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              gap: 12px;
+            }
+
+            .biz-col-frame .biz-col-header {
+              background: linear-gradient(135deg, #c8d0da 0%, #d8dde5 100%);
+            }
+
+            .biz-col-lumiere .biz-col-header {
+              background: linear-gradient(135deg, #22252c 0%, #2c3038 100%);
+            }
+
+            .biz-col-badge {
+              font-family: var(--font-display, serif);
+              font-size: 1.05rem;
+              font-weight: 600;
+              letter-spacing: 0.04em;
+            }
+
+            .biz-badge-frame {
+              color: #1e2228;
+            }
+
+            .biz-badge-lumiere {
+              color: #f5d97a;
+            }
+
+            .biz-col-range {
+              font-size: 0.7rem;
+              letter-spacing: 0.08em;
+              text-transform: uppercase;
+              padding: 4px 10px;
+              border-radius: 20px;
+              white-space: nowrap;
+            }
+
+            .biz-col-frame .biz-col-range {
+              background: rgba(30, 34, 40, 0.12);
+              color: #3a4255;
+            }
+
+            .biz-col-lumiere .biz-col-range {
+              background: rgba(212, 175, 55, 0.2);
+              color: #f5d97a;
+            }
+
+            .biz-voucher-list {
+              padding: 8px 0;
+              background: var(--vanilla, #FFF7E6);
+            }
+
+            .biz-voucher-item {
+              display: flex;
+              align-items: center;
+              gap: 0;
+              padding: 14px 24px;
+              border-bottom: 1px solid rgba(237, 232, 223, 0.7);
+              transition: background 0.2s;
+            }
+
+            .biz-voucher-item:last-child {
+              border-bottom: none;
+            }
+
+            .biz-voucher-item:hover {
+              background: rgba(237, 232, 223, 0.35);
+            }
+
+            .biz-pts {
+              font-family: var(--font-display, serif);
+              font-size: 1.6rem;
+              font-weight: 400;
+              color: var(--mocha, #7A5C4A);
+              min-width: 72px;
+              line-height: 1;
+              flex-shrink: 0;
+            }
+
+            .biz-pts-sep {
+              color: var(--bone, #C8BAA8);
+              font-size: 0.6rem;
+              margin: 0 12px;
+              flex-shrink: 0;
+            }
+
+            .biz-benefit {
+              font-size: 0.9rem;
+              color: var(--ink, #1A1916);
+              line-height: 1.5;
+              flex: 1;
+            }
+          </style>
         </div>
 
-        <!-- Signature Voucher Detail Card (premium, riêng) -->
-        <div class="vc-signature-detail" id="signatureDetail">
-          <div class="vc-sig-header">
-            <div class="vc-sig-crown">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
-                <path d="M2 20h20M4 20l2-8 4 4 2-8 2 8 4-4 2 8" />
-              </svg>
-            </div>
-            <div>
-              <div class="vc-sig-title">Signature Voucher</div>
-              <div class="vc-sig-subtitle">Đặc quyền cao cấp — 3 tầng giá trị</div>
-            </div>
-          </div>
 
-          <div class="vc-sig-tiers">
-
-            <!-- Tier I — 500 MS -->
-            <div class="vc-sig-tier tier-i">
-              <div class="vc-sig-tier-badge">Tier I</div>
-              <div class="vc-sig-tier-cost">
-                <span class="vc-sig-ms">500</span>
-                <span class="vc-sig-ms-label">Mảnh Sáng</span>
-              </div>
-              <div class="vc-sig-tier-divider"></div>
-              <div class="vc-sig-tier-info">
-                <div class="vc-sig-value">Giảm <strong>300.000đ</strong></div>
-                <div class="vc-sig-perks">
-                  <span>✓ Áp dụng cho bất kỳ gói chụp</span>
-                  <span>✓ Hiệu lực 180 ngày</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Tier II — 800 MS -->
-            <div class="vc-sig-tier tier-ii">
-              <div class="vc-sig-tier-badge">Tier II</div>
-              <div class="vc-sig-tier-cost">
-                <span class="vc-sig-ms">800</span>
-                <span class="vc-sig-ms-label">Mảnh Sáng</span>
-              </div>
-              <div class="vc-sig-tier-divider"></div>
-              <div class="vc-sig-tier-info">
-                <div class="vc-sig-value">Giảm <strong>500.000đ</strong></div>
-                <div class="vc-sig-perks">
-                  <span>✓ Áp dụng cho bất kỳ gói chụp</span>
-                  <span>✓ Tặng 1 ảnh retouch chuyên sâu thêm</span>
-                  <span>✓ Hiệu lực 180 ngày</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Tier III — 1500 MS -->
-            <div class="vc-sig-tier tier-iii">
-              <div class="vc-sig-tier-badge">Tier III</div>
-              <div class="vc-sig-tier-cost">
-                <span class="vc-sig-ms">1.500</span>
-                <span class="vc-sig-ms-label">Mảnh Sáng</span>
-              </div>
-              <div class="vc-sig-tier-divider"></div>
-              <div class="vc-sig-tier-info">
-                <div class="vc-sig-value">Giảm <strong>20%</strong> toàn bộ gói</div>
-                <div class="vc-sig-perks">
-                  <span>✓ Tư vấn concept cá nhân hoá riêng</span>
-                  <span>✓ Ưu tiên lịch chụp cao nhất</span>
-                  <span>✓ Tặng 2 ảnh retouch chuyên sâu</span>
-                  <span>✓ Hiệu lực 180 ngày</span>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <p class="vc-sig-note">* Signature Voucher được tính từng tầng độc lập — bạn chỉ cần đủ điểm cho tầng muốn
-            đổi. Liên hệ studio để xác nhận và nhận mã.</p>
-        </div>
-
-        <!-- ═══ SEASONAL & OCCASIONS SECTION ═══ -->
-        <div class="occasions-section">
-          <div class="occasions-header">
-            <span class="section-eyebrow">Dành Cho Mọi Khoảnh Khắc</span>
-            <h3>Quy Đổi Voucher Theo Dịp Đặc Biệt</h3>
+        <!-- ═══ SEASONAL & OCCASIONS SECTION FOR BUSINESS ═══ -->
+        <div class="occasions-section" style="margin-top: 60px;">
+          <div class="occasions-header" style="text-align: center; margin-bottom: 30px;">
+            <span class="section-eyebrow">Dành Cho Doanh Nghiệp</span>
+            <h3 style="font-family: var(--font-display, serif); font-size: 2rem; font-weight: 400; color: var(--ink);">
+              Hệ Thống Voucher Đặc Quyền</h3>
           </div>
 
           <div class="elegant-table-wrap">
-            <table class="elegant-table">
+            <table class="elegant-table" style="width: 100%; border-collapse: collapse;">
               <thead>
-                <tr>
-                  <th>Dịp</th>
-                  <th>Quyền lợi</th>
+                <tr style="border-bottom: 1px solid var(--bone);">
+                  <th style="padding: 16px; text-align: left; color: var(--mocha);">Voucher</th>
+                  <th style="padding: 16px; text-align: left; color: var(--mocha);">Musé Frame</th>
+                  <th style="padding: 16px; text-align: left; color: var(--mocha);">Musé Lumière</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Sinh nhật khách hàng</td>
-                  <td>Giảm 5–20% tùy hạng thẻ</td>
+                <tr style="border-bottom: 1px solid rgba(237, 232, 223, 0.6);">
+                  <td style="padding: 16px;"><strong>Welcome Brand</strong></td>
+                  <td style="padding: 16px;">Giảm 100.000 VNĐ cho dự án thứ 2</td>
+                  <td style="padding: 16px;">Giảm 300.000 VNĐ khi nâng hạng hoặc quy đổi sang 300 MS</td>
                 </tr>
-                <tr>
-                  <td>Mùa tốt nghiệp</td>
-                  <td>Tặng ảnh retouch hoặc voucher nhóm</td>
+                <tr style="border-bottom: 1px solid rgba(237, 232, 223, 0.6);">
+                  <td style="padding: 16px;"><strong>Event/Anniversary Voucher</strong></td>
+                  <td style="padding: 16px;">Giảm add-on hoặc tặng ảnh recap<br>Voucher 5% dịp sinh nhật/thành lập
+                    thương hiệu</td>
+                  <td style="padding: 16px;">Voucher 8% + brand gift luxury</td>
                 </tr>
-                <tr>
-                  <td>8/3, 20/10, Valentine</td>
-                  <td>Ưu đãi concept nàng thơ</td>
-                </tr>
-                <tr>
-                  <td>Khai trương concept mới</td>
-                  <td>Early access cho Muse Gold và Muse Signature</td>
-                </tr>
-                <tr>
-                  <td>Kỷ niệm 1 năm đồng hành</td>
-                  <td>Tặng voucher tri ân hoặc ảnh in</td>
+                <tr style="border-bottom: 1px solid rgba(237, 232, 223, 0.6);">
+                  <td style="padding: 16px;"><strong>Retainer Voucher</strong></td>
+                  <td style="padding: 16px;">+300 Mảnh Sáng khi giới thiệu doanh nghiệp khác</td>
+                  <td style="padding: 16px;">+300 Mảnh Sáng khi giới thiệu doanh nghiệp khác và trả ảnh nhanh trong 48
+                    giờ</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
 
-        <!-- ═══ REFERRAL PROGRAM SECTION ═══ -->
-        <div class="referral-program-section">
-          <div class="referral-header">
-            <span class="section-eyebrow">Lan Toả Yêu Thương</span>
-            <h3>Voucher Giới Thiệu Người Quen</h3>
-          </div>
-
-          <div class="elegant-table-wrap">
-            <table class="elegant-table">
-              <thead>
-                <tr>
-                  <th>Đối tượng / Cột mốc</th>
-                  <th>Quyền lợi</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Người giới thiệu</td>
-                  <td>+100 Mảnh Sáng hoặc voucher 100.000 VNĐ</td>
-                </tr>
-                <tr>
-                  <td>Người được giới thiệu</td>
-                  <td>Giảm 5% cho lần chụp đầu tiên</td>
-                </tr>
-                <tr>
-                  <td>Giới thiệu từ 3 người trở lên 1 tháng</td>
-                  <td>Nhận thêm voucher nâng cấp concept hoặc ảnh retouch</td>
-                </tr>
-                <tr>
-                  <td>Giới thiệu 7 người trở lên 1 quý</td>
-                  <td>Nhận level up thẻ thành viên</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <p class="voucher-redeem-note">Để đổi&nbsp;voucher hoặc xác nhận các ưu&nbsp;đãi trên, vui lòng liên&nbsp;hệ<br>
-          trực&nbsp;tiếp qua <strong>Facebook</strong> hoặc <strong>Instagram</strong> của Dear&nbsp;Musé, hoặc nhắn&nbsp;tin
-          qua phần <a href="/contact" style="color:inherit; text-decoration:underline;">Liên&nbsp;hệ</a>.<br>
-          Mã&nbsp;voucher sẽ được gửi về email/SĐT đã đăng&nbsp;ký&nbsp;thành&nbsp;viên.</p>
+        <p class="voucher-redeem-note" style="margin-top: 40px; text-align: center;">Để đổi voucher hoặc xác nhận ưu
+          đãi, vui lòng liên hệ trực tiếp qua fanpage hoặc hotline Dear Musé.</p>
       </div>
-
     </div>
-  </div>
+    <% } else { %>
+      <div class="loyalty-landing-page">
+        <div class="container">
+          <div class="loyalty-hero">
+            <h1>The Musé Cards</h1>
+            <p>Chương trình Khách Hàng Thân Thiết độc quyền của Dear&nbsp;Musé. Tích luỹ Mảnh&nbsp;Sáng sau mỗi lần trải
+              nghiệm để nâng&nbsp;hạng&nbsp;thẻ và nhận những đặc&nbsp;quyền cá&nbsp;nhân&nbsp;hóa
+              cao&nbsp;cấp&nbsp;nhất.
+            </p>
 
-  <!-- Modal Đăng Ký Thẻ -->
-  <div class="loyalty-modal" id="loyalty-modal">
-    <div class="loyalty-modal-content">
-      <button class="close-modal" id="close-modal">&times;</button>
-      <h3
-        style="margin-bottom: 20px; color: var(--ink, #1A1916); font-family: var(--font-display, serif); font-size: 1.8rem; text-align: center; font-weight: 500;">
-        Mở Thẻ Thành Viên</h3>
-      <form id="loyalty-form" action="/customer/loyalty/create" method="POST">
-        <div class="loyalty-form-group">
-          <label for="full_name">Họ và tên trên thẻ</label>
-          <input type="text" id="full_name" name="full_name" required placeholder="VD: Nguyễn Văn A">
+            <% if (!sessionUser) { %>
+              <button class="btn-primary" onclick="window.location.href='/auth/login?redirect=/loyalty'">Đăng Nhập Để Mở
+                Thẻ</button>
+              <% } else { %>
+                <button class="btn-primary" id="btn-open-card">Tạo Thẻ Thành Viên Ngay</button>
+                <% } %>
+          </div>
+
+          <!-- Cards Showcase -->
+          <div class="cards-showcase">
+
+            <!-- PEARL -->
+            <div class="v-card tier-pearl">
+              <div class="v-card-content">
+                <div class="v-card-header">
+                  <div class="v-card-brand">
+                    <div class="v-card-brand-name">Dear Musé</div>
+                    <div class="v-card-brand-sub">Studio · Member Card</div>
+                  </div>
+                  <div class="v-card-tier-badge">
+                    <div class="v-card-tier-name">Pearl</div>
+                    <div class="v-card-tier-dots"><span></span><span></span><span></span></div>
+                  </div>
+                </div>
+                <div class="v-card-middle">
+                  <div class="v-card-chip"></div>
+                </div>
+                <div class="v-card-footer">
+                  <div class="v-card-number">DM26 •••• •••• 1001</div>
+                  <div class="v-card-footer-row">
+                    <div>
+                      <div class="v-card-holder-label">Chủ thẻ</div>
+                      <div class="v-card-name">Member Name</div>
+                    </div>
+                    <div class="v-card-tier-range">
+                      <div class="v-card-tier-range-label">Mảnh Sáng</div>
+                      <div class="v-card-tier-range-value">0 – <%= (tierLimits.tier_limit_pearl_rose -
+                          1).toLocaleString('vi-VN') %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ROSE -->
+            <div class="v-card tier-rose">
+              <div class="v-card-content">
+                <div class="v-card-header">
+                  <div class="v-card-brand">
+                    <div class="v-card-brand-name">Dear Musé</div>
+                    <div class="v-card-brand-sub">Studio · Member Card</div>
+                  </div>
+                  <div class="v-card-tier-badge">
+                    <div class="v-card-tier-name">Rose</div>
+                    <div class="v-card-tier-dots"><span></span><span></span><span></span></div>
+                  </div>
+                </div>
+                <div class="v-card-middle">
+                  <div class="v-card-chip"></div>
+                </div>
+                <div class="v-card-footer">
+                  <div class="v-card-number">DM26 •••• •••• 2002</div>
+                  <div class="v-card-footer-row">
+                    <div>
+                      <div class="v-card-holder-label">Chủ thẻ</div>
+                      <div class="v-card-name">Member Name</div>
+                    </div>
+                    <div class="v-card-tier-range">
+                      <div class="v-card-tier-range-label">Mảnh Sáng</div>
+                      <div class="v-card-tier-range-value">
+                        <%= tierLimits.tier_limit_pearl_rose.toLocaleString('vi-VN') %> – <%=
+                            (tierLimits.tier_limit_rose_gold - 1).toLocaleString('vi-VN') %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- GOLD -->
+            <div class="v-card tier-gold">
+              <div class="v-card-content">
+                <div class="v-card-header">
+                  <div class="v-card-brand">
+                    <div class="v-card-brand-name">Dear Musé</div>
+                    <div class="v-card-brand-sub">Studio · Member Card</div>
+                  </div>
+                  <div class="v-card-tier-badge">
+                    <div class="v-card-tier-name">Gold</div>
+                    <div class="v-card-tier-dots"><span></span><span></span><span></span></div>
+                  </div>
+                </div>
+                <div class="v-card-middle">
+                  <div class="v-card-chip"></div>
+                </div>
+                <div class="v-card-footer">
+                  <div class="v-card-number">DM26 •••• •••• 3003</div>
+                  <div class="v-card-footer-row">
+                    <div>
+                      <div class="v-card-holder-label">Chủ thẻ</div>
+                      <div class="v-card-name">Member Name</div>
+                    </div>
+                    <div class="v-card-tier-range">
+                      <div class="v-card-tier-range-label">Mảnh Sáng</div>
+                      <div class="v-card-tier-range-value">
+                        <%= tierLimits.tier_limit_rose_gold.toLocaleString('vi-VN') %> – <%=
+                            (tierLimits.tier_limit_gold_privilege - 1).toLocaleString('vi-VN') %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PRIVILEGE -->
+            <div class="v-card tier-privilege">
+              <div class="v-card-content">
+                <div class="v-card-header">
+                  <div class="v-card-brand">
+                    <div class="v-card-brand-name">Dear Musé</div>
+                    <div class="v-card-brand-sub">Studio · Member Card</div>
+                  </div>
+                  <div class="v-card-tier-badge">
+                    <div class="v-card-tier-name">Privilege</div>
+                    <div class="v-card-tier-dots"><span></span><span></span><span></span></div>
+                  </div>
+                </div>
+                <div class="v-card-middle">
+                  <div class="v-card-chip"></div>
+                </div>
+                <div class="v-card-footer">
+                  <div class="v-card-number">DM26 •••• •••• 4004</div>
+                  <div class="v-card-footer-row">
+                    <div>
+                      <div class="v-card-holder-label">Chủ thẻ</div>
+                      <div class="v-card-name">Member Name</div>
+                    </div>
+                    <div class="v-card-tier-range">
+                      <div class="v-card-tier-range-label">Mảnh Sáng</div>
+                      <div class="v-card-tier-range-value">
+                        <%= tierLimits.tier_limit_gold_privilege.toLocaleString('vi-VN') %>+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="loyalty-info">
+            <h2>Cơ chế hoạt động đơn vị tích luỹ Mảnh Sáng</h2>
+
+            <div class="table-responsive">
+              <table class="loyalty-table">
+                <thead>
+                  <tr>
+                    <th>Hoạt động của khách hàng</th>
+                    <th class="text-right">Số Mảnh Sáng nhận được</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Mở thẻ thành viên thành công</td>
+                    <td class="text-right highlight">+30 Mảnh Sáng</td>
+                  </tr>
+                  <tr>
+                    <td>Mỗi 10.000 VNĐ chi tiêu tại Dear Musé</td>
+                    <td class="text-right highlight">+1 Mảnh Sáng</td>
+                  </tr>
+                  <tr>
+                    <td>Đặt lịch chụp lần đầu</td>
+                    <td class="text-right highlight">+50 Mảnh Sáng</td>
+                  </tr>
+                  <tr>
+                    <td>Quay lại chụp lần thứ 2 trở đi</td>
+                    <td class="text-right highlight">+80 Mảnh Sáng / Lần</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p class="loyalty-note">
+              * Điểm Mảnh Sáng có thể dùng để đổi các Voucher giảm giá trực tiếp cho lần chụp tiếp theo.<br>
+              * Lưu ý: Trong trường hợp khách hàng hủy lịch / bỏ cọc, Dear Musé có quyền thu hồi lại số Mảnh Sáng tương
+              ứng.
+            </p>
+          </div>
+
+          <!-- ═══ VOUCHER REDEMPTION SECTION ═══ -->
+          <div class="voucher-redeem-section">
+            <div class="voucher-redeem-header">
+              <span class="section-eyebrow">Đặc quyền thành viên</span>
+              <h2>Quy Đổi Voucher Theo Mảnh Sáng</h2>
+              <p>Sử dụng Mảnh Sáng tích luỹ để đổi lấy các voucher giảm giá giá trị. Quy đổi từng phần — không cần tích
+                đủ.
+              </p>
+            </div>
+
+            <!-- 4 card cơ bản -->
+            <div class="voucher-cards-grid">
+
+              <!-- Glow -->
+              <div class="vc-card vc-glow">
+                <div class="vc-card-inner">
+                  <div class="vc-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"
+                      stroke-linecap="round">
+                      <circle cx="12" cy="12" r="5" />
+                      <line x1="12" y1="1" x2="12" y2="3" />
+                      <line x1="12" y1="21" x2="12" y2="23" />
+                      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                      <line x1="1" y1="12" x2="3" y2="12" />
+                      <line x1="21" y1="12" x2="23" y2="12" />
+                      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                    </svg>
+                  </div>
+                  <div class="vc-tier-label">Glow Voucher</div>
+                  <div class="vc-cost"><span class="vc-cost-num">80</span><span class="vc-cost-unit">Mảnh Sáng</span>
+                  </div>
+                  <div class="vc-divider"></div>
+                  <div class="vc-value">Giảm <strong>50.000đ</strong></div>
+                  <div class="vc-desc">Cho bất kỳ gói chụp nào</div>
+                </div>
+              </div>
+
+              <!-- Rose -->
+              <div class="vc-card vc-rose">
+                <div class="vc-card-inner">
+                  <div class="vc-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"
+                      stroke-linecap="round">
+                      <path d="M12 22s-8-5-8-11a8 8 0 0 1 16 0c0 6-8 11-8 11z" />
+                    </svg>
+                  </div>
+                  <div class="vc-tier-label">Rose Voucher</div>
+                  <div class="vc-cost"><span class="vc-cost-num">200</span><span class="vc-cost-unit">Mảnh Sáng</span>
+                  </div>
+                  <div class="vc-divider"></div>
+                  <div class="vc-value">Giảm <strong>100.000đ</strong></div>
+                  <div class="vc-desc">Cho bất kỳ gói chụp nào</div>
+                </div>
+              </div>
+
+              <!-- Gold -->
+              <div class="vc-card vc-gold">
+                <div class="vc-card-inner">
+                  <div class="vc-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"
+                      stroke-linecap="round">
+                      <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                  </div>
+                  <div class="vc-tier-label">Gold Voucher</div>
+                  <div class="vc-cost"><span class="vc-cost-num">400</span><span class="vc-cost-unit">Mảnh Sáng</span>
+                  </div>
+                  <div class="vc-divider"></div>
+                  <div class="vc-value">Giảm <strong>200.000đ</strong></div>
+                  <div class="vc-desc">Cho bất kỳ gói chụp nào</div>
+                </div>
+              </div>
+
+              <!-- Signature teaser card -->
+              <div class="vc-card vc-signature vc-signature-teaser">
+                <div class="vc-signature-shimmer"></div>
+                <div class="vc-card-inner">
+                  <div class="vc-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"
+                      stroke-linecap="round">
+                      <path
+                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.35L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                      <circle cx="12" cy="12" r="3" stroke-width="1" />
+                    </svg>
+                  </div>
+                  <div class="vc-tier-label">Signature Voucher</div>
+                  <div class="vc-cost vc-cost-range"><span class="vc-cost-num">500 – 1.500</span><span
+                      class="vc-cost-unit">Mảnh Sáng</span></div>
+                  <div class="vc-divider"></div>
+                  <div class="vc-value">Giảm sâu &amp; nâng cấp</div>
+                  <div class="vc-desc">Trải nghiệm cá nhân hoá cao cấp</div>
+                  <button class="vc-expand-btn" onclick="toggleSignatureDetail()">
+                    Xem chi tiết
+                    <svg class="vc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Signature Voucher Detail Card (premium, riêng) -->
+            <div class="vc-signature-detail" id="signatureDetail">
+              <div class="vc-sig-header">
+                <div class="vc-sig-crown">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+                    <path d="M2 20h20M4 20l2-8 4 4 2-8 2 8 4-4 2 8" />
+                  </svg>
+                </div>
+                <div>
+                  <div class="vc-sig-title">Signature Voucher</div>
+                  <div class="vc-sig-subtitle">Đặc quyền cao cấp — 3 tầng giá trị</div>
+                </div>
+              </div>
+
+              <div class="vc-sig-tiers">
+
+                <!-- Tier I — 500 MS -->
+                <div class="vc-sig-tier tier-i">
+                  <div class="vc-sig-tier-badge">Tier I</div>
+                  <div class="vc-sig-tier-cost">
+                    <span class="vc-sig-ms">500</span>
+                    <span class="vc-sig-ms-label">Mảnh Sáng</span>
+                  </div>
+                  <div class="vc-sig-tier-divider"></div>
+                  <div class="vc-sig-tier-info">
+                    <div class="vc-sig-value">Giảm <strong>300.000đ</strong></div>
+                    <div class="vc-sig-perks">
+                      <span>✓ Áp dụng cho bất kỳ gói chụp</span>
+                      <span>✓ Hiệu lực 180 ngày</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Tier II — 800 MS -->
+                <div class="vc-sig-tier tier-ii">
+                  <div class="vc-sig-tier-badge">Tier II</div>
+                  <div class="vc-sig-tier-cost">
+                    <span class="vc-sig-ms">800</span>
+                    <span class="vc-sig-ms-label">Mảnh Sáng</span>
+                  </div>
+                  <div class="vc-sig-tier-divider"></div>
+                  <div class="vc-sig-tier-info">
+                    <div class="vc-sig-value">Giảm <strong>500.000đ</strong></div>
+                    <div class="vc-sig-perks">
+                      <span>✓ Áp dụng cho bất kỳ gói chụp</span>
+                      <span>✓ Tặng 1 ảnh retouch chuyên sâu thêm</span>
+                      <span>✓ Hiệu lực 180 ngày</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Tier III — 1500 MS -->
+                <div class="vc-sig-tier tier-iii">
+                  <div class="vc-sig-tier-badge">Tier III</div>
+                  <div class="vc-sig-tier-cost">
+                    <span class="vc-sig-ms">1.500</span>
+                    <span class="vc-sig-ms-label">Mảnh Sáng</span>
+                  </div>
+                  <div class="vc-sig-tier-divider"></div>
+                  <div class="vc-sig-tier-info">
+                    <div class="vc-sig-value">Giảm <strong>20%</strong> toàn bộ gói</div>
+                    <div class="vc-sig-perks">
+                      <span>✓ Tư vấn concept cá nhân hoá riêng</span>
+                      <span>✓ Ưu tiên lịch chụp cao nhất</span>
+                      <span>✓ Tặng 2 ảnh retouch chuyên sâu</span>
+                      <span>✓ Hiệu lực 180 ngày</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <p class="vc-sig-note">* Signature Voucher được tính từng tầng độc lập — bạn chỉ cần đủ điểm cho tầng muốn
+                đổi. Liên hệ studio để xác nhận và nhận mã.</p>
+            </div>
+
+            <!-- ═══ SEASONAL & OCCASIONS SECTION ═══ -->
+            <div class="occasions-section">
+              <div class="occasions-header">
+                <span class="section-eyebrow">Dành Cho Mọi Khoảnh Khắc</span>
+                <h3>Quy Đổi Voucher Theo Dịp Đặc Biệt</h3>
+              </div>
+
+              <div class="elegant-table-wrap">
+                <table class="elegant-table">
+                  <thead>
+                    <tr>
+                      <th>Dịp</th>
+                      <th>Quyền lợi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Sinh nhật khách hàng</td>
+                      <td>Giảm 5–20% tùy hạng thẻ</td>
+                    </tr>
+                    <tr>
+                      <td>Mùa tốt nghiệp</td>
+                      <td>Tặng ảnh retouch hoặc voucher nhóm</td>
+                    </tr>
+                    <tr>
+                      <td>8/3, 20/10, Valentine</td>
+                      <td>Ưu đãi concept nàng thơ</td>
+                    </tr>
+                    <tr>
+                      <td>Khai trương concept mới</td>
+                      <td>Early access cho Muse Gold và Muse Signature</td>
+                    </tr>
+                    <tr>
+                      <td>Kỷ niệm 1 năm đồng hành</td>
+                      <td>Tặng voucher tri ân hoặc ảnh in</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- ═══ REFERRAL PROGRAM SECTION ═══ -->
+            <div class="referral-program-section">
+              <div class="referral-header">
+                <span class="section-eyebrow">Lan Toả Yêu Thương</span>
+                <h3>Voucher Giới Thiệu Người Quen</h3>
+              </div>
+
+              <div class="elegant-table-wrap">
+                <table class="elegant-table">
+                  <thead>
+                    <tr>
+                      <th>Đối tượng / Cột mốc</th>
+                      <th>Quyền lợi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Người giới thiệu</td>
+                      <td>+100 Mảnh Sáng hoặc voucher 100.000 VNĐ</td>
+                    </tr>
+                    <tr>
+                      <td>Người được giới thiệu</td>
+                      <td>Giảm 5% cho lần chụp đầu tiên</td>
+                    </tr>
+                    <tr>
+                      <td>Giới thiệu từ 3 người trở lên 1 tháng</td>
+                      <td>Nhận thêm voucher nâng cấp concept hoặc ảnh retouch</td>
+                    </tr>
+                    <tr>
+                      <td>Giới thiệu 7 người trở lên 1 quý</td>
+                      <td>Nhận level up thẻ thành viên</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <p class="voucher-redeem-note">Để đổi&nbsp;voucher hoặc xác nhận các ưu&nbsp;đãi trên, vui lòng
+              liên&nbsp;hệ<br>
+              trực&nbsp;tiếp qua <strong>Facebook</strong> hoặc <strong>Instagram</strong> của Dear&nbsp;Musé, hoặc
+              nhắn&nbsp;tin
+              qua phần <a href="/contact" style="color:inherit; text-decoration:underline;">Liên&nbsp;hệ</a>.<br>
+              Mã&nbsp;voucher sẽ được gửi về email/SĐT đã đăng&nbsp;ký&nbsp;thành&nbsp;viên.</p>
+          </div>
+
         </div>
-        <div class="loyalty-form-group">
-          <label for="dob">Ngày sinh</label>
-          <input type="date" id="dob" name="dob" required>
+      </div>
+      <% } %>
+
+        <!-- Modal Đăng Ký Thẻ -->
+        <div class="loyalty-modal" id="loyalty-modal">
+          <div class="loyalty-modal-content">
+            <button class="close-modal" id="close-modal">&times;</button>
+            <h3
+              style="margin-bottom: 20px; color: var(--ink, #1A1916); font-family: var(--font-display, serif); font-size: 1.8rem; text-align: center; font-weight: 500;">
+              Mở Thẻ Thành Viên</h3>
+            <form id="loyalty-form" action="/customer/loyalty/create" method="POST">
+              <div class="loyalty-form-group">
+                <label for="full_name">
+                  <%= (sessionUser && sessionUser.type==='business' ) ? 'Tên doanh nghiệp in trên thẻ'
+                    : 'Họ và tên trên thẻ' %>
+                </label>
+                <input type="text" id="full_name" name="full_name" required
+                  placeholder="<%= (sessionUser && sessionUser.type === 'business') ? 'VD: Công ty TNHH ABC' : 'VD: Nguyễn Văn A' %>">
+              </div>
+              <div class="loyalty-form-group">
+                <label for="dob">Ngày sinh</label>
+                <input type="date" id="dob" name="dob" required>
+              </div>
+              <button type="submit" class="btn-primary btn-block">Xác Nhận Mở Thẻ</button>
+            </form>
+          </div>
         </div>
-        <button type="submit" class="btn-primary btn-block">Xác Nhận Mở Thẻ</button>
-      </form>
-    </div>
-  </div>
-
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
-
-    .loyalty-hero p {
-      font-family: 'Quicksand', 'DM Sans', sans-serif;
-      font-weight: 500;
-      color: #000000;
-      font-size: 1.15rem;
-      line-height: 1.7;
-      max-width: 720px;
-      margin-left: auto;
-      margin-right: auto;
-      text-wrap: balance;
-    }
-
-    .loyalty-info h2 {
-      font-size: clamp(1.4rem, 2.5vw, 2.2rem);
-      white-space: nowrap;
-    }
-
-    @media (max-width: 768px) {
-      .loyalty-info {
-        padding: 35px 24px;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .loyalty-info h2 {
-        white-space: normal;
-        font-size: 1.45rem;
-      }
-    }
-
-    /* ──────────────── VOUCHER REDEMPTION SECTION ──────────────── */
-    .voucher-redeem-section {
-      margin-top: 80px;
-      padding-top: 60px;
-      border-top: 0.5px solid var(--bone, #EDE8DF);
-    }
-
-    .voucher-redeem-header {
-      text-align: center;
-      margin-bottom: 48px;
-    }
-
-    .section-eyebrow {
-      display: inline-block;
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--logo-taupe, #9C8474);
-      margin-bottom: 12px;
-    }
-
-    .voucher-redeem-header h2 {
-      font-family: var(--font-display, serif);
-      font-size: clamp(1.6rem, 3vw, 2.2rem);
-      font-weight: 400;
-      color: var(--ink, #1A1916);
-      margin-bottom: 12px;
-    }
-
-    .voucher-redeem-header p {
-      font-family: 'Quicksand', 'DM Sans', sans-serif;
-      font-weight: 500;
-      font-size: 15px;
-      color: #000000;
-      max-width: 520px;
-      margin: 0 auto;
-      line-height: 1.7;
-    }
-
-    /* 4-card grid */
-    .voucher-cards-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      margin-bottom: 40px;
-    }
-
-    @media (max-width: 900px) {
-      .voucher-cards-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 520px) {
-      .voucher-cards-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* Base card */
-    .vc-card {
-      border-radius: 16px;
-      padding: 2px;
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .vc-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
-    }
-
-    .vc-card-inner {
-      background: #fff;
-      border-radius: 14px;
-      padding: 28px 20px 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 8px;
-      height: 100%;
-      position: relative;
-      z-index: 1;
-    }
-
-    .vc-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 4px;
-    }
-
-    .vc-icon svg {
-      width: 24px;
-      height: 24px;
-    }
-
-    .vc-tier-label {
-      font-family: var(--font-display, serif);
-      font-size: 1.15rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
-    .vc-cost {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-    }
-
-    .vc-cost-num {
-      font-family: var(--font-display, serif);
-      font-size: 2rem;
-      font-weight: 400;
-      line-height: 1;
-    }
-
-    .vc-cost-unit {
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      opacity: 0.6;
-    }
-
-    .vc-divider {
-      width: 32px;
-      height: 1px;
-      margin: 4px 0;
-    }
-
-    .vc-value {
-      font-size: 14px;
-      color: var(--ink, #1A1916);
-    }
-
-    .vc-value strong {
-      font-weight: 600;
-    }
-
-    .vc-desc {
-      font-size: 11px;
-      color: var(--smoke, #6B6860);
-      letter-spacing: 0.04em;
-    }
-
-    /* Glow card */
-    .vc-glow {
-      background: linear-gradient(135deg, #e0f2fe, #bae6fd);
-    }
-
-    .vc-glow .vc-icon {
-      background: #e0f2fe;
-      color: #0369a1;
-    }
-
-    .vc-glow .vc-tier-label {
-      color: #0369a1;
-    }
-
-    .vc-glow .vc-cost-num {
-      color: #0369a1;
-    }
-
-    .vc-glow .vc-divider {
-      background: #bae6fd;
-    }
-
-    /* Rose card */
-    .vc-rose {
-      background: linear-gradient(135deg, #fce7f3, #fbcfe8);
-    }
-
-    .vc-rose .vc-icon {
-      background: #fce7f3;
-      color: #be185d;
-    }
-
-    .vc-rose .vc-tier-label {
-      color: #be185d;
-    }
-
-    .vc-rose .vc-cost-num {
-      color: #be185d;
-    }
-
-    .vc-rose .vc-divider {
-      background: #fbcfe8;
-    }
-
-    /* Gold card */
-    .vc-gold {
-      background: linear-gradient(135deg, #fef9c3, #fde68a);
-    }
-
-    .vc-gold .vc-icon {
-      background: #fef9c3;
-      color: #b45309;
-    }
-
-    .vc-gold .vc-tier-label {
-      color: #b45309;
-    }
-
-    .vc-gold .vc-cost-num {
-      color: #b45309;
-    }
-
-    .vc-gold .vc-divider {
-      background: #fde68a;
-    }
-
-    /* Signature card */
-    .vc-signature {
-      background: linear-gradient(135deg, #1a0a2e 0%, #0d0619 100%);
-      box-shadow: 0 8px 30px rgba(20, 5, 50, 0.4);
-    }
-
-    .vc-signature .vc-card-inner {
-      background: linear-gradient(145deg, #2a1050 0%, #150826 100%);
-      border: 1px solid rgba(180, 140, 255, 0.15);
-    }
-
-    .vc-signature .vc-icon {
-      background: rgba(212, 185, 106, 0.12);
-      color: #ffd080;
-    }
-
-    .vc-signature .vc-tier-label {
-      color: #ffd080;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-    }
-
-    .vc-signature .vc-cost-num {
-      color: #ffe4a0;
-    }
-
-    .vc-signature .vc-cost-unit {
-      color: rgba(255, 255, 255, 0.6);
-    }
-
-    .vc-signature .vc-divider {
-      background: rgba(255, 208, 128, 0.25);
-    }
-
-    .vc-signature .vc-value {
-      color: #ffffff;
-    }
-
-    .vc-signature .vc-desc {
-      color: rgba(255, 255, 255, 0.7);
-    }
-
-    .vc-signature-shimmer {
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(45deg, transparent 30%, rgba(180, 140, 255, 0.1) 50%, transparent 70%);
-      animation: shimmer 3s infinite;
-      pointer-events: none;
-    }
-
-    @keyframes shimmer {
-      0% {
-        transform: translateX(-100%) rotate(45deg);
-      }
-
-      100% {
-        transform: translateX(100%) rotate(45deg);
-      }
-    }
-
-    .vc-expand-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      margin-top: 16px;
-      padding: 0 0 2px 0;
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid rgba(122, 92, 74, 0.4);
-      border-radius: 0;
-      color: var(--mocha, #7A5C4A);
-      font-family: var(--font-body, sans-serif);
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      white-space: nowrap;
-    }
-
-    .vc-expand-btn:hover {
-      color: var(--ink, #1A1916);
-      border-color: var(--ink, #1A1916);
-      background: transparent;
-    }
-
-    .vc-signature .vc-expand-btn {
-      color: #ffd080;
-      border-bottom-color: rgba(255, 208, 128, 0.4);
-    }
-
-    .vc-signature .vc-expand-btn:hover {
-      color: #ffffff;
-      border-bottom-color: #ffffff;
-    }
-
-    .vc-chevron {
-      transition: transform 0.25s;
-      flex-shrink: 0;
-      width: 12px;
-      height: 12px;
-    }
-
-    .vc-expand-btn.open .vc-chevron {
-      transform: rotate(180deg);
-    }
-
-    /* Signature Detail */
-    .vc-signature-detail {
-      display: none;
-      background: linear-gradient(135deg, #1a0a2e 0%, #0d0619 100%);
-      border-radius: 20px;
-      padding: 40px;
-      margin-bottom: 32px;
-      border: 1px solid rgba(180, 140, 255, 0.2);
-      box-shadow: 0 16px 40px rgba(20, 5, 50, 0.4);
-      animation: fadeSlide 0.35s ease;
-    }
-
-    .vc-signature-detail.open {
-      display: block;
-    }
-
-    @keyframes fadeSlide {
-      from {
-        opacity: 0;
-        transform: translateY(-12px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .vc-sig-header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 32px;
-      padding-bottom: 24px;
-      border-bottom: 1px solid rgba(180, 140, 255, 0.15);
-    }
-
-    .vc-sig-crown {
-      width: 52px;
-      height: 52px;
-      background: rgba(255, 208, 128, 0.1);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .vc-sig-crown svg {
-      width: 26px;
-      height: 26px;
-      color: #ffd080;
-    }
-
-    .vc-sig-title {
-      font-family: var(--font-display, serif);
-      font-size: 1.5rem;
-      font-weight: 400;
-      color: #ffffff;
-      letter-spacing: 0.02em;
-    }
-
-    .vc-sig-subtitle {
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.6);
-      letter-spacing: 0.05em;
-      margin-top: 4px;
-    }
-
-    .vc-sig-tiers {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      margin-bottom: 28px;
-    }
-
-    @media (max-width: 700px) {
-      .vc-sig-tiers {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .vc-sig-tier {
-      padding: 24px 20px;
-      border-radius: 12px;
-      border: 1px solid rgba(180, 140, 255, 0.12);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      position: relative;
-      transition: all 0.2s ease;
-    }
-
-    .vc-sig-tier:hover {
-      border-color: #ffd080;
-      background: rgba(42, 16, 80, 0.6);
-      box-shadow: 0 8px 24px rgba(180, 140, 255, 0.15);
-    }
-
-    .tier-i {
-      background: rgba(255, 255, 255, 0.03);
-    }
-
-    .tier-ii {
-      background: rgba(255, 255, 255, 0.05);
-      border-color: rgba(180, 140, 255, 0.25);
-    }
-
-    .tier-iii {
-      background: linear-gradient(145deg, rgba(180, 140, 255, 0.15), rgba(0, 0, 0, 0.2));
-      border-color: rgba(180, 140, 255, 0.35);
-    }
-
-    .vc-sig-tier-badge {
-      display: inline-block;
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: #ffd080;
-      padding: 3px 10px;
-      border: 1px solid rgba(255, 208, 128, 0.3);
-      border-radius: 100px;
-      width: fit-content;
-    }
-
-    .tier-iii .vc-sig-tier-badge {
-      color: #ffd080;
-      border-color: #ffd080;
-    }
-
-    .vc-sig-tier-cost {
-      display: flex;
-      align-items: baseline;
-      gap: 6px;
-    }
-
-    .vc-sig-ms {
-      font-family: var(--font-display, serif);
-      font-size: 2.2rem;
-      font-weight: 400;
-      color: #ffd080;
-      line-height: 1;
-    }
-
-    .vc-sig-ms-label {
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.5);
-    }
-
-    .vc-sig-tier-divider {
-      height: 1px;
-      background: rgba(180, 140, 255, 0.2);
-    }
-
-    .vc-sig-tier-info {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .vc-sig-value {
-      font-size: 16px;
-      color: #ffffff;
-    }
-
-    .vc-sig-value strong {
-      font-weight: 600;
-      color: #ffe4a0;
-    }
-
-    .vc-sig-perks {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .vc-sig-perks span {
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.7);
-      line-height: 1.5;
-    }
-
-    .vc-sig-note {
-      font-size: 14px;
-      color: #ffffff;
-      text-align: center;
-      line-height: 1.6;
-      font-style: italic;
-      opacity: 0.95;
-    }
-
-    .voucher-redeem-note {
-      font-family: 'Quicksand', 'DM Sans', sans-serif;
-      font-weight: 500;
-      text-align: center;
-      font-size: 16px;
-      color: #000000;
-      max-width: 800px;
-      margin: 40px auto 0;
-      line-height: 1.8;
-      border-top: 0.5px solid var(--bone, #EDE8DF);
-      padding-top: 24px;
-    }
-
-    .voucher-redeem-note strong {
-      color: #000000;
-      font-weight: 700;
-    }
-
-    /* ──────────────── OCCASIONS & REFERRAL TABLES ──────────────── */
-    .occasions-section,
-    .referral-program-section {
-      margin-top: 80px;
-      padding-top: 60px;
-      border-top: 0.5px solid var(--bone, #EDE8DF);
-    }
-
-    .occasions-header,
-    .referral-header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
-    .occasions-header h3,
-    .referral-header h3 {
-      font-family: var(--font-display, serif);
-      font-size: clamp(1.5rem, 2vw, 1.8rem);
-      font-weight: 400;
-      color: var(--ink, #1A1916);
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .elegant-table-wrap {
-      max-width: 800px;
-      margin: 0 auto;
-      background: #fff;
-      border: 1px solid var(--ink, #1A1916);
-      padding: 2px;
-    }
-
-    .elegant-table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #fff;
-    }
-
-    .elegant-table th,
-    .elegant-table td {
-      padding: 18px 24px;
-      text-align: left;
-      border: 1px solid var(--ink, #1A1916);
-      font-size: 14px;
-      line-height: 1.6;
-      color: var(--ink, #1A1916);
-    }
-
-    .elegant-table td {
-      font-family: 'Quicksand', 'DM Sans', sans-serif;
-      font-weight: 500;
-      color: #000000;
-    }
-
-    .loyalty-table td {
-      font-family: 'Quicksand', 'DM Sans', sans-serif;
-      font-weight: 500;
-      color: #000000;
-    }
-
-    .elegant-table th {
-      font-family: var(--font-display, serif);
-      font-weight: 600;
-      font-size: 14px;
-      text-align: center;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      border: 1.5px solid var(--mocha, #7A5C4A);
-      color: var(--mocha, #7A5C4A);
-      background-color: rgba(122, 92, 74, 0.05);
-    }
-
-    .elegant-table td:first-child {
-      width: 45%;
-    }
-
-    @media (max-width: 600px) {
-
-      .elegant-table th,
-      .elegant-table td {
-        padding: 14px 16px;
-        font-size: 13px;
-      }
-
-      .elegant-table td:first-child {
-        width: auto;
-      }
-    }
-  </style>
-
-  <script>
-    const btnOpen = document.getElementById('btn-open-card');
-    const modal = document.getElementById('loyalty-modal');
-    const btnClose = document.getElementById('close-modal');
-
-    if (btnOpen) {
-      btnOpen.addEventListener('click', () => {
-        modal.classList.add('active');
-      });
-    }
-
-    if (btnClose) {
-      btnClose.addEventListener('click', () => {
-        modal.classList.remove('active');
-      });
-    }
-
-    window.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.classList.remove('active');
-      }
-    });
-
-    // Signature Voucher toggle
-    function toggleSignatureDetail() {
-      const detail = document.getElementById('signatureDetail');
-      const btn = document.querySelector('.vc-expand-btn');
-      const isOpen = detail.classList.contains('open');
-      detail.classList.toggle('open', !isOpen);
-      if (btn) btn.classList.toggle('open', !isOpen);
-      if (!isOpen) {
-        detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }
-  </script>
+
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
+
+          .loyalty-hero p {
+            font-family: 'Quicksand', 'DM Sans', sans-serif;
+            font-weight: 500;
+            color: #000000;
+            font-size: 1.15rem;
+            line-height: 1.7;
+            max-width: 720px;
+            margin-left: auto;
+            margin-right: auto;
+            text-wrap: balance;
+          }
+
+          .loyalty-info h2 {
+            font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+            white-space: nowrap;
+          }
+
+          @media (max-width: 768px) {
+            .loyalty-info {
+              padding: 35px 24px;
+            }
+          }
+
+          @media (max-width: 600px) {
+            .loyalty-info h2 {
+              white-space: normal;
+              font-size: 1.45rem;
+            }
+          }
+
+          /* ──────────────── VOUCHER REDEMPTION SECTION ──────────────── */
+          .voucher-redeem-section {
+            margin-top: 80px;
+            padding-top: 60px;
+            border-top: 0.5px solid var(--bone, #EDE8DF);
+          }
+
+          .voucher-redeem-header {
+            text-align: center;
+            margin-bottom: 48px;
+          }
+
+          .section-eyebrow {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--logo-taupe, #9C8474);
+            margin-bottom: 12px;
+          }
+
+          .voucher-redeem-header h2 {
+            font-family: var(--font-display, serif);
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            font-weight: 400;
+            color: var(--ink, #1A1916);
+            margin-bottom: 12px;
+          }
+
+          .voucher-redeem-header p {
+            font-family: 'Quicksand', 'DM Sans', sans-serif;
+            font-weight: 500;
+            font-size: 15px;
+            color: #000000;
+            max-width: 520px;
+            margin: 0 auto;
+            line-height: 1.7;
+          }
+
+          /* 4-card grid */
+          .voucher-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+          }
+
+          @media (max-width: 900px) {
+            .voucher-cards-grid {
+              grid-template-columns: repeat(2, 1fr);
+            }
+          }
+
+          @media (max-width: 520px) {
+            .voucher-cards-grid {
+              grid-template-columns: 1fr;
+            }
+          }
+
+          /* Base card */
+          .vc-card {
+            border-radius: 16px;
+            padding: 2px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+          }
+
+          .vc-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+          }
+
+          .vc-card-inner {
+            background: #fff;
+            border-radius: 14px;
+            padding: 28px 20px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 8px;
+            height: 100%;
+            position: relative;
+            z-index: 1;
+          }
+
+          .vc-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 4px;
+          }
+
+          .vc-icon svg {
+            width: 24px;
+            height: 24px;
+          }
+
+          .vc-tier-label {
+            font-family: var(--font-display, serif);
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+          }
+
+          .vc-cost {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+          }
+
+          .vc-cost-num {
+            font-family: var(--font-display, serif);
+            font-size: 2rem;
+            font-weight: 400;
+            line-height: 1;
+          }
+
+          .vc-cost-unit {
+            font-size: 10px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            opacity: 0.6;
+          }
+
+          .vc-divider {
+            width: 32px;
+            height: 1px;
+            margin: 4px 0;
+          }
+
+          .vc-value {
+            font-size: 14px;
+            color: var(--ink, #1A1916);
+          }
+
+          .vc-value strong {
+            font-weight: 600;
+          }
+
+          .vc-desc {
+            font-size: 11px;
+            color: var(--smoke, #6B6860);
+            letter-spacing: 0.04em;
+          }
+
+          /* Glow card */
+          .vc-glow {
+            background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+          }
+
+          .vc-glow .vc-icon {
+            background: #e0f2fe;
+            color: #0369a1;
+          }
+
+          .vc-glow .vc-tier-label {
+            color: #0369a1;
+          }
+
+          .vc-glow .vc-cost-num {
+            color: #0369a1;
+          }
+
+          .vc-glow .vc-divider {
+            background: #bae6fd;
+          }
+
+          /* Rose card */
+          .vc-rose {
+            background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+          }
+
+          .vc-rose .vc-icon {
+            background: #fce7f3;
+            color: #be185d;
+          }
+
+          .vc-rose .vc-tier-label {
+            color: #be185d;
+          }
+
+          .vc-rose .vc-cost-num {
+            color: #be185d;
+          }
+
+          .vc-rose .vc-divider {
+            background: #fbcfe8;
+          }
+
+          /* Gold card */
+          .vc-gold {
+            background: linear-gradient(135deg, #fef9c3, #fde68a);
+          }
+
+          .vc-gold .vc-icon {
+            background: #fef9c3;
+            color: #b45309;
+          }
+
+          .vc-gold .vc-tier-label {
+            color: #b45309;
+          }
+
+          .vc-gold .vc-cost-num {
+            color: #b45309;
+          }
+
+          .vc-gold .vc-divider {
+            background: #fde68a;
+          }
+
+          /* Signature card */
+          .vc-signature {
+            background: linear-gradient(135deg, #CFB997 0%, #F5EDE0 50%, #B89E7E 100%);
+            box-shadow: 0 8px 30px rgba(184, 158, 126, 0.15), 0 0 0 1px rgba(184, 158, 126, 0.25) inset;
+          }
+
+          .vc-signature:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(184, 158, 126, 0.35), 0 0 0 1px rgba(184, 158, 126, 0.4) inset;
+          }
+
+          .vc-signature .vc-card-inner {
+            background: linear-gradient(145deg, #FCFAF6 0%, #F5EFE4 100%);
+            border: 1px solid rgba(184, 158, 126, 0.2);
+          }
+
+          .vc-signature .vc-icon {
+            background: rgba(126, 34, 206, 0.1);
+            color: #7E22CE;
+          }
+
+          .vc-signature .vc-tier-label {
+            color: #581C87;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+          }
+
+          .vc-signature .vc-cost-num {
+            color: #581C87;
+          }
+
+          .vc-signature .vc-cost-unit {
+            color: var(--smoke, #6B6860);
+          }
+
+          .vc-signature .vc-divider {
+            background: rgba(126, 34, 206, 0.2);
+          }
+
+          .vc-signature .vc-value {
+            color: var(--ink, #1A1916);
+          }
+
+          .vc-signature .vc-desc {
+            color: var(--smoke, #6B6860);
+          }
+
+          .vc-signature-shimmer {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.6) 50%, transparent 70%);
+            animation: shimmer 3.5s infinite;
+            pointer-events: none;
+          }
+
+          @keyframes shimmer {
+            0% {
+              transform: translateX(-100%) rotate(45deg);
+            }
+
+            100% {
+              transform: translateX(100%) rotate(45deg);
+            }
+          }
+
+          .vc-expand-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            margin-top: 16px;
+            padding: 0 0 2px 0;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(122, 92, 74, 0.4);
+            border-radius: 0;
+            color: var(--mocha, #7A5C4A);
+            font-family: var(--font-body, sans-serif);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+          }
+
+          .vc-expand-btn:hover {
+            color: var(--ink, #1A1916);
+            border-color: var(--ink, #1A1916);
+            background: transparent;
+          }
+
+          .vc-signature .vc-expand-btn {
+            color: #7E22CE;
+            border-bottom-color: rgba(126, 34, 206, 0.4);
+          }
+
+          .vc-signature .vc-expand-btn:hover {
+            color: #581C87;
+            border-bottom-color: #581C87;
+          }
+
+          .vc-chevron {
+            transition: transform 0.25s;
+            flex-shrink: 0;
+            width: 12px;
+            height: 12px;
+          }
+
+          .vc-expand-btn.open .vc-chevron {
+            transform: rotate(180deg);
+          }
+
+          /* Signature Detail */
+          .vc-signature-detail {
+            display: none;
+            background: linear-gradient(135deg, #FCFAF6 0%, #F5EFE4 100%);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 32px;
+            border: 1px solid rgba(126, 34, 206, 0.2);
+            box-shadow: 0 16px 40px rgba(126, 34, 206, 0.05);
+            animation: fadeSlide 0.35s ease;
+          }
+
+          .vc-signature-detail.open {
+            display: block;
+          }
+
+          @keyframes fadeSlide {
+            from {
+              opacity: 0;
+              transform: translateY(-12px);
+            }
+
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+
+          .vc-sig-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(126, 34, 206, 0.15);
+          }
+
+          .vc-sig-crown {
+            width: 52px;
+            height: 52px;
+            background: rgba(126, 34, 206, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+          }
+
+          .vc-sig-crown svg {
+            width: 26px;
+            height: 26px;
+            color: #7E22CE;
+          }
+
+          .vc-sig-title {
+            font-family: var(--font-display, serif);
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: #581C87;
+            letter-spacing: 0.02em;
+          }
+
+          .vc-sig-subtitle {
+            font-size: 12px;
+            color: var(--smoke, #6B6860);
+            letter-spacing: 0.05em;
+            margin-top: 4px;
+          }
+
+          .vc-sig-tiers {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 28px;
+          }
+
+          @media (max-width: 700px) {
+            .vc-sig-tiers {
+              grid-template-columns: 1fr;
+            }
+          }
+
+          .vc-sig-tier {
+            padding: 24px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(126, 34, 206, 0.12);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            transition: all 0.2s ease;
+          }
+
+          .vc-sig-tier:hover {
+            border-color: #7E22CE;
+            background: rgba(253, 244, 255, 0.8);
+            box-shadow: 0 8px 24px rgba(126, 34, 206, 0.1);
+          }
+
+          .tier-i {
+            background: #ffffff;
+          }
+
+          .tier-ii {
+            background: #ffffff;
+            border-color: rgba(126, 34, 206, 0.2);
+          }
+
+          .tier-iii {
+            background: linear-gradient(145deg, rgba(126, 34, 206, 0.05), #ffffff);
+            border-color: rgba(126, 34, 206, 0.25);
+          }
+
+          .vc-sig-tier-badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #7E22CE;
+            padding: 3px 10px;
+            border: 1px solid rgba(126, 34, 206, 0.4);
+            border-radius: 100px;
+            width: fit-content;
+          }
+
+          .tier-iii .vc-sig-tier-badge {
+            color: #581C87;
+            border-color: #581C87;
+          }
+
+          .vc-sig-tier-cost {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+          }
+
+          .vc-sig-ms {
+            font-family: var(--font-display, serif);
+            font-size: 2.2rem;
+            font-weight: 400;
+            color: #581C87;
+            line-height: 1;
+          }
+
+          .vc-sig-ms-label {
+            font-size: 10px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--smoke, #6B6860);
+          }
+
+          .vc-sig-tier-divider {
+            height: 1px;
+            background: rgba(126, 34, 206, 0.12);
+          }
+
+          .vc-sig-tier-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+          }
+
+          .vc-sig-value {
+            font-size: 16px;
+            color: var(--ink, #1A1916);
+          }
+
+          .vc-sig-value strong {
+            font-weight: 600;
+            color: #581C87;
+          }
+
+          .vc-sig-perks {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+          }
+
+          .vc-sig-perks span {
+            font-size: 12px;
+            color: var(--smoke, #6B6860);
+            line-height: 1.5;
+          }
+
+          .vc-sig-note {
+            font-size: 14px;
+            color: var(--smoke, #6B6860);
+            text-align: center;
+            line-height: 1.6;
+            font-style: italic;
+            opacity: 0.95;
+          }
+
+          .voucher-redeem-note {
+            font-family: 'Quicksand', 'DM Sans', sans-serif;
+            font-weight: 500;
+            text-align: center;
+            font-size: 16px;
+            color: #000000;
+            max-width: 800px;
+            margin: 40px auto 0;
+            line-height: 1.8;
+            border-top: 0.5px solid var(--bone, #EDE8DF);
+            padding-top: 24px;
+          }
+
+          .voucher-redeem-note strong {
+            color: #000000;
+            font-weight: 700;
+          }
+
+          /* ──────────────── OCCASIONS & REFERRAL TABLES ──────────────── */
+          .occasions-section,
+          .referral-program-section {
+            margin-top: 80px;
+            padding-top: 60px;
+            border-top: 0.5px solid var(--bone, #EDE8DF);
+          }
+
+          .occasions-header,
+          .referral-header {
+            text-align: center;
+            margin-bottom: 40px;
+          }
+
+          .occasions-header h3,
+          .referral-header h3 {
+            font-family: var(--font-display, serif);
+            font-size: clamp(1.5rem, 2vw, 1.8rem);
+            font-weight: 400;
+            color: var(--ink, #1A1916);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+          }
+
+          .elegant-table-wrap {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            border: 1px solid var(--ink, #1A1916);
+            padding: 2px;
+          }
+
+          .elegant-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+          }
+
+          .elegant-table th,
+          .elegant-table td {
+            padding: 18px 24px;
+            text-align: left;
+            border: 1px solid var(--ink, #1A1916);
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--ink, #1A1916);
+          }
+
+          .elegant-table td {
+            font-family: 'Quicksand', 'DM Sans', sans-serif;
+            font-weight: 500;
+            color: #000000;
+          }
+
+          .loyalty-table td {
+            font-family: 'Quicksand', 'DM Sans', sans-serif;
+            font-weight: 500;
+            color: #000000;
+          }
+
+          .elegant-table th {
+            font-family: var(--font-display, serif);
+            font-weight: 600;
+            font-size: 14px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border: 1.5px solid var(--mocha, #7A5C4A);
+            color: var(--mocha, #7A5C4A);
+            background-color: rgba(122, 92, 74, 0.05);
+          }
+
+          .elegant-table td:first-child {
+            width: 45%;
+          }
+
+          @media (max-width: 600px) {
+
+            .elegant-table th,
+            .elegant-table td {
+              padding: 14px 16px;
+              font-size: 13px;
+            }
+
+            .elegant-table td:first-child {
+              width: auto;
+            }
+          }
+        </style>
+
+        <script>
+          const btnOpen = document.getElementById('btn-open-card');
+          const modal = document.getElementById('loyalty-modal');
+          const btnClose = document.getElementById('close-modal');
+
+          if (btnOpen) {
+            btnOpen.addEventListener('click', () => {
+              modal.classList.add('active');
+            });
+          }
+
+          if (btnClose) {
+            btnClose.addEventListener('click', () => {
+              modal.classList.remove('active');
+            });
+          }
+
+          window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+              modal.classList.remove('active');
+            }
+          });
+
+          // Signature Voucher toggle
+          function toggleSignatureDetail() {
+            const detail = document.getElementById('signatureDetail');
+            const btn = document.querySelector('.vc-expand-btn');
+            const isOpen = detail.classList.contains('open');
+            detail.classList.toggle('open', !isOpen);
+            if (btn) btn.classList.toggle('open', !isOpen);
+            if (!isOpen) {
+              detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }
+        </script>

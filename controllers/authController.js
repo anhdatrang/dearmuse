@@ -14,6 +14,18 @@ exports.getLogin = (req, res) => {
 
 exports.postLogin = async (req, res) => {
   const { email, password } = req.body;
+
+  if (!email || !password) {
+    req.flash('error', 'Vui lòng nhập đầy đủ email và mật khẩu.');
+    return res.redirect('/auth/login');
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    req.flash('error', 'Email không đúng định dạng.');
+    return res.redirect('/auth/login');
+  }
+
   try {
     const [users] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
     if (users.length === 0) {
@@ -39,7 +51,8 @@ exports.postLogin = async (req, res) => {
       return res.redirect('/auth/login');
     }
     req.session.userId = user.id;
-    req.session.userName = user.name;
+    req.session.userName = (user.user_type === 'business' && user.company_name) ? user.company_name : user.name;
+    req.session.userType = user.user_type;
     req.flash('success', 'Đăng nhập thành công');
     res.redirect('/customer/my-albums');
   } catch (error) {
@@ -54,7 +67,29 @@ exports.getRegister = (req, res) => {
 };
 
 exports.postRegister = async (req, res) => {
-  const { name, email, password, phone } = req.body;
+  const { name, email, password, phone, user_type, company_name } = req.body;
+
+  if (user_type === 'business' && !company_name) {
+    req.flash('error', 'Vui lòng nhập tên doanh nghiệp.');
+    return res.redirect('/auth/register');
+  }
+
+  if (!name || !email || !password) {
+    req.flash('error', 'Vui lòng nhập đầy đủ các trường bắt buộc.');
+    return res.redirect('/auth/register');
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    req.flash('error', 'Email không đúng định dạng.');
+    return res.redirect('/auth/register');
+  }
+
+  if (password.length < 6) {
+    req.flash('error', 'Mật khẩu phải có ít nhất 6 ký tự.');
+    return res.redirect('/auth/register');
+  }
+
   try {
     const [existing] = await db.query('SELECT id, is_verified FROM users WHERE email = ?', [email]);
     if (existing.length > 0) {
@@ -64,11 +99,11 @@ exports.postRegister = async (req, res) => {
       } else {
         // Exists but not verified, update password and resend OTP
         const hash = await bcrypt.hash(password, 10);
-        await db.query('UPDATE users SET name = ?, password_hash = ?, phone = ? WHERE email = ?', [name, hash, phone, email]);
+        await db.query('UPDATE users SET name = ?, password_hash = ?, phone = ?, user_type = ?, company_name = ? WHERE email = ?', [name, hash, phone, user_type || 'individual', company_name || null, email]);
       }
     } else {
       const hash = await bcrypt.hash(password, 10);
-      await db.query('INSERT INTO users (name, email, password_hash, phone, is_verified) VALUES (?, ?, ?, ?, 0)', [name, email, hash, phone]);
+      await db.query('INSERT INTO users (name, email, password_hash, phone, user_type, company_name, is_verified) VALUES (?, ?, ?, ?, ?, ?, 0)', [name, email, hash, phone, user_type || 'individual', company_name || null]);
     }
 
     // Generate and send OTP
@@ -94,6 +129,12 @@ exports.getVerifyOTP = (req, res) => {
 
 exports.postVerifyOTP = async (req, res) => {
   const { email, otp } = req.body;
+
+  if (!otp || otp.length !== 6 || !/^\d+$/.test(otp)) {
+    req.flash('error', 'Mã OTP phải gồm 6 chữ số.');
+    return res.redirect(`/auth/verify-otp?email=${encodeURIComponent(email || '')}`);
+  }
+
   try {
     const [otps] = await db.query('SELECT * FROM otps WHERE email = ? AND otp = ? AND purpose = ? AND expires_at > NOW() ORDER BY created_at DESC LIMIT 1', [email, otp, 'register']);
     
@@ -127,6 +168,18 @@ exports.getForgotPassword = (req, res) => {
 
 exports.postForgotPassword = async (req, res) => {
   const { email } = req.body;
+
+  if (!email) {
+    req.flash('error', 'Vui lòng nhập địa chỉ email.');
+    return res.redirect('/auth/forgot-password');
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    req.flash('error', 'Email không đúng định dạng.');
+    return res.redirect('/auth/forgot-password');
+  }
+
   try {
     const [users] = await db.query('SELECT id FROM users WHERE email = ?', [email]);
     if (users.length === 0) {
@@ -157,6 +210,17 @@ exports.getResetPassword = (req, res) => {
 
 exports.postResetPassword = async (req, res) => {
   const { email, otp, password } = req.body;
+
+  if (!otp || otp.length !== 6 || !/^\d+$/.test(otp)) {
+    req.flash('error', 'Mã OTP phải gồm 6 chữ số.');
+    return res.redirect(`/auth/reset-password?email=${encodeURIComponent(email || '')}`);
+  }
+
+  if (!password || password.length < 6) {
+    req.flash('error', 'Mật khẩu phải có ít nhất 6 ký tự.');
+    return res.redirect(`/auth/reset-password?email=${encodeURIComponent(email || '')}`);
+  }
+
   try {
     const [otps] = await db.query('SELECT * FROM otps WHERE email = ? AND otp = ? AND purpose = ? AND expires_at > NOW() ORDER BY created_at DESC LIMIT 1', [email, otp, 'reset_password']);
     

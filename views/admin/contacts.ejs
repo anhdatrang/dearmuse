@@ -11,6 +11,8 @@
           <th>Người gửi</th>
           <th>Tiêu đề</th>
           <th>Nội dung</th>
+          <th>Người phụ trách</th>
+          <th>Ghi chú</th>
           <th>Ngày gửi</th>
           <th></th>
         </tr>
@@ -29,19 +31,28 @@
             </td>
             <td style="font-size: 13px; max-width: 200px;"><%= c.subject || '—' %></td>
             <td style="font-size: 13px; color: var(--smoke); max-width: 280px;">
-              <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 280px;">
+              <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 280px;" title="<%= c.message %>">
                 <%= c.message.substring(0, 80) %><%= c.message.length > 80 ? '...' : '' %>
+              </div>
+            </td>
+            <td>
+              <input type="text" id="assigned_to_<%= c.id %>" value="<%= c.assigned_to || '' %>" placeholder="Phụ trách..." style="font-size: 12px; padding: 6px 10px; border: 1px solid var(--bone); border-radius: 4px; background: transparent; color: var(--ink); width: 120px;">
+            </td>
+            <td>
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <input type="text" id="admin_note_<%= c.id %>" value="<%= c.admin_note || '' %>" placeholder="Ghi chú..." style="font-size: 12px; padding: 6px 10px; border: 1px solid var(--bone); border-radius: 4px; background: transparent; color: var(--ink); width: 180px;">
+                <button type="button" class="btn-sm btn-sm-dark" onclick="saveContact('<%= c.id %>')" style="font-size: 11px; padding: 6px 12px;">Lưu</button>
               </div>
             </td>
             <td style="font-size: 12px; color: var(--smoke); white-space: nowrap;"><%= new Date(c.created_at).toLocaleString('vi-VN') %></td>
             <td>
               <% if (!c.is_read) { %>
                 <form method="POST" action="/admin/contacts/<%= c.id %>/read" style="display: inline;">
-                  <button type="submit" class="btn-sm">Đánh dấu đã đọc</button>
+                  <button type="submit" class="btn-sm" style="margin-bottom: 4px;">Đánh dấu đã đọc</button>
                 </form>
               <% } %>
               <% if (c.email) { %>
-                <button type="button" class="btn-sm" onclick="openInterviewModal('<%= c.id %>', '<%= c.email %>')" style="margin-left: 8px;">Gửi email</button>
+                <button type="button" class="btn-sm" onclick="openInterviewModal('<%= c.id %>', '<%= c.email %>')" style="margin-left: 0;">Gửi email</button>
               <% } %>
             </td>
           </tr>
@@ -128,6 +139,30 @@ function openInterviewModal(id, email) {
 }
 function closeInterviewModal() {
   document.getElementById('interviewModal').style.display = 'none';
+}
+
+function saveContact(id) {
+  const assignedToVal = document.getElementById('assigned_to_' + id).value;
+  const adminNoteVal = document.getElementById('admin_note_' + id).value;
+  
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = '/admin/contacts/' + id + '/update';
+  
+  const inputAssigned = document.createElement('input');
+  inputAssigned.type = 'hidden';
+  inputAssigned.name = 'assigned_to';
+  inputAssigned.value = assignedToVal;
+  form.appendChild(inputAssigned);
+  
+  const inputNote = document.createElement('input');
+  inputNote.type = 'hidden';
+  inputNote.name = 'admin_note';
+  inputNote.value = adminNoteVal;
+  form.appendChild(inputNote);
+  
+  document.body.appendChild(form);
+  form.submit();
 }
 
 // Đóng modal khi click ra ngoài

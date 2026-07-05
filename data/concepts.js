@@ -164,93 +164,13 @@ const concepts = [
     ]
   },
   {
-    "id": "portrait-ao-dai",
-    "name": "Áo dài",
-    "category": "ca-nhan",
-    "categoryLabel": "Cá Nhân",
-    "subtitle": "Nét đẹp truyền thống đầy chất thơ của tà áo dài Việt Nam",
-    "coverImage": "/source/C%C3%81%20NH%C3%82N/ÁO%20DÀI/IMG_6382.webp",
-    "description": "Chụp ảnh áo dài nghệ thuật tôn vinh vẻ đẹp truyền thống mộc mạc và thanh lịch của người phụ nữ Việt Nam. Dear Musé lựa chọn các bối cảnh đậm chất thơ cổ kính như Văn Miếu, Đường Lâm hoặc các góc phố rêu phong Hà Nội để ghi lại tà áo dài tung bay trong nắng sớm tuyệt đẹp.",
-    "gallery": [
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6366.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6368.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6371.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6379.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6382.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6383.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6386.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6389.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6390.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6391.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6392.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6393.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6413.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6415.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6416.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6417.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6419.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6420.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6422.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6426.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6430.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6431.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7139.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7141.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7149.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7151.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7152.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7153.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7154.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7162.webp"
-    ],
-    "pricing": [
-      {
-        "packageName": "Gói Nhánh Sen (Basic)",
-        "price": "1.800.000đ",
-        "inclusions": [
-          "90 phút chụp ngoại cảnh nghệ thuật (Hồ Gươm / Văn Miếu)",
-          "Tư vấn góc tạo dáng thanh lịch, truyền thống dịu dàng",
-          "Hỗ trợ 1 bộ Áo dài trắng cổ điển từ studio",
-          "Retouch nghệ thuật chuyên sâu 15 hình",
-          "Bàn giao toàn bộ file ảnh gốc ngay sau buổi chụp"
-        ]
-      },
-      {
-        "packageName": "Gói Cổ Đô (Premium)",
-        "price": "3.200.000đ",
-        "inclusions": [
-          "120 phút chụp tại bối cảnh cổ kính / phim trường xưa",
-          "Hỗ trợ trang điểm & làm tóc chuyên nghiệp phù hợp tà áo dài",
-          "Hỗ trợ 2 bộ Áo dài thiết kế cao cấp (Áo dài gấm, Áo dài thêu tay)",
-          "Retouch nghệ thuật chuyên sâu 30 hình",
-          "Bàn giao toàn bộ file ảnh gốc chất lượng cao",
-          "Tặng kèm 1 ảnh in phóng lớn khổ 40x60 ép gỗ cao cấp"
-        ]
-      }
-    ],
-    "addons": [
-      {
-        "name": "Makeup và làm tóc đi kèm ngoại cảnh",
-        "price": "600.000đ / người"
-      },
-      {
-        "name": "Mua bản quyền thêm ảnh retouch",
-        "price": "100.000đ / ảnh"
-      },
-      {
-        "name": "Nón lá & giỏ hoa sen làm đạo cụ chụp",
-        "price": "150.000đ"
-      }
-    ]
-  },
-  {
     "id": "portrait-concept",
     "name": "Concept",
     "category": "ca-nhan",
     "categoryLabel": "Cá Nhân",
     "subtitle": "Nghệ thuật kể câu chuyện bản sắc qua lăng kính điện ảnh và thơ",
     "coverImage": "/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207836(1).webp",
-    "description": "Chụp ảnh concept tại Dear Musé không chỉ là đứng trước ống kính và tạo dáng. Chúng tôi cùng bạn lên ý tưởng chi tiết, xây dựng moodboard về ánh sáng, trang phục, makeup và bối cảnh để lột tả chiều sâu tâm hồn, cái tôi nghệ thuật cũng như cá tính độc bản của bạn. Từng góc máy đều mang hơi thở điện ảnh đầy hoài niệm.",
+    "description": "Chụp ảnh concept tại Dear Musé không chỉ là đứng trước ống kính và tạo dáng. Chúng tôi cùng bạn lên ý tưởng chi tiết, xây dựng moodboard về ánh sáng, trang phục, makeup và bối cảnh để lột tả chiều sâu tâm hồn, cái tôi nghệ thuật cũng như cá tính độc bản của bạn. Từng góc máy đều mang hơi thở điện ảnh đầy hoài niệm. Đặc biệt, gói chụp cũng tích hợp các concept Áo dài nghệ thuật truyền thống, tôn vinh nét duyên dáng thanh lịch tại những bối cảnh đậm chất thơ cổ kính như Văn Miếu, Đường Lâm hoặc các góc phố rêu phong Hà Nội.",
     "gallery": [
       "/source/C%C3%81%20NH%C3%82N/CONCEPT/IMG_8967.webp",
       "/source/C%C3%81%20NH%C3%82N/CONCEPT/IMG_8968.webp",
@@ -272,11 +192,37 @@ const concepts = [
       "/source/C%C3%81%20NH%C3%82N/CONCEPT/SU209588.webp",
       "/source/C%C3%81%20NH%C3%82N/CONCEPT/SU209654.webp",
       "/source/C%C3%81%20NH%C3%82N/CONCEPT/SU209664.webp",
-      "/source/C%C3%81%20NH%C3%82N/CONCEPT/SU209678.webp"
+      "/source/C%C3%81%20NH%C3%82N/CONCEPT/SU209678.webp",
+      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6366.webp",
+      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6368.webp",
+      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6371.webp",
+      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6379.webp",
+      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6382.webp",
+      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6383.webp",
+      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6386.webp",
+      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6389.webp",
+      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6390.webp",
+      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6391.webp",
+      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6419.webp",
+      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6420.webp",
+      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6422.webp",
+      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7139.webp",
+      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7141.webp"
     ],
     "pricing": [
       {
-        "packageName": "Gói Nhành Thơ (Basic)",
+        "packageName": "Gói Concept Áo Dài - Nhánh Sen (Basic)",
+        "price": "1.800.000đ",
+        "inclusions": [
+          "90 phút chụp ngoại cảnh nghệ thuật (Hồ Gươm / Văn Miếu)",
+          "Tư vấn góc tạo dáng thanh lịch, truyền thống dịu dàng",
+          "Hỗ trợ 1 bộ Áo dài trắng cổ điển từ studio",
+          "Retouch nghệ thuật chuyên sâu 15 hình",
+          "Bàn giao toàn bộ file ảnh gốc ngay sau buổi chụp"
+        ]
+      },
+      {
+        "packageName": "Gói Concept Nghệ Thuật - Nhành Thơ (Basic)",
         "price": "2.500.000đ",
         "inclusions": [
           "90 phút chụp chuyên sâu tại Studio hoặc Outdoor",
@@ -287,7 +233,19 @@ const concepts = [
         ]
       },
       {
-        "packageName": "Gói Tinh Sương (Premium)",
+        "packageName": "Gói Concept Áo Dài - Cổ Đô (Premium)",
+        "price": "3.200.000đ",
+        "inclusions": [
+          "120 phút chụp tại bối cảnh cổ kính / phim trường xưa",
+          "Hỗ trợ trang điểm & làm tóc chuyên nghiệp phù hợp tà áo dài",
+          "Hỗ trợ 2 bộ Áo dài thiết kế cao cấp (Áo dài gấm, Áo dài thêu tay)",
+          "Retouch nghệ thuật chuyên sâu 30 hình",
+          "Bàn giao toàn bộ file ảnh gốc chất lượng cao",
+          "Tặng kèm 1 ảnh in phóng lớn khổ 40x60 ép gỗ cao cấp"
+        ]
+      },
+      {
+        "packageName": "Gói Concept Nghệ Thuật - Tinh Sương (Premium)",
         "price": "4.500.000đ",
         "inclusions": [
           "150 phút chụp tại cả Studio và Outdoor lân cận",
@@ -304,6 +262,14 @@ const concepts = [
       {
         "name": "Trang điểm & làm tóc thêm tại studio",
         "price": "500.000đ / layout"
+      },
+      {
+        "name": "Makeup và làm tóc đi kèm ngoại cảnh",
+        "price": "600.000đ / người"
+      },
+      {
+        "name": "Nón lá & giỏ hoa sen làm đạo cụ chụp",
+        "price": "150.000đ"
       },
       {
         "name": "Mua bản quyền thêm ảnh retouch",

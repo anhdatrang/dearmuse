@@ -90,6 +90,26 @@ CREATE TABLE IF NOT EXISTS blog_posts (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS settings (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  setting_key VARCHAR(100) UNIQUE NOT NULL,
+  setting_value TEXT,
+  description VARCHAR(255)
+);
+
+-- Seed default settings
+INSERT IGNORE INTO settings (setting_key, setting_value, description) VALUES
+('bank_name', 'ACB', 'Tên ngân hàng nhận thanh toán'),
+('bank_account_no', '6333333633', 'Số tài khoản'),
+('bank_account_name', 'NGUYEN VAN HOI', 'Tên chủ tài khoản'),
+('api_url', 'https://api.sieuthicode.net/historyapiacbv3', 'URL API kiểm tra giao dịch'),
+('api_password', '', 'Mật khẩu API SieuthiCode'),
+('api_token', '', 'Token API SieuthiCode'),
+('tier_limit_pearl_rose', '300', 'Mốc Mảnh Sáng thăng hạng Rose (Cá nhân)'),
+('tier_limit_rose_gold', '800', 'Mốc Mảnh Sáng thăng hạng Gold (Cá nhân)'),
+('tier_limit_gold_privilege', '1500', 'Mốc Mảnh Sáng thăng hạng Privilege (Cá nhân)'),
+('tier_limit_frame_lumiere', '1201', 'Mốc Mảnh Sáng thăng hạng Lumière (Doanh nghiệp)');
+
 -- Seed services
 INSERT IGNORE INTO services (name, slug, description, short_desc, price_from, duration_minutes, is_featured, sort_order) VALUES
 ('Portrait Cá Nhân', 'portrait-ca-nhan', 'Chụp chân dung nghệ thuật — nắm bắt cá tính và cảm xúc của bạn trong từng khung hình. Mỗi bộ ảnh là một câu chuyện riêng, được kể bằng ánh sáng và cảm xúc thật.', 'Lưu giữ khoảnh khắc của chính bạn', 1500000, 90, 1, 1),
@@ -111,12 +131,31 @@ INSERT IGNORE INTO admins (username, password_hash) VALUES
 -- Create Customer Tables
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
+  user_type ENUM('individual', 'business') DEFAULT 'individual',
   name VARCHAR(255) NOT NULL,
   email VARCHAR(255) UNIQUE NOT NULL,
   password_hash VARCHAR(255) NOT NULL,
   phone VARCHAR(20),
+  company_name VARCHAR(255),
   is_verified TINYINT(1) DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS announcements (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  content TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS user_notifications (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  content TEXT NOT NULL,
+  is_read TINYINT(1) DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS customer_albums (
@@ -211,7 +250,7 @@ CREATE TABLE IF NOT EXISTS members (
   user_id INT NOT NULL UNIQUE,
   manh_sang_total INT NOT NULL DEFAULT 0,
   manh_sang_balance INT NOT NULL DEFAULT 0,
-  card_tier ENUM('pearl', 'rose', 'gold', 'privilege') NOT NULL DEFAULT 'pearl',
+  card_tier ENUM('pearl', 'rose', 'gold', 'privilege', 'frame', 'lumiere') NOT NULL DEFAULT 'pearl',
   is_first_booking_done TINYINT(1) NOT NULL DEFAULT 0,
   is_first_register_done TINYINT(1) NOT NULL DEFAULT 0,
   second_booking_rewarded TINYINT(1) NOT NULL DEFAULT 0,
@@ -230,7 +269,7 @@ CREATE TABLE IF NOT EXISTS manh_sang_transactions (
   member_id INT NOT NULL,
   amount INT NOT NULL,
   balance_after INT NOT NULL,
-  type ENUM('spend', 'register_bonus', 'first_booking', 'early_deposit', 'second_visit', 'referral_reward', 'feedback_photo', 'social_share', 'birthday_booking', 'group_booking', 'voucher_redeem', 'admin_adjust', 'referral_milestone') NOT NULL,
+  type ENUM('spend', 'register_bonus', 'first_booking', 'early_deposit', 'second_visit', 'referral_reward', 'feedback_photo', 'social_share', 'birthday_booking', 'group_booking', 'voucher_redeem', 'admin_adjust', 'referral_milestone', 'early_brief', 'case_study', 'multi_project', 'renewal') NOT NULL,
   description TEXT,
   reference_id INT,
   reference_type VARCHAR(30),
@@ -249,7 +288,7 @@ CREATE TABLE IF NOT EXISTS vouchers (
   max_discount_amount DECIMAL(10,2),
   min_order_value DECIMAL(10,2) DEFAULT 0,
   manh_sang_cost INT,
-  required_tier ENUM('pearl', 'rose', 'gold', 'privilege'),
+  required_tier ENUM('pearl', 'rose', 'gold', 'privilege', 'frame', 'lumiere'),
   valid_days INT DEFAULT 90,
   is_active TINYINT(1) NOT NULL DEFAULT 1,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

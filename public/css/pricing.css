@@ -35,8 +35,8 @@
 .pricing-desc {
   font-size: 15px;
   font-weight: 300;
-  color: var(--smoke);
-  line-height: 1.8;
+  color: #000;
+  line-height: 1.85;
   max-width: 400px;
 }
 

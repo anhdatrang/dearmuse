@@ -144,16 +144,18 @@
     <%- include('../partials/mobile-menu') %>
 
       <!-- Flash Messages -->
-      <% if (typeof success !=='undefined' && success.length> 0) { %>
-        <div class="flash-success container mt-s">
-          <%= success[0] %>
-        </div>
+      <% if (!currentPath.startsWith('/auth')) { %>
+        <% if (typeof success !=='undefined' && success.length> 0) { %>
+          <div class="flash-success container mt-s">
+            <%= success[0] %>
+          </div>
         <% } %>
-          <% if (typeof error !=='undefined' && error.length> 0) { %>
-            <div class="flash-error container mt-s">
-              <%= error[0] %>
-            </div>
-            <% } %>
+        <% if (typeof error !=='undefined' && error.length> 0) { %>
+          <div class="flash-error container mt-s">
+            <%= error[0] %>
+          </div>
+        <% } %>
+      <% } %>
 
               <!-- Page Content -->
               <main>

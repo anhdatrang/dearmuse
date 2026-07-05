@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const db = require('../config/db');
 const { body } = require('express-validator');
 const Analytics = require('../models/Analytics');
 const homeController = require('../controllers/homeController');
@@ -66,10 +67,36 @@ router.get('/about', (req, res) => {
 
 // Loyalty Landing Page
 router.get('/loyalty', async (req, res) => {
-  res.render('loyalty-landing', {
-    title: 'Chương Trình Khách Hàng Thân Thiết — Dear Musé',
-    metaDescription: 'Tham gia chương trình khách hàng thân thiết của Dear Musé. Tích luỹ Mảnh Sáng để đổi lấy các đặc quyền cao cấp và voucher giá trị.'
-  });
+  try {
+    const [rows] = await db.query("SELECT setting_key, setting_value FROM settings WHERE setting_key LIKE 'tier_limit_%'");
+    const tierLimits = {
+      tier_limit_pearl_rose: 300,
+      tier_limit_rose_gold: 800,
+      tier_limit_gold_privilege: 1500,
+      tier_limit_frame_lumiere: 1201
+    };
+    rows.forEach(r => {
+      tierLimits[r.setting_key] = parseInt(r.setting_value) || tierLimits[r.setting_key];
+    });
+
+    res.render('loyalty-landing', {
+      title: 'Chương Trình Khách Hàng Thân Thiết — Dear Musé',
+      metaDescription: 'Tham gia chương trình khách hàng thân thiết của Dear Musé. Tích luỹ Mảnh Sáng để đổi lấy các đặc quyền cao cấp và voucher giá trị.',
+      tierLimits
+    });
+  } catch (err) {
+    console.error(err);
+    res.render('loyalty-landing', {
+      title: 'Chương Trình Khách Hàng Thân Thiết — Dear Musé',
+      metaDescription: 'Tham gia chương trình khách hàng thân thiết của Dear Musé. Tích luỹ Mảnh Sáng để đổi lấy các đặc quyền cao cấp và voucher giá trị.',
+      tierLimits: {
+        tier_limit_pearl_rose: 300,
+        tier_limit_rose_gold: 800,
+        tier_limit_gold_privilege: 1500,
+        tier_limit_frame_lumiere: 1201
+      }
+    });
+  }
 });
 
 

@@ -12,7 +12,7 @@ async function setup() {
     host: process.env.DB_HOST || 'localhost',
     port: process.env.DB_PORT || 3306,
     user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '123456',
+    password: process.env.DB_PASSWORD || 'admin',
     charset: 'utf8mb4',
   });
 
@@ -62,6 +62,41 @@ async function setup() {
   `);
 
   await conn.query(`
+    CREATE TABLE IF NOT EXISTS users (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      user_type ENUM('individual', 'business') DEFAULT 'individual',
+      name VARCHAR(255) NOT NULL,
+      email VARCHAR(255) UNIQUE NOT NULL,
+      password_hash VARCHAR(255) NOT NULL,
+      phone VARCHAR(20),
+      company_name VARCHAR(255),
+      is_verified TINYINT(1) DEFAULT 0,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  await conn.query(`
+    CREATE TABLE IF NOT EXISTS announcements (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      title VARCHAR(255) NOT NULL,
+      content TEXT NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  await conn.query(`
+    CREATE TABLE IF NOT EXISTS user_notifications (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      user_id INT NOT NULL,
+      title VARCHAR(255) NOT NULL,
+      content TEXT NOT NULL,
+      is_read TINYINT(1) DEFAULT 0,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )
+  `);
+
+  await conn.query(`
     CREATE TABLE IF NOT EXISTS bookings (
       id INT AUTO_INCREMENT PRIMARY KEY,
       booking_code VARCHAR(20) UNIQUE,
@@ -94,6 +129,8 @@ async function setup() {
       email VARCHAR(255),
       subject VARCHAR(500),
       message TEXT NOT NULL,
+      admin_note TEXT,
+      assigned_to VARCHAR(255),
       is_read TINYINT(1) DEFAULT 0,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
@@ -156,17 +193,7 @@ async function setup() {
     )
   `);
 
-  await conn.query(`
-    CREATE TABLE IF NOT EXISTS users (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      name VARCHAR(255) NOT NULL,
-      email VARCHAR(255) UNIQUE NOT NULL,
-      password_hash VARCHAR(255) NOT NULL,
-      phone VARCHAR(20),
-      is_verified TINYINT(1) DEFAULT 0,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )
-  `);
+
 
   // Thêm cột is_verified nếu bảng đã tồn tại từ trước
   try {
@@ -175,6 +202,17 @@ async function setup() {
   } catch (e) {
     if (e.code !== 'ER_DUP_FIELDNAME') {
       console.warn('⚠️ Cảnh báo thêm cột is_verified:', e.message);
+    }
+  }
+
+  // Thêm cột cho doanh nghiệp nếu bảng đã tồn tại từ trước
+  try {
+    await conn.query(`ALTER TABLE users ADD COLUMN user_type ENUM('individual', 'business') DEFAULT 'individual'`);
+    await conn.query(`ALTER TABLE users ADD COLUMN company_name VARCHAR(255)`);
+    console.log('✅ Đã thêm cột doanh nghiệp vào bảng users');
+  } catch (e) {
+    if (e.code !== 'ER_DUP_FIELDNAME') {
+      console.warn('⚠️ Cảnh báo thêm cột doanh nghiệp:', e.message);
     }
   }
 
@@ -200,7 +238,7 @@ async function setup() {
   // Thêm cột features cho bảng services nếu bảng đã tồn tại từ trước
   try {
     await conn.query(`ALTER TABLE services ADD COLUMN features JSON`);
-    
+
     // Seed default features cho các service hiện có nếu features là null
     const defaultFeatures = JSON.stringify([
       "Tư vấn concept & trang phục",
@@ -208,7 +246,7 @@ async function setup() {
       "Toàn bộ file gốc sau buổi chụp"
     ]);
     await conn.query(`UPDATE services SET features = ? WHERE features IS NULL`, [defaultFeatures]);
-    
+
     console.log('✅ Đã thêm cột features vào bảng services');
   } catch (e) {
     if (e.code !== 'ER_DUP_FIELDNAME') {
@@ -314,7 +352,7 @@ async function setup() {
       is_card_active TINYINT(1) DEFAULT 0,
       manh_sang_total INT NOT NULL DEFAULT 0,
       manh_sang_balance INT NOT NULL DEFAULT 0,
-      card_tier ENUM('pearl', 'rose', 'gold', 'privilege') NOT NULL DEFAULT 'pearl',
+      card_tier ENUM('pearl', 'rose', 'gold', 'privilege', 'frame', 'lumiere') NOT NULL DEFAULT 'pearl',
       is_first_booking_done TINYINT(1) NOT NULL DEFAULT 0,
       is_first_register_done TINYINT(1) NOT NULL DEFAULT 0,
       second_booking_rewarded TINYINT(1) NOT NULL DEFAULT 0,
@@ -350,7 +388,7 @@ async function setup() {
       member_id INT NOT NULL,
       amount INT NOT NULL,
       balance_after INT NOT NULL,
-      type ENUM('spend', 'register_bonus', 'first_booking', 'early_deposit', 'second_visit', 'referral_reward', 'feedback_photo', 'social_share', 'birthday_booking', 'group_booking', 'voucher_redeem', 'admin_adjust', 'referral_milestone') NOT NULL,
+      type ENUM('spend', 'register_bonus', 'first_booking', 'early_deposit', 'second_visit', 'referral_reward', 'feedback_photo', 'social_share', 'birthday_booking', 'group_booking', 'voucher_redeem', 'admin_adjust', 'referral_milestone', 'early_brief', 'case_study', 'multi_project', 'renewal') NOT NULL,
       description TEXT,
       reference_id INT,
       reference_type VARCHAR(30),
@@ -371,7 +409,7 @@ async function setup() {
       max_discount_amount DECIMAL(10,2),
       min_order_value DECIMAL(10,2) DEFAULT 0,
       manh_sang_cost INT,
-      required_tier ENUM('pearl', 'rose', 'gold', 'privilege'),
+      required_tier ENUM('pearl', 'rose', 'gold', 'privilege', 'frame', 'lumiere'),
       valid_days INT DEFAULT 90,
       is_active TINYINT(1) NOT NULL DEFAULT 1,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -447,6 +485,26 @@ async function setup() {
     if (e.code !== 'ER_DUP_FIELDNAME') {
       console.warn('⚠️ Cảnh báo thêm cột payment vào bookings:', e.message);
     }
+  }
+
+  // Alter contacts table
+  try {
+    await conn.query(`ALTER TABLE contacts ADD COLUMN admin_note TEXT`);
+    await conn.query(`ALTER TABLE contacts ADD COLUMN assigned_to VARCHAR(255)`);
+  } catch (e) {
+    if (e.code !== 'ER_DUP_FIELDNAME') {
+      console.warn('⚠️ Cảnh báo thêm cột note vào contacts:', e.message);
+    }
+  }
+
+  // Update enums for business loyalty
+  try {
+    await conn.query(`ALTER TABLE members MODIFY COLUMN card_tier ENUM('pearl', 'rose', 'gold', 'privilege', 'frame', 'lumiere') NOT NULL DEFAULT 'pearl'`);
+    await conn.query(`ALTER TABLE manh_sang_transactions MODIFY COLUMN type ENUM('spend', 'register_bonus', 'first_booking', 'early_deposit', 'second_visit', 'referral_reward', 'feedback_photo', 'social_share', 'birthday_booking', 'group_booking', 'voucher_redeem', 'admin_adjust', 'referral_milestone', 'early_brief', 'case_study', 'multi_project', 'renewal') NOT NULL`);
+    await conn.query(`ALTER TABLE vouchers MODIFY COLUMN required_tier ENUM('pearl', 'rose', 'gold', 'privilege', 'frame', 'lumiere')`);
+    console.log('✅ Đã cập nhật các ENUM cho hệ thống Loyalty Doanh Nghiệp');
+  } catch (e) {
+    console.warn('⚠️ Cảnh báo cập nhật ENUM doanh nghiệp:', e.message);
   }
 
   try {
@@ -583,6 +641,22 @@ async function setup() {
     console.log('✅ Cấu hình thanh toán đã được seed');
   } else {
     console.log('ℹ️  Cấu hình thanh toán đã tồn tại, bỏ qua');
+  }
+
+  // Seed default tier limits settings
+  try {
+    const tierSettings = [
+      ['tier_limit_pearl_rose', '300', 'Mốc Mảnh Sáng thăng hạng Rose (Cá nhân)'],
+      ['tier_limit_rose_gold', '800', 'Mốc Mảnh Sáng thăng hạng Gold (Cá nhân)'],
+      ['tier_limit_gold_privilege', '1500', 'Mốc Mảnh Sáng thăng hạng Privilege (Cá nhân)'],
+      ['tier_limit_frame_lumiere', '1201', 'Mốc Mảnh Sáng thăng hạng Lumière (Doanh nghiệp)']
+    ];
+    for (const s of tierSettings) {
+      await conn.query(`INSERT IGNORE INTO settings (setting_key, setting_value, description) VALUES (?, ?, ?)`, s);
+    }
+    console.log('✅ Cấu hình mốc tích điểm đã được seed');
+  } catch (e) {
+    console.warn('⚠️ Cảnh báo seed mốc tích điểm:', e.message);
   }
 
   await conn.end();

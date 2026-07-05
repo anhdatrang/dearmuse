@@ -7,7 +7,7 @@
 
   <main class="cust-main">
     <div class="cust-page-header">
-      <h1>Xin chào, <%= sessionUser ? sessionUser.name.split(' ').pop() : 'bạn' %> ✦</h1>
+      <h1>Xin chào, <%= sessionUser ? (sessionUser.type === 'business' ? sessionUser.name : sessionUser.name.split(' ').pop()) : 'bạn' %> ✦</h1>
       <p>Đây là không gian riêng của bạn tại Dear Musé — nơi lưu giữ mọi khoảnh khắc đẹp.</p>
     </div>
 

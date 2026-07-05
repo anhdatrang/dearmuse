@@ -43,7 +43,7 @@ app.use((req, res, next) => {
   res.locals.error = req.flash('error');
   res.locals.currentPath = req.path;
   res.locals.baseUrl = req.protocol + '://' + req.get('host');
-  res.locals.sessionUser = req.session.userId ? { id: req.session.userId, name: req.session.userName } : null;
+  res.locals.sessionUser = req.session.userId ? { id: req.session.userId, name: req.session.userName, type: req.session.userType } : null;
   next();
 });
 

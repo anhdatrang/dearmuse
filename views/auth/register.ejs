@@ -12,9 +12,45 @@
     </div>
 
     <div class="contact-form-section">
+      <!-- Error & Success Notifications at the top of the card -->
+      <% if (typeof error !== 'undefined' && error.length > 0) { %>
+        <div class="error-list" style="margin-bottom: 24px;">
+          <ul style="margin: 0; padding: 0; list-style: none;">
+            <li><%= error[0] %></li>
+          </ul>
+        </div>
+      <% } %>
+      <% if (typeof success !== 'undefined' && success.length > 0) { %>
+        <div class="flash-success" style="border-radius: 8px; margin-bottom: 24px; padding: 12px 16px; font-size: 13.5px;">
+          <%= success[0] %>
+        </div>
+      <% } %>
+      
+      <!-- Client-side validation error box (hidden by default) -->
+      <div class="error-list" id="client-error-box" style="display: none; margin-bottom: 24px;">
+        <ul id="client-error-messages" style="margin: 0; padding: 0; list-style: none;">
+        </ul>
+      </div>
+
       <form method="POST" action="/auth/register" novalidate>
+        <div class="form-type-selector" style="display: flex; gap: 12px; margin-bottom: 24px;">
+          <label class="type-radio-label" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 12px; border: 1px solid var(--logo-mocha, #8B7355); border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+            <input type="radio" name="user_type" value="individual" checked style="margin-right: 8px;" onchange="toggleFormType()"> Cá nhân
+          </label>
+          <label class="type-radio-label" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 12px; border: 1px solid var(--smoke, #E5E7EB); border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+            <input type="radio" name="user_type" value="business" style="margin-right: 8px;" onchange="toggleFormType()"> Doanh nghiệp
+          </label>
+        </div>
+
+        <div id="business-fields" style="display: none; animation: fadeIn 0.3s ease-in-out;">
+          <div class="form-group">
+            <label for="company_name">Tên doanh nghiệp <span class="form-required">*</span></label>
+            <input type="text" id="company_name" name="company_name" placeholder="Công ty TNHH ABC">
+          </div>
+        </div>
+
         <div class="form-group">
-          <label for="name">Họ tên <span class="form-required">*</span></label>
+          <label for="name" id="name_label">Họ tên <span class="form-required">*</span></label>
           <input type="text" id="name" name="name" placeholder="Nguyễn Văn A" required autocomplete="name">
         </div>
 
@@ -24,7 +60,7 @@
         </div>
 
         <div class="form-group">
-          <label for="email">Email <span class="form-required">*</span></label>
+          <label for="email" id="email_label">Email <span class="form-required">*</span></label>
           <input type="email" id="email" name="email" placeholder="email@example.com" required autocomplete="email">
         </div>
 
@@ -43,6 +79,124 @@
           Đã có tài khoản? <a href="/auth/login" style="color: var(--logo-mocha); font-weight: 500;">Đăng nhập</a>
         </p>
       </div>
+    </div>
+
+    <script>
+      function toggleFormType() {
+        const type = document.querySelector('input[name="user_type"]:checked').value;
+        const businessFields = document.getElementById('business-fields');
+        const companyNameInput = document.getElementById('company_name');
+        const nameLabel = document.getElementById('name_label');
+        const emailLabel = document.getElementById('email_label');
+        const labels = document.querySelectorAll('.type-radio-label');
+        
+        labels.forEach(l => {
+          l.style.borderColor = 'var(--smoke, #E5E7EB)';
+        });
+        document.querySelector('input[name="user_type"]:checked').parentElement.style.borderColor = 'var(--logo-mocha, #8B7355)';
+        
+        if (type === 'business') {
+          businessFields.style.display = 'block';
+          companyNameInput.required = true;
+          nameLabel.innerHTML = 'Người đại diện <span class="form-required">*</span>';
+          emailLabel.innerHTML = 'Email doanh nghiệp <span class="form-required">*</span>';
+        } else {
+          businessFields.style.display = 'none';
+          companyNameInput.required = false;
+          nameLabel.innerHTML = 'Họ tên <span class="form-required">*</span>';
+          emailLabel.innerHTML = 'Email <span class="form-required">*</span>';
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const phoneInput = document.getElementById('phone');
+        const companyNameInput = document.getElementById('company_name');
+        const errorBox = document.getElementById('client-error-box');
+        const errorList = document.getElementById('client-error-messages');
+        
+        const inputs = [nameInput, emailInput, passwordInput, phoneInput, companyNameInput];
+        inputs.forEach(input => {
+          if (input) {
+            input.addEventListener('input', function() {
+              this.style.borderColor = '';
+              hideErrorsIfEmpty();
+            });
+          }
+        });
+
+        function hideErrorsIfEmpty() {
+          const anyErrors = inputs.some(input => input && input.style.borderColor === 'rgb(239, 68, 68)');
+          if (!anyErrors) {
+            errorBox.style.display = 'none';
+          }
+        }
+
+        form.addEventListener('submit', function(e) {
+          let errors = [];
+          const userType = document.querySelector('input[name="user_type"]:checked').value;
+          
+          // Reset styles
+          inputs.forEach(input => {
+            if (input) input.style.borderColor = '';
+          });
+          
+          // Validate company name if business
+          if (userType === 'business') {
+            const companyName = companyNameInput.value.trim();
+            if (!companyName) {
+              errors.push('Vui lòng nhập tên doanh nghiệp.');
+              companyNameInput.style.borderColor = '#ef4444';
+            }
+          }
+          
+          // Validate Name
+          const name = nameInput.value.trim();
+          if (!name) {
+            errors.push(userType === 'business' ? 'Vui lòng nhập tên người đại diện.' : 'Vui lòng nhập họ và tên.');
+            nameInput.style.borderColor = '#ef4444';
+          }
+          
+          // Validate Email
+          const email = emailInput.value.trim();
+          if (!email) {
+            errors.push('Vui lòng nhập địa chỉ email.');
+            emailInput.style.borderColor = '#ef4444';
+          } else {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+              errors.push('Email không đúng định dạng.');
+              emailInput.style.borderColor = '#ef4444';
+            }
+          }
+          
+          // Validate Password
+          const password = passwordInput.value;
+          if (!password) {
+            errors.push('Vui lòng nhập mật khẩu.');
+            passwordInput.style.borderColor = '#ef4444';
+          } else if (password.length < 6) {
+            errors.push('Mật khẩu phải có ít nhất 6 ký tự.');
+            passwordInput.style.borderColor = '#ef4444';
+          }
+          
+          if (errors.length > 0) {
+            e.preventDefault();
+            errorList.innerHTML = '';
+            errors.forEach(msg => {
+              const li = document.createElement('li');
+              li.textContent = msg;
+              errorList.appendChild(li);
+            });
+            errorBox.style.display = 'block';
+            errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        });
+      });
+    </script>
     </div>
 
   </div>

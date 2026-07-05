@@ -1,13 +1,6 @@
 const pool = require('../config/db');
 
-const TIER_THRESHOLDS = {
-  pearl: 0,
-  rose: 300,
-  gold: 800,
-  privilege: 1500
-};
-
-const TIER_ORDER = ['pearl', 'rose', 'gold', 'privilege'];
+const TIER_ORDER = ['pearl', 'rose', 'gold', 'privilege', 'frame', 'lumiere'];
 
 class LoyaltyService {
   /**
@@ -43,9 +36,14 @@ class LoyaltyService {
       referralCode = this.generateReferralCode();
     }
     
+    // Get user type to set initial tier
+    const [userRows] = await db.query('SELECT user_type FROM users WHERE id = ?', [userId]);
+    const userType = userRows.length > 0 ? userRows[0].user_type : 'individual';
+    const initialTier = userType === 'business' ? 'frame' : 'pearl';
+
     const [result] = await db.query(
-      'INSERT INTO members (user_id, referral_code) VALUES (?, ?)',
-      [userId, referralCode]
+      'INSERT INTO members (user_id, referral_code, card_tier) VALUES (?, ?, ?)',
+      [userId, referralCode, initialTier]
     );
     
     const [newMember] = await db.query('SELECT * FROM members WHERE id = ?', [result.insertId]);
@@ -71,10 +69,48 @@ class LoyaltyService {
   /**
    * Xác định hạng thẻ dựa trên tổng Mảnh Sáng
    */
+  /**
+   * Lấy cấu hình mốc tích điểm từ database
+   */
+  static async getTierThresholds(db) {
+    const [rows] = await db.query("SELECT setting_key, setting_value FROM settings WHERE setting_key LIKE 'tier_limit_%'");
+    const thresholds = {
+      pearl_rose: 300,
+      rose_gold: 800,
+      gold_privilege: 1500,
+      frame_lumiere: 1201
+    };
+    rows.forEach(r => {
+      const val = parseInt(r.setting_value);
+      if (!isNaN(val)) {
+        thresholds[r.setting_key.replace('tier_limit_', '')] = val;
+      }
+    });
+    return thresholds;
+  }
+
+  /**
+   * Xác định hạng thẻ dựa trên tổng Mảnh Sáng, loại user và cấu hình mốc
+   */
+  static determineTier(totalManhSang, userType, thresholds) {
+    if (userType === 'business') {
+      if (totalManhSang >= thresholds.frame_lumiere) return 'lumiere';
+      return 'frame';
+    } else {
+      if (totalManhSang >= thresholds.gold_privilege) return 'privilege';
+      if (totalManhSang >= thresholds.rose_gold) return 'gold';
+      if (totalManhSang >= thresholds.pearl_rose) return 'rose';
+      return 'pearl';
+    }
+  }
+
+  /**
+   * Hàm fallback (giữ lại để tránh lỗi gọi bên ngoài nếu có)
+   */
   static getTier(totalManhSang) {
-    if (totalManhSang >= TIER_THRESHOLDS.privilege) return 'privilege';
-    if (totalManhSang >= TIER_THRESHOLDS.gold) return 'gold';
-    if (totalManhSang >= TIER_THRESHOLDS.rose) return 'rose';
+    if (totalManhSang >= 1500) return 'privilege';
+    if (totalManhSang >= 800) return 'gold';
+    if (totalManhSang >= 300) return 'rose';
     return 'pearl';
   }
 
@@ -144,11 +180,18 @@ class LoyaltyService {
     try {
       if (!isExternalConn) await db.beginTransaction();
       
-      const [members] = await db.query('SELECT * FROM members WHERE id = ? FOR UPDATE', [memberId]);
+      // JOIN users to get user_type
+      const [members] = await db.query(`
+        SELECT m.*, u.user_type 
+        FROM members m 
+        JOIN users u ON m.user_id = u.id 
+        WHERE m.id = ? FOR UPDATE
+      `, [memberId]);
       if (members.length === 0) return null;
       
       const member = members[0];
-      const newTier = this.getTier(member.manh_sang_total);
+      const thresholds = await this.getTierThresholds(db);
+      const newTier = this.determineTier(member.manh_sang_total, member.user_type, thresholds);
       
       if (newTier !== member.card_tier) {
         // Có sự thay đổi hạng

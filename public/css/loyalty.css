@@ -56,7 +56,8 @@
 /* The Virtual Card */
 .v-card {
   width: 100%;
-  aspect-ratio: 85.6 / 53.98; /* Standard credit card ratio */
+  aspect-ratio: 85.6 / 53.98;
+  /* Standard credit card ratio */
   border-radius: 18px;
   padding: 28px 30px;
   position: relative;
@@ -76,12 +77,10 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    105deg,
-    transparent 40%,
-    rgba(255,255,255,0.22) 50%,
-    transparent 60%
-  );
+  background: linear-gradient(105deg,
+      transparent 40%,
+      rgba(255, 255, 255, 0.22) 50%,
+      transparent 60%);
   background-size: 250% 100%;
   background-position: 200% 0;
   transition: background-position 0.6s ease;
@@ -125,7 +124,8 @@
 }
 
 .v-card-brand-sub {
-  font-size: 0.6rem;
+  font-size: 0.65rem;
+  font-weight: 700;
   letter-spacing: 4px;
   text-transform: uppercase;
   opacity: 1;
@@ -168,7 +168,7 @@
   border-radius: 5px;
   background: linear-gradient(135deg, #e8d9a0 0%, #c8a84b 40%, #f0e68c 60%, #b8960c 100%);
   position: relative;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   flex-shrink: 0;
 }
 
@@ -181,7 +181,7 @@
   width: 60%;
   height: 55%;
   border-radius: 2px;
-  border: 1px solid rgba(0,0,0,0.15);
+  border: 1px solid rgba(0, 0, 0, 0.15);
   background: linear-gradient(135deg, #d4b96a, #c8a84b);
 }
 
@@ -221,7 +221,8 @@
 }
 
 .v-card-holder-label {
-  font-size: 0.55rem;
+  font-size: 0.6rem;
+  font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
   opacity: 1;
@@ -241,7 +242,8 @@
 }
 
 .v-card-tier-range-label {
-  font-size: 0.55rem;
+  font-size: 0.6rem;
+  font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
   opacity: 1;
@@ -263,7 +265,7 @@
 .tier-pearl {
   background: linear-gradient(140deg, #E6EC9B 0%, var(--avocado-cream, #D4DB74) 50%, #B6BD51 100%);
   color: #2b300c;
-  box-shadow: 0 25px 50px rgba(212, 219, 116, 0.2), 0 0 0 1px rgba(255,255,255,0.6) inset;
+  box-shadow: 0 25px 50px rgba(212, 219, 116, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
 }
 
 .tier-pearl::before {
@@ -271,21 +273,21 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 15% 85%, rgba(255,255,255,0.75) 0%, transparent 55%),
-    radial-gradient(ellipse at 85% 15%, rgba(173,180,76,0.4) 0%, transparent 50%);
+    radial-gradient(ellipse at 15% 85%, rgba(255, 255, 255, 0.75) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 15%, rgba(173, 180, 76, 0.4) 0%, transparent 50%);
   z-index: 1;
   pointer-events: none;
 }
 
 .tier-pearl .v-card-chip {
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 /* ROSE */
 .tier-rose {
   background: linear-gradient(140deg, #f9ddd8 0%, #e8a0a0 50%, #f2c4be 100%);
   color: #4a2020;
-  box-shadow: 0 25px 50px rgba(200, 100, 100, 0.2), 0 0 0 1px rgba(255,220,215,0.6) inset;
+  box-shadow: 0 25px 50px rgba(200, 100, 100, 0.2), 0 0 0 1px rgba(255, 220, 215, 0.6) inset;
 }
 
 .tier-rose::before {
@@ -293,8 +295,8 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 15% 85%, rgba(255,240,238,0.7) 0%, transparent 55%),
-    radial-gradient(ellipse at 85% 15%, rgba(240,160,160,0.4) 0%, transparent 50%);
+    radial-gradient(ellipse at 15% 85%, rgba(255, 240, 238, 0.7) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 15%, rgba(240, 160, 160, 0.4) 0%, transparent 50%);
   z-index: 1;
   pointer-events: none;
 }
@@ -303,7 +305,7 @@
 .tier-gold {
   background: linear-gradient(140deg, #f5e6b8 0%, #c89428 50%, #e8c865 100%);
   color: #3a2a08;
-  box-shadow: 0 25px 50px rgba(180, 130, 20, 0.3), 0 0 0 1px rgba(255,240,180,0.5) inset;
+  box-shadow: 0 25px 50px rgba(180, 130, 20, 0.3), 0 0 0 1px rgba(255, 240, 180, 0.5) inset;
 }
 
 .tier-gold::before {
@@ -311,8 +313,8 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 5% 90%, rgba(255,248,200,0.8) 0%, transparent 50%),
-    radial-gradient(ellipse at 95% 10%, rgba(200,150,30,0.4) 0%, transparent 55%);
+    radial-gradient(ellipse at 5% 90%, rgba(255, 248, 200, 0.8) 0%, transparent 50%),
+    radial-gradient(ellipse at 95% 10%, rgba(200, 150, 30, 0.4) 0%, transparent 55%);
   z-index: 1;
   pointer-events: none;
 }
@@ -349,7 +351,7 @@
 
 .tier-privilege .v-card-chip {
   background: linear-gradient(135deg, #ffe082 0%, #c8a84b 40%, #ffd54f 60%, #a07820 100%);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 0 12px rgba(200, 150, 50, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 12px rgba(200, 150, 50, 0.2);
 }
 
 .tier-privilege .v-card-number {
@@ -364,6 +366,144 @@
   background-clip: text;
 }
 
+/* ============================
+   BUSINESS TIER: MUSÉ FRAME
+   Silver / Chrome — Bạc tinh tế, hiện đại
+   ============================ */
+.tier-frame {
+  background: linear-gradient(145deg, #8ebae8 0%, #3b71a8 50%, #548bc2 100%);
+  color: #0a1c33;
+  box-shadow: 0 25px 55px rgba(59, 113, 168, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+}
+
+.tier-frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 15% 85%, rgba(255, 255, 255, 0.65) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 15%, rgba(59, 113, 168, 0.3) 0%, transparent 50%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.tier-frame .v-card-brand-name {
+  color: #051021;
+  letter-spacing: 3px;
+}
+
+.tier-frame .v-card-brand-sub {
+  color: rgba(10, 28, 51, 0.85);
+  letter-spacing: 4px;
+}
+
+.tier-frame .v-card-tier-name {
+  color: #0a1c33;
+  letter-spacing: 4px;
+  font-weight: 800;
+}
+
+.tier-frame .v-card-tier-dots span {
+  background: #1a3b63;
+}
+
+.tier-frame .v-card-chip {
+  background: linear-gradient(135deg, #e8f2fc 0%, #8db8e3 40%, #cce0f5 60%, #4b7da8 100%);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.tier-frame .v-card-chip::before {
+  background: linear-gradient(135deg, #b0d1f2, #4f83b3);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.tier-frame .v-card-number {
+  color: #0a1c33;
+  letter-spacing: 4px;
+}
+
+.tier-frame .v-card-holder-label,
+.tier-frame .v-card-tier-range-label {
+  color: rgba(10, 28, 51, 0.7);
+}
+
+.tier-frame .v-card-name,
+.tier-frame .v-card-tier-range-value {
+  color: #0a1c33;
+}
+
+/* ============================
+   BUSINESS TIER: MUSÉ LUMIÈRE
+   Deep Charcoal / Steel — Đẳng cấp, premium dark
+   ============================ */
+.tier-lumiere {
+  background: linear-gradient(145deg, #2c3038 0%, #1a1d22 45%, #22252c 100%);
+  color: #dce1ea;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.07) inset;
+}
+
+.tier-lumiere::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 10% 90%, rgba(120, 140, 180, 0.2) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 15%, rgba(200, 165, 50, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(180, 150, 30, 0.04) 0%, transparent 70%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.tier-lumiere .v-card-brand-name {
+  background: linear-gradient(135deg, #f5d97a, #fff4c0, #c9a64a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 3px;
+}
+
+.tier-lumiere .v-card-brand-sub {
+  color: rgba(255, 230, 160, 0.9);
+  letter-spacing: 4px;
+}
+
+.tier-lumiere .v-card-tier-name {
+  background: linear-gradient(135deg, #ffd770, #ffe9a5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 4px;
+}
+
+.tier-lumiere .v-card-tier-dots span {
+  background: #c9a64a;
+}
+
+.tier-lumiere .v-card-chip {
+  background: linear-gradient(135deg, #e8d080 0%, #b8940c 40%, #f5e090 60%, #987010 100%);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6), 0 0 15px rgba(200, 165, 50, 0.25);
+}
+
+.tier-lumiere .v-card-chip::before {
+  background: linear-gradient(135deg, #d4b860, #a07828);
+  border-color: rgba(255, 220, 100, 0.2);
+}
+
+.tier-lumiere .v-card-number {
+  color: #f0d88a;
+  letter-spacing: 5px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.tier-lumiere .v-card-holder-label,
+.tier-lumiere .v-card-tier-range-label {
+  color: rgba(255, 230, 160, 0.8);
+}
+
+.tier-lumiere .v-card-name,
+.tier-lumiere .v-card-tier-range-value {
+  color: #ffe9a5;
+}
 
 
 /* Info Section */
@@ -374,7 +514,7 @@
   padding: 50px 60px;
   border-radius: 24px;
   border: 1px solid var(--bone, #EDE8DF);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
 }
 
 .loyalty-info h2 {
@@ -412,7 +552,8 @@
 
 .loyalty-table td {
   padding: 20px;
-  border-bottom: 1px solid rgba(237, 232, 223, 0.6); /* --bone with opacity */
+  border-bottom: 1px solid rgba(237, 232, 223, 0.6);
+  /* --bone with opacity */
   color: var(--ink, #1A1916);
   font-size: 1.05rem;
   vertical-align: middle;
@@ -447,7 +588,10 @@
 .loyalty-modal {
   display: none;
   position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: rgba(26, 25, 22, 0.6);
   backdrop-filter: blur(8px);
   z-index: 1000;
@@ -467,7 +611,7 @@
   max-width: 450px;
   border: 1px solid var(--bone, #EDE8DF);
   position: relative;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
 .close-modal {

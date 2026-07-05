@@ -224,10 +224,10 @@
 
 .blog-card-summary {
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 300;
-  color: var(--smoke);
-  line-height: 1.7;
+  color: #000;
+  line-height: 1.85;
   margin-bottom: 24px;
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -408,10 +408,10 @@
 
 .blog-detail-summary {
   font-family: var(--font-body);
-  font-size: 18px;
-  line-height: 1.8;
-  font-weight: 400;
-  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.85;
+  font-weight: 300;
+  color: #000;
   border-left: 2px solid var(--avocado-cream);
   padding-left: 28px;
   margin-bottom: 48px;
@@ -420,10 +420,10 @@
 
 .blog-detail-body {
   font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1.95;
+  font-size: 15px;
+  line-height: 1.85;
   font-weight: 300;
-  color: var(--smoke);
+  color: #000;
 }
 
 .blog-detail-body p {

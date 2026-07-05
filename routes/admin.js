@@ -47,6 +47,7 @@ router.post('/blog/:id/delete', requireAdmin, adminController.deletePost);
 router.get('/contacts', requireAdmin, adminController.contacts);
 router.post('/contacts/:id/read', requireAdmin, adminController.markContactRead);
 router.post('/contacts/:id/interview', requireAdmin, adminController.sendInterviewContact);
+router.post('/contacts/:id/update', requireAdmin, adminController.updateContact);
 
 // Customer & Albums
 router.get('/customers', requireAdmin, adminCustomerController.listCustomers);

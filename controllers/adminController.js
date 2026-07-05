@@ -307,6 +307,17 @@ exports.sendInterviewContact = async (req, res) => {
   }
 };
 
+exports.updateContact = async (req, res) => {
+  try {
+    const { admin_note, assigned_to } = req.body;
+    await Contact.updateNotes(req.params.id, admin_note, assigned_to);
+    res.redirect('/admin/contacts');
+  } catch (err) {
+    console.error(err);
+    res.redirect('/admin/contacts');
+  }
+};
+
 // ─── Blog Management ────────────────────────────────────
 exports.blogAdmin = async (req, res) => {
   try {

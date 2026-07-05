@@ -25,6 +25,10 @@ class Contact {
     const [rows] = await db.execute(`SELECT COUNT(*) as count FROM contacts WHERE is_read = 0`);
     return rows[0].count;
   }
+
+  static async updateNotes(id, admin_note, assigned_to) {
+    await db.execute(`UPDATE contacts SET admin_note = ?, assigned_to = ? WHERE id = ?`, [admin_note, assigned_to, id]);
+  }
 }
 
 module.exports = Contact;

@@ -53,6 +53,37 @@
       <small class="text-muted">Mã Token bí mật do SieuthiCode cung cấp</small>
     </div>
 
+    <hr style="margin-bottom: 20px; border: 0; border-top: 1px solid #eee;">
+    <h3 style="margin-bottom: 20px;">Cấu hình Mốc Tích Điểm (Hạng Thẻ Loyalty)</h3>
+
+    <div class="row" style="display: flex; gap: 20px; margin-bottom: 15px;">
+      <div class="form-group" style="flex: 1;">
+        <label>Mốc thăng hạng Rose (Cá nhân)</label>
+        <input type="number" name="tier_limit_pearl_rose" class="form-control" value="<%= settings.tier_limit_pearl_rose?.value || '300' %>" required>
+        <small class="text-muted">Mặc định: 300. Dưới mốc này là hạng Pearl.</small>
+      </div>
+
+      <div class="form-group" style="flex: 1;">
+        <label>Mốc thăng hạng Gold (Cá nhân)</label>
+        <input type="number" name="tier_limit_rose_gold" class="form-control" value="<%= settings.tier_limit_rose_gold?.value || '800' %>" required>
+        <small class="text-muted">Mặc định: 800. Hạng Rose từ [Mốc Rose] đến sát [Mốc Gold].</small>
+      </div>
+    </div>
+
+    <div class="row" style="display: flex; gap: 20px; margin-bottom: 30px;">
+      <div class="form-group" style="flex: 1;">
+        <label>Mốc thăng hạng Privilege (Cá nhân)</label>
+        <input type="number" name="tier_limit_gold_privilege" class="form-control" value="<%= settings.tier_limit_gold_privilege?.value || '1500' %>" required>
+        <small class="text-muted">Mặc định: 1500. Hạng Gold từ [Mốc Gold] đến sát [Mốc Privilege].</small>
+      </div>
+
+      <div class="form-group" style="flex: 1;">
+        <label>Mốc thăng hạng Lumière (Doanh nghiệp)</label>
+        <input type="number" name="tier_limit_frame_lumiere" class="form-control" value="<%= settings.tier_limit_frame_lumiere?.value || '1201' %>" required>
+        <small class="text-muted">Mặc định: 1201. Dưới mốc này là hạng Frame, từ mốc này trở lên là Lumière.</small>
+      </div>
+    </div>
+
     <button type="submit" class="btn btn-dark">Lưu cấu hình</button>
   </form>
 </div>

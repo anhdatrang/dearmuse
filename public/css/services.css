@@ -268,7 +268,8 @@
 /* Panel dịch vụ của từng phân khúc */
 .svc-panel {
   display: none;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 28px;
   opacity: 0;
   transform: translateY(16px);
@@ -277,16 +278,9 @@
 }
 
 .svc-panel.active {
-  display: grid;
+  display: flex;
   opacity: 1;
   transform: translateY(0);
-}
-
-/* Trên màn hình lớn, tất cả các panel hiển thị tối đa 4 cột để kích thước các thẻ luôn bằng nhau */
-@media (min-width: 1025px) {
-  .svc-panel.active {
-    grid-template-columns: repeat(4, 1fr);
-  }
 }
 
 /* Thẻ chi tiết dịch vụ */
@@ -299,8 +293,12 @@
   padding: 36px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
   justify-content: space-between;
   min-height: 360px;
+  width: 100%;
+  max-width: 380px;
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
@@ -313,6 +311,7 @@
 
 .svc-card-header {
   margin-bottom: 24px;
+  width: 100%;
 }
 
 .svc-card-title {
@@ -324,10 +323,10 @@
 }
 
 .svc-card-desc {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 300;
-  color: var(--smoke);
-  line-height: 1.7;
+  color: #000;
+  line-height: 1.85;
 }
 
 /* Danh sách quyền lợi */
@@ -336,7 +335,9 @@
   margin-bottom: 28px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 9px;
+  width: 100%;
 }
 
 .svc-card-features li {
@@ -345,7 +346,9 @@
   color: var(--smoke);
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
+  text-align: center;
 }
 
 .svc-card-features li::before {
@@ -362,11 +365,12 @@
 .svc-card-footer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 12px;
   border-top: 1px solid var(--bone);
   padding-top: 20px;
   margin-top: auto;
+  width: 100%;
 }
 
 .svc-card-price {
@@ -496,7 +500,8 @@
   }
 
   .svc-panel {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: center;
     gap: 20px;
   }
 

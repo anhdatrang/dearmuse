@@ -44,11 +44,11 @@ html {
 
 body {
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 300;
-  color: var(--ink);
+  color: #000;
   background: var(--vanilla-cream);
-  line-height: 1.6;
+  line-height: 1.85;
   overflow-x: hidden;
   cursor: auto;
 }
@@ -278,7 +278,7 @@ h4 {
   font-family: var(--font-body);
   font-size: 15px;
   font-weight: 300;
-  color: var(--smoke);
+  color: #000;
   line-height: 1.85;
 }
 
@@ -984,8 +984,9 @@ body {
 
 .footer-brand .footer-logo img {
   height: 88px;
-  filter: grayscale(1);
-  opacity: 0.9;
+  filter: brightness(0.15);
+  mix-blend-mode: multiply;
+  opacity: 1;
 }
 
 .footer-brand p {
@@ -1054,12 +1055,25 @@ body {
 .footer-bottom {
   border-top: 1px solid rgba(26, 25, 22, 0.1);
   padding-top: 28px;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  gap: 3rem;
   align-items: center;
-  justify-content: space-between;
   font-size: 15px;
   letter-spacing: 0.05em;
   color: rgba(26, 25, 22, 0.6);
+}
+
+.footer-bottom p:first-child {
+  grid-column: 1;
+  text-align: center;
+  margin: 0;
+}
+
+.footer-bottom p:last-child {
+  grid-column: 2 / -1;
+  text-align: right;
+  margin: 0;
 }
 
 /* ─── Forms ──────────────────────────────────────────── */
@@ -1310,7 +1324,8 @@ body {
 /* Fixed Language Switcher Widget (directly above music player) */
 .lang-player-widget {
   position: fixed;
-  bottom: 152px; /* Increased from 92px by 60px */
+  bottom: 152px;
+  /* Increased from 92px by 60px */
   left: 32px;
   z-index: 998;
   display: flex;
@@ -1370,7 +1385,8 @@ body {
 /* ─── Ambient Music Player ──────────────────────────── */
 .music-player-widget {
   position: fixed;
-  bottom: 92px; /* Increased from 32px by 60px */
+  bottom: 92px;
+  /* Increased from 32px by 60px */
   left: 32px;
   z-index: 998;
   display: flex;
@@ -1514,8 +1530,22 @@ body {
     gap: 2rem;
   }
 
-  .container {
-    padding: 0 2rem;
+  .footer-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .footer-bottom p:first-child {
+    grid-column: 1;
+    text-align: center;
+    margin: 0;
+  }
+
+  .footer-bottom p:last-child {
+    grid-column: 2;
+    text-align: right;
+    margin: 0;
   }
 
   .nav-left,
@@ -1564,10 +1594,41 @@ body {
     grid-template-columns: 1fr;
   }
 
+  .footer-brand {
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-brand .footer-logo {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .footer-brand p {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .footer-col {
+    text-align: center;
+  }
+
+  .footer-col ul {
+    align-items: center;
+  }
+
   .footer-bottom {
+    display: flex;
     flex-direction: column;
     gap: 8px;
     text-align: center;
+  }
+
+  .footer-bottom p:first-child,
+  .footer-bottom p:last-child {
+    text-align: center;
+    margin: 0;
   }
 
   .container {
