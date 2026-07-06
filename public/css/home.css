@@ -1171,6 +1171,48 @@
   color: rgba(255, 247, 230, 0.45);
 }
 
+.review-link {
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  opacity: 0.8;
+  position: relative;
+  overflow: hidden;
+}
+
+.review-link:hover {
+  opacity: 1;
+  color: var(--logo-taupe);
+  text-shadow: 0 0 8px rgba(181, 160, 142, 0.6);
+  transform: translateX(2px);
+}
+
+.review-link svg {
+  transition: transform 0.3s ease;
+}
+
+.review-link:hover svg {
+  transform: translateX(3px);
+}
+
+/* Kỹ xảo (shimmer effect on the link text) */
+.review-link::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transform: skewX(-20deg);
+  transition: all 0.5s;
+}
+
+.review-link:hover::after {
+  left: 150%;
+  transition: all 0.6s ease-in-out;
+}
+
 /* Summary bar */
 .reviews-summary {
   display: flex;
@@ -1234,6 +1276,8 @@
   border-color: var(--logo-taupe);
   background: var(--vanilla-cream);
 }
+
+/* --- FEEDBACK ACTION --- */
 
 /* ─── ABOUT SNAP ─────────────────────────────────────── */
 .about-snap {

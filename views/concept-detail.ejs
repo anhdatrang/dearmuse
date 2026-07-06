@@ -1,4 +1,4 @@
-<% pageCss = 'concept-detail.css'; %>
+<% pageCss = 'concept-detail.css?v=2'; %>
 
 <!-- Concept Detail Page -->
 <section class="concept-detail-section">
@@ -54,7 +54,8 @@
       </div>
 
       <div class="concept-photo-grid">
-        <% const gColCount = 3; const gColumns = Array.from({length: gColCount}, () => []);
+        <% const gColCount = Math.min(3, Math.max(1, concept.gallery.length));
+           const gColumns = Array.from({length: gColCount}, () => []);
            concept.gallery.forEach((imgUrl, index) => {
              gColumns[index % gColCount].push({imgUrl, originalIndex: index});
            });

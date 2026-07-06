@@ -37,9 +37,9 @@ const concepts = [
       "/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/IMG_9983.webp",
       "/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/IMG_9984.webp",
       "/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/MEO07881.webp",
-      "/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/MEO07924-2.webp",
+      "/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/MEO07924.webp",
       "/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/MEO07935.webp",
-      "/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/MEO09180-2.webp"
+      "/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/MEO09180.webp"
     ],
     "pricing": [
       {
@@ -116,9 +116,9 @@ const concepts = [
       "/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/IMG_9983.webp",
       "/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/IMG_9984.webp",
       "/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/MEO07881.webp",
-      "/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/MEO07924-2.webp",
+      "/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/MEO07924.webp",
       "/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/MEO07935.webp",
-      "/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/MEO09180-2.webp"
+      "/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/MEO09180.webp"
     ],
     "pricing": [
       {
@@ -206,8 +206,7 @@ const concepts = [
       "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6419.webp",
       "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6420.webp",
       "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6422.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7139.webp",
-      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7141.webp"
+      "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7139.webp"
     ],
     "pricing": [
       {
@@ -304,8 +303,7 @@ const concepts = [
       "/source/C%C3%81%20NH%C3%82N/PROFILE/IMG_4957.webp",
       "/source/C%C3%81%20NH%C3%82N/PROFILE/IMG_4961.webp",
       "/source/C%C3%81%20NH%C3%82N/PROFILE/IMG_4962.webp",
-      "/source/C%C3%81%20NH%C3%82N/PROFILE/IMG_4966.webp",
-      "/source/C%C3%81%20NH%C3%82N/PROFILE/IMG_4967.webp"
+      "/source/C%C3%81%20NH%C3%82N/PROFILE/IMG_4966.webp"
     ],
     "pricing": [
       {
@@ -353,8 +351,8 @@ const concepts = [
     "gallery": [
       "/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG9999.jpg",
       "/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_4613.webp",
-      "/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_4615.webp",
       "/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_4691.webp",
+      "/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_4615.webp",
       "/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_4693.webp",
       "/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_4695.webp",
       "/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_5582.webp",
@@ -400,8 +398,8 @@ const concepts = [
     "gallery": [
       "/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG9999.jpg",
       "/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_4613.webp",
-      "/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_4615.webp",
       "/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_4691.webp",
+      "/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_4615.webp",
       "/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_4693.webp",
       "/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_4695.webp",
       "/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_5582.webp",
@@ -447,8 +445,8 @@ const concepts = [
     "gallery": [
       "/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG9999.jpg",
       "/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_4613.webp",
-      "/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_4615.webp",
       "/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_4691.webp",
+      "/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_4615.webp",
       "/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_4693.webp",
       "/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_4695.webp",
       "/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/IMG_5582.webp",

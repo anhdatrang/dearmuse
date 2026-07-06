@@ -218,13 +218,15 @@
 }
 
 .packages-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 32px;
   justify-content: center;
 }
 
 .package-detail-card {
+  flex: 1 1 380px;
+  max-width: 500px;
   background: rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -495,7 +497,6 @@
     width: 100%;
     justify-content: center;
   }
-}
 
   /* column-count is no longer used, flex-direction: column handles stacking */
 
