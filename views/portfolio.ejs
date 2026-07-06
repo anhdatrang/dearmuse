@@ -34,7 +34,7 @@
           <% 
             // Group images into chunks of 6
             var chunks=[]; 
-            var chunkSize=6; 
+            var chunkSize=10; 
             for (var i=0; i < group.images.length; i+=chunkSize) { 
               chunks.push(group.images.slice(i, i + chunkSize)); 
             } 
@@ -60,13 +60,14 @@
                         <!-- Cover Content Overlay -->
                         <div class="cover-overlay-content">
                           <div class="cover-header">
-                            <span class="cover-subtitle" style="letter-spacing: 0.25em;">FINE ART & EDITORIAL
+                            <span class="cover-subtitle" style="letter-spacing: 0.25em; color: #000000 !important; font-weight: 900 !important;">FINE ART & EDITORIAL
                               EXCELLENCE</span>
                             <h2 class="cover-title">DEAR MUSÉ</h2>
                             <div class="cover-meta">
-                              <span style="font-weight:600; color:var(--avocado-cream, #D4DB74);">THE BEST PORTRAIT
+                              <% var metaColor = (globalIssueCount === 2 || globalIssueCount === 4 || group.id === 'doanh-nghiep') ? '#FFFFFF' : '#000000'; %>
+                              <span style="font-weight:700; color:<%= metaColor %>;">THE BEST PORTRAIT
                                 STUDIO</span>
-                              <span>dearmuse.vn</span>
+                              <span style="font-weight:700; color:<%= metaColor %>;">dearmuse.vn</span>
                             </div>
                           </div>
 
@@ -81,8 +82,9 @@
                           </div>
 
                           <div class="cover-footer">
-                            <span class="concept-label">MASTERPIECE COLLECTION</span>
-                            <h3 class="concept-name">
+                            <% var labelColor = (group.id === 'mo-rong') ? '#FFFFFF' : '#000000'; %>
+                            <span class="concept-label" style="color: <%= labelColor %> !important; font-weight: 900 !important;">MASTERPIECE COLLECTION</span>
+                            <h3 class="concept-name" style="color: var(--logo-mocha, #8B7355) !important; font-weight: 900 !important; text-shadow: 2px 2px 5px rgba(0,0,0,0.4), -1px -1px 2px rgba(255,255,255,0.7) !important;">
                               <%= group.title %>
                             </h3>
                           </div>
@@ -141,9 +143,9 @@
                             </div>
                             
                             <div class="side-filler-img" style="margin: 40px 0;">
-                              <% var fillerImg1 = chunk[4] || group.images[4 % group.images.length]; %>
+                              <% var fillerImg1 = chunk[2] || group.images[2 % group.images.length]; %>
                               <% if (fillerImg1) { %>
-                                <img src="<%= fillerImg1.src %>" alt="Filler" loading="lazy" style="width: 100%; aspect-ratio: 3/4; object-fit: cover;">
+                                <img src="<%= fillerImg1.src %>" alt="Filler" loading="lazy" style="width: 100%; height: auto; object-fit: contain; border-radius: 2px;">
                               <% } %>
                             </div>
 
@@ -172,7 +174,7 @@
                             <div class="editorial-2-sub-banner"><%= textData.ed2SubBanner %></div>
 
                             <div class="editorial-2-portrait-wrap">
-                              <% var img2=chunk[2] || group.images[2 % group.images.length]; %>
+                              <% var img2=chunk[3] || group.images[3 % group.images.length]; %>
                                 <% if (img2) { %>
                                   <img src="<%= img2.src %>" alt="<%= img2.alt %>" loading="lazy" decoding="async">
                                   <% } else { %>
@@ -196,9 +198,9 @@
                             </p>
                             
                             <div class="side-filler-img" style="margin: 40px 0;">
-                              <% var fillerImg2 = chunk[5] || group.images[5 % group.images.length]; %>
+                              <% var fillerImg2 = chunk[4] || group.images[4 % group.images.length]; %>
                               <% if (fillerImg2) { %>
-                                <img src="<%= fillerImg2.src %>" alt="Filler" loading="lazy" style="width: 100%; aspect-ratio: 1/1; object-fit: cover;">
+                                <img src="<%= fillerImg2.src %>" alt="Filler" loading="lazy" style="width: 100%; height: auto; object-fit: contain; border-radius: 2px;">
                               <% } %>
                             </div>
 
@@ -234,7 +236,7 @@
                             <div class="editorial-sub-banner"><%= textData.ed3SubBanner %></div>
 
                             <div class="main-portrait-wrap">
-                              <% var img3=chunk[3] || group.images[3 % group.images.length]; %>
+                              <% var img3=chunk[5] || group.images[5 % group.images.length]; %>
                                 <% if (img3) { %>
                                   <img src="<%= img3.src %>" alt="<%= img3.alt %>" loading="lazy" decoding="async">
                                   <% } else { %>
@@ -262,9 +264,9 @@
                             </div>
                             
                             <div class="side-filler-img" style="margin: 40px 0;">
-                              <% var fillerImg3 = chunk[0] || group.images[0 % group.images.length]; %>
+                              <% var fillerImg3 = chunk[6] || group.images[6 % group.images.length]; %>
                               <% if (fillerImg3) { %>
-                                <img src="<%= fillerImg3.src %>" alt="Filler" loading="lazy" style="width: 100%; aspect-ratio: 4/5; object-fit: cover;">
+                                <img src="<%= fillerImg3.src %>" alt="Filler" loading="lazy" style="width: 100%; height: auto; object-fit: contain; border-radius: 2px;">
                               <% } %>
                             </div>
 
@@ -319,9 +321,9 @@
                           <!-- Column 3: Aesthetic Metaphor Image & Quote -->
                           <div class="third-column-new" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
                             <div class="side-filler-img-col3" style="margin-bottom: 12px;">
-                              <% var imgCol3 = chunk[4] || group.images[4 % group.images.length]; %>
+                              <% var imgCol3 = chunk[7] || group.images[7 % group.images.length]; %>
                               <% if (imgCol3) { %>
-                                <img src="<%= imgCol3.src %>" alt="Aesthetic" loading="lazy" style="width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 2px;">
+                                <img src="<%= imgCol3.src %>" alt="Aesthetic" loading="lazy" style="width: 100%; height: auto; object-fit: contain; border-radius: 2px;">
                               <% } %>
                             </div>
                             <div class="decor-quote-wrap" style="border-top: 1px solid rgba(26, 25, 22, 0.1); padding-top: 12px;">
@@ -334,17 +336,12 @@
 
                         <!-- New Bottom Section to fill empty space -->
                         <div class="credits-bottom-section">
-                          <div class="credits-bottom-images">
-                            <% var img4=chunk[4] || group.images[4 % group.images.length]; %>
-                              <% var imgExtra=chunk[1] || group.images[1 % group.images.length]; %>
-                                <div class="bottom-img-wrap">
+                          <div class="credits-bottom-images" <% if (group.id === 'mo-rong' || group.id === 'doanh-nghiep') { %>style="grid-template-columns: 1fr; max-width: 75%;"<% } %>>
+                            <% var img4=chunk[8] || group.images[8 % group.images.length]; %>
+                                <div class="bottom-img-wrap" <% if (group.id === 'mo-rong' || group.id === 'doanh-nghiep') { %>style="aspect-ratio: auto; box-shadow: none;"<% } %>>
+                                  <% var bottomImgStyle = (group.id === 'mo-rong' || group.id === 'doanh-nghiep') ? 'width: 100%; height: auto; aspect-ratio: auto; object-fit: contain; border-radius: 4px;' : ''; %>
                                   <% if (img4) { %><img src="<%= img4.src %>" alt="<%= img4.alt %>" loading="lazy"
-                                      decoding="async">
-                                    <% } %>
-                                </div>
-                                <div class="bottom-img-wrap">
-                                  <% if (imgExtra) { %><img src="<%= imgExtra.src %>" alt="<%= imgExtra.alt %>"
-                                      loading="lazy" decoding="async">
+                                      decoding="async" style="<%= bottomImgStyle %>">
                                     <% } %>
                                 </div>
                           </div>
@@ -359,8 +356,8 @@
                     <div class="magazine-grid ad-grid">
                       <div class="magazine-page m-page-ad">
                         <div class="ad-full-bg">
-                          <% if (chunk[5]) { %>
-                            <img src="<%= chunk[5].src %>" alt="<%= chunk[5].alt %>" loading="lazy" decoding="async">
+                          <% if (chunk[9]) { %>
+                            <img src="<%= chunk[9].src %>" alt="<%= chunk[9].alt %>" loading="lazy" decoding="async">
                             <% } else if (group.images[0]) { %>
                               <img src="<%= group.images[0].src %>" alt="<%= group.images[0].alt %>" loading="lazy"
                                 decoding="async">
@@ -371,7 +368,8 @@
                           <h2 class="ad-brand-title">
                             <%= group.englishTitle %>
                           </h2>
-                          <p class="ad-brand-subtitle">EDITORIAL BY DEAR MUSÉ</p>
+                          <% var adSubtitleColor = (group.id === 'doanh-nghiep') ? '#FFFFFF' : 'var(--logo-mocha, #8B7355)'; %>
+                          <p class="ad-brand-subtitle" style="color: <%= adSubtitleColor %> !important; font-weight: 900 !important;">EDITORIAL BY DEAR MUSÉ</p>
                         </div>
                       </div>
                     </div><!-- /.ad-grid -->
