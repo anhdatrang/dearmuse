@@ -1,4 +1,4 @@
-<% pageCss='portfolio.css' ; %>
+<% pageCss='portfolio.css?v=2' ; %>
 
   <!-- Editorial Hero -->
   <section class="portfolio-hero">
@@ -59,15 +59,15 @@
 
                         <!-- Cover Content Overlay -->
                         <div class="cover-overlay-content">
-                          <div class="cover-header">
-                            <span class="cover-subtitle" style="letter-spacing: 0.25em; color: #000000 !important; font-weight: 900 !important;">FINE ART & EDITORIAL
+                          <div class="cover-header" style="border-bottom: 1.5px solid rgba(255, 255, 255, 0.3);">
+                            <span class="cover-subtitle" style="letter-spacing: 0.25em; color: #FFFFFF !important; font-weight: 900 !important; text-shadow: 0 2px 8px rgba(26, 25, 22, 0.7);">FINE ART & EDITORIAL
                               EXCELLENCE</span>
-                            <h2 class="cover-title">DEAR MUSÉ</h2>
+                            <h2 class="cover-title" style="color: #FFFFFF !important; text-shadow: 0 4px 15px rgba(26, 25, 22, 0.75);">DEAR MUSÉ</h2>
                             <div class="cover-meta">
-                              <% var metaColor = (globalIssueCount === 2 || globalIssueCount === 4 || group.id === 'doanh-nghiep') ? '#FFFFFF' : '#000000'; %>
-                              <span style="font-weight:700; color:<%= metaColor %>;">THE BEST PORTRAIT
+                              <% var metaColor = '#FFFFFF'; %>
+                              <span style="font-weight:700; color:<%= metaColor %>; text-shadow: 0 2px 8px rgba(26, 25, 22, 0.7);">THE BEST PORTRAIT
                                 STUDIO</span>
-                              <span style="font-weight:700; color:<%= metaColor %>;">dearmuse.vn</span>
+                              <span style="font-weight:700; color:<%= metaColor %>; text-shadow: 0 2px 8px rgba(26, 25, 22, 0.7);">dearmuse.vn</span>
                             </div>
                           </div>
 
@@ -82,9 +82,9 @@
                           </div>
 
                           <div class="cover-footer">
-                            <% var labelColor = (group.id === 'mo-rong') ? '#FFFFFF' : '#000000'; %>
-                            <span class="concept-label" style="color: <%= labelColor %> !important; font-weight: 900 !important;">MASTERPIECE COLLECTION</span>
-                            <h3 class="concept-name" style="color: var(--logo-mocha, #8B7355) !important; font-weight: 900 !important; text-shadow: 2px 2px 5px rgba(0,0,0,0.4), -1px -1px 2px rgba(255,255,255,0.7) !important;">
+                            <% var labelColor = '#FFFFFF'; %>
+                            <span class="concept-label" style="color: <%= labelColor %> !important; font-weight: 900 !important; text-shadow: 0 2px 8px rgba(26, 25, 22, 0.7);">MASTERPIECE COLLECTION</span>
+                            <h3 class="concept-name" style="color: #FFFFFF !important; font-weight: 900 !important; text-shadow: 2px 2px 8px rgba(26, 25, 22, 0.8), -1px -1px 2px rgba(26, 25, 22, 0.4) !important;">
                               <%= group.title %>
                             </h3>
                           </div>
@@ -337,13 +337,22 @@
                         <!-- New Bottom Section to fill empty space -->
                         <div class="credits-bottom-section">
                           <div class="credits-bottom-images" <% if (group.id === 'mo-rong' || group.id === 'doanh-nghiep') { %>style="grid-template-columns: 1fr; max-width: 75%;"<% } %>>
-                            <% var img4=chunk[8] || group.images[8 % group.images.length]; %>
-                                <div class="bottom-img-wrap" <% if (group.id === 'mo-rong' || group.id === 'doanh-nghiep') { %>style="aspect-ratio: auto; box-shadow: none;"<% } %>>
-                                  <% var bottomImgStyle = (group.id === 'mo-rong' || group.id === 'doanh-nghiep') ? 'width: 100%; height: auto; aspect-ratio: auto; object-fit: contain; border-radius: 4px;' : ''; %>
-                                  <% if (img4) { %><img src="<%= img4.src %>" alt="<%= img4.alt %>" loading="lazy"
-                                      decoding="async" style="<%= bottomImgStyle %>">
-                                    <% } %>
-                                </div>
+                            <% var img4 = chunk[8] || group.images[8 % group.images.length]; %>
+                            <% if (img4 && img4.src.includes('SU209654')) { %>
+                              <div class="bottom-img-wrap">
+                                <img src="<%= img4.src %>" alt="<%= img4.alt %>" loading="lazy" decoding="async">
+                              </div>
+                              <div class="bottom-img-wrap">
+                                <img src="/cdn/image?w=800&src=%2Fsource%2FC%C3%81%20NH%C3%82N%2FCONCEPT%2FSU209588.webp" alt="Concept nghệ thuật 9588" loading="lazy" decoding="async">
+                              </div>
+                            <% } else { %>
+                              <div class="bottom-img-wrap" <% if (group.id === 'mo-rong' || group.id === 'doanh-nghiep') { %>style="aspect-ratio: auto; box-shadow: none;"<% } %>>
+                                <% var bottomImgStyle = (group.id === 'mo-rong' || group.id === 'doanh-nghiep') ? 'width: 100%; height: auto; aspect-ratio: auto; object-fit: contain; border-radius: 4px;' : ''; %>
+                                <% if (img4) { %>
+                                  <img src="<%= img4.src %>" alt="<%= img4.alt %>" loading="lazy" decoding="async" style="<%= bottomImgStyle %>">
+                                <% } %>
+                              </div>
+                            <% } %>
                           </div>
                           <div class="credits-bottom-text">
                             <p><%= textData.creditsBottomText %></p>
@@ -365,11 +374,11 @@
                         </div>
 
                         <div class="ad-overlay-content ad-minimal">
-                          <h2 class="ad-brand-title">
+                          <h2 class="ad-brand-title" style="color: #FFFFFF !important; text-shadow: 0 4px 15px rgba(26, 25, 22, 0.75);">
                             <%= group.englishTitle %>
                           </h2>
-                          <% var adSubtitleColor = (group.id === 'doanh-nghiep') ? '#FFFFFF' : 'var(--logo-mocha, #8B7355)'; %>
-                          <p class="ad-brand-subtitle" style="color: <%= adSubtitleColor %> !important; font-weight: 900 !important;">EDITORIAL BY DEAR MUSÉ</p>
+                          <% var adSubtitleColor = '#FFFFFF'; %>
+                          <p class="ad-brand-subtitle" style="color: <%= adSubtitleColor %> !important; font-weight: 900 !important; text-shadow: 0 2px 8px rgba(26, 25, 22, 0.7);">EDITORIAL BY DEAR MUSÉ</p>
                         </div>
                       </div>
                     </div><!-- /.ad-grid -->

@@ -273,7 +273,7 @@
 .cover-full-bg img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   transition: transform 1.2s var(--ease-out-expo);
 }
 
@@ -829,7 +829,7 @@
 .ad-full-bg img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   transition: transform 1.5s var(--ease-out-expo);
 }
 
