@@ -332,16 +332,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const bgAudio      = document.getElementById('bg-audio');
 
   if (musicWidget && musicToggle && bgAudio) {
-    // Set default low volume (15%) for subtle background ambient
-    bgAudio.volume = 0.15;
+    if (window.location.pathname !== '/') {
+      musicWidget.style.display = 'none';
+      bgAudio.pause();
+    } else {
+      // Set default low volume (15%) for subtle background ambient
+      bgAudio.volume = 0.15;
 
-    // Load saved state (muted state, played time)
-    const isMuted = localStorage.getItem('music-muted') === 'true';
-    const savedTime = localStorage.getItem('music-time');
+      // Load saved state (muted state, played time)
+      const isMuted = localStorage.getItem('music-muted') === 'true';
+      const savedTime = localStorage.getItem('music-time');
 
-    if (savedTime) {
-      bgAudio.currentTime = parseFloat(savedTime);
-    }
+      if (savedTime) {
+        bgAudio.currentTime = parseFloat(savedTime);
+      }
 
     // Set initial classes
     if (isMuted) {
@@ -423,6 +427,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('beforeunload', () => {
       localStorage.setItem('music-time', bgAudio.currentTime);
     });
+    }
   }
 
   // ─── Language Switcher (Google Translate Wrapper) ───

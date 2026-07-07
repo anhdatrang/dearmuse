@@ -63,9 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (mascotWidget && mascotBubble && mascotCanvas && mascotVideo) {
     const ctx = mascotCanvas.getContext('2d', { willReadFrequently: true });
     
-    // Set initial resolution of the canvas (small for low CPU, vertical ratio)
-    mascotCanvas.width = 256;
-    mascotCanvas.height = 280; 
+    // Set initial resolution of the canvas (higher for sharper image)
+    mascotCanvas.width = 512;
+    mascotCanvas.height = 560; 
     
     let isVideoPlaying = false;
 
@@ -92,8 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const videoWidth = mascotVideo.videoWidth || 545;
       const videoHeight = mascotVideo.videoHeight || 599;
       const ratio = videoHeight / videoWidth;
-      mascotCanvas.width = 256;
-      mascotCanvas.height = Math.round(256 * ratio);
+      mascotCanvas.width = 512;
+      mascotCanvas.height = Math.round(512 * ratio);
     }
 
     mascotVideo.addEventListener('loadedmetadata', adjustCanvasSize);
