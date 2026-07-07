@@ -178,31 +178,7 @@
       <% } %>
 
       <% 
-        const styles = ['note-polaroid', 'note-torn', 'note-postcard'];
-        
-        // Hàm sinh clip-path răng cưa xé giấy ngẫu nhiên độc bản cho mỗi lá thư
-        function getUniqueTornClipPath(styleClass, isFirstInRow) {
-          let maxJaggedness = styleClass === 'note-polaroid' ? 0.8 : 3.5;
-          if (isFirstInRow) maxJaggedness = 4.5; // Xé giấy nhiều hơn cho card đầu tiên
-          const points = [];
-          for (let x = 0; x <= 100; x += 10) {
-            const y = (Math.random() * maxJaggedness).toFixed(1);
-            points.push(`${x}% ${y}%`);
-          }
-          for (let y = 10; y <= 90; y += 10) {
-            const x = (100 - Math.random() * maxJaggedness).toFixed(1);
-            points.push(`${x}% ${y}%`);
-          }
-          for (let x = 100; x >= 0; x -= 10) {
-            const y = (100 - Math.random() * maxJaggedness).toFixed(1);
-            points.push(`${x}% ${y}%`);
-          }
-          for (let y = 90; y >= 10; y -= 10) {
-            const x = (Math.random() * maxJaggedness).toFixed(1);
-            points.push(`${x}% ${y}%`);
-          }
-          return `clip-path: polygon(${points.join(', ')});`;
-        }
+        const styles = ['note-film'];
 
         // Chia feedbacks thành các hàng, mỗi hàng tối đa 3 note trên desktop
         const chunkSize = 3;
@@ -266,7 +242,6 @@
             rowCards.forEach((f, index) => { 
               const globalIndex = rowIndex * chunkSize + index;
               const styleClass = styles[globalIndex % styles.length];
-              const clipPathStyle = getUniqueTornClipPath(styleClass, index === 0);
               
               const rotation = Math.floor(Math.random() * 8) - 4; // Giảm góc xoay để ngay ngắn hơn trên dây
               
@@ -294,30 +269,28 @@
             <div class="scrapbook-item-wrapper" 
                  style="margin-top: <%= mt %>px; margin-bottom: <%= mb %>px; z-index: <%= Math.floor(Math.random() * 30) + 10 %>; --float-delay: -<%= floatDelay %>s; --shift-x: <%= shiftX %>px; --shift-y: <%= shiftY %>px;">
               
-              <% if (styleClass === 'note-polaroid' || styleClass === 'note-postcard' || styleClass === 'note-torn') { %>
-                <div class="tape" style="transform: translateX(-50%) rotate(<%= tapeRotation %>deg);"></div>
-              <% } %>
+              <div class="tape" style="transform: translateX(-50%) rotate(<%= tapeRotation %>deg);"></div>
               
-              <div class="<%= styleClass %> <%= f.is_featured ? 'is-featured' : '' %>" style="--rot: <%= rotation %>deg; transform: rotate(<%= rotation %>deg); <%= clipPathStyle %>">
-    
-                <div class="card-header">
-                  <h3 class="card-name"><%= f.maskedName %></h3>
-                  <div class="card-stars">
-                    <% f.starsArr.forEach(isFilled => { %>
-                      <span class="<%= isFilled ? 'filled' : 'empty' %>">★</span>
-                    <% }) %>
+              <div class="<%= styleClass %> <%= f.is_featured ? 'is-featured' : '' %>" style="--rot: <%= rotation %>deg; transform: rotate(<%= rotation %>deg);">
+                <div class="film-inner">
+                  <div class="card-header">
+                    <h3 class="card-name"><%= f.maskedName %></h3>
+                    <div class="card-stars">
+                      <% f.starsArr.forEach(isFilled => { %>
+                        <span class="<%= isFilled ? 'filled' : 'empty' %>">★</span>
+                      <% }) %>
+                    </div>
+                  </div>
+                  
+                  <div class="card-content">
+                    <%= f.content %>
+                  </div>
+                  
+                  <div class="card-footer">
+                    <span><%- (f.service_label || 'Dịch vụ').split(' & ').map(p => p.replace(/ /g, '&nbsp;')).join(' & ') %></span>
+                    <span><%= f.monthYear %></span>
                   </div>
                 </div>
-                
-                <div class="card-content">
-                  <%= f.content %>
-                </div>
-                
-                <div class="card-footer">
-                  <span><%- (f.service_label || 'Dịch vụ').split(' & ').map(p => p.replace(/ /g, '&nbsp;')).join(' & ') %></span>
-                  <span><%= f.monthYear %></span>
-                </div>
-                
               </div>
               
             </div>

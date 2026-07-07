@@ -1,63 +1,69 @@
-<% pageCss = 'pricing.css'; %>
+<% pageCss='pricing.css' ; %>
 
-<!-- Pricing Page -->
-<section style="padding-top: 140px; padding-bottom: var(--section-gap);">
-  <div class="container">
-    <div class="text-center" style="margin-bottom: 80px;">
-      <span class="section-label reveal" style="justify-content: center;">Đầu tư cho nghệ thuật</span>
-      <h1 class="section-heading reveal" style="font-size: clamp(40px, 6vw, 64px);">Bảng giá</h1>
-      <p class="body-text reveal" style="max-width: 520px; margin: 24px auto 0;">
-        Một bộ ảnh đẹp là tài sản vô giá. Dưới đây là mức giá tham khảo cho các gói dịch vụ cơ bản. Liên hệ để chúng tôi thiết kế gói chụp dành riêng cho bạn.
-      </p>
-    </div>
+  <!-- Pricing Page -->
+  <section style="padding-top: 140px; padding-bottom: var(--section-gap);">
+    <div class="container">
+      <div class="text-center" style="margin-bottom: 80px;">
+        <span class="section-label reveal" style="justify-content: center;">Đầu tư cho nghệ thuật</span>
+        <h1 class="section-heading reveal" style="font-size: clamp(40px, 6vw, 64px);">Bảng giá</h1>
+        <p class="body-text reveal" style="max-width: 520px; margin: 24px auto 0;">
+          Một bộ ảnh đẹp là tài sản vô giá. Dưới đây là mức giá tham khảo cho các gói dịch vụ cơ bản. Liên hệ để chúng
+          tôi thiết kế gói chụp dành riêng cho bạn.
+        </p>
+      </div>
 
-    <!-- Luxury Menu -->
-    <div class="pricing-menu">
-      <% services.forEach((s, i) => { %>
-        <div class="pricing-item reveal" data-delay="<%= (i % 3) + 1 %>">
-          <div class="pricing-info">
-            <h3 class="pricing-name"><%= s.name %></h3>
-            <p class="pricing-desc"><%= s.description || s.short_desc %></p>
+      <!-- Luxury Menu -->
+      <div class="pricing-menu">
+        <% services.forEach((s, i)=> { %>
+          <div class="pricing-item reveal" data-delay="<%= (i % 3) + 1 %>">
+            <div class="pricing-info">
+              <h3 class="pricing-name">
+                <%= s.name %>
+              </h3>
+              <p class="pricing-desc">
+                <%= s.description || s.short_desc %>
+              </p>
+            </div>
+
+            <div class="pricing-details">
+              <div class="pricing-cost">
+                <span class="pricing-cost-from">Từ</span>
+                <strong>
+                  <%= s.price_from.toLocaleString('vi-VN') %>đ
+                </strong>
+              </div>
+
+              <div class="pricing-features">
+                <% if (s.duration_minutes> 0) { %>
+                  <div class="pricing-feature">Thời lượng: <%= s.duration_minutes %> phút</div>
+                  <% } %>
+
+                    <% let featureList=[]; if (typeof s.features==='string' ) { try {
+                      featureList=JSON.parse(s.features); } catch(e){} } else if (Array.isArray(s.features)) {
+                      featureList=s.features; } %>
+                      <% featureList.forEach(f=> { %>
+                        <div class="pricing-feature">
+                          <%= f %>
+                        </div>
+                        <% }) %>
+              </div>
+
+              <div class="pricing-actions">
+                <a href="/booking?service=<%= s.slug %>" class="btn btn-outline-dark pricing-btn"><span>Đặt lịch
+                    ngay</span></a>
+              </div>
+            </div>
           </div>
-          
-          <div class="pricing-details">
-            <div class="pricing-cost">
-              <span class="pricing-cost-from">Từ</span>
-              <strong><%= s.price_from.toLocaleString('vi-VN') %>đ</strong>
-            </div>
-            
-            <div class="pricing-features">
-              <% if (s.duration_minutes > 0) { %>
-                <div class="pricing-feature">Thời lượng: <%= s.duration_minutes %> phút</div>
-              <% } %>
-              
-              <% 
-                let featureList = [];
-                if (typeof s.features === 'string') {
-                  try { featureList = JSON.parse(s.features); } catch(e){}
-                } else if (Array.isArray(s.features)) {
-                  featureList = s.features;
-                }
-              %>
-              <% featureList.forEach(f => { %>
-                <div class="pricing-feature"><%= f %></div>
-              <% }) %>
-            </div>
-            
-            <div class="pricing-actions">
-              <a href="/booking?service=<%= s.slug %>" class="btn btn-outline-dark pricing-btn"><span>Đặt lịch ngay</span></a>
-            </div>
-          </div>
-        </div>
-      <% }) %>
-    </div>
+          <% }) %>
+      </div>
 
-    <!-- Note -->
-    <div class="reveal" style="text-align: center; margin-top: 80px;">
-      <p style="font-size: 13px; font-weight: 300; color: var(--smoke); font-style: italic; letter-spacing: 0.05em;">
-        * Giá có thể thay đổi tùy thuộc vào concept đặc biệt, thuê địa điểm ngoại cảnh, hoặc trang phục thiết kế riêng.
-      </p>
-    </div>
+      <!-- Note -->
+      <div class="reveal" style="text-align: center; margin-top: 80px;">
+        <p style="font-size: 13px; font-weight: 300; color: var(--smoke); font-style: italic; letter-spacing: 0.05em;">
+          * Giá có thể thay đổi tùy thuộc vào concept đặc biệt, thuê địa điểm ngoại cảnh, hoặc trang phục thiết kế
+          riêng.
+        </p>
+      </div>
 
-  </div>
-</section>
+    </div>
+  </section>

@@ -2,23 +2,28 @@
   <a href="/admin/services" class="text-decoration-none text-muted mb-2 d-inline-block">
     <i class="fas fa-arrow-left"></i> Quay lại
   </a>
-  <h2><%= isEdit ? 'Sửa Gói Dịch Vụ' : 'Thêm Gói Mới' %></h2>
+  <h2>
+    <%= isEdit ? 'Sửa Gói Dịch Vụ' : 'Thêm Gói Mới' %>
+  </h2>
 </div>
 
 <div class="row">
   <div class="col-lg-8">
     <div class="card">
       <div class="card-body">
-        <form action="<%= isEdit ? `/admin/services/${service.id}/edit` : '/admin/services/create' %>" method="POST" enctype="multipart/form-data">
-          
+        <form action="<%= isEdit ? `/admin/services/${service.id}/edit` : '/admin/services/create' %>" method="POST"
+          enctype="multipart/form-data">
+
           <div class="row mb-3">
             <div class="col-md-6">
               <label class="form-label">Tên Gói <span class="text-danger">*</span></label>
-              <input type="text" class="form-control" name="name" id="nameInput" value="<%= service.name || '' %>" required>
+              <input type="text" class="form-control" name="name" id="nameInput" value="<%= service.name || '' %>"
+                required>
             </div>
             <div class="col-md-6">
               <label class="form-label">Slug (URL) <span class="text-danger">*</span></label>
-              <input type="text" class="form-control" name="slug" id="slugInput" value="<%= service.slug || '' %>" required>
+              <input type="text" class="form-control" name="slug" id="slugInput" value="<%= service.slug || '' %>"
+                required>
               <div class="form-text">Dùng làm link, ví dụ: goi-co-ban</div>
             </div>
           </div>
@@ -36,11 +41,13 @@
           <div class="row mb-3">
             <div class="col-md-4">
               <label class="form-label">Giá từ (VNĐ) <span class="text-danger">*</span></label>
-              <input type="number" class="form-control" name="price_from" value="<%= service.price_from || 0 %>" required>
+              <input type="number" class="form-control" name="price_from" value="<%= service.price_from || 0 %>"
+                required>
             </div>
             <div class="col-md-4">
               <label class="form-label">Thời lượng (phút)</label>
-              <input type="number" class="form-control" name="duration_minutes" value="<%= service.duration_minutes || 0 %>">
+              <input type="number" class="form-control" name="duration_minutes"
+                value="<%= service.duration_minutes || 0 %>">
             </div>
             <div class="col-md-4">
               <label class="form-label">Thứ tự hiển thị</label>
@@ -52,21 +59,26 @@
             <label class="form-label fw-bold">Danh sách Quyền lợi (Features)</label>
             <p class="text-muted small mb-2">Các gạch đầu dòng hiển thị trên bảng giá.</p>
             <div id="featuresContainer">
-              <% if (service.features && service.features.length > 0) { %>
-                <% service.features.forEach((f, idx) => { %>
+              <% if (service.features && service.features.length> 0) { %>
+                <% service.features.forEach((f, idx)=> { %>
                   <div class="input-group mb-2 feature-item">
-                    <input type="text" class="form-control" name="features[]" value="<%= f %>" placeholder="Ví dụ: 10 ảnh retouch">
-                    <button class="btn btn-outline-danger btn-remove-feature" type="button"><i class="fas fa-trash"></i></button>
+                    <input type="text" class="form-control" name="features[]" value="<%= f %>"
+                      placeholder="Ví dụ: 10 ảnh retouch">
+                    <button class="btn btn-outline-danger btn-remove-feature" type="button"><i
+                        class="fas fa-trash"></i></button>
                   </div>
-                <% }) %>
-              <% } else { %>
-                <div class="input-group mb-2 feature-item">
-                  <input type="text" class="form-control" name="features[]" placeholder="Ví dụ: Tư vấn concept & trang phục">
-                  <button class="btn btn-outline-danger btn-remove-feature" type="button"><i class="fas fa-trash"></i></button>
-                </div>
-              <% } %>
+                  <% }) %>
+                    <% } else { %>
+                      <div class="input-group mb-2 feature-item">
+                        <input type="text" class="form-control" name="features[]"
+                          placeholder="Ví dụ: Tư vấn concept & trang phục">
+                        <button class="btn btn-outline-danger btn-remove-feature" type="button"><i
+                            class="fas fa-trash"></i></button>
+                      </div>
+                      <% } %>
             </div>
-            <button type="button" class="btn btn-sm btn-secondary" id="btnAddFeature"><i class="fas fa-plus"></i> Thêm quyền lợi</button>
+            <button type="button" class="btn btn-sm btn-secondary" id="btnAddFeature"><i class="fas fa-plus"></i> Thêm
+              quyền lợi</button>
           </div>
 
           <div class="row mb-4">
@@ -77,11 +89,12 @@
                 <div class="mt-2">
                   <img src="<%= service.cover_image %>" alt="Cover" style="max-height: 100px; border-radius: 8px;">
                 </div>
-              <% } %>
+                <% } %>
             </div>
             <div class="col-md-6 d-flex align-items-center">
               <div class="form-check form-switch fs-5 mt-3">
-                <input class="form-check-input" type="checkbox" name="is_featured" id="isFeatured" <%= service.is_featured ? 'checked' : '' %>>
+                <input class="form-check-input" type="checkbox" name="is_featured" id="isFeatured"
+                  <%=service.is_featured ? 'checked' : '' %>>
                 <label class="form-check-label fs-6 ms-2" for="isFeatured">Gói Nổi Bật (Featured)</label>
               </div>
             </div>
@@ -101,7 +114,7 @@
 
 <script>
   // Tự động tạo slug từ tên gói
-  document.getElementById('nameInput').addEventListener('input', function() {
+  document.getElementById('nameInput').addEventListener('input', function () {
     let name = this.value;
     let slug = name.toLowerCase()
       .replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, 'a')
@@ -122,7 +135,7 @@
   });
 
   // Xử lý thêm/xóa quyền lợi
-  document.getElementById('btnAddFeature').addEventListener('click', function() {
+  document.getElementById('btnAddFeature').addEventListener('click', function () {
     const container = document.getElementById('featuresContainer');
     const div = document.createElement('div');
     div.className = 'input-group mb-2 feature-item';
@@ -133,7 +146,7 @@
     container.appendChild(div);
   });
 
-  document.getElementById('featuresContainer').addEventListener('click', function(e) {
+  document.getElementById('featuresContainer').addEventListener('click', function (e) {
     if (e.target.closest('.btn-remove-feature')) {
       const item = e.target.closest('.feature-item');
       if (document.querySelectorAll('.feature-item').length > 1) {

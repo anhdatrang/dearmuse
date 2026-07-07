@@ -59,24 +59,32 @@
 
                         <!-- Cover Content Overlay -->
                         <div class="cover-overlay-content">
-                          <div class="cover-header" style="border-bottom: 1.5px solid rgba(255, 255, 255, 0.3);">
-                            <span class="cover-subtitle" style="letter-spacing: 0.25em; color: #FFFFFF !important; font-weight: 900 !important; text-shadow: 0 2px 8px rgba(26, 25, 22, 0.7);">FINE ART & EDITORIAL
+                          <% 
+                             // Ensure text is white for Doanh Nghiệp or specific dark indices
+                             var isDarkCover = (group.id === 'doanh-nghiep' || globalIssueCount === 6 || globalIssueCount === 7);
+                             var coverTextColor = isDarkCover ? '#FFFFFF' : '#1A1916'; 
+                             var coverTextShadow = isDarkCover ? '0 2px 8px rgba(26, 25, 22, 0.7)' : 'none';
+                             var headerBorder = isDarkCover ? 'rgba(255, 255, 255, 0.3)' : 'rgba(26, 25, 22, 0.1)';
+                          %>
+                          <div class="cover-header" style="border-bottom: 1.5px solid <%= headerBorder %>;">
+                            <span class="cover-subtitle" style="letter-spacing: 0.25em; color: <%= coverTextColor %> !important; font-weight: 900 !important; text-shadow: <%= coverTextShadow %>;">FINE ART & EDITORIAL
                               EXCELLENCE</span>
                             <h2 class="cover-title" style="color: #FFFFFF !important; text-shadow: 0 4px 15px rgba(26, 25, 22, 0.75);">DEAR MUSÉ</h2>
                             <div class="cover-meta">
-                              <% var metaColor = '#FFFFFF'; %>
-                              <span style="font-weight:700; color:<%= metaColor %>; text-shadow: 0 2px 8px rgba(26, 25, 22, 0.7);">THE BEST PORTRAIT
+                              <span style="font-weight:700; color:<%= coverTextColor %>; text-shadow: <%= coverTextShadow %>;">THE BEST PORTRAIT
                                 STUDIO</span>
-                              <span style="font-weight:700; color:<%= metaColor %>; text-shadow: 0 2px 8px rgba(26, 25, 22, 0.7);">dearmuse.vn</span>
+                              <span style="font-weight:700; color:<%= coverTextColor %>; text-shadow: <%= coverTextShadow %>;">dearmuse.vn</span>
                             </div>
                           </div>
 
                           <div class="cover-body">
                             <div class="cover-center-content">
                               <div class="sunken-title-wrapper">
+                                <% if (group.englishTitle !== 'BUSINESS' && group.englishTitle !== 'COMMERCIAL') { %>
                                 <div class="sunken-bg-text">
                                   <%= group.englishTitle %>
                                 </div>
+                                <% } %>
                               </div>
                             </div>
                           </div>

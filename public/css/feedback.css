@@ -244,18 +244,52 @@
 
 /* ── Different Styles of Notes ── */
 
-/* 1. The Polaroid Style */
-.note-polaroid {
-  background: #FCF8EE;
-  padding: 20px 20px 45px;
-  width: 320px;
+/* 4. The Film Strip Style */
+.note-film {
+  background: #181818;
+  padding: 15px 35px;
+  width: 380px;
   transform-origin: center top;
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1), 0 2px 5px rgba(0,0,0,0.05);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4), 0 2px 5px rgba(0,0,0,0.2);
+  position: relative;
+  border-radius: 4px;
 }
-.scrapbook-item-wrapper:hover .note-polaroid { transform: scale(1.05) rotate(0deg) !important; }
+.note-film::before,
+.note-film::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  width: 14px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 8px,
+    #EFE9D9 8px,
+    #EFE9D9 18px
+  );
+}
+.note-film::before {
+  left: 10px;
+}
+.note-film::after {
+  right: 10px;
+}
+.scrapbook-item-wrapper:hover .note-film { transform: scale(1.05) rotate(0deg) !important; }
 
-/* Tape for Polaroid / Postcard */
+/* Film Inner Frame */
+.note-film .film-inner {
+  background: #FCF8EE;
+  padding: 30px 25px;
+  border-radius: 4px;
+  position: relative;
+  z-index: 2;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+}
+
+
+/* Tape for Film */
 .tape {
   position: absolute;
   top: -16px; left: 50%; width: 110px; height: 38px; /* Kích thước vừa vặn, dán đè sát nét */
@@ -266,35 +300,6 @@
   background-image: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0) 100%);
   transform: translateX(-50%) rotate(calc(var(--rot) * -1)); z-index: 20;
 }
-
-/* 2. The Torn Paper Style (Vintage Note) */
-.note-torn {
-  background: #FCF8EE;
-  padding: 40px 30px;
-  width: 340px;
-  transform-origin: center top;
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-  clip-path: polygon(
-    0% 2%, 5% 0%, 10% 2%, 15% 0%, 20% 3%, 25% 1%, 30% 2%, 35% 0%, 40% 3%, 45% 1%, 50% 2%, 55% 0%, 60% 3%, 65% 1%, 70% 2%, 75% 0%, 80% 3%, 85% 1%, 90% 2%, 95% 0%, 100% 2%,
-    100% 98%, 95% 100%, 90% 98%, 85% 100%, 80% 97%, 75% 99%, 70% 98%, 65% 100%, 60% 97%, 55% 99%, 50% 98%, 45% 100%, 40% 97%, 35% 99%, 30% 98%, 25% 100%, 20% 97%, 15% 99%, 10% 98%, 5% 100%, 0% 98%
-  );
-}
-.scrapbook-item-wrapper:hover .note-torn { transform: scale(1.03) rotate(0deg) !important; }
-
-/* 3. The Minimalist Postcard */
-.note-postcard {
-  background-color: #FCF8EE;
-  padding: 45px 35px;
-  width: 360px;
-  border: 1px solid rgba(122, 92, 74, 0.2);
-  box-shadow: 2px 6px 20px rgba(0,0,0,0.06);
-  transform-origin: center top;
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-  background-image: repeating-linear-gradient(transparent, transparent 29px, rgba(122, 92, 74, 0.05) 29px, rgba(122, 92, 74, 0.05) 30px);
-}
-.scrapbook-item-wrapper:hover .note-postcard { transform: scale(1.03) rotate(0deg) !important; }
-
-
 
 /* ── Card Inner Elements ── */
 .card-header { margin-bottom: 20px; position: relative; z-index: 2; }
@@ -446,7 +451,7 @@
     display: none; /* Giấu dây thừng trên mobile để tránh chèn ép chữ */
   }
   .scrapbook-item-wrapper { transform: scale(1); margin-top: 20px !important; margin-bottom: 20px !important; }
-  .note-polaroid, .note-torn, .note-postcard { width: 100%; max-width: 360px; }
+  .note-film { width: 100%; max-width: 360px; }
   .editorial-form { padding: 40px 20px; }
   .vintage-deco, .deco-flower { display: none; } /* Giấu họa tiết lớn trên mobile */
 }

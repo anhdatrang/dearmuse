@@ -47,6 +47,7 @@ router.get('/services', async (req, res) => {
 });
 
 router.get('/services/:slug', conceptController.detail);
+router.get('/services/:slug/details', conceptController.packageDetail);
 
 // Pricing
 router.get('/pricing', async (req, res) => {

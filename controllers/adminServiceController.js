@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer({ 
+const upload = multer({
   storage,
   limits: { fileSize: 5 * 1024 * 1024 } // 5MB
 });
@@ -54,7 +54,7 @@ exports.createService = async (req, res) => {
     features = Array.isArray(req.body.features) ? req.body.features : [req.body.features];
     features = features.filter(f => f.trim() !== '');
   }
-  
+
   const cover_image = req.file ? `/uploads/services/${req.file.filename}` : null;
   const isFeat = is_featured === 'on' || is_featured === '1' ? 1 : 0;
 
@@ -63,7 +63,7 @@ exports.createService = async (req, res) => {
       INSERT INTO services (name, slug, description, short_desc, price_from, duration_minutes, cover_image, features, is_featured, sort_order)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `, [
-      name, slug, description, short_desc, price_from || 0, duration_minutes || 0, 
+      name, slug, description, short_desc, price_from || 0, duration_minutes || 0,
       cover_image, JSON.stringify(features), isFeat, sort_order || 0
     ]);
     req.flash('success', 'Đã thêm gói dịch vụ thành công');
@@ -79,11 +79,11 @@ exports.editServicePage = async (req, res) => {
   try {
     const [services] = await db.query('SELECT * FROM services WHERE id = ?', [req.params.id]);
     if (services.length === 0) return res.status(404).send('Không tìm thấy');
-    
+
     // Parse features if string
     let service = services[0];
     if (typeof service.features === 'string') {
-      try { service.features = JSON.parse(service.features); } catch(e) { service.features = []; }
+      try { service.features = JSON.parse(service.features); } catch (e) { service.features = []; }
     }
     if (!service.features) service.features = [];
 
@@ -102,7 +102,7 @@ exports.editServicePage = async (req, res) => {
 exports.updateService = async (req, res) => {
   const id = req.params.id;
   const { name, slug, description, short_desc, price_from, duration_minutes, is_featured, sort_order } = req.body;
-  
+
   let features = [];
   if (req.body.features) {
     features = Array.isArray(req.body.features) ? req.body.features : [req.body.features];
