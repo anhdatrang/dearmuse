@@ -1,30 +1,74 @@
-BẢNG GIÁ DỊCH VỤ CHỤP ẢNH GỐC (BASELINE PACKAGES):
-1. Gói Chân Dung Chuyên Nghiệp (Portrait Studio):
-   - Chi phí: Từ 1.500.000đ
-   - Bao gồm: 60 phút chụp tại studio, hỗ trợ các phụ kiện cơ bản, bàn giao toàn bộ file gốc, chỉnh sửa (retouch) chuyên sâu 10 ảnh nghệ thuật.
-   - Chưa bao gồm dịch vụ Makeup.
+BẢNG GIÁ DỊCH VỤ CHỤP ẢNH CHÍNH THỨC DEAR MUSÉ:
 
-2. Gói Áo Dài / Kỷ Yếu Nghệ Thuật:
-   - Chi phí: Từ 1.800.000đ
-   - Bao gồm: Chụp ảnh ngoại cảnh tự nhiên tại các địa điểm TP.HCM, thời gian chụp 90 phút, hỗ trợ tối đa 3 bộ trang phục áo dài/cổ phục của studio, bàn giao toàn bộ file gốc, chỉnh sửa màu sắc toàn bộ ảnh.
-   - Chưa bao gồm dịch vụ Makeup.
+I. CÁC GÓI CHỤP CÁ NHÂN (PORTRAIT & CONCEPT):
+1. Gói Chân Dung Chuyên Nghiệp (Profile):
+   - Phù hợp: Chân dung cá nhân chuyên nghiệp, công việc, thương hiệu cá nhân.
+   - Các gói nhỏ:
+     * Gói Profile Basic (Cá Nhân): 1.500.000đ
+       + Thời gian: 60 phút chụp tại studio chuyên nghiệp.
+       + Chi tiết: Chụp chân dung phông nền trơn tối giản (Trắng/Đen/Xám), tư vấn tạo dáng, retouch chuyên sâu 8 ảnh sắc nét, bàn giao toàn bộ file gốc sau buổi chụp.
+     * Gói Executive Profile (Premium): 2.800.000đ
+       + Thời gian: 90 phút chụp với 2 bối cảnh/phông nền khác nhau.
+       + Chi tiết: Hỗ trợ trang điểm & làm tóc chuyên nghiệp tại studio, trang phục vest/sơ mi thiết kế từ studio, retouch chuyên sâu 18 ảnh, bàn giao toàn bộ file gốc.
 
-3. Gói Concept Sáng Tạo (Cinematic Concept):
-   - Chi phí: Từ 2.500.000đ
-   - Bao gồm: Thiết lập concept nghệ thuật riêng biệt, thời gian chụp 90-120 phút, bao gồm 1 layout trang điểm và làm tóc chuyên nghiệp, hỗ trợ trang phục thiết kế riêng của concept, chỉnh sửa chuyên sâu 15 ảnh chất lượng cao, bàn giao toàn bộ file gốc.
+2. Gói Concept Nghệ Thuật (Concept):
+   - Phù hợp: Chụp ảnh nghệ thuật, áo dài, concept sáng tạo kể câu chuyện bản sắc riêng.
+   - Các gói nhỏ:
+     * Gói Concept Áo Dài - Nhánh Sen (Basic): 1.800.000đ
+       + Thời gian: 90 phút chụp ngoại cảnh nghệ thuật (Hồ Gươm / Văn Miếu).
+       + Chi tiết: Tư vấn góc tạo dáng thanh lịch truyền thống, hỗ trợ 1 bộ Áo dài trắng cổ điển từ studio, retouch nghệ thuật chuyên sâu 15 hình, bàn giao toàn bộ file gốc.
+     * Gói Concept Nghệ Thuật - Nhành Thơ (Basic): 2.500.000đ
+       + Thời gian: 90 phút chụp chuyên sâu tại Studio hoặc Outdoor.
+       + Chi tiết: Tư vấn lên ý tưởng & moodboard nghệ thuật riêng biệt, hỗ trợ 1 bộ trang phục thơ mộng từ kho đồ Studio, retouch chuyên sâu 15 hình, bàn giao toàn bộ file gốc.
+     * Gói Concept Áo Dài - Cổ Đô (Premium): 3.200.000đ
+       + Thời gian: 120 phút chụp tại bối cảnh cổ kính / phim trường xưa.
+       + Chi tiết: Hỗ trợ makeup & làm tóc chuyên nghiệp phù hợp áo dài, hỗ trợ 2 bộ Áo dài thiết kế cao cấp (gấm, thêu tay), retouch chuyên sâu 30 hình, bàn giao toàn bộ file gốc, tặng 1 ảnh in phóng lớn 40x60 ép gỗ cao cấp.
+     * Gói Concept Nghệ Thuật - Tinh Sương (Premium): 4.500.000đ
+       + Thời gian: 150 phút chụp tại cả Studio và Outdoor lân cận.
+       + Chi tiết: Tư vấn thiết kế ý tưởng độc bản theo câu chuyện riêng, hỗ trợ makeup & làm tóc chuyên nghiệp theo concept, hỗ trợ 2 bộ trang phục thiết kế cao cấp, retouch chuyên sâu 30 hình, bàn giao toàn bộ file gốc, tặng 1 ảnh in phóng lớn 40x60 kèm khung gỗ.
 
-4. Gói Sự Kiện Basic (Event):
-   - Chi phí: Từ 3.000.000đ
-   - Bao gồm: 1 nhiếp ảnh gia chính chụp phóng sự tự nhiên, trả toàn bộ file ảnh gốc chất lượng cao, chỉnh sửa (retouch) 30 ảnh tuyển chọn.
+3. Gói Kỷ Yếu (portrait-ky-yeu):
+   - Chi phí: 1.800.000đ
+   - Thời gian: 90 phút chụp.
+   - Chi tiết: Chụp ngoại cảnh hoặc studio, hỗ trợ trang phục kỷ yếu, trả toàn bộ file gốc, retouch 15 ảnh đặc sắc.
 
-5. Gói Sự Kiện Cao Cấp (Event Premium):
-   - Chi phí: Từ 6.000.000đ
-   - Bao gồm: 2 nhiếp ảnh gia chuyên nghiệp, trang bị thiết bị chiếu sáng di động chuyên dụng cho sự kiện lớn, chỉnh sửa 60 ảnh nghệ thuật, bàn giao nhanh trong 48h.
+II. CÁC GÓI DOANH NGHIỆP & SỰ KIỆN (EVENT):
+1. Gói Sự Kiện Event Basic:
+   - Phù hợp: Sự kiện quy mô vừa và nhỏ.
+   - Các gói nhỏ:
+     * Gói Nửa Ngày (4 Tiếng): 3.000.000đ
+       + Chi tiết: 1 Nhiếp ảnh gia chính chuyên nghiệp chụp phóng sự tự nhiên và lưu niệm tập thể, bàn giao toàn bộ file gốc (tối thiểu 250+ ảnh), retouch 50 ảnh chọn lọc, bàn giao sau 3 ngày.
+     * Gói Cả Ngày (8 Tiếng): 5.500.000đ
+       + Chi tiết: 1 Nhiếp ảnh gia chính chuyên nghiệp chụp phóng sự & lưu niệm tập thể, bàn giao toàn bộ file gốc (tối thiểu 500+ ảnh), retouch 100 ảnh chọn lọc, bàn giao sau 3 ngày, hỗ trợ xuất nhanh 10 ảnh trong sự kiện phục vụ truyền thông.
 
-DANH SÁCH DỊCH VỤ CỘNG THÊM (ADD-ONS - CÓ THỂ CỘNG DỒN):
-1. Dịch vụ Trang điểm & Làm tóc chuyên nghiệp (Makeup & Hair):
-   - Gói Makeup tại Studio: 500.000đ / người.
-   - Gói Makeup đi theo dặm phấn ngoại cảnh: 900.000đ / buổi.
+2. Gói Sự Kiện Event Premium:
+   - Phù hợp: Sự kiện quy mô lớn chuyên nghiệp, nâng tầm thương hiệu.
+   - Các gói nhỏ:
+     * Gói Gold (Nửa Ngày): 6.000.000đ
+       + Chi tiết: 2 Nhiếp ảnh gia chuyên nghiệp (1 chụp phóng sự, 1 chụp backdrop), hệ thống đèn studio chiếu backdrop, bàn giao toàn bộ file gốc, chỉnh sửa toàn bộ ảnh đạt chuẩn truyền thông, retouch chuyên sâu 60 ảnh chân dung/khoảnh khắc quan trọng, hỗ trợ xuất nhanh 15 ảnh phục vụ truyền thông, bàn giao nhanh trong 48 giờ.
+     * Gói Platinum (Cả Ngày): 11.000.000đ
+       + Chi tiết: 2 Nhiếp ảnh gia chuyên nghiệp tác nghiệp cả ngày, hệ thống đèn studio chiếu sáng sự kiện, bàn giao toàn bộ file gốc, chỉnh sửa toàn bộ ảnh đạt chuẩn truyền thông, retouch chuyên sâu 120 ảnh quan trọng, hỗ trợ xuất nhanh 30 ảnh phục vụ truyền thông/báo chí, bàn giao nhanh trong 48 giờ.
+
+III. CÁC GÓI NGHỆ THUẬT MỞ RỘNG (FINE ART & PROJECTOR):
+1. Gói Chạm (concept-cham):
+   - Chi phí: 3.500.000đ
+   - Thời gian: 90 phút chụp.
+   - Chi tiết: Chụp trong phòng studio đương đại tối giản, khai thác ánh sáng nghệ thuật tương tác cơ thể & biểu cảm, retouch nghệ thuật đặc tả chiều sâu 12 tác phẩm chọn lọc, bàn giao toàn bộ file gốc, tặng kèm 1 ảnh in khung gỗ nghệ thuật.
+
+2. Gói Khắc (concept-khac):
+   - Chi phí: 3.800.000đ
+   - Thời gian: 90 phút chụp.
+   - Chi tiết: Chụp chân dung cận cảnh ánh sáng tương phản cao Fine Art đen trắng chuẩn quốc tế, retouch nghệ thuật sâu sắc 10 ảnh độc bản, bàn giao toàn bộ file gốc (đã chuyển đổi), tặng 1 ảnh in phóng lớn 50x75 ép gỗ nghệ thuật treo tường.
+
+3. Gói Ấn (concept-an):
+   - Chi phí: 4.800.000đ
+   - Thời gian: 120 phút chụp.
+   - Chi tiết: Chụp studio nghệ thuật cao cấp sắp đặt bối cảnh projector độc quyền thiết kế riêng, do nhiếp ảnh gia lead chính trực tiếp thực hiện, retouch nghệ thuật siêu thực 15 tác phẩm độc bản, bàn giao toàn bộ file gốc.
+
+IV. DANH SÁCH DỊCH VỤ CỘNG THÊM (ADD-ONS - CÓ THỂ CỘNG DỒN):
+1. Trang điểm & làm tóc chuyên nghiệp (Makeup & Hair):
+   - Makeup tại Studio: 500.000đ / người.
+   - Makeup đi theo dặm phấn ngoại cảnh: 900.000đ / buổi.
 2. Thuê thêm trang phục thiết kế của studio: 200.000đ / bộ.
 3. Chỉnh sửa thêm ảnh nghệ thuật (Retouch phụ trội): 50.000đ / tấm.
 4. Chụp thêm giờ (Overtime): 400.000đ / giờ phát sinh.

@@ -1,0 +1,77 @@
+[
+  {
+    "intent": "location",
+    "patterns": [
+      "dia chi studio o dau",
+      "cua hang o dau",
+      "vi tri studio",
+      "lam sao de den studio",
+      "dia diem cua hang",
+      "co chi nhanh ha noi khong",
+      "studio ha noi o dau",
+      "duong di den cua hang"
+    ],
+    "response": "Dạ, Studio của Dear Musé nằm tại **Hà Nội** ạ.\n\n• **Giờ mở cửa làm việc:** 8:00 sáng đến 9:00 tối tất cả các ngày trong tuần (kể cả ngày lễ).\n• **Hotline/Zalo hỗ trợ nhanh:** 0912 345 678\n\nDear Musé rất hân hạnh được đón tiếp bạn ghé chơi và trải nghiệm dịch vụ nhiếp ảnh nghệ thuật tại đây! 🥰"
+  },
+  {
+    "intent": "pricing",
+    "patterns": [
+      "bang gia cac goi chup",
+      "chup anh het bao nhieu tien",
+      "gia goi portrait",
+      "chi phi chup concept",
+      "co khuyen mai gi khong",
+      "gia re nhat la bao nhieu",
+      "gia cac goi dich vu",
+      "bao gia cho minh voi"
+    ],
+    "response": "Dạ, Dear Musé xin gửi đến bạn thông tin bảng giá các gói chụp ảnh nghệ thuật chính thức ạ:\n\n**I. Gói Cá Nhân:**\n• [**Profile (Chân dung)**](/services/portrait-profile): Từ 1.500.000đ (Basic 60 phút) đến 2.800.000đ (Executive 90 phút, có makeup).\n• [**Concept Nghệ Thuật**](/services/portrait-concept): Từ 1.800.000đ (Basic ngoại cảnh) đến 4.500.000đ (Premium Tinh Sương).\n• [**Kỷ Yếu**](/services/portrait-ky-yeu): 1.800.000đ (90 phút chụp).\n\n**II. Gói Doanh Nghiệp & Sự Kiện:**\n• [**Event Basic**](/services/event-basic): Từ 3.000.000đ (4 tiếng) đến 5.500.000đ (8 tiếng).\n• [**Event Premium**](/services/event-premium): Từ 6.000.000đ (nửa ngày) đến 11.000.000đ (cả ngày).\n\n**III. Gói Nghệ Thuật Mở Rộng:**\n• [**Gói Chạm**](/services/concept-cham): 3.500.000đ (Nghệ thuật đương đại tối giản).\n• [**Gói Khắc**](/services/concept-khac): 3.800.000đ (Chân dung Fine Art đen trắng).\n• [**Gói Ấn**](/services/concept-an): 4.800.000đ (Projector nghệ thuật siêu thực).\n\n👉 Bạn có thể xem chi tiết tại trang **[Bảng Giá](/pricing)** trực tiếp trên website để đặt lịch nhanh chóng nhé! 🥰"
+  },
+  {
+    "intent": "contact",
+    "patterns": [
+      "so dien thoai lien he",
+      "sdt zalo cua cua hang",
+      "hotline tu van",
+      "lien lac bang cach nao",
+      "kenh ho tro facebook instagram",
+      "sdt de goi dien"
+    ],
+    "response": "Dạ, bạn có thể liên hệ nhanh với Dear Musé qua các kênh sau để được hỗ trợ tức thì nhé:\n\n• **Hotline/Zalo hỗ trợ nhanh:** 0912 345 678\n• **Giờ làm việc:** 8:00 sáng - 9:00 tối hàng ngày\n• **Facebook:** [fb.com/dearmuse.studio](https://fb.com/dearmuse.studio)\n• **Instagram:** [@dearmuse.studio](https://instagram.com/dearmuse.studio)\n• **Tiktok:** [@dearmuse.studio](https://tiktok.com/@dearmuse.studio)\n• Hoặc gửi lời nhắn tại trang **[Liên Hệ](/contact)** trực tiếp trên website ạ! 🥰"
+  },
+  {
+    "intent": "booking",
+    "patterns": [
+      "cach dat lich chup",
+      "dat cho truoc nhu nao",
+      "chinh sach dat coc",
+      "chuyen khoan coc bao nhieu",
+      "huy lich co duoc hoan coc",
+      "doi ngay chup nhu nao"
+    ],
+    "response": "Dạ, quy trình đặt lịch chụp và chính sách tại Dear Musé như sau ạ:\n\n• **Đặt cọc:** Quý khách cần đặt cọc trước **30%** giá trị gói chụp để xác nhận giữ chỗ. Số tiền còn lại sẽ thanh toán sau khi hoàn thành buổi chụp.\n• **Thay đổi lịch:** Vui lòng thông báo trước tối thiểu **3 ngày** so với ngày chụp dự kiến để được hỗ trợ dời lịch miễn phí.\n• **Cách đặt lịch:** Bạn có thể bấm vào mục **[Đặt Lịch](/booking)** trực tiếp trên website để chọn gói và ngày chụp phù hợp, hoặc nhắn tin cho hotline/Zalo 0912 345 678 để nhân viên hỗ trợ mình giữ chỗ nhé! 🥰"
+  },
+  {
+    "intent": "handover",
+    "patterns": [
+      "bao lau thi co anh",
+      "khi nao nhan duoc file goc",
+      "tra anh nhu the nao",
+      "lay anh sau bao nhieu ngay",
+      "co cho file anh goc khong",
+      "thoi gian chinh sua anh"
+    ],
+    "response": "Dạ, thời gian bàn giao ảnh tại Dear Musé cực kỳ nhanh chóng:\n\n• **Ảnh gốc:** Bàn giao toàn bộ link tải file ảnh gốc chất lượng cao trong vòng **24 giờ** sau buổi chụp.\n• **Ảnh chỉnh sửa (Retouch):** Bàn giao sau **3 đến 5 ngày** kể từ ngày bạn chọn xong danh sách các ảnh cần chỉnh sửa chuyên sâu.\n\nDear Musé luôn cam kết chất lượng hình ảnh sắc nét, nghệ thuật và đúng tiến độ bàn giao cho mình ạ! 🥰"
+  },
+  {
+    "intent": "makeup",
+    "patterns": [
+      "co bao gom trang diem lam toc",
+      "makeup o studio luon ha",
+      "gia trang diem ngoai canh",
+      "make up het bao nhieu",
+      "co ho tro makeup khong"
+    ],
+    "response": "Dạ, về phần trang điểm và làm tóc chuyên nghiệp, chính sách của Dear Musé như sau:\n\n• **Các gói Premium/Executive:** Đã bao gồm sẵn dịch vụ trang điểm và làm tóc chuyên nghiệp tại studio phù hợp với concept.\n• **Các gói Basic:** Chưa bao gồm trang điểm. Bạn có thể đăng ký thêm dịch vụ makeup phụ trợ cộng dồn:\n  * Makeup tại Studio: **500.000đ** / người.\n  * Makeup đi theo dặm phấn ngoại cảnh: **900.000đ** / buổi.\n\nĐội ngũ makeup của Dear Musé luôn sử dụng mỹ phẩm cao cấp để đảm bảo bạn có vẻ ngoài lung linh và tự nhiên nhất! 🌸"
+  }
+]
