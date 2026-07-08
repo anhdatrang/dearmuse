@@ -1660,3 +1660,88 @@
     text-shadow: 0 4px 15px rgba(0, 0, 0, 0.9) !important;
   }
 }
+
+/* Mobile portrait layout optimization for full bleed images and spacious text */
+@media (max-width: 767px) {
+  .portfolio-container-wide {
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  .magazine-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 30px !important;
+    margin: 0 !important;
+  }
+
+  .magazine-issue {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .magazine-row-1,
+  .magazine-row-2 {
+    gap: 20px !important;
+    margin-bottom: 40px !important;
+    width: 100% !important;
+  }
+
+  /* Make magazine grids span edge-to-edge on phone screens */
+  .magazine-grid {
+    border-radius: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .magazine-page {
+    padding: 24px 16px !important;
+    border-radius: 0 !important;
+  }
+
+  /* Full bleed cover image on phone screens */
+  .magazine-grid .magazine-page.m-page-cover,
+  .magazine-grid .magazine-page.m-page-ad {
+    padding: 0 !important;
+    border-radius: 0 !important;
+    min-height: 520px !important;
+  }
+
+  .cover-overlay-content {
+    padding: 24px 16px !important;
+    height: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .cover-subtitle {
+    font-size: 10px !important;
+    letter-spacing: 0.25em !important;
+  }
+
+  .cover-title {
+    font-size: clamp(38px, 11vw, 56px) !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  .cover-meta {
+    font-size: 8.5px !important;
+    letter-spacing: 0.1em !important;
+  }
+
+  .concept-label {
+    font-size: 9px !important;
+    letter-spacing: 0.2em !important;
+  }
+
+  .concept-name {
+    font-size: clamp(24px, 8vw, 32px) !important;
+  }
+}
