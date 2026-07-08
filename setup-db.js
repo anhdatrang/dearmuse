@@ -39,6 +39,12 @@ async function setup() {
       features JSON,
       is_featured TINYINT(1) DEFAULT 0,
       sort_order INT DEFAULT 0,
+      category VARCHAR(50) NOT NULL DEFAULT 'ca-nhan',
+      category_label VARCHAR(100) NOT NULL DEFAULT 'Cá Nhân',
+      subtitle VARCHAR(255),
+      gallery JSON,
+      pricing JSON,
+      addons JSON,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
   `);
@@ -542,13 +548,37 @@ async function setup() {
   // Seed services
   const [existingServices] = await conn.query(`SELECT COUNT(*) as count FROM services`);
   if (existingServices[0].count === 0) {
-    await conn.query(`
-      INSERT INTO services (name, slug, description, short_desc, price_from, duration_minutes, is_featured, sort_order) VALUES
-      ('Portrait Cá Nhân', 'portrait-ca-nhan', 'Chụp chân dung nghệ thuật — nắm bắt cá tính và cảm xúc của bạn trong từng khung hình. Mỗi bộ ảnh là một câu chuyện riêng, được kể bằng ánh sáng và cảm xúc thật.', 'Lưu giữ khoảnh khắc của chính bạn', 1500000, 90, 1, 1),
-      ('Sinh Nhật & Tốt Nghiệp', 'sinh-nhat-tot-nghiep', 'Những cột mốc quan trọng xứng đáng được ghi lại theo cách đẹp nhất. Từ buổi chụp sinh nhật lãng mạn đến bộ ảnh tốt nghiệp đáng tự hào.', 'Cột mốc cuộc đời đáng nhớ', 1800000, 120, 1, 2),
-      ('Sự Kiện', 'su-kien', 'Ghi lại không khí và cảm xúc của những buổi sự kiện đặc biệt. Dạ hội, tiệc tốt nghiệp, workshop hay bất kỳ khoảnh khắc tập thể nào xứng đáng được lưu giữ.', 'Khoảnh khắc tập thể, cảm xúc riêng tư', 3000000, 180, 0, 3),
-      ('Thương Hiệu & Sản Phẩm', 'thuong-hieu-san-pham', 'Ảnh thương mại chuyên nghiệp — nâng tầm hình ảnh thương hiệu của bạn. Từ ảnh sản phẩm đến lookbook thương hiệu, chúng tôi tạo nên hình ảnh kể được câu chuyện.', 'Hình ảnh bán hàng, hình ảnh thương hiệu', 2500000, 120, 1, 4)
-    `);
+    const { concepts } = require('./data/concepts');
+    for (const c of concepts) {
+      let priceFrom = 0;
+      if (c.pricing && c.pricing.length > 0) {
+        const pStr = c.pricing[0].price.replace(/[^0-9]/g, '');
+        priceFrom = parseInt(pStr) || 0;
+      }
+      const features = c.pricing && c.pricing[0] ? c.pricing[0].inclusions : [];
+
+      await conn.query(`
+        INSERT INTO services (name, slug, description, short_desc, price_from, duration_minutes, cover_image, features, is_featured, sort_order, category, category_label, subtitle, gallery, pricing, addons)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `, [
+        c.name,
+        c.id,
+        c.description,
+        c.subtitle,
+        priceFrom,
+        90,
+        c.coverImage,
+        JSON.stringify(features),
+        1,
+        0,
+        c.category,
+        c.categoryLabel,
+        c.subtitle,
+        JSON.stringify(c.gallery),
+        JSON.stringify(c.pricing),
+        JSON.stringify(c.addons)
+      ]);
+    }
     console.log('✅ Seed services xong');
   } else {
     console.log('ℹ️  Services đã có dữ liệu, bỏ qua seed');

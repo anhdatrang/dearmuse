@@ -10,46 +10,6 @@
 
       <!-- Cinematic Podium Layout -->
       <div class="svc-podium-container has-active reveal" data-delay="1">
-        <% const categories = [
-          {
-            id: 'doanh-nghiep',
-            name: 'Doanh Nghiệp',
-            subtitle: 'Nâng tầm giá trị thương hiệu',
-            class: 'category-left',
-            num: '01',
-            image: '/cdn/image?src=%2Fsource%2FDOANH%20NGHI%E1%BB%86P%2FPREMIUM%2FIMG_4319.webp',
-            services: [
-              { name: 'Event Basic', desc: 'Ghi lại các sự kiện quy mô vừa và nhỏ với chất lượng phóng sự chân thực và tinh tế.', price: 'Từ 3.000.000đ', slug: 'event-basic', details: ['1 nhiếp ảnh gia chính', 'Chụp phóng sự tự nhiên', 'Trả toàn bộ file ảnh gốc', 'Retouch 30 ảnh tuyển chọn'] },
-              { name: 'Event Premium', desc: 'Gói chụp sự kiện cao cấp phục vụ thương mại, truyền thông và quảng bá thương hiệu.', price: 'Từ 6.000.000đ', slug: 'event-premium', details: ['2 nhiếp ảnh gia chuyên nghiệp', 'Thiết bị chiếu sáng di động chuyên dụng', 'Retouch 60 ảnh nghệ thuật', 'Bàn giao nhanh trong 48h'] }
-            ]
-          },
-          {
-            id: 'ca-nhan',
-            name: 'Cá Nhân',
-            subtitle: 'Lưu giữ câu chuyện bản sắc',
-            class: 'category-center',
-            num: '02',
-            image: '/cdn/image?src=%2Fsource%2FC%C3%81%20NH%C3%82N%2FCONCEPT%2FSU207836(1).webp',
-            services: [
-              { name: 'Concept', desc: 'Thiết kế concept nghệ thuật độc bản, bay bổng hoặc Áo dài truyền thống tôn vinh nét duyên dáng thanh lịch.', price: 'Từ 1.800.000đ', slug: 'portrait-concept', details: ['Concept Áo Dài cổ điển (từ 1.800.000đ)', 'Concept Nghệ Thuật độc bản (từ 2.500.000đ)', 'Lên ý tưởng & moodboard riêng biệt', 'Hỗ trợ trang phục thơ mộng / cổ điển', 'Retouch nghệ thuật chuyên sâu'] },
-              { name: 'Kỷ Yếu', desc: 'Ghi lại cột mốc thanh xuân rực rỡ và những kỷ niệm đáng nhớ.', price: 'Từ 1.800.000đ', slug: 'portrait-ky-yeu', details: ['Chụp ngoại cảnh hoặc studio', 'Hỗ trợ trang phục kỷ yếu', 'Trả toàn bộ file gốc', 'Retouch 15 ảnh đặc sắc'] },
-              { name: 'Profile', desc: 'Chân dung cá nhân chuyên nghiệp, tinh giản phục vụ công việc và xây dựng thương hiệu.', price: 'Từ 1.500.000đ', slug: 'portrait-profile', details: ['Chụp tại Studio phông nền trơn', 'Tư vấn hướng dẫn tạo dáng thần thái', 'Retouch chân dung 8 ảnh sắc nét', 'Trả toàn bộ file gốc ngay sau chụp'] }
-            ]
-          },
-          {
-            id: 'mo-rong',
-            name: 'Mở Rộng',
-            subtitle: 'Trải nghiệm nghệ thuật tinh hoa',
-            class: 'category-right',
-            num: '03',
-            image: '/cdn/image?src=%2Fsource%2FM%E1%BB%9E%20R%E1%BB%98NG%2FS%E1%BA%A2N%20PH%E1%BA%A8M%2Fmeowmeo-109670-2.webp',
-            services: [
-              { name: 'Chạm', desc: 'Bộ ảnh tối giản (Minimalism) chú trọng vào ánh sáng tự nhiên và những cái chạm cảm xúc tinh khôi.', price: 'Liên hệ tư vấn', slug: 'concept-cham', details: ['Bối cảnh studio đương đại tối giản', 'Ánh sáng nghệ thuật đặc tả cảm xúc', 'Retouch 12 tác phẩm chọn lọc', 'Tặng kèm 1 ảnh in khung gỗ cao cấp'] },
-              { name: 'Khắc', desc: 'Phong cách chân dung đen trắng (Fine Art B&W) khắc họa sâu sắc từng đường nét cá tính.', price: 'Liên hệ tư vấn', slug: 'concept-khac', details: ['Chụp đặc tả chân dung cận cảnh', 'Kỹ thuật ánh sáng tương phản cao', 'Retouch 10 ảnh nghệ thuật', 'In ấn 1 tấm khổ lớn nghệ thuật'] },
-              { name: 'Ấn', desc: 'Concept nghệ thuật phá cách kết hợp trình chiếu projector hoặc sắp đặt sắp đặt độc bản.', price: 'Liên hệ tư vấn', slug: 'concept-an', details: ['Sử dụng máy chiếu projector nghệ thuật', 'Bối cảnh sắp đặt riêng biệt', 'Nhiếp ảnh gia lead thực hiện', 'Retouch 15 tác phẩm độc bản'] }
-            ]
-          }
-        ]; %>
 
           <% categories.forEach(cat=> { %>
             <div class="svc-podium-column <%= cat.class %> <%= cat.id === 'ca-nhan' ? 'active' : '' %>"

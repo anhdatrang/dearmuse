@@ -1627,3 +1627,36 @@
     padding-bottom: 20px !important;
   }
 }
+
+/* Mobile cover styling fixes for image clarity and text contrast */
+@media (max-width: 1024px) {
+  .magazine-grid .magazine-page.m-page-cover,
+  .magazine-grid .magazine-page.m-page-ad {
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  .cover-overlay-content {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0) 70%, rgba(0, 0, 0, 0.75) 100%) !important;
+    padding: 32px !important;
+    height: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Force white text with high contrast shadow on mobile cover elements */
+  .cover-subtitle,
+  .cover-meta,
+  .cover-meta span,
+  .concept-label {
+    color: #FFFFFF !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85) !important;
+  }
+
+  .cover-title {
+    color: #FFFFFF !important;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.9) !important;
+  }
+}

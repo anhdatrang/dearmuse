@@ -218,6 +218,30 @@ const concepts = [
           "Hỗ trợ 1 bộ Áo dài trắng cổ điển từ studio",
           "Retouch nghệ thuật chuyên sâu 15 hình",
           "Bàn giao toàn bộ file ảnh gốc ngay sau buổi chụp"
+        ],
+        "gallery": [
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6366.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6368.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6371.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6379.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6382.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6383.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6386.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6389.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6390.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6391.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6392.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6430.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6393.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6413.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6415.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6416.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6417.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6419.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6420.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6422.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6426.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6431.webp"
         ]
       },
       {
@@ -229,6 +253,24 @@ const concepts = [
           "Hỗ trợ 1 bộ trang phục thơ mộng từ kho đồ Studio",
           "Retouch nghệ thuật chuyên sâu 15 hình",
           "Bàn giao toàn bộ file ảnh gốc ngay sau buổi chụp"
+        ],
+        "gallery": [
+          "/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207836(1).webp",
+          "/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207938(1).webp",
+          "/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207942(1).webp",
+          "/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207959(1).webp",
+          "/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207965(1).webp",
+          "/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207973(1).webp",
+          "/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207976(1).webp",
+          "/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207993(1).webp",
+          "/source/C%C3%81%20NH%C3%82N/CONCEPT/SU208035(1).webp",
+          "/source/C%C3%81%20NH%C3%82N/CONCEPT/SU208065(1).webp",
+          "/source/C%C3%81%20NH%C3%82N/CONCEPT/SU209534.webp",
+          "/source/C%C3%81%20NH%C3%82N/CONCEPT/SU209554.webp",
+          "/source/C%C3%81%20NH%C3%82N/CONCEPT/SU209588.webp",
+          "/source/C%C3%81%20NH%C3%82N/CONCEPT/SU209654.webp",
+          "/source/C%C3%81%20NH%C3%82N/CONCEPT/SU209664.webp",
+          "/source/C%C3%81%20NH%C3%82N/CONCEPT/SU209678.webp"
         ]
       },
       {
@@ -241,6 +283,16 @@ const concepts = [
           "Retouch nghệ thuật chuyên sâu 30 hình",
           "Bàn giao toàn bộ file ảnh gốc chất lượng cao",
           "Tặng kèm 1 ảnh in phóng lớn khổ 40x60 ép gỗ cao cấp"
+        ],
+        "gallery": [
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7139.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7141.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7149.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7151.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7152.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7153.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7154.webp",
+          "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7162.webp"
         ]
       },
       {
@@ -254,6 +306,13 @@ const concepts = [
           "Retouch nghệ thuật chuyên sâu 30 hình",
           "Bàn giao toàn bộ file ảnh gốc chất lượng cao",
           "Tặng kèm 1 ảnh in phóng lớn (khổ 40x60) đóng khung gỗ cao cấp"
+        ],
+        "gallery": [
+          "/source/C%C3%81%20NH%C3%82N/CONCEPT/IMG_8967.webp",
+          "/source/C%C3%81%20NH%C3%82N/CONCEPT/IMG_8968.webp",
+          "/source/C%C3%81%20NH%C3%82N/CONCEPT/Qu%E1%BA%A3%20chanh%20001.webp",
+          "/source/C%C3%81%20NH%C3%82N/CONCEPT/Qu%E1%BA%A3%20chanh%20003.webp",
+          "/source/C%C3%81%20NH%C3%82N/CONCEPT/Qu%E1%BA%A3%20chanh%20004.webp"
         ]
       }
     ],

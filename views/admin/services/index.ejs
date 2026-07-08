@@ -1,54 +1,284 @@
-<div class="d-flex justify-content-between align-items-center mb-4">
-  <h2>Quản lý Gói Dịch Vụ</h2>
-  <a href="/admin/services/create" class="btn btn-primary">
-    <i class="fas fa-plus"></i> Thêm Gói Mới
+<!-- views/admin/services/index.ejs -->
+<style>
+  .services-admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+  .services-admin-header h2 {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 400;
+  }
+  
+  /* Tabs design */
+  .admin-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--bone);
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+  .admin-tab-btn {
+    background: none;
+    border: none;
+    padding: 12px 4px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--smoke);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    position: relative;
+    transition: color 0.2s;
+  }
+  .admin-tab-btn:hover, .admin-tab-btn.active {
+    color: var(--ink);
+  }
+  .admin-tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--ink);
+  }
+  
+  .tab-pane {
+    display: none;
+  }
+  .tab-pane.active {
+    display: block;
+  }
+  
+  /* Cards layout */
+  .concepts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+  }
+  .concept-card {
+    background: var(--vanilla);
+    border: 0.5px solid var(--bone);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .concept-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.04);
+  }
+  .concept-card-img {
+    height: 180px;
+    background: #e2e8f0;
+    position: relative;
+    overflow: hidden;
+  }
+  .concept-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+  }
+  .concept-card:hover .concept-card-img img {
+    transform: scale(1.05);
+  }
+  .concept-card-category {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(26, 25, 22, 0.85);
+    color: var(--vanilla);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 2px;
+  }
+  .concept-card-body {
+    padding: 24px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .concept-card-title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  .concept-card-subtitle {
+    font-size: 12px;
+    color: var(--smoke);
+    margin-bottom: 16px;
+    line-height: 1.4;
+    font-style: italic;
+  }
+  .concept-packages-list {
+    border-top: 0.5px solid var(--bone);
+    padding-top: 12px;
+    margin-bottom: 24px;
+    flex: 1;
+  }
+  .concept-package-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+  .concept-package-item span:first-child {
+    font-weight: 500;
+  }
+  .concept-package-item span:last-child {
+    color: var(--mocha);
+  }
+  .concept-card-footer {
+    display: flex;
+    gap: 12px;
+    border-top: 0.5px solid var(--bone);
+    padding-top: 16px;
+    margin-top: auto;
+  }
+  .btn-edit {
+    flex: 1;
+    text-align: center;
+    background: var(--ink) !important;
+    color: var(--vanilla) !important;
+    border-color: var(--ink) !important;
+  }
+  .btn-edit:hover {
+    background: var(--mocha) !important;
+    border-color: var(--mocha) !important;
+  }
+  .btn-delete {
+    padding: 8px 12px;
+    border: 0.5px solid #fee2e2;
+    background: #fef2f2;
+    color: #b91c1c;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-delete:hover {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+</style>
+
+<div class="services-admin-header">
+  <h2>Quản Lý Concept & Gói Dịch Vụ</h2>
+  <a href="/admin/services/create" class="btn-sm btn-sm-dark">
+    + Thêm Concept Mới
   </a>
 </div>
 
-<div class="card">
-  <div class="card-body">
-    <div class="table-responsive">
-      <table class="table table-hover align-middle">
-        <thead class="table-light">
-          <tr>
-            <th>Tên Gói</th>
-            <th>Slug</th>
-            <th>Giá từ</th>
-            <th>Thời lượng</th>
-            <th>Thứ tự</th>
-            <th>Thao tác</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% if (services && services.length > 0) { %>
-            <% services.forEach(s => { %>
-              <tr>
-                <td><strong><%= s.name %></strong> <%- s.is_featured ? '<span class="badge bg-warning text-dark ms-2">Nổi bật</span>' : '' %></td>
-                <td><%= s.slug %></td>
-                <td><%= s.price_from.toLocaleString('vi-VN') %>đ</td>
-                <td><%= s.duration_minutes %> phút</td>
-                <td><%= s.sort_order %></td>
-                <td>
-                  <div class="d-flex gap-2">
-                    <a href="/admin/services/<%= s.id %>/edit" class="btn btn-sm btn-outline-secondary" title="Sửa">
-                      <i class="fas fa-edit"></i> Sửa
-                    </a>
-                    <form action="/admin/services/<%= s.id %>/delete" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa gói dịch vụ này?');">
-                      <button type="submit" class="btn btn-sm btn-outline-danger" title="Xóa">
-                        <i class="fas fa-trash"></i>
-                      </button>
-                    </form>
-                  </div>
-                </td>
-              </tr>
-            <% }) %>
-          <% } else { %>
-            <tr>
-              <td colspan="6" class="text-center py-4 text-muted">Chưa có gói dịch vụ nào.</td>
-            </tr>
-          <% } %>
-        </tbody>
-      </table>
-    </div>
+<!-- Tabs Navigation -->
+<div class="admin-tabs">
+  <button class="admin-tab-btn active" onclick="switchTab(event, 'tab-ca-nhan')">Cá Nhân</button>
+  <button class="admin-tab-btn" onclick="switchTab(event, 'tab-doanh-nghiep')">Doanh Nghiệp</button>
+  <button class="admin-tab-btn" onclick="switchTab(event, 'tab-mo-rong')">Mở Rộng</button>
+</div>
+
+<!-- Tab Content: Cá Nhân -->
+<div class="tab-pane active" id="tab-ca-nhan">
+  <div class="concepts-grid">
+    <% const personalServices = services.filter(s => s.category === 'ca-nhan'); %>
+    <% if (personalServices.length > 0) { %>
+      <% personalServices.forEach(s => { %>
+        <%= renderConceptCard(s) %>
+      <% }) %>
+    <% } else { %>
+      <div class="empty-state">Chưa có concept nào trong danh mục Cá Nhân.</div>
+    <% } %>
   </div>
 </div>
+
+<!-- Tab Content: Doanh Nghiệp -->
+<div class="tab-pane" id="tab-doanh-nghiep">
+  <div class="concepts-grid">
+    <% const businessServices = services.filter(s => s.category === 'doanh-nghiep'); %>
+    <% if (businessServices.length > 0) { %>
+      <% businessServices.forEach(s => { %>
+        <%= renderConceptCard(s) %>
+      <% }) %>
+    <% } else { %>
+      <div class="empty-state">Chưa có concept nào trong danh mục Doanh Nghiệp.</div>
+    <% } %>
+  </div>
+</div>
+
+<!-- Tab Content: Mở Rộng -->
+<div class="tab-pane" id="tab-mo-rong">
+  <div class="concepts-grid">
+    <% const extensionServices = services.filter(s => s.category === 'mo-rong'); %>
+    <% if (extensionServices.length > 0) { %>
+      <% extensionServices.forEach(s => { %>
+        <%= renderConceptCard(s) %>
+      <% }) %>
+    <% } else { %>
+      <div class="empty-state">Chưa có concept nào trong danh mục Mở Rộng.</div>
+    <% } %>
+  </div>
+</div>
+
+<%
+// Helper function to render a concept card inside EJS
+function renderConceptCard(s) {
+%>
+  <div class="concept-card">
+    <div class="concept-card-img">
+      <img src="<%= s.cover_image || '/images/default-concept.jpg' %>" alt="<%= s.name %>">
+      <span class="concept-card-category"><%= s.category_label %></span>
+    </div>
+    <div class="concept-card-body">
+      <h3 class="concept-card-title"><%= s.name %></h3>
+      <p class="concept-card-subtitle"><%= s.subtitle || s.short_desc || 'Chưa có phụ đề' %></p>
+      
+      <div class="concept-packages-list">
+        <% if (s.pricing && s.pricing.length > 0) { %>
+          <% s.pricing.forEach(pkg => { %>
+            <div class="concept-package-item">
+              <span><%= pkg.packageName %></span>
+              <span><%= pkg.price %></span>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <p class="text-muted small">Chưa cấu hình gói chụp</p>
+        <% } %>
+      </div>
+      
+      <div class="concept-card-footer">
+        <a href="/admin/services/<%= s.id %>/edit" class="btn-sm btn-edit">Sửa Concept</a>
+        <form action="/admin/services/<%= s.id %>/delete" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa concept này? Tất cả các gói và giá đi kèm sẽ bị xóa.');" style="display:inline;">
+          <button type="submit" class="btn-delete" title="Xóa Concept">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+<%
+}
+%>
+
+<script>
+  function switchTab(evt, tabId) {
+    // Hide all tab panes
+    const tabPanes = document.querySelectorAll('.tab-pane');
+    tabPanes.forEach(pane => pane.classList.remove('active'));
+    
+    // Deactivate all tab buttons
+    const tabBtns = document.querySelectorAll('.admin-tab-btn');
+    tabBtns.forEach(btn => btn.classList.remove('active'));
+    
+    // Show active pane and button
+    document.getElementById(tabId).classList.add('active');
+    evt.currentTarget.classList.add('active');
+  }
+</script>

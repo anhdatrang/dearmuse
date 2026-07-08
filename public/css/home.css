@@ -166,13 +166,14 @@
 
 .hero-eyebrow {
   font-family: var(--font-display);
-  font-size: clamp(32px, 4vw, 42px); /* Increased size from 35px */
+  font-size: clamp(18px, 4vw, 42px); /* Scale down on smaller screens */
   font-weight: 400;
   font-style: italic;
   letter-spacing: 0.05em;
   color: var(--logo-mocha);
   margin-bottom: 32px; /* Decreased further to move down */
   opacity: 0;
+  white-space: nowrap; /* Prevent word wrapping */
   animation: heroReveal 0.8s var(--ease-out-expo) 0.9s forwards;
 }
 
@@ -362,6 +363,7 @@
   text-transform: uppercase;
   color: var(--logo-taupe);
   margin-bottom: 20px;
+  white-space: nowrap;
 }
 
 .section-tag::before,
@@ -395,6 +397,7 @@
   color: var(--logo-mocha);
   text-decoration: none;
   transition: gap 0.3s var(--ease-silk), color 0.2s;
+  white-space: nowrap;
 }
 
 .link-arrow:hover {
@@ -1765,5 +1768,11 @@
   .btn-hero-ghost {
     width: 100%;
     justify-content: center;
+  }
+  .gallery-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 24px;
   }
 }

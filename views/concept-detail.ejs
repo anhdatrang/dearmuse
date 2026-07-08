@@ -40,7 +40,7 @@
 
         <!-- Packages Grid -->
         <div class="packages-grid">
-          <% concept.pricing.forEach(pkg=> { %>
+          <% concept.pricing.forEach((pkg, index) => { %>
             <div class="package-detail-card">
               <div class="pkg-header">
                 <h3 class="pkg-name">
@@ -66,7 +66,8 @@
                     <% }) %>
                 </ul>
                 <div class="pkg-footer" style="margin-top: 24px; text-align: center;">
-                  <a href="/services/<%= concept.id %>/details" class="btn btn-outline-dark" style="border-radius: 30px; font-size: 13px; padding: 10px 24px;">Xem chi tiết concept</a>
+                  <a href="/services/<%= concept.id %>/details?pkg=<%= index %>" class="btn btn-outline-dark"
+                    style="border-radius: 30px; font-size: 13px; padding: 10px 24px;"><span>Xem chi tiết concept</span></a>
                 </div>
               </div>
             </div>

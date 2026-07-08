@@ -490,7 +490,7 @@
     /* ── MEANING ── */
     .ab-meaning {
       background: var(--vanilla-cream);
-      padding: clamp(80px, 12vw, 160px) 0;
+      padding: 25px 0;
     }
 
     .ab-meaning__inner {
@@ -565,7 +565,7 @@
     .ab-story {
       background: var(--vanilla-cream);
       /* Đổi sang màu be sáng */
-      padding: clamp(80px, 12vw, 160px) 0;
+      padding: 25px 0;
       position: relative;
     }
 
@@ -667,7 +667,7 @@
     /* ── BRAND VALUES ── */
     .ab-values {
       background: var(--vanilla-cream);
-      padding: clamp(80px, 12vw, 160px) 0;
+      padding: 25px 0;
       border-top: 0.5px solid var(--bone);
     }
 
@@ -771,7 +771,7 @@
     .ab-usp {
       background: var(--vanilla-cream);
       /* Đổi sang màu be sáng */
-      padding: clamp(80px, 12vw, 160px) 0;
+      padding: 25px 0;
       position: relative;
       overflow: hidden;
       border-top: 0.5px solid var(--bone);
@@ -871,7 +871,7 @@
     /* ── RECOGNITION ── */
     .ab-recognition {
       background: var(--vanilla-cream);
-      padding: clamp(80px, 12vw, 160px) 0;
+      padding: 25px 0;
       border-top: 0.5px solid var(--bone);
     }
 
@@ -971,7 +971,7 @@
     .ab-gallery {
       background: var(--vanilla-cream);
       /* Đổi sang màu be sáng */
-      padding: clamp(80px, 12vw, 160px) 0;
+      padding: 25px 0;
       border-top: 0.5px solid var(--bone);
     }
 
@@ -1007,7 +1007,7 @@
     /* ── CTA ── */
     .ab-cta {
       background: var(--vanilla-cream);
-      padding: clamp(100px, 14vw, 180px) 0;
+      padding: 25px 0;
       border-top: 0.5px solid var(--bone);
       text-align: center;
       position: relative;
@@ -1173,6 +1173,28 @@
 
       .ab-usp__inner {
         grid-template-columns: 1fr;
+      }
+
+      /* Responsive headings fixes */
+      .ab-display {
+        font-size: clamp(24px, 6.5vw, 32px) !important;
+        line-height: 1.25 !important;
+        margin-bottom: 24px !important;
+      }
+
+      .ab-display em {
+        display: inline-block;
+        white-space: nowrap;
+      }
+
+      .ab-cta__title {
+        font-size: clamp(24px, 6.5vw, 32px) !important;
+        line-height: 1.25 !important;
+      }
+
+      .ab-cta__title em {
+        display: inline-block;
+        white-space: nowrap;
       }
     }
   </style>

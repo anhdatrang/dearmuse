@@ -14,6 +14,12 @@ CREATE TABLE IF NOT EXISTS services (
   features JSON,
   is_featured TINYINT(1) DEFAULT 0,
   sort_order INT DEFAULT 0,
+  category VARCHAR(50) NOT NULL DEFAULT 'ca-nhan',
+  category_label VARCHAR(100) NOT NULL DEFAULT 'Cá Nhân',
+  subtitle VARCHAR(255),
+  gallery JSON,
+  pricing JSON,
+  addons JSON,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

@@ -33,15 +33,101 @@ router.get('/blog/:slug', blogController.detail);
 router.get('/services', async (req, res) => {
   try {
     const services = await Service.findAll();
+    
+    // Parse JSON for each service
+    const parsedServices = services.map(s => {
+      let gallery = [];
+      if (typeof s.gallery === 'string') {
+        try { gallery = JSON.parse(s.gallery); } catch (e) {}
+      } else if (Array.isArray(s.gallery)) {
+        gallery = s.gallery;
+      }
+      
+      let pricing = [];
+      if (typeof s.pricing === 'string') {
+        try { pricing = JSON.parse(s.pricing); } catch (e) {}
+      } else if (Array.isArray(s.pricing)) {
+        pricing = s.pricing;
+      }
+      
+      let inclusions = [];
+      if (s.features) {
+        try {
+          inclusions = typeof s.features === 'string' ? JSON.parse(s.features) : s.features;
+        } catch (e) {
+          inclusions = [];
+        }
+      }
+      if (!Array.isArray(inclusions)) inclusions = [];
+      
+      return {
+        ...s,
+        gallery,
+        pricing,
+        inclusions
+      };
+    });
+
+    // Group into 3 categories
+    const categories = [
+      {
+        id: 'doanh-nghiep',
+        name: 'Doanh Nghiệp',
+        subtitle: 'Nâng tầm giá trị thương hiệu',
+        class: 'category-left',
+        num: '01',
+        image: '/cdn/image?src=' + encodeURIComponent('/source/DOANH%20NGHI%E1%BB%86P/PREMIUM/IMG_4319.webp'),
+        services: parsedServices.filter(s => s.category === 'doanh-nghiep').map(s => ({
+          name: s.name,
+          desc: s.subtitle || s.description || '',
+          price: s.price_from ? `Từ ${s.price_from.toLocaleString('vi-VN')}đ` : 'Liên hệ tư vấn',
+          slug: s.slug,
+          details: s.inclusions.slice(0, 4)
+        }))
+      },
+      {
+        id: 'ca-nhan',
+        name: 'Cá Nhân',
+        subtitle: 'Lưu giữ câu chuyện bản sắc',
+        class: 'category-center',
+        num: '02',
+        image: '/cdn/image?src=' + encodeURIComponent('/source/C%C3%81%20NH%C3%82N/CONCEPT/SU207836(1).webp'),
+        services: parsedServices.filter(s => s.category === 'ca-nhan').map(s => ({
+          name: s.name,
+          desc: s.subtitle || s.description || '',
+          price: s.price_from ? `Từ ${s.price_from.toLocaleString('vi-VN')}đ` : 'Liên hệ tư vấn',
+          slug: s.slug,
+          details: s.inclusions.slice(0, 5)
+        }))
+      },
+      {
+        id: 'mo-rong',
+        name: 'Mở Rộng',
+        subtitle: 'Trải nghiệm nghệ thuật tinh hoa',
+        class: 'category-right',
+        num: '03',
+        image: '/cdn/image?src=' + encodeURIComponent('/source/M%E1%BB%9E%20R%E1%BB%98NG/S%E1%BA%A2N%20PH%E1%BA%A8M/meowmeo-109670-2.webp'),
+        services: parsedServices.filter(s => s.category === 'mo-rong').map(s => ({
+          name: s.name,
+          desc: s.subtitle || s.description || '',
+          price: s.price_from ? `Từ ${s.price_from.toLocaleString('vi-VN')}đ` : 'Liên hệ tư vấn',
+          slug: s.slug,
+          details: s.inclusions.slice(0, 4)
+        }))
+      }
+    ];
+
     res.render('services', {
       title: 'Gói Dịch Vụ Chụp Ảnh Nghệ Thuật — Dear Musé',
       metaDescription: 'Các gói dịch vụ chụp ảnh nghệ thuật chuyên nghiệp tại Dear Musé: Chụp ảnh Cá Nhân, Chụp ảnh Doanh Nghiệp, và các gói Mở Rộng độc bản. Đặt lịch chụp tư vấn miễn phí ngay hôm nay.',
-      services
+      categories
     });
   } catch (err) {
+    console.error('Error loading services page:', err);
     res.render('services', {
       title: 'Gói Dịch Vụ Chụp Ảnh Nghệ Thuật — Dear Musé',
       metaDescription: 'Các gói dịch vụ chụp ảnh nghệ thuật chuyên nghiệp tại Dear Musé: Chụp ảnh Cá Nhân, Chụp ảnh Doanh Nghiệp, và các gói Mở Rộng độc bản. Đặt lịch chụp tư vấn miễn phí ngay hôm nay.',
+      categories: []
     });
   }
 });
