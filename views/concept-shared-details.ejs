@@ -98,36 +98,51 @@
         <% const isPremium=selectedPkg.packageName.includes('Premium') || selectedPkg.packageName.includes('VIP') ||
           selectedPkg.packageName.includes('Gold') || selectedPkg.packageName.includes('Platinum') ||
           selectedPkg.packageName.includes('Siêu Thực'); %>
-          
+
           <style>
             .mobile-break {
               display: none;
             }
+
             @media (max-width: 768px) {
               .concept-privileges-section .section-heading {
                 font-size: 20px !important;
                 line-height: 1.4 !important;
               }
+
               .mobile-break {
                 display: block !important;
               }
+
               .concept-privileges-section {
                 margin-top: 40px !important;
                 padding: 0 15px !important;
               }
+
               .privileges-box {
                 padding: 24px 16px !important;
                 border-radius: 20px !important;
               }
             }
+
+            .concept-privileges-section .section-label::after {
+              content: '';
+              display: inline-block;
+              width: 24px;
+              height: 0.5px;
+              background: currentColor;
+              opacity: 0.6;
+              flex-shrink: 0;
+            }
           </style>
 
           <!-- Customer Privileges Section -->
           <section class="concept-privileges-section reveal" data-delay="5"
-            style="margin-top: 80px; margin-bottom: 40px;">
+            style="margin-top: 15px; margin-bottom: 15px;">
             <div class="container" style="max-width: 900px; margin: 0 auto;">
-              <div class="text-center" style="margin-bottom: 48px;">
-                <span class="section-label" style="justify-content: center; color: var(--logo-mocha);">
+              <div class="text-center" style="margin-bottom: 15px;">
+                <span class="section-label"
+                  style="justify-content: center; color: var(--logo-mocha); margin-top: 10px; margin-bottom: 10px;">
                   <%= isPremium ? 'Đặc Quyền Thượng Hạng' : 'Quyền Lợi Dành Cho Bạn' %>
                 </span>
                 <h2 class="section-heading"
