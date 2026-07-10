@@ -1,5 +1,6 @@
 // controllers/conceptController.js
 const Service = require('../models/Service');
+const { concepts: staticConcepts } = require('../data/concepts');
 
 function parseServiceJSON(service) {
   if (!service) return null;
@@ -31,6 +32,17 @@ function parseServiceJSON(service) {
 function mapDbServiceToConcept(service) {
   if (!service) return null;
   const parsed = parseServiceJSON(service);
+  
+  // Enrich database pricing with privileges from staticConcepts if not present
+  const staticConcept = staticConcepts.find(c => c.id === parsed.slug);
+  if (staticConcept && parsed.pricing) {
+    parsed.pricing.forEach((pkg, index) => {
+      if (!pkg.privileges && staticConcept.pricing && staticConcept.pricing[index]) {
+        pkg.privileges = staticConcept.pricing[index].privileges;
+      }
+    });
+  }
+
   return {
     id: parsed.slug,
     name: parsed.name,
@@ -91,8 +103,10 @@ exports.packageDetail = async (req, res) => {
     let currentSubtitle = concept.subtitle;
     let currentCover = concept.coverImage;
 
+    let selectedPkg = null;
     if (pkgIndex !== undefined && concept.pricing && concept.pricing[pkgIndex]) {
       const pkg = concept.pricing[pkgIndex];
+      selectedPkg = pkg;
       if (pkg.gallery && pkg.gallery.length > 0) {
         currentGallery = pkg.gallery;
         currentCover = pkg.coverImage || pkg.gallery[0];
@@ -111,7 +125,9 @@ exports.packageDetail = async (req, res) => {
     res.render('concept-shared-details', {
       title: `Chi Tiết Concept ${currentName} - Dear Musé`,
       metaDescription: `${currentSubtitle}. Xem bộ sưu tập ảnh thực tế của concept ${currentName} tại Dear Musé.`,
-      concept: mappedConcept
+      concept: mappedConcept,
+      selectedPkg: selectedPkg,
+      pkgIndex: pkgIndex
     });
   } catch (err) {
     console.error('Error rendering package detail:', err);

@@ -283,30 +283,159 @@
   transform: translateY(0);
 }
 
-/* Thẻ chi tiết dịch vụ */
+/* Thẻ chi tiết dịch vụ dạng trang sách */
 .svc-detail-card {
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(26, 25, 22, 0.06);
-  border-radius: 20px;
-  padding: 36px;
+  position: relative;
+  background: #fdfbf7; /* Màu giấy tập */
+  
+  border-radius: 12px; /* Bo góc nhẹ giống trang sách */
+  padding: 56px 32px 36px 32px; /* Tăng padding trên để chừa chỗ cho lò xo */
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   justify-content: space-between;
-  min-height: 360px;
+  min-height: 380px;
   width: 100%;
   max-width: 380px;
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  
+  /* Điểm xoay đung đưa ở đầu trang sách */
+  transform-origin: top center;
+  transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1), 
+              box-shadow 0.4s ease, 
+              border-color 0.4s ease,
+              background-color 0.4s ease;
 }
 
-.svc-detail-card:hover {
-  background: rgba(255, 255, 255, 0.5);
-  border-color: #C9A96E;
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(26, 25, 22, 0.05);
+/* --- PHÂN BIỆT BASIC VÀ PREMIUM CARD --- */
+
+/* 1. Gói Basic */
+.svc-detail-card.basic-card {
+  border: 1px solid rgba(26, 25, 22, 0.08);
+  box-shadow: 0 4px 15px rgba(26, 25, 22, 0.05);
+}
+
+.svc-detail-card.basic-card:hover {
+  border-color: #d4a5a9; /* viền hồng nhẹ */
+  box-shadow: 0 20px 40px rgba(212, 165, 169, 0.15);
+  animation: paper-swing 1.2s ease-in-out;
+}
+
+/* 2. Gói Premium */
+.svc-detail-card.premium-card {
+  background: #fdfcf7; /* Giấy kem mịn sang trọng hơn */
+  border: 3px solid rgba(201, 169, 110, 0.85); /* Viền ánh vàng đậm hơn */
+  box-shadow: 0 0 15px rgba(201, 169, 110, 0.4), 0 6px 20px rgba(201, 169, 110, 0.12); /* Hiệu ứng phát sáng */
+}
+
+.svc-detail-card.premium-card:hover {
+  border-color: #c9a96e; /* Viền vàng đậm hơn */
+  box-shadow: 0 0 20px rgba(201, 169, 110, 0.6), 0 25px 50px rgba(163, 129, 72, 0.25);
+  animation: paper-swing 1.2s ease-in-out;
+}
+
+/* Huy hiệu Premium vàng kim */
+.premium-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: linear-gradient(135deg, #c9a96e, #a38148);
+  color: #ffffff;
+  font-size: 9px;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 4px 10px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(163, 129, 72, 0.3);
+  z-index: 12;
+}
+
+/* Nút bấm ở Premium nổi bật hơn */
+.premium-card .btn-outline-dark {
+  background: #c9a96e;
+  color: #ffffff;
+  border-color: #c9a96e;
+  font-weight: 500;
+}
+.premium-card .btn-outline-dark:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--vanilla-cream);
+}
+
+/* --- HIỆU ỨNG ĐUNG ĐƯA --- */
+@keyframes paper-swing {
+  0% { transform: rotate(0deg); }
+  20% { transform: rotate(3deg); }
+  40% { transform: rotate(-2.5deg); }
+  60% { transform: rotate(1.5deg); }
+  80% { transform: rotate(-1deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* --- HỆ THỐNG LÒ XO Ở ĐẦU TRANG --- */
+.notebook-rings {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.ring {
+  width: 14px;
+  height: 32px;
+  position: relative;
+}
+
+/* Mũi lò xo Basic (Màu Hồng Pastel Kim Loại) */
+.basic-card .ring::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 28px;
+  background: linear-gradient(90deg, #d89fa3, #f5c5c8 30%, #fff0f1 50%, #f5c5c8 70%, #d89fa3);
+  border-radius: 5px;
+  box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.15);
+  z-index: 3;
+}
+
+/* Mũi lò xo Premium (Màu Vàng Gold Kim Loại) */
+.premium-card .ring::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 28px;
+  background: linear-gradient(90deg, #b8860b, #e5c158 30%, #fff7d6 50%, #e5c158 70%, #b8860b);
+  border-radius: 5px;
+  box-shadow: 1px 2px 3px rgba(163, 129, 72, 0.25);
+  z-index: 3;
+}
+
+/* Lỗ đục giấy sẫm màu */
+.ring::after {
+  content: '';
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 12px;
+  background: #2e2b26;
+  border-radius: 50%;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.6);
+  z-index: 2;
 }
 
 .svc-card-header {

@@ -1,4 +1,4 @@
-<% pageCss='concept-detail.css?v=2' ; %>
+<% pageCss='concept-detail.css?v=3' ; %>
 
   <!-- Concept Detail Page -->
   <section class="concept-detail-section">
@@ -41,7 +41,16 @@
         <!-- Packages Grid -->
         <div class="packages-grid">
           <% concept.pricing.forEach((pkg, index) => { %>
-            <div class="package-detail-card">
+            <%
+              const isPkgPremium = pkg.packageName.includes('(Premium)') || 
+                                   pkg.packageName.includes('Gold') || 
+                                   pkg.packageName.includes('Platinum') || 
+                                   pkg.packageName.includes('Siêu Thực');
+            %>
+            <div class="package-detail-card <%= isPkgPremium ? 'premium-pkg-card' : 'basic-pkg-card' %>" style="position: relative;">
+              <% if (isPkgPremium) { %>
+                <div class="pkg-premium-badge">Premium</div>
+              <% } %>
               <div class="pkg-header">
                 <h3 class="pkg-name">
                   <%= pkg.packageName %>

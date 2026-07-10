@@ -51,6 +51,11 @@ const concepts = [
           "Bàn giao toàn bộ file gốc (tối thiểu 250+ ảnh)",
           "Chỉnh sửa màu sắc & ánh sáng 50 ảnh tuyển chọn",
           "Bàn giao ảnh sau 3 ngày làm việc qua Google Drive / Pixieset"
+        ],
+        "privileges": [
+          "Được bàn giao toàn bộ file ảnh gốc chất lượng cao.",
+          "Hậu kỳ chỉnh sửa màu sắc & ánh sáng chuyên nghiệp cho các ảnh tuyển chọn.",
+          "Bàn giao ảnh nhanh chóng qua liên kết Google Drive/Pixieset bảo mật."
         ]
       },
       {
@@ -59,10 +64,15 @@ const concepts = [
         "inclusions": [
           "1 Nhiếp ảnh gia chính chuyên nghiệp",
           "Chụp phóng sự tự nhiên và chụp lưu niệm tập thể",
-          "Bàn giao toàn bộ file gốc (tối thiểu 500+ ảnh)",
+          "Bàn giao toàn bộ file gốc",
           "Chỉnh sửa màu sắc & ánh sáng 100 ảnh tuyển chọn",
           "Bàn giao ảnh sau 3 ngày làm việc qua Google Drive / Pixieset",
           "Hỗ trợ xuất file nhanh 10 ảnh trong sự kiện phục vụ truyền thông"
+        ],
+        "privileges": [
+          "Được bàn giao toàn bộ file ảnh gốc chất lượng cao (tối thiểu 500+ ảnh).",
+          "Hỗ trợ xuất file nhanh 10 ảnh ngay trong sự kiện phục vụ nhu cầu truyền thông tức thì.",
+          "Hậu kỳ chỉnh sửa màu sắc & ánh sáng chuyên nghiệp cho các ảnh tuyển chọn."
         ]
       }
     ],
@@ -77,7 +87,7 @@ const concepts = [
       },
       {
         "name": "Chụp thêm giờ ngoài gói",
-        "price": "600.000đ / giờ"
+        "price": "300.000đ / giờ"
       }
     ]
   },
@@ -132,6 +142,13 @@ const concepts = [
           "Retouch nghệ thuật 60 ảnh chân dung / khoảnh khắc quan trọng",
           "Hỗ trợ xuất nhanh 15 ảnh chất lượng cao trong quá trình diễn ra sự kiện",
           "Bàn giao nhanh trong vòng 48 giờ"
+        ],
+        "privileges": [
+          "2 Nhiếp ảnh gia chuyên nghiệp tác nghiệp song song (chụp phóng sự và backdrop) đảm bảo không bỏ sót khoảnh khắc nào.",
+          "Hệ thống đèn Studio chuyên dụng tại khu vực backdrop giúp ảnh chụp khách mời sắc nét và chuyên nghiệp.",
+          "Bàn giao file ảnh nhanh chóng chỉ trong vòng 72 giờ (so với 4 ngày của các gói Basic).",
+          "Hỗ trợ xuất nhanh 15 ảnh chất lượng cao ngay trong sự kiện phục vụ đưa tin truyền thông.",
+          "Chỉnh sửa chuyên nghiệp các file ảnh bàn giao đạt tiêu chuẩn truyền thông thương hiệu."
         ]
       },
       {
@@ -145,6 +162,13 @@ const concepts = [
           "Retouch nghệ thuật 120 ảnh quan trọng",
           "Hỗ trợ xuất nhanh 30 ảnh trong sự kiện phục vụ báo chí & PR",
           "Bàn giao nhanh trong vòng 48 giờ"
+        ],
+        "privileges": [
+          "2 Nhiếp ảnh gia chuyên nghiệp tác nghiệp toàn thời gian cả ngày.",
+          "Hệ thống đèn Studio chuyên dụng chiếu sáng đồng bộ suốt thời gian diễn ra sự kiện.",
+          "Bàn giao toàn bộ hình ảnh nhanh chóng trong vòng 72 giờ.",
+          "Hỗ trợ xuất nhanh ảnh trong sự kiện phục vụ báo chí, PR và truyền thông xã hội.",
+          "Chỉnh sửa chuyên nghiệp các file ảnh bàn giao đạt tiêu chuẩn truyền thông thương hiệu."
         ]
       }
     ],
@@ -159,7 +183,7 @@ const concepts = [
       },
       {
         "name": "Chụp thêm giờ ngoài gói",
-        "price": "1.000.000đ / giờ"
+        "price": "400.000đ / giờ"
       }
     ]
   },
@@ -242,6 +266,11 @@ const concepts = [
           "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6422.webp",
           "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6426.webp",
           "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_6431.webp"
+        ],
+        "privileges": [
+          "Hỗ trợ miễn phí 1 bộ Áo dài trắng cổ điển từ kho đồ của Studio.",
+          "Nhận toàn bộ file ảnh gốc chất lượng cao ngay sau buổi chụp.",
+          "Hậu kỳ retouch nghệ thuật chuyên sâu 10 hình chất lượng cao."
         ]
       },
       {
@@ -271,6 +300,11 @@ const concepts = [
           "/source/C%C3%81%20NH%C3%82N/CONCEPT/SU209654.webp",
           "/source/C%C3%81%20NH%C3%82N/CONCEPT/SU209664.webp",
           "/source/C%C3%81%20NH%C3%82N/CONCEPT/SU209678.webp"
+        ],
+        "privileges": [
+          "Hỗ trợ miễn phí 1 bộ trang phục thơ mộng từ kho đồ đa dạng của Studio.",
+          "Tư vấn lên ý tưởng & thiết kế moodboard nghệ thuật riêng biệt.",
+          "Nhận toàn bộ file ảnh gốc chất lượng cao ngay sau buổi chụp."
         ]
       },
       {
@@ -293,6 +327,12 @@ const concepts = [
           "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7153.webp",
           "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7154.webp",
           "/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/IMG_7162.webp"
+        ],
+        "privileges": [
+          "Bao gồm sẵn Makeup & Làm tóc chuyên nghiệp tại studio (Tiết kiệm 500k so với gói Basic).",
+          "Hỗ trợ tới 2 bộ Áo dài thiết kế cao cấp (áo gấm, thêu tay tinh xảo) thay vì 1 bộ trắng trơn của gói Basic.",
+          "Tăng thời lượng chụp lên 120 phút (hơn gói Basic 30 phút) giúp chụp thong thả và đa dạng góc máy.",
+          "Gấp đôi ảnh chỉnh sửa: Retouch nghệ thuật chuyên sâu 30 hình (Basic chỉ có 10 hình)."
         ]
       },
       {
@@ -313,6 +353,13 @@ const concepts = [
           "/source/C%C3%81%20NH%C3%82N/CONCEPT/Qu%E1%BA%A3%20chanh%20001.webp",
           "/source/C%C3%81%20NH%C3%82N/CONCEPT/Qu%E1%BA%A3%20chanh%20003.webp",
           "/source/C%C3%81%20NH%C3%82N/CONCEPT/Qu%E1%BA%A3%20chanh%20004.webp"
+        ],
+        "privileges": [
+          "Bao gồm sẵn Makeup & Làm tóc chuyên nghiệp theo concept thiết kế riêng (Tiết kiệm 500k so với gói Basic).",
+          "Chụp kết hợp cả Studio và Ngoại cảnh lân cận trong cùng một buổi chụp (Gói Basic chỉ chọn 1 trong 2).",
+          "Thời gian chụp kéo dài 150 phút (hơn gói Basic tới 60 phút) để sáng tạo nghệ thuật tối đa.",
+          "Hỗ trợ 2 bộ trang phục thiết kế cao cấp từ kho đồ Studio.",
+          "Gấp đôi ảnh chỉnh sửa: Retouch nghệ thuật chuyên sâu 30 hình (Basic chỉ có 10 hình)."
         ]
       }
     ],
@@ -374,6 +421,12 @@ const concepts = [
           "Tư vấn hướng dẫn tạo dáng thần thái tự tin",
           "Retouch chân dung chuyên sâu 8 ảnh sắc nét nhất",
           "Bàn giao toàn bộ file gốc ngay sau buổi chụp"
+        ],
+        "privileges": [
+          "Chụp chân dung phông nền trơn tối giản giúp tôn vinh phong thái cá nhân tối đa.",
+          "Nhiếp ảnh gia hướng dẫn chi tiết cách tạo dáng thần thái tự tin.",
+          "Bàn giao toàn bộ file gốc ngay sau buổi chụp qua link tải chất lượng cao.",
+          "Hậu kỳ chỉnh sửa (retouch) chuyên sâu 8 bức ảnh chân thực sắc nét."
         ]
       },
       {
@@ -385,6 +438,13 @@ const concepts = [
           "Hỗ trợ trang phục vest / sơ mi thiết kế cao cấp từ studio",
           "Retouch chân dung nghệ thuật chuyên sâu 18 ảnh",
           "Bàn giao toàn bộ file ảnh gốc chất lượng cao"
+        ],
+        "privileges": [
+          "Bao gồm sẵn trang điểm & làm tóc chuyên nghiệp tại studio trước khi chụp (Basic không bao gồm).",
+          "Hỗ trợ trang phục vest / sơ mi thiết kế cao cấp từ kho đồ có sẵn của studio.",
+          "Được chụp với 2 bối cảnh / phông nền khác nhau giúp đa dạng hóa hình ảnh chân dung.",
+          "Tăng thời lượng chụp lên 90 phút (Basic chỉ 60 phút) giúp chụp thong thả và chọn được nhiều góc đẹp.",
+          "Tăng hơn gấp đôi số lượng ảnh chỉnh sửa: Retouch chuyên sâu 18 ảnh chân dung (Basic chỉ có 8 ảnh)."
         ]
       }
     ],
@@ -432,6 +492,12 @@ const concepts = [
           "Retouch nghệ thuật đặc tả chiều sâu 12 tác phẩm chọn lọc kỹ lưỡng",
           "Bàn giao toàn bộ file ảnh gốc",
           "Tặng kèm 1 ảnh in khung gỗ cao cấp nghệ thuật"
+        ],
+        "privileges": [
+          "Không gian phòng studio đương đại thiết kế tối giản, tinh tế dành riêng cho gói Chạm.",
+          "Khai thác kỹ thuật chơi sáng nghệ thuật đặc tả biểu cảm và những cái chạm cơ thể duy mỹ.",
+          "Tặng kèm 1 ảnh in khung gỗ cao cấp nghệ thuật lưu niệm.",
+          "Nhận toàn bộ file ảnh gốc chất lượng cao ngay sau buổi chụp."
         ]
       }
     ],
@@ -479,6 +545,12 @@ const concepts = [
           "Retouch nghệ thuật sâu sắc 10 ảnh chân dung độc bản tuyển chọn",
           "Bàn giao toàn bộ file ảnh gốc (đã được lọc & chuyển đổi)",
           "Tặng kèm 1 tấm ảnh in khổ lớn 50x75 ép gỗ nghệ thuật treo tường"
+        ],
+        "privileges": [
+          "Kỹ thuật hậu kỳ đen trắng (Monochrome Fine Art) chuẩn mực nghệ thuật quốc tế.",
+          "Kỹ thuật chơi sáng tương phản cao (Chiaroscuro) tạo chiều sâu tâm trạng độc bản.",
+          "Tặng kèm 1 ảnh in lớn 50x75cm ép gỗ nghệ thuật cao cấp để treo tường trang trí.",
+          "Nhận toàn bộ file gốc đã được chuyển đổi tông đen trắng nghệ thuật."
         ]
       }
     ],
@@ -526,6 +598,12 @@ const concepts = [
           "Nhiếp ảnh gia lead chính trực tiếp thực hiện buổi chụp",
           "Retouch nghệ thuật siêu thực 15 tác phẩm độc bản",
           "Bàn giao toàn bộ file ảnh gốc chất lượng cao"
+        ],
+        "privileges": [
+          "Bối cảnh chiếu Projector nghệ thuật thiết kế riêng mang phong cách hội họa siêu thực.",
+          "Nhiếp ảnh gia chính (Lead Photographer) trực tiếp lên ý tưởng và thực hiện buổi chụp.",
+          "Hậu kỳ retouch 15 tác phẩm siêu thực độc bản cực kỳ tỉ mỉ và tốn thời gian.",
+          "Nhận toàn bộ file ảnh gốc chất lượng cao ngay sau buổi chụp."
         ]
       }
     ],
@@ -565,6 +643,11 @@ const concepts = [
           "Hỗ trợ trang phục kỷ yếu",
           "Trả toàn bộ file gốc",
           "Retouch 15 ảnh đặc sắc"
+        ],
+        "privileges": [
+          "Hỗ trợ miễn phí trang phục kỷ yếu tốt nghiệp cho cả buổi chụp.",
+          "Không giới hạn số file ảnh gốc bàn giao ngay sau buổi chụp.",
+          "Retouch chỉnh sửa chuyên sâu 15 bức ảnh thanh xuân đắt giá nhất."
         ]
       }
     ],

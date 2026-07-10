@@ -33,10 +33,23 @@
 
       <!-- Services Details View -->
       <div class="svc-details-container reveal" data-delay="2">
+        <% const premiumSlugs = ['event-premium', 'portrait-concept', 'concept-an']; %>
         <% categories.forEach(cat=> { %>
           <div class="svc-panel <%= cat.id === 'ca-nhan' ? 'active' : '' %>" id="svc-panel-<%= cat.id %>">
             <% cat.services.forEach(s=> { %>
-              <div class="svc-detail-card">
+              <% const isPremium = premiumSlugs.includes(s.slug); %>
+              <div class="svc-detail-card <%= isPremium ? 'premium-card' : 'basic-card' %>">
+                <!-- Thêm phần lò xo ở đầu trang sách -->
+                <div class="notebook-rings">
+                  <div class="ring"></div>
+                  <div class="ring"></div>
+                  <div class="ring"></div>
+                </div>
+
+                <% if (isPremium) { %>
+                  <div class="premium-badge">Nổi Bật</div>
+                <% } %>
+
                 <div class="svc-card-header">
                   <h3 class="svc-card-title">
                     <%= s.name %>
