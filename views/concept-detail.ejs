@@ -40,47 +40,46 @@
 
         <!-- Packages Grid -->
         <div class="packages-grid">
-          <% concept.pricing.forEach((pkg, index) => { %>
-            <%
-              const isPkgPremium = pkg.packageName.includes('(Premium)') || 
-                                   pkg.packageName.includes('Gold') || 
-                                   pkg.packageName.includes('Platinum') || 
-                                   pkg.packageName.includes('Siêu Thực');
-            %>
-            <div class="package-detail-card <%= isPkgPremium ? 'premium-pkg-card' : 'basic-pkg-card' %>" style="position: relative;">
-              <% if (isPkgPremium) { %>
-                <div class="pkg-premium-badge">Premium</div>
-              <% } %>
-              <div class="pkg-header">
-                <h3 class="pkg-name">
-                  <%= pkg.packageName %>
-                </h3>
-                <div class="pkg-price">
-                  <%= pkg.price %>
-                </div>
-              </div>
+          <% concept.pricing.forEach((pkg, index)=> { %>
+            <% const isPkgPremium=pkg.packageName.includes('(Premium)') || pkg.packageName.includes('Gold') ||
+              pkg.packageName.includes('Platinum') || pkg.packageName.includes('Siêu Thực'); %>
+              <div class="package-detail-card <%= isPkgPremium ? 'premium-pkg-card' : 'basic-pkg-card' %>"
+                style="position: relative;">
+                <% if (isPkgPremium) { %>
+                  <div class="pkg-premium-badge">Premium</div>
+                  <% } %>
+                    <div class="pkg-header">
+                      <h3 class="pkg-name">
+                        <%= pkg.packageName %>
+                      </h3>
+                      <div class="pkg-price">
+                        <%= pkg.price %>
+                      </div>
+                    </div>
 
-              <div class="pkg-body">
-                <h4 class="pkg-details-title">Chi tiết dịch vụ bao gồm:</h4>
-                <ul class="pkg-inclusions">
-                  <% pkg.inclusions.forEach(inc=> { %>
-                    <li>
-                      <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                      <span>
-                        <%= inc %>
-                      </span>
-                    </li>
-                    <% }) %>
-                </ul>
-                <div class="pkg-footer" style="margin-top: 24px; text-align: center;">
-                  <a href="/services/<%= concept.id %>/details?pkg=<%= index %>" class="btn btn-outline-dark"
-                    style="border-radius: 30px; font-size: 13px; padding: 10px 24px;"><span>Xem chi tiết concept</span></a>
-                </div>
+                    <div class="pkg-body">
+                      <h4 class="pkg-details-title">Chi tiết dịch vụ bao gồm:</h4>
+                      <ul class="pkg-inclusions">
+                        <% pkg.inclusions.forEach(inc=> { %>
+                          <li>
+                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                              stroke-width="2">
+                              <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            <span>
+                              <%= inc %>
+                            </span>
+                          </li>
+                          <% }) %>
+                      </ul>
+                      <div class="pkg-footer" style="margin-top: 24px; text-align: center;">
+                        <a href="/services/<%= concept.id %>/details?pkg=<%= index %>" class="btn btn-outline-dark"
+                          style="border-radius: 30px; font-size: 13px; padding: 10px 24px;"><span>Xem chi tiết
+                            concept</span></a>
+                      </div>
+                    </div>
               </div>
-            </div>
-            <% }) %>
+              <% }) %>
         </div>
 
         <!-- Addons Table (if exists) -->
@@ -92,7 +91,7 @@
                 <thead>
                   <tr>
                     <th>Hạng mục dịch vụ</th>
-                    <th class="text-right">Mức chi phí</th>
+                    <th class="text-right"></th>
                   </tr>
                 </thead>
                 <tbody>

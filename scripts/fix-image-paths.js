@@ -6,7 +6,7 @@ function fixPath(str) {
   // 1. Fix Nàng Thơ -> Nàng thơ
   newStr = newStr.replace(/\/source\/Nàng Thơ\//g, '/source/Nàng thơ/');
   newStr = newStr.replace(/\/source\/N%C3%A0ng%20Th%C6%A1\//g, '/source/N%C3%A0ng%20th%C6%A1/');
-  
+
   // 2. Fix ÁO DÀI -> CÁ NHÂN/ÁO DÀI
   newStr = newStr.replace(/\/source\/ÁO DÀI\//g, '/source/CÁ NHÂN/ÁO DÀI/');
   newStr = newStr.replace(/\/source\/%C3%81O%20D%C3%80I\//g, '/source/C%C3%81%20NH%C3%82N/%C3%81O%20D%C3%80I/');
@@ -168,9 +168,9 @@ async function run() {
         await db.execute(
           'UPDATE blog_posts SET cover_image = ?, images = ?, content_blocks = ? WHERE id = ?',
           [
-            fixedCover, 
-            typeof fixedImages === 'string' ? fixedImages : JSON.stringify(fixedImages || []), 
-            typeof fixedBlocks === 'string' ? fixedBlocks : JSON.stringify(fixedBlocks || []), 
+            fixedCover,
+            typeof fixedImages === 'string' ? fixedImages : JSON.stringify(fixedImages || []),
+            typeof fixedBlocks === 'string' ? fixedBlocks : JSON.stringify(fixedBlocks || []),
             post.id
           ]
         );
