@@ -162,6 +162,84 @@
       </div>
     <% } %>
 
+    <!-- ✍️ Submit Form Section (Collapsible & Compact) -->
+    <section class="feedback-form-section" style="padding: 20px; position: relative; z-index: 15; margin-bottom: 20px;">
+      <div class="form-container" style="max-width: 800px; margin: 0 auto;">
+        
+        <% if (sessionUser) { %>
+          <!-- Nút kích hoạt biểu mẫu viết cảm nhận -->
+          <div class="feedback-trigger-wrapper" style="text-align: center; margin-bottom: 20px;">
+            <button id="toggle-form-btn" class="btn-write-feedback" onclick="toggleFeedbackForm()" style="display: inline-flex; align-items: center; gap: 10px; padding: 14px 36px; background-color: var(--logo-mocha); color: #ffffff; border: none; font-family: var(--font-body); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(122,92,74,0.15); border-radius: 30px; font-weight: 500;">
+              <span>✍️ Viết thư gửi Musé</span>
+            </button>
+          </div>
+
+          <!-- Container ẩn chứa form -->
+          <div id="collapsible-form-container" style="display: none; opacity: 0; max-height: 0; overflow: hidden; transition: all 0.5s ease-in-out; margin-bottom: 30px;">
+            <form class="editorial-form" action="/feedback" method="POST" style="margin-top: 10px;">
+              <div class="form-header">
+                <h2>Viết Thư Gửi Musé</h2>
+                <p>Trang giấy còn trống này dành cho những dòng cảm nhận của riêng bạn...</p>
+              </div>
+
+              <div class="form-group" style="margin-top: 30px;">
+                <label>Mức độ hài lòng</label>
+                <div class="star-rating-input">
+                  <input type="radio" id="star5" name="rating" value="5" checked>
+                  <label for="star5">★</label>
+                  <input type="radio" id="star4" name="rating" value="4">
+                  <label for="star4">★</label>
+                  <input type="radio" id="star3" name="rating" value="3">
+                  <label for="star3">★</label>
+                  <input type="radio" id="star2" name="rating" value="2">
+                  <label for="star2">★</label>
+                  <input type="radio" id="star1" name="rating" value="1">
+                  <label for="star1">★</label>
+                </div>
+              </div>
+
+              <div class="form-row" style="display: flex; gap: 30px; flex-wrap: wrap;">
+                <div class="form-group" style="flex: 1; min-width: 200px;">
+                  <label>Bạn là...</label>
+                  <select name="customer_type">
+                    <option value="individual" <%= sessionUser.user_type === 'individual' ? 'selected' : '' %>>Khách hàng cá nhân</option>
+                    <option value="business" <%= sessionUser.user_type === 'business' ? 'selected' : '' %>>Đại diện doanh nghiệp</option>
+                  </select>
+                </div>
+                <div class="form-group" style="flex: 1; min-width: 200px;">
+                  <label>Trải nghiệm dịch vụ</label>
+                  <select name="service_label">
+                    <% services.forEach(s => { %>
+                      <option value="<%= s.name %>"><%= s.name %></option>
+                    <% }) %>
+                    <option value="Khác">Khác</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Câu chuyện của bạn</label>
+                <textarea name="content" placeholder="Kể cho Dear Musé nghe về những khoảnh khắc đẹp nhất..." required></textarea>
+              </div>
+
+              <button type="submit" class="btn-submit">Dán Vào Sổ Nhật Ký</button>
+              
+              <p style="text-align: center; font-size: 12px; color: var(--smoke); margin-top: 20px; font-style: italic;">
+                * Tên của bạn sẽ được viết tắt (VD: Nguyễn Thị A → Ng. T. A.) để giữ sự riêng tư trọn vẹn.
+              </p>
+            </form>
+          </div>
+        <% } else { %>
+          <!-- Layout đăng nhập nằm ngang tinh gọn, đẹp đẽ -->
+          <div class="login-prompt-compact" style="display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap; background: #FCF8EE; padding: 20px 35px; border: 1px dashed rgba(122,92,74,0.3); border-radius: 30px; max-width: 700px; margin: 0 auto 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+            <p style="font-family: 'Dancing Script', cursive; font-size: 26px; color: var(--logo-mocha); margin: 0;">Hãy lưu tên mình vào cuốn sổ này nhé.</p>
+            <a href="/auth/login?redirect=/feedback" class="btn-login" style="margin: 0; padding: 12px 30px; font-size: 12px; font-family: var(--font-body); letter-spacing: 0.1em; text-transform: uppercase; background-color: var(--logo-mocha); color: #ffffff; text-decoration: none; display: inline-block; transition: background-color 0.3s; border-radius: 30px; font-weight: 500; box-shadow: 0 4px 10px rgba(122,92,74,0.1);">Đăng Nhập Để Viết Thư</a>
+          </div>
+        <% } %>
+
+      </div>
+    </section>
+
     <!-- 🖼️ Scrapbook Canvas -->
     <section class="scrapbook-canvas">
       
@@ -177,196 +255,95 @@
         <div class="glowing-dust" style="top: <%= top %>%; left: <%= left %>%; --dust-dur: <%= dur %>s; --dust-x: <%= xShift %>px; --dust-op: <%= op %>;"></div>
       <% } %>
 
+      <!-- Memory Wall Layout 3-4 alternating -->
       <% 
-        const styles = ['note-film'];
-
-        // Chia feedbacks thành các hàng, mỗi hàng tối đa 3 note trên desktop
-        const chunkSize = 3;
-        const feedbackRows = [];
-        for (let i = 0; i < feedbacks.length; i += chunkSize) {
-          feedbackRows.push(feedbacks.slice(i, i + chunkSize));
+        const pattern = [3, 4];
+        let patternIndex = 0;
+        let i = 0;
+        const rows = [];
+        while (i < feedbacks.length) {
+          const size = pattern[patternIndex % pattern.length];
+          rows.push(feedbacks.slice(i, i + size));
+          i += size;
+          patternIndex++;
         }
-
-        feedbackRows.forEach((rowCards, rowIndex) => {
-          const isEvenRow = rowIndex % 2 === 0;
-          // Đường dây thừng uốn lượn nhẹ nhàng, đi ngang qua mép trên của các note
-          const pathD = isEvenRow 
-            ? "M 0 30 Q 250 50, 500 30 T 1000 30" 
-            : "M 0 30 Q 250 10, 500 30 T 1000 30";
       %>
-        <div class="scrapbook-row">
-          <!-- Sợi dây thừng chạy dọc theo hàng này -->
-          <div class="scrapbook-string-wrapper">
-            <svg class="scrapbook-string-svg" viewBox="0 0 1000 60" preserveAspectRatio="none">
-              <path d="<%= pathD %>" fill="none" stroke="#a4816c" stroke-width="4" stroke-linecap="round" />
-              <path d="<%= pathD %>" fill="none" stroke="#bd9b84" stroke-width="4" stroke-linecap="round" stroke-dasharray="10 10" />
-            </svg>
-            
-            <!-- Hoa lá rải rác bám trên dây -->
-            <% 
-              const decoCount = Math.floor(Math.random() * 8) + 6; // 6-13 điểm trang trí mỗi dây (Mật độ lá dày đặc)
-              for(let j=0; j<decoCount; j++) { 
-                const leftPos = Math.floor(Math.random() * 80) + 10; // 10% - 90%
-                
-                // Tính tọa độ Y của dây tại vị trí x
-                let x = leftPos * 10;
-                let cY = 30;
-                if(x <= 500) {
-                  let t1 = x / 500;
-                  let cpY = isEvenRow ? 50 : 10;
-                  cY = (1-t1)*(1-t1)*30 + 2*t1*(1-t1)*cpY + t1*t1*30;
-                } else {
-                  let t2 = (x - 500) / 500;
-                  let cpY = isEvenRow ? 10 : 50;
-                  cY = (1-t2)*(1-t2)*30 + 2*t2*(1-t2)*cpY + t2*t2*30;
-                }
-                const topPos = cY; 
-                
-                const isFlower = Math.random() > 0.85; // Tỉ lệ 15% hoa, 85% lá để lá chiếm phần lớn
-                const rot = Math.floor(Math.random() * 360);
-                const scale = (Math.random() * 0.4 + 0.6).toFixed(2);
-            %>
-              <div class="string-botanical" style="left: <%= leftPos %>%; top: <%= topPos %>px;">
-                <svg viewBox="-50 -50 100 100" width="80" height="80" style="overflow: visible;">
-                  <use href="<%= isFlower ? '#art-flower' : (Math.random()>0.5 ? '#art-leaf' : '#art-leaf-dark') %>" 
-                       transform="rotate(<%= rot %>) scale(<%= scale %>)" />
-                </svg>
-              </div>
-            <% } %>
-
-            <div class="string-tape tape-left"></div>
-            <div class="string-tape tape-right"></div>
-          </div>
-
-          <% 
-            rowCards.forEach((f, index) => { 
-              const globalIndex = rowIndex * chunkSize + index;
-              const styleClass = styles[globalIndex % styles.length];
+      <div class="memory-wall-container" style="display: flex; flex-direction: column; align-items: center; padding: 60px 10px; gap: 0;">
+        <% rows.forEach((row, rowIndex) => { 
+             // Điều chỉnh margin-top âm để các hàng lồng vào nhau, tạo sự đan xen (interlocking)
+             const mt = rowIndex === 0 ? 0 : -50; 
+        %>
+          <div class="memory-wall-row" style="display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; width: 100%; max-width: 1550px;">
+            <% row.forEach((f, colIndex) => { 
+              // Góc xoay cố định đan xen giống hệt như ảnh minh họa, thích ứng cho hàng 3 và hàng 4 phần tử
+              let rotation = 0;
+              if (row.length === 3) {
+                // Hàng 3 phần tử: Trái (-6deg), Phải (5deg), Trái (-5deg)
+                rotation = colIndex === 0 ? -6 : (colIndex === 1 ? 5 : -5);
+              } else {
+                // Hàng 4 hoặc các phần tử lẻ: Phải (5deg), Trái (-6deg), Phải (4deg), Trái (-5deg)
+                rotation = colIndex === 0 ? 5 : (colIndex === 1 ? -6 : (colIndex === 2 ? 4 : -5));
+              }
               
-              const rotation = Math.floor(Math.random() * 8) - 4; // Giảm góc xoay để ngay ngắn hơn trên dây
-              
-              // Tính toán margin-top dựa trên độ cong của dây tại vị trí tương đối
-              let curveY = 30; // middle
-              if (index === 0) curveY = isEvenRow ? 39 : 21; // left (16.6%)
-              if (index === 1) curveY = 30; // center (50%)
-              if (index === 2) curveY = isEvenRow ? 21 : 39; // right (83.3%)
-              
-              // Để băng dính (tâm ở 3px) khớp với dây (20 + curveY)
-              const mt = curveY - 38; 
-              
-              const mb = Math.floor(Math.random() * 20) + 15;
-              
-              // Xê dịch lớn hơn giữa các hàng (hàng chẵn lệch trái, hàng lẻ lệch phải) để phá vỡ cấu trúc cột dọc thẳng hàng
-              const staggerOffset = isEvenRow ? -35 : 35; 
-              const shiftX = Math.floor(Math.random() * 30) - 15 + staggerOffset; 
-              const shiftY = 0; // Cố định chiều cao để giữ dính dây
-              
-              // Tape có một độ xoay ngẫu nhiên nhỏ (gần với phương ngang của dây)
-              const tapeRotation = Math.floor(Math.random() * 10) - 5;
+              const shiftX = Math.floor(Math.random() * 20) - 10;
+              const shiftY = Math.floor(Math.random() * 20) - 10;
               const floatDelay = (Math.random() * 5).toFixed(1);
-          %>
-            
-            <div class="scrapbook-item-wrapper" 
-                 style="margin-top: <%= mt %>px; margin-bottom: <%= mb %>px; z-index: <%= Math.floor(Math.random() * 30) + 10 %>; --float-delay: -<%= floatDelay %>s; --shift-x: <%= shiftX %>px; --shift-y: <%= shiftY %>px;">
+            %>
               
-              <div class="tape" style="transform: translateX(-50%) rotate(<%= tapeRotation %>deg);"></div>
-              
-              <div class="<%= styleClass %> <%= f.is_featured ? 'is-featured' : '' %>" style="--rot: <%= rotation %>deg; transform: rotate(<%= rotation %>deg);">
-                <div class="film-inner">
-                  <div class="card-header">
-                    <h3 class="card-name"><%= f.maskedName %></h3>
-                    <div class="card-stars">
-                      <% f.starsArr.forEach(isFilled => { %>
-                        <span class="<%= isFilled ? 'filled' : 'empty' %>">★</span>
-                      <% }) %>
+              <div class="scrapbook-item-wrapper" 
+                   style="position: relative; margin: 15px; z-index: <%= Math.floor(Math.random() * 30) + 10 %>; --float-delay: -<%= floatDelay %>s; --shift-x: <%= shiftX %>px; --shift-y: <%= shiftY %>px; transform-origin: center top;">
+                
+                <!-- Băng dính ở giữa trên cùng -->
+                <div class="tape" style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(<%= Math.floor(Math.random() * 20) - 10 %>deg); width: 70px; height: 28px; background: rgba(255, 255, 255, 0.45); backdrop-filter: blur(2px); z-index: 5; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"></div>
+                
+                <!-- Tên khách hàng (phía trên khung phim) -->
+                <div class="memory-name-tag" style="position: absolute; top: -45px; left: 0; width: 100%; text-align: center; font-family: 'Marker Felt', 'Comic Sans MS', cursive; font-size: 24px; font-weight: bold; color: #1a1916; transform: rotate(<%= Math.floor(Math.random() * 10) - 5 %>deg); z-index: 6; text-shadow: 1px 1px 0 rgba(255,255,255,0.5);">
+                  <%= f.maskedName %>
+                </div>
+
+                <div class="note-film <%= f.is_featured ? 'is-featured' : '' %>" style="--rot: <%= rotation %>deg; transform: rotate(<%= rotation %>deg); box-shadow: 0 12px 25px rgba(0,0,0,0.25);">
+                  <div class="film-inner">
+                    <div class="card-header" style="justify-content: center; min-height: 24px;">
+                      <!-- Bỏ h3 card-name ở đây theo yêu cầu -->
+                      <div class="card-stars">
+                        <% f.starsArr.forEach(isFilled => { %>
+                          <span class="<%= isFilled ? 'filled' : 'empty' %>">★</span>
+                        <% }) %>
+                      </div>
+                    </div>
+                    
+                    <div class="card-content">
+                      <%= f.content %>
+                    </div>
+                    
+                    <div class="card-footer">
+                      <span><%- (f.service_label || 'Dịch vụ').split(' & ').map(p => p.replace(/ /g, '&nbsp;')).join(' & ') %></span>
+                      <span><%= f.monthYear %></span>
                     </div>
                   </div>
-                  
-                  <div class="card-content">
-                    <%= f.content %>
-                  </div>
-                  
-                  <div class="card-footer">
-                    <span><%- (f.service_label || 'Dịch vụ').split(' & ').map(p => p.replace(/ /g, '&nbsp;')).join(' & ') %></span>
-                    <span><%= f.monthYear %></span>
-                  </div>
                 </div>
+                
+                <!-- Đồ trang trí (Clapperboard, film strip) -->
+                <% if(Math.random() > 0.7) { %>
+                  <div class="memory-deco" style="position: absolute; bottom: -20px; right: -25px; font-size: 45px; transform: rotate(<%= Math.floor(Math.random() * 40) - 20 %>deg); z-index: 6; filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));">
+                    <%= Math.random() > 0.5 ? '🎬' : '🎞️' %>
+                  </div>
+                <% } %>
+                <% if(Math.random() > 0.8) { %>
+                  <div class="memory-deco-star" style="position: absolute; top: -10px; right: -30px; font-size: 24px; transform: rotate(<%= Math.floor(Math.random() * 40) - 20 %>deg); z-index: 6; filter: drop-shadow(1px 2px 3px rgba(0,0,0,0.2));">
+                    ⭐
+                  </div>
+                <% } %>
+                
               </div>
               
-            </div>
-            
-          <% }) %>
-        </div>
-      <% }) %>
-    </section>
-
-    <!-- ✍️ Submit Form Section (The Blank Page) -->
-    <section class="feedback-form-section">
-      <div class="form-container">
-        
-        <% if (sessionUser) { %>
-          <form class="editorial-form" action="/feedback" method="POST">
-
-            <div class="form-header">
-              <h2>Viết Thư Gửi Musé</h2>
-              <p>Trang giấy còn trống này dành cho những dòng cảm nhận của riêng bạn...</p>
-            </div>
-
-            <div class="form-group" style="margin-top: 30px;">
-              <label>Mức độ hài lòng</label>
-              <div class="star-rating-input">
-                <input type="radio" id="star5" name="rating" value="5" checked>
-                <label for="star5">★</label>
-                <input type="radio" id="star4" name="rating" value="4">
-                <label for="star4">★</label>
-                <input type="radio" id="star3" name="rating" value="3">
-                <label for="star3">★</label>
-                <input type="radio" id="star2" name="rating" value="2">
-                <label for="star2">★</label>
-                <input type="radio" id="star1" name="rating" value="1">
-                <label for="star1">★</label>
-              </div>
-            </div>
-
-            <div class="form-row" style="display: flex; gap: 30px; flex-wrap: wrap;">
-              <div class="form-group" style="flex: 1; min-width: 200px;">
-                <label>Bạn là...</label>
-                <select name="customer_type">
-                  <option value="individual" <%= sessionUser.user_type === 'individual' ? 'selected' : '' %>>Khách hàng cá nhân</option>
-                  <option value="business" <%= sessionUser.user_type === 'business' ? 'selected' : '' %>>Đại diện doanh nghiệp</option>
-                </select>
-              </div>
-              <div class="form-group" style="flex: 1; min-width: 200px;">
-                <label>Trải nghiệm dịch vụ</label>
-                <select name="service_label">
-                  <% services.forEach(s => { %>
-                    <option value="<%= s.name %>"><%= s.name %></option>
-                  <% }) %>
-                  <option value="Khác">Khác</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label>Câu chuyện của bạn</label>
-              <textarea name="content" placeholder="Kể cho Dear Musé nghe về những khoảnh khắc đẹp nhất..." required></textarea>
-            </div>
-
-            <button type="submit" class="btn-submit">Dán Vào Sổ Nhật Ký</button>
-            
-            <p style="text-align: center; font-size: 12px; color: var(--smoke); margin-top: 20px; font-style: italic;">
-              * Tên của bạn sẽ được viết tắt (VD: Nguyễn Thị A → Ng. T. A.) để giữ sự riêng tư trọn vẹn.
-            </p>
-          </form>
-        <% } else { %>
-          <div class="login-prompt">
-            <p>Hãy lưu tên mình vào cuốn sổ này nhé.</p>
-            <a href="/auth/login?redirect=/feedback" class="btn-login">Đăng Nhập Để Viết Thư</a>
+            <% }) %>
           </div>
-        <% } %>
-
+        <% }) %>
       </div>
     </section>
+
+    <!-- Submit form removed from bottom -->
 
   </div>
 
@@ -376,6 +353,29 @@
   <script src="/js/main.js"></script>
   <script>
     /* BỎ JS PARALLAX ĐỂ CHỐNG GIẬT LAG. HIỆU ỨNG THỞ (FLOATING) ĐƯỢC XỬ LÝ BẰNG CSS THUẦN! */
+
+    /* Toggle form viết cảm nhận */
+    function toggleFeedbackForm() {
+      const container = document.getElementById('collapsible-form-container');
+      const btn = document.getElementById('toggle-form-btn');
+      if (container.style.display === 'none') {
+        container.style.display = 'block';
+        setTimeout(() => {
+          container.style.opacity = '1';
+          container.style.maxHeight = '1200px';
+        }, 10);
+        btn.innerHTML = '<span>✕ Đóng biểu mẫu</span>';
+        btn.style.backgroundColor = '#8a3333';
+      } else {
+        container.style.opacity = '0';
+        container.style.maxHeight = '0';
+        setTimeout(() => {
+          container.style.display = 'none';
+        }, 300);
+        btn.innerHTML = '<span>✍️ Viết thư gửi Musé</span>';
+        btn.style.backgroundColor = 'var(--logo-mocha)';
+      }
+    }
 
     /* Show errors từ URL */
     const urlParams = new URLSearchParams(window.location.search);

@@ -455,3 +455,181 @@
   .editorial-form { padding: 40px 20px; }
   .vintage-deco, .deco-flower { display: none; } /* Giấu họa tiết lớn trên mobile */
 }
+
+/* ============================================================
+   MEMORY WALL SPECIFIC LAYOUT (3-4 ALTERNATING)
+   ============================================================ */
+.memory-wall-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px;
+  gap: 0;
+  width: 100%;
+}
+
+.memory-wall-row {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 1650px;
+  transition: all 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .memory-wall-row {
+    flex-wrap: nowrap !important; /* Khóa cứng không cho rớt dòng để giữ đúng bố cục so le */
+  }
+  .memory-wall-row:first-child {
+    margin-top: 0 !important;
+  }
+}
+
+/* Căn chỉnh kích thước và khoảng cách tỉ mỉ theo từng độ phân giải màn hình để KHÔNG BỊ TRÀN (Tránh bị dính và lệch dọc) */
+@media (min-width: 1500px) {
+  .memory-wall-row {
+    gap: 60px !important; /* Khoảng cách rộng rãi sang 2 bên màn hình lớn */
+    margin-top: 25px !important; /* Tách biệt hoàn toàn theo chiều dọc */
+  }
+  .memory-wall-container .scrapbook-item-wrapper {
+    --scale-factor: 0.95; /* Kích thước to rõ nét trên màn hình rộng */
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1499px) {
+  .memory-wall-row {
+    gap: 35px !important; /* Khoảng cách vừa phải */
+    margin-top: 20px !important; /* Tách biệt theo chiều dọc tránh dính chữ */
+  }
+  .memory-wall-container .scrapbook-item-wrapper {
+    --scale-factor: 0.78; /* Thu nhỏ bớt để đảm bảo hàng 4 card luôn cân đối */
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .memory-wall-row {
+    gap: 25px !important;
+    margin-top: 15px !important;
+  }
+  .memory-wall-container .scrapbook-item-wrapper {
+    --scale-factor: 0.68;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .memory-wall-row {
+    gap: 15px !important;
+    margin-top: 10px !important;
+  }
+  .memory-wall-container .scrapbook-item-wrapper {
+    --scale-factor: 0.52;
+  }
+}
+
+@media (min-width: 768px) {
+  .memory-wall-row:first-child {
+    margin-top: 0 !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .memory-wall-row {
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap !important; /* Cho phép rớt dòng ở màn hình di động */
+    margin-top: 0 !important;
+    gap: 40px;
+  }
+  
+  .memory-wall-container .scrapbook-item-wrapper {
+    --scale-factor: 0.9;
+  }
+}
+
+.memory-wall-container .scrapbook-item-wrapper {
+  flex-shrink: 0;
+  margin: 15px 5px !important;
+  transform-origin: center top;
+  /* Tắt chuyển động lắc lư liên tục */
+  animation: none !important;
+  /* Áp dụng dịch chuyển và tỉ lệ tĩnh */
+  transform: translate(var(--shift-x, 0px), var(--shift-y, 0px)) scale(var(--scale-factor, 0.85)) !important;
+  will-change: transform;
+}
+
+.memory-wall-container .scrapbook-item-wrapper:hover {
+  z-index: 100 !important;
+}
+
+.memory-wall-container .scrapbook-item-wrapper:hover .note-film {
+  transform: scale(1.03) rotate(0deg) !important;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3) !important;
+}
+
+.memory-wall-container .note-film {
+  width: 330px !important; /* Tăng chiều rộng từ 310px lên 330px để hiển thị to rõ hơn */
+  padding: 12px 24px !important;
+  transform-origin: center top;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease;
+}
+
+.memory-wall-container .note-film .film-inner {
+  padding: 22px 18px !important;
+}
+
+.memory-wall-container .card-content {
+  font-size: 14.5px !important;
+  line-height: 26px !important;
+  background-image: repeating-linear-gradient(transparent, transparent 25px, rgba(122, 92, 74, 0.15) 25px, rgba(122, 92, 74, 0.15) 26px) !important;
+  margin-bottom: 16px !important;
+}
+
+.memory-name-tag {
+  font-family: var(--font-display), 'Inter', 'Arial', sans-serif !important;
+  font-size: 18px !important; 
+  color: #1a1916 !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  text-shadow: none !important;
+}
+
+/* ============================================================
+   COLLAPSIBLE WRITE FORM & COMPACT LOGIN PROMPT
+   ============================================================ */
+.btn-write-feedback {
+  border-radius: 30px !important;
+  font-weight: 600 !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+.btn-write-feedback:hover {
+  background-color: var(--ink) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(122,92,74,0.3) !important;
+}
+
+.login-prompt-compact {
+  border-radius: 30px !important;
+  background: #FCF8EE !important;
+  border: 1px dashed rgba(122,92,74,0.3) !important;
+  padding: 15px 30px !important;
+  box-shadow: 0 10px 25px rgba(122,92,74,0.05) !important;
+}
+
+.login-prompt-compact p {
+  font-family: 'Dancing Script', cursive !important;
+  font-size: 26px !important;
+  color: var(--logo-mocha) !important;
+}
+
+.login-prompt-compact .btn-login {
+  border-radius: 30px !important;
+  padding: 12px 28px !important;
+  transition: all 0.3s ease !important;
+}
+
+.login-prompt-compact .btn-login:hover {
+  background-color: var(--ink) !important;
+  transform: translateY(-1px);
+}
