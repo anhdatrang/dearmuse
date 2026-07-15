@@ -30,7 +30,7 @@ exports.index = async (req, res) => {
     // Compute star display and masked names
     const processed = feedbacks.map(f => ({
       ...f,
-      maskedName: f.display_name || '✦',
+      maskedName: maskName(f.display_name, f.customer_type) || '✦',
       starsArr: Array.from({ length: 5 }, (_, i) => i < f.rating),
       monthYear: new Date(f.created_at).toLocaleDateString('vi-VN', { month: 'long', year: 'numeric' })
     }));
@@ -126,7 +126,7 @@ exports.index = async (req, res) => {
       metaDescription: 'Những chia sẻ chân thật từ khách hàng đã trải nghiệm dịch vụ chụp ảnh nghệ thuật tại Dear Musé Studio.',
       feedbacks: finalFeedbacks,
       services,
-      sessionUser: req.session?.user || null,
+      sessionUser: req.session?.userId ? { id: req.session.userId, name: req.session.userName, user_type: req.session.userType } : null,
       successMsg: req.session?.feedbackSuccess || null,
       currentPath: req.path
     });
@@ -140,7 +140,7 @@ exports.index = async (req, res) => {
       metaDescription: 'Những chia sẻ chân thật từ khách hàng tại Dear Musé Studio.',
       feedbacks: [],
       services: [],
-      sessionUser: req.session?.user || null,
+      sessionUser: req.session?.userId ? { id: req.session.userId, name: req.session.userName, user_type: req.session.userType } : null,
       successMsg: null,
       currentPath: req.path
     });
@@ -149,12 +149,12 @@ exports.index = async (req, res) => {
 
 exports.submit = async (req, res) => {
   try {
-    const user = req.session?.user;
-    if (!user) {
+    const userId = req.session?.userId;
+    if (!userId) {
       return res.redirect('/auth/login');
     }
 
-    const { rating, content, service_label, customer_type } = req.body;
+    const { rating, content, service_label, display_name } = req.body;
 
     if (!content || !content.trim()) {
       return res.redirect('/feedback?error=empty');
@@ -163,14 +163,14 @@ exports.submit = async (req, res) => {
       return res.redirect('/feedback?error=rating');
     }
 
-    // Use stored display_name or user's name
-    const displayName = user.name || 'Ẩn danh';
-    const type = customer_type || user.user_type || 'individual';
+    // Use submitted display_name or user's name
+    const finalDisplayName = display_name || req.session.userName || 'Ẩn danh';
+    const type = req.session.userType || 'individual';
 
     await db.query(`
       INSERT INTO feedbacks (user_id, customer_type, display_name, service_label, rating, content, is_approved)
-      VALUES (?, ?, ?, ?, ?, ?, 0)
-    `, [user.id, type, displayName, service_label || null, parseInt(rating), content.trim()]);
+      VALUES (?, ?, ?, ?, ?, ?, 1)
+    `, [userId, type, finalDisplayName, service_label || null, parseInt(rating), content.trim()]);
 
     req.session.feedbackSuccess = true;
     res.redirect('/feedback');

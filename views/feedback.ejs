@@ -200,11 +200,8 @@
 
               <div class="form-row" style="display: flex; gap: 30px; flex-wrap: wrap;">
                 <div class="form-group" style="flex: 1; min-width: 200px;">
-                  <label>Bạn là...</label>
-                  <select name="customer_type">
-                    <option value="individual" <%= sessionUser.user_type === 'individual' ? 'selected' : '' %>>Khách hàng cá nhân</option>
-                    <option value="business" <%= sessionUser.user_type === 'business' ? 'selected' : '' %>>Đại diện doanh nghiệp</option>
-                  </select>
+                  <label>Tên của bạn</label>
+                  <input type="text" name="display_name" value="<%= sessionUser.name %>" placeholder="Nhập tên của bạn..." required style="width: 100%; padding: 12px 15px; border: 1px dashed var(--sand); background: var(--paper); font-family: var(--font-body); font-size: 14px; color: var(--ink); border-radius: 0; outline: none; transition: border-color 0.3s; box-sizing: border-box;">
                 </div>
                 <div class="form-group" style="flex: 1; min-width: 200px;">
                   <label>Trải nghiệm dịch vụ</label>
@@ -273,7 +270,7 @@
              // Điều chỉnh margin-top âm để các hàng lồng vào nhau, tạo sự đan xen (interlocking)
              const mt = rowIndex === 0 ? 0 : -50; 
         %>
-          <div class="memory-wall-row" style="display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; width: 100%; max-width: 1550px;">
+          <div class="memory-wall-row <%= row.length === 3 ? 'row-of-3' : 'row-of-4' %>" style="display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; width: 100%; max-width: 1550px;">
             <% row.forEach((f, colIndex) => { 
               // Góc xoay cố định đan xen giống hệt như ảnh minh họa, thích ứng cho hàng 3 và hàng 4 phần tử
               let rotation = 0;
@@ -291,7 +288,7 @@
             %>
               
               <div class="scrapbook-item-wrapper" 
-                   style="position: relative; margin: 15px; z-index: <%= Math.floor(Math.random() * 30) + 10 %>; --float-delay: -<%= floatDelay %>s; --shift-x: <%= shiftX %>px; --shift-y: <%= shiftY %>px; transform-origin: center top;">
+                   style="position: relative; margin: 15px; z-index: <%= (rowIndex * 10) + Math.floor(Math.random() * 5) + 10 %>; --float-delay: -<%= floatDelay %>s; --shift-x: <%= shiftX %>px; --shift-y: <%= shiftY %>px; transform-origin: center top;">
                 
                 <!-- Băng dính ở giữa trên cùng -->
                 <div class="tape" style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%) rotate(<%= Math.floor(Math.random() * 20) - 10 %>deg); width: 70px; height: 28px; background: rgba(255, 255, 255, 0.45); backdrop-filter: blur(2px); z-index: 5; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"></div>

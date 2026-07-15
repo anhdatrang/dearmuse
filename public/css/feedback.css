@@ -489,7 +489,10 @@
 @media (min-width: 1500px) {
   .memory-wall-row {
     gap: 60px !important; /* Khoảng cách rộng rãi sang 2 bên màn hình lớn */
-    margin-top: 25px !important; /* Tách biệt hoàn toàn theo chiều dọc */
+    margin-top: 75px !important; /* Tăng thêm khoảng cách theo chiều dọc để tránh che tên */
+  }
+  .memory-wall-row.row-of-3 {
+    gap: 150px !important; /* Mở rộng thêm khoảng cách giữa 3 cảm nhận */
   }
   .memory-wall-container .scrapbook-item-wrapper {
     --scale-factor: 0.95; /* Kích thước to rõ nét trên màn hình rộng */
@@ -499,7 +502,10 @@
 @media (min-width: 1200px) and (max-width: 1499px) {
   .memory-wall-row {
     gap: 35px !important; /* Khoảng cách vừa phải */
-    margin-top: 20px !important; /* Tách biệt theo chiều dọc tránh dính chữ */
+    margin-top: 60px !important; /* Tăng thêm khoảng cách theo chiều dọc để tránh che tên */
+  }
+  .memory-wall-row.row-of-3 {
+    gap: 110px !important; /* Mở rộng thêm khoảng cách giữa 3 cảm nhận */
   }
   .memory-wall-container .scrapbook-item-wrapper {
     --scale-factor: 0.78; /* Thu nhỏ bớt để đảm bảo hàng 4 card luôn cân đối */
@@ -509,7 +515,10 @@
 @media (min-width: 992px) and (max-width: 1199px) {
   .memory-wall-row {
     gap: 25px !important;
-    margin-top: 15px !important;
+    margin-top: 50px !important; /* Tăng thêm khoảng cách theo chiều dọc để tránh che tên */
+  }
+  .memory-wall-row.row-of-3 {
+    gap: 90px !important; /* Mở rộng thêm khoảng cách giữa 3 cảm nhận */
   }
   .memory-wall-container .scrapbook-item-wrapper {
     --scale-factor: 0.68;
@@ -519,7 +528,10 @@
 @media (min-width: 768px) and (max-width: 991px) {
   .memory-wall-row {
     gap: 15px !important;
-    margin-top: 10px !important;
+    margin-top: 40px !important; /* Tăng thêm khoảng cách theo chiều dọc để tránh che tên */
+  }
+  .memory-wall-row.row-of-3 {
+    gap: 75px !important; /* Mở rộng thêm khoảng cách giữa 3 cảm nhận */
   }
   .memory-wall-container .scrapbook-item-wrapper {
     --scale-factor: 0.52;
@@ -529,6 +541,38 @@
 @media (min-width: 768px) {
   .memory-wall-row:first-child {
     margin-top: 0 !important;
+  }
+
+  /* Hàng 3 cảm nhận: Bố cục lộn xộn/asymmetrical bất đối xứng để tạo vẻ nghệ thuật tự nhiên */
+  /* Cảm nhận 1 (Bên trái): Nghiêng trái nhiều hơn, kéo lên trên và dịch sang trái */
+  .memory-wall-row.row-of-3 .scrapbook-item-wrapper:nth-child(1) {
+    margin-right: 50px !important;
+    margin-top: -10px !important; /* Giảm dịch lên âm để tránh va chạm hàng trên */
+  }
+  .memory-wall-row.row-of-3 .scrapbook-item-wrapper:nth-child(1) .note-film {
+    transform: rotate(-7deg) !important;
+  }
+
+  /* Cảm nhận 2 (Ở giữa): Nghiêng phải, kéo xuống dưới một chút */
+  .memory-wall-row.row-of-3 .scrapbook-item-wrapper:nth-child(2) {
+    margin-top: 35px !important;
+  }
+  .memory-wall-row.row-of-3 .scrapbook-item-wrapper:nth-child(2) .note-film {
+    transform: rotate(5deg) !important;
+  }
+
+  /* Cảm nhận 3 (Bên phải): Nghiêng trái, dịch lên trên và kéo xa ra bên phải */
+  .memory-wall-row.row-of-3 .scrapbook-item-wrapper:nth-child(3) {
+    margin-left: 90px !important;
+    margin-top: -5px !important; /* Giảm dịch lên âm để tránh va chạm hàng trên */
+  }
+  .memory-wall-row.row-of-3 .scrapbook-item-wrapper:nth-child(3) .note-film {
+    transform: rotate(-5deg) !important;
+  }
+
+  /* Hover quay về thẳng đứng */
+  .memory-wall-row.row-of-3 .scrapbook-item-wrapper:hover .note-film {
+    transform: scale(1.03) rotate(0deg) !important;
   }
 }
 
@@ -632,4 +676,26 @@
 .login-prompt-compact .btn-login:hover {
   background-color: var(--ink) !important;
   transform: translateY(-1px);
+}
+
+/* Alert Styling */
+.feedback-alert {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto 30px;
+  padding: 15px 25px;
+  background-color: #FCF8EE;
+  color: var(--logo-mocha);
+  border: 1px dashed rgba(122,92,74,0.3);
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 14px;
+  border-radius: 8px;
+  z-index: 20;
+}
+
+.feedback-alert.alert-error {
+  background-color: #fef4f4;
+  color: #d32f2f;
+  border-color: rgba(211, 47, 47, 0.3);
 }
